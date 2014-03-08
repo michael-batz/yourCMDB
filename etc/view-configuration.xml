@@ -1,0 +1,11 @@
+<view-configuration>
+	<content-tables length="20" />
+	<url base="http://127.0.0.1/yourcmdb-0.4" />
+	<qrcodes ecc-level="L" />
+	<menu-items>
+		<menu-item name="Home" url="index.php" />
+		<menu-item name="Search" url="search.php" />
+		<menu-item name="Add Object" url="object.php?action=new" />
+		<menu-item name="Import-Export" url="import.php" />
+	</menu-items>
+</view-configuration>

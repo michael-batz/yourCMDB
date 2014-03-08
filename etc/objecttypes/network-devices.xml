@@ -1,0 +1,53 @@
+<group name="network devices">
+	<object-type name="router">
+		<static>
+			<comment>A comment on router objects...</comment>
+		</static>
+		<links>
+			<link name="Search for manufacturer" href="http://www.google.de/#q=%manufacturer%" />
+		</links>
+		<fields>
+			<fieldgroup name="network">
+				<field name="management-ip" type="text" label="management IP" summaryfield="true"/>
+				<field name="snmpCommunity" type="text" label="SNMP community" default="public"/>
+				<field name="snmpVersion" type="text" label="SNMP version" default="v2c" />
+				<field name="snmpPort" type="text" label="SNMP port" default="161" />
+			</fieldgroup>
+			<fieldgroup name="hardware">
+				<field name="manufacturer" type="text" summaryfield="true"/>
+				<field name="serialno" type="text" label="serial number" />
+				<field name="maintenance-contract" type="text" label="maintenance contract" />
+			</fieldgroup>
+			<fieldgroup name="age">
+				<field name="setup-date" type="text" label="setup date" />
+			</fieldgroup>
+			<fieldgroup name="admin">
+				<field name="Name" type="text" />
+				<field name="Mail" type="text" />
+			</fieldgroup>
+		</fields>
+	</object-type>
+	<object-type name="switch">
+		<fields>
+			<fieldgroup name="network">
+				<field name="management-ip" type="text" summaryfield="true"/>
+				<field name="snmpCommunity" type="text" label="SNMP community" default="public" />
+				<field name="snmpVersion" type="text" label="SNMP version" default="v2c" />
+				<field name="snmpPort" type="text" label="SNMP port" default="161" />
+			</fieldgroup>
+			<fieldgroup name="hardware">
+				<field name="manufacturer" type="text" summaryfield="true"/>
+				<field name="serialno" type="text" label="serial number" />
+				<field name="maintenance-contract" type="text" label="maintenance contract" />
+			</fieldgroup>
+			<fieldgroup name="age">
+				<field name="setup-date" type="text" label="setup date" />
+			</fieldgroup>
+			<fieldgroup name="admin">
+				<field name="Name" type="text" />
+				<field name="Mail" type="text" />
+			</fieldgroup>
+		</fields>
+	</object-type>
+</group>
+

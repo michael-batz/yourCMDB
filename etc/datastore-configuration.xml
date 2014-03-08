@@ -1,0 +1,9 @@
+<datastores>
+	<datastore class="MySQLDataStore">
+		<parameter key="server" value="localhost" />
+		<parameter key="port" value="3306" />
+		<parameter key="db" value="cmdb" />
+		<parameter key="user" value="cmdb" />
+		<parameter key="password" value="cmdb" />
+	</datastore>
+</datastores>

@@ -1,0 +1,487 @@
+/********************************************************************
+* This file is part of yourCMDB.
+*
+* Copyright 2013-2014 Michael Batz
+*
+*
+* yourCMDB is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* yourCMDB is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
+*
+*********************************************************************/
+
+
+/**
+* Default settings for yourCMDB
+*/
+html,body
+{
+	height:		100%;
+
+	margin:		0px;
+	padding:	0px;
+
+	font-size:	12pt;
+	font-family:	sans-serif;
+
+	background:	url('../img/menu-background.png') repeat-y;
+}
+
+em
+{
+	background:	#FFFF00;
+}
+
+a
+{
+	color:		#FF0022;
+	text-decoration: none;
+}
+
+a:hover, a:active
+{
+	text-decoration: underline;
+}
+
+div.blind
+{
+	display:	none;
+}
+
+
+div.box
+{
+	border:		1pt solid;
+	border-radius:	5px;
+	width:		250px;
+	margin-top:	30px;
+	background:	#FFFFFF;
+	font-size:	9pt;
+}
+
+div.box h1
+{
+	background:	#000000;
+	color:		#FFFFFF;
+	margin:		0px;
+	font-size:	10pt;
+	text-align:	center;
+	text-decoration:none;
+	font-weight:	normal;
+}
+
+div.box p
+{
+	margin:		5px;
+}
+
+img
+{
+	border:		none;
+	vertical-align:	middle;
+}
+
+p.message-info
+{
+	width:		100%;
+	text-align:	left;
+	font-size:	8pt;
+	border:		1pt solid #FF9900;
+	border-radius:	5px;
+	background:	#FFFF99;
+	padding:	5px;
+	
+}
+
+p.message-error
+{
+	width:		100%;
+	text-align:	left;
+	font-size:	8pt;
+	border:		1pt solid #FF0022;
+	border-radius:	5px;
+	background:	#F5A9A9;
+	padding:	5px;
+}
+
+/**
+* Header  
+*
+**/
+div.header
+{
+	width:		100%;
+	margin:		0px;
+	background:	#000000;
+	color:		#FFFFFF;
+}
+
+div.header h1
+{
+	background:     url('../img/logo.png') no-repeat;
+	margin:		0px;
+	padding-top:	45px;
+	padding-bottom:	20px;
+	padding-left:	95px;
+	font-size:	16pt;
+	display:	inline-block;
+}
+
+div.mainmenu
+{
+	text-align:	right;
+}
+
+div.header div.mainmenu ul
+{
+	display:	inline;
+}
+
+div.header div.mainmenu li
+{
+	display:	inline;
+	list-style-type: none;
+	margin:		20px;
+}
+
+
+/**
+* Menu 
+*
+**/
+div.menu
+{
+	width:		350px;
+	float:		left;
+}
+
+
+div.menu div.box
+{
+	margin-left:	auto;
+	margin-right:	auto;
+}
+
+/**
+* Content 
+*
+**/
+div.content
+{
+	margin-left:	350px;
+	padding:	20px;
+	padding-top:	0px;
+	text-align:	center;
+	font-size:	10pt;
+	overflow:	visible;
+}
+
+div.content h1, h2
+{
+	font-size:	12pt;
+}
+
+div.content h2
+{
+	margin-top:	0px;
+	border-bottom:	1pt solid #000000;
+	width:		100%;
+	text-align:	left;
+	font-weight:	normal;
+	font-size:	10pt;
+}
+
+
+div.content table
+{
+	margin-top:	10px;
+	margin-left:	auto;
+	margin-right:	auto;
+	border:		1pt solid;
+	border-color:	#212121;
+	border-spacing:	0px;
+	border-radius:	5px;
+	width:		75%;
+}
+
+div.content table.blindsmall
+{
+	border:		0px;
+	width:		auto;
+}
+
+div.content th
+{
+	background:	#212121;
+	color:		#FFFFFF;
+	font-weight:	normal;
+}
+
+div.content th a
+{
+	color:		#FFFFFF;
+	text-decoration:underline;
+}
+
+div.content td
+{
+	padding-left:	20px;
+	padding-right:	20px;
+	padding-top:	10px;
+	padding-bottom:	10px;
+}
+
+
+div.content table.cols2 td
+{
+	text-align:	left;
+	width:		50%;
+}
+
+div.content table.cols2 td[colspan="2"]
+{
+	text-align:	center;
+}
+
+
+
+div.submenu
+{
+	text-align:	left;
+}
+
+
+p.leftcontent
+{
+	text-align:	left;
+}
+
+
+
+/**
+* Footer 
+*
+**/
+div.footer
+{
+	clear:		both;
+
+	position:	fixed;
+	bottom:		0px;
+	width:		100%;
+
+	border-top:	1px solid;
+	
+	text-align:	center;
+	font-style:	italic;
+	font-size:	10pt;
+
+	background:	#FFFFFF;
+}
+
+/**
+* list tables
+*
+**/
+table.list
+{
+	min-width:	600px;
+}
+
+table.list tr:hover
+{
+	background:	#DADADA;
+}
+
+table.list th
+{
+	padding-left:	20px;
+	text-align:	left;
+}
+
+table.list td
+{
+	text-align:	left;
+}
+
+table.list td.right
+{
+	text-align:	right;
+	min-width:	100px;
+}
+
+table.list th.center
+{
+	text-align:	center;
+}
+
+/**
+* list navigation
+*
+**/
+p.listnav
+{
+	width:		75%;
+	min-width:	600px;
+	margin-left:	auto;
+	margin-right:	auto;
+	text-align:	right;
+}
+
+p.listnav a
+{
+	padding:	5px;
+	border:		1pt solid #000000;
+	border-radius:	5px;
+	background:	#FFFFFF;
+	color:		#000000;
+	text-decoration:none;
+	font-size:	8pt;
+}
+
+p.listnav a:hover, p.listnav a.active
+{
+	color:		#000000;
+	background:	#DADADA;
+}
+
+p.listnav a.disabled
+{
+	color:		#999999;
+	background:	#FFFFFF;
+	border:		1pt solid #999999;
+}
+
+/**
+* object view
+*
+**/
+div.objectbox
+{
+	margin-left:	auto;
+	margin-right:	auto;
+	margin-top:	50px;
+	border:		1pt solid #000000;
+	border-radius:	5px;
+	width:		80%;
+	min-width:	600px;
+}
+
+div.objectbox h1
+{
+	margin:		0px;
+	padding:	2px;
+	text-align:	center;
+	background:	#000000;
+	color:		#FFFFFF;
+
+}
+
+div.objectbox table
+{
+	border:		none;
+	width:		95%;
+}
+
+div.objectbox th
+{
+	background:	none;
+	color:		#000000;
+	border-bottom:	1pt solid;
+	text-align:	left;	
+}
+
+div.objectbox tr:hover
+{
+	background:	#DADADA;
+}
+
+div.objectheader
+{
+	width:		100%;
+	display:	table;
+	text-align:	left;
+}
+
+div.objectheaderrow
+{
+	display:	table-row;
+}
+
+div.objectheaderrow div.label
+{
+	width:		170px;
+	display:	table-cell;
+}
+
+div.objectheaderrow div.label img
+{
+	vertical-align:	top;
+}
+
+div.objectheaderrow div.summary
+{
+	display:	table-cell;
+	vertical-align:	top;
+	padding-top:	20px;
+}
+
+div.objectheaderrow div.additional
+{
+	display:	table-cell;
+	vertical-align:	top;
+}
+
+div.objectheaderrow div div
+{
+	padding-top:	20px;
+	padding-left:	20px;
+	display:	block;
+}
+
+div.objectheaderrow div div p, ul
+{
+	padding-left:	40px;
+}
+
+div.urls ul
+{
+	list-style-position:inside;
+	list-style-image:url('../img/icon_link.png');
+}
+
+div.objecttabs table
+{
+	padding-bottom:	50px;
+}
+
+/**
+* jQuery Elements
+*
+**/
+.ui-menu
+{
+	width:		244px;
+	z-index:	10;
+}
+
+.ui-menu-item, .ui-widget-content
+{
+	font-size:	10pt;
+}
+
+.ui-autocomplete
+{
+	max-height: 	100px;
+	overflow-y: 	auto;
+	overflow-x:	hidden;
+}

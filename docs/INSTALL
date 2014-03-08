@@ -1,0 +1,107 @@
+Welcome to yourCMDB!
+=====================
+
+http://www.yourcmdb.org
+Contact: Michael Batz <michael@yourcmdb.org>
+
+
+
+Setup in short:
+1.) Install a webserver, PHP, MySQL Server
+2.) copy the yourCMDB files
+3.) configure your webserver to do user authentication
+4.) setup a MySQL database using the structure in sql/create.sql
+5.) configure your database connection in etc/datastore-configuration.xml
+6.) configure your object types in etc/
+7.) start adding objects manually or using the csv import
+8.) have fun :-)
+
+
+
+1.) Install the software yourCMDB needs
+yourCMDB needs the following software
+- a webserver (for example Apache)
+- PHP 5 with the GD and MySQL libraries
+- MySQL server
+
+
+2.) copy the yourCMDB files
+After you installed all the software you need for yourCMDB, copy all files of yourCMDB to a directory of your choice.
+For example use /opt/yourcmdb. Link the web subdirectory in your webserver's document root.
+Example:
+	cp yourcmdb /opt
+	ln -s /opt/yourcmdb/web /var/www/yourcmdb (if your webservers document root is /var/www=
+
+
+3.) configure your webserver to do user authentication
+At the moment, yourCMDB has no own module for user authentication. So for authentication use the
+mechanism of your webserver. 
+
+If you use an Apache webserver, you can use the following .htaccess example file:
+AuthType Basic
+AuthName "yourCMDB"
+AuthBasicProvider file
+AuthUserFile /var/www/yourcmdb/.htpasswd
+Require valid-user
+
+Create a .htpasswd file using the command line tool htpasswd.
+
+
+
+4.) configure your MySQL database server
+create a database and a database user for yourCMDB. Use the file sql/create.sql to create
+the database structure.
+
+
+5.) configure your database connection for yourCMDB.
+In the etc directory of yourCMDB, you'll find the configuration files of yourCMDB. Use 
+datastore-configuration.xml to setup the parameters for the connection to your MySQL database
+server.
+
+
+6.) configure object types
+Use the configuration file etc/objecttype-configuration.xml to configure your CMDB objects.
+See the following example:
+	<group name="network devices">
+                <object-type name="router">
+                        <fields>
+                                <fieldgroup name="address">
+                                        <field name="address1" type="text" />
+                                        <field name="zip" type="text" />
+                                        <field name="city" type="text" summaryfield="true" />
+                                        <field name="country" type="text" summaryfield="true"/>
+                                </fieldgroup>
+				<fieldgroup name="network access">
+                                        <field name="IP" type="text" summaryfield="true"/>
+                                        <field name="SnmpCommunity" type="text" />
+                                </fieldgroup>
+                        </fields>
+                </object-type>
+		<object-type name="switch">
+		[...]
+		</object-type>
+        </group>
+
+Each object is part of an object group, which is displayed in the menu. Each object type has a name 
+(example: router, switch) and a set of fields. The fields are organized in groups to have a better
+view of an object with a lot of fields. Each fieldgroup has a name (exampl: address, network access).
+Each field of an object has a name and a type (at the moment only type "text" is available). An
+optional parameter summaryfield is available. Set it to "true", to show this field in the object lists,
+which shows a summary of an object.
+
+limitations
+------------
+object field names
+- don't use dots and spaces in object field names
+- don't use more than 64 characters
+- don't use the following words as object field names: action, type, id, yourCMDB_*
+
+Please see more details under http://www.yourcmdb.org
+
+
+7.) Add objects
+Now you are ready to add the first objects. Use the "New Object" box or the CSV import the get the
+objects into yourCMDB.
+
+
+8.) Enjoy yourCMDB :-)

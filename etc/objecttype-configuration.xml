@@ -1,0 +1,4 @@
+<object-types>
+	<includeconfig file="objecttypes/locations.xml" />
+	<includeconfig file="objecttypes/network-devices.xml" />
+</object-types>

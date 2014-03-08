@@ -1,0 +1,29 @@
+Welcome to yourCMDB!
+=====================
+
+http://www.yourcmdb.org
+Contact: Michael Batz <michael@yourcmdb.org>
+
+
+
+Update in short:
+1.) Backup your yourCMDB etc directory and create a database dump
+2.) Install the new version of yourCMDB
+3.) Migrate the configuration files
+4.) Migrate database structure
+
+
+1.) Backup your yourCMDB etc directory and create a database dump
+Create a backup of your existing yourCMDB etc directory and create a database
+dump
+
+2.) Install the new version of yourCMDB
+Install the new version of yourCMDB using the INSTALL Guide
+
+3.) Migrate the configuration files
+Use the new configuration files as a basis and migrate your configuration changes 
+from the old version.
+
+4.) Migrate database structre
+If you update from yourCMDB 0.3 or prior, use the sql/update.sql file for 
+migration of the database.

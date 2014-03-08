@@ -1,0 +1,12 @@
+<group name="locations">
+	<object-type name="datacenter">
+		<fields>
+			<fieldgroup name="location">
+				<field name="street" type="text" />
+				<field name="zip" type="text" />
+				<field name="city" type="text" summaryfield="true" />
+				<field name="country" type="text" summaryfield="true"/>
+			</fieldgroup>
+		</fields>
+	</object-type>
+</group>
