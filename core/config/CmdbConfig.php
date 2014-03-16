@@ -40,6 +40,9 @@ class CmdbConfig
 	//data exchange configuration
 	private $configDataExchange;
 
+	//exporter configuration
+	private $configExporter;
+
 
 	/**
 	* Creates a new configuration object
@@ -51,6 +54,7 @@ class CmdbConfig
 		$this->configObjectType = new ObjectTypeConfig("../etc/objecttype-configuration.xml");
 		$this->configView = new ViewConfig("../etc/view-configuration.xml");
 		$this->configDataExchange = new DataExchangeConfig("../etc/dataexchange-configuration.xml");
+		$this->configExporter = new ExporterConfig("../etc/exporter-configuration.xml");
 	}
 
 
@@ -84,6 +88,14 @@ class CmdbConfig
 	public function getDataExchangeConfig()
 	{
 		return $this->configDataExchange;
+	}
+
+	/**
+	* Returns a ExporterConfig object
+	*/
+	public function getExporterConfig()
+	{
+		return $this->configExporter;
 	}
 
 
