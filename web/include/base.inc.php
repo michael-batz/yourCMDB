@@ -28,7 +28,7 @@
 function __autoload($className)
 {
 	$coreBaseDir = "../core";
-	$paths = array('', 'model', 'config', 'controller', 'libs');
+	$paths = array('', 'model', 'config', 'controller', 'libs', 'exporter');
 	$filename = $className.'.php';
 	foreach($paths as $path)
 	{

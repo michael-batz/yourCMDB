@@ -32,7 +32,7 @@
 	function __autoload($className)
 	{
 	        $coreBaseDir = "../core";
-		$paths = array('', 'model', 'config', 'controller', 'libs', 'rest');
+		$paths = array('', 'model', 'config', 'controller', 'libs', 'rest', 'exporter');
 		$filename = $className.'.php';
 		foreach($paths as $path)
 		{

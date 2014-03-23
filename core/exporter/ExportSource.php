@@ -1,4 +1,3 @@
-#! /usr/bin/php5
 <?php
 /********************************************************************
 * This file is part of yourCMDB.
@@ -22,28 +21,47 @@
 *********************************************************************/
 
 /**
-* yourCMDB exporter - runs an export of objects
+* Export API - source for an export task
 * @author Michael Batz <michael@yourcmdb.org>
 */
+class ExportSource
+{
+	//type of objects for export
+	private $objecttype;
 
-	/**
-        * autoloading of classes
-        */
-        function __autoload($className)
-        {
-                $coreBaseDir = "../core";
-                $paths = array('', 'model', 'config', 'controller', 'libs', 'rest', 'exporter');
-                $filename = $className.'.php';
-                foreach($paths as $path)
-                {
-                        if(file_exists("$coreBaseDir/$path/$filename"))
-                        {
-                                include "$coreBaseDir/$path/$filename";
-                        }
-                }
-        }
+	//status of objects
+	private $status;
 
-	new Exporter("opennms");
+	private $fieldname;
 
+	private $fieldvalue;
+
+	function __construct($objecttype, $status, $fieldname=null, $fieldvalue=null)
+	{
+		$this->objecttype = $objecttype;
+		$this->status = $status;
+		$this->fieldname = $fieldname;
+		$this->fieldvalue = $fieldvalue;
+	}
+
+	public function getObjectType()
+	{
+		return $this->objecttype;
+	}
+
+	public function getStatus()
+	{
+		return $this->status;
+	}
+
+	public function getFieldname()
+	{
+		return $this->fieldname;
+	}
+
+	public function getFieldvalue()
+	{
+		return $this->fieldvalue;
+	}
+}
 ?>
-

@@ -27,22 +27,38 @@
 
 class Exporter
 {
-
 	//datastore
 	private $datastore;
 
 	//configuration
 	private $config;
 
+	//exporter task
+	private $task;
 
-	function __construct()
+	//exporter sources
+	private $exportSources;
+
+	//exporter destination
+	private $exportDestination;
+
+
+	function __construct($taskname)
 	{
+
 		//create configuration object
 		$this->config = new CmdbConfig();
 
 		//create datastore object
 		$datastoreClass = $this->config->getDatastoreConfig()->getClass();
 		$this->datastore = new $datastoreClass;
+
+		//get configuration for exporter task
+		//ToDo: error handling
+		$this->task = $taskname;
+		$this->exportSources = $this->config->getExporterConfig()->getSourcesForTask($taskname);
+		$this->exportDestination = $this->config->getExporterConfig()->getDestinationForTask($taskname);
+
 
 		//run export
 		$this->runExport();
@@ -56,6 +72,8 @@ class Exporter
 	{
 		//ToDo: implementation
 		echo "Test";
+		print_r($this->exportSources);
+		print_r($this->exportDestination);
 	}
 }
 ?>

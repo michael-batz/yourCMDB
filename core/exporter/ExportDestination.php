@@ -1,4 +1,3 @@
-#! /usr/bin/php5
 <?php
 /********************************************************************
 * This file is part of yourCMDB.
@@ -22,28 +21,36 @@
 *********************************************************************/
 
 /**
-* yourCMDB exporter - runs an export of objects
+* Export API - destination for an export task
 * @author Michael Batz <michael@yourcmdb.org>
 */
+class ExportDestination
+{
+	//class for export destination
+	private $class;
 
-	/**
-        * autoloading of classes
-        */
-        function __autoload($className)
-        {
-                $coreBaseDir = "../core";
-                $paths = array('', 'model', 'config', 'controller', 'libs', 'rest', 'exporter');
-                $filename = $className.'.php';
-                foreach($paths as $path)
-                {
-                        if(file_exists("$coreBaseDir/$path/$filename"))
-                        {
-                                include "$coreBaseDir/$path/$filename";
-                        }
-                }
-        }
+	//parameter array
+	private $parameter;
 
-	new Exporter("opennms");
+	function __construct($class, $parameter)
+	{
+		$this->class = $class;
+		$this->parameter = $parameter;
+	}
 
+	public function getClass()
+	{
+		return $this->class;
+	}
+
+	public function getParameterKeys()
+	{
+		return array_keys($this->parameter);
+	}
+
+	public function getParameterValue($key)
+	{
+		return $this->parameter[$key];
+	}
+}
 ?>
-

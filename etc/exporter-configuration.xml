@@ -1,2 +1,20 @@
 <exporter-configuration>
+	<task name="opennms">
+		<sources>
+			<source objecttype="router" status="A" fieldname="monitoring" fieldvalue="true" />
+			<source objecttype="switch" status="A" />
+		</sources>
+		<destination class="ExternalSystemOpennms">
+			<parameter key="resturl" value="http://localhost:8980/opennms/rest" />
+			<parameter key="restuser" value="admin" />
+			<parameter key="restpassword" value="admin" />
+			<parameter key="requisitionname" value="yourcmdb" />
+		</destination>
+		<variables>
+			<variable name="ip">
+				<value objecttype="router" fieldname="ip" />
+				<value objecttype="switch" fieldname="managementip" />
+			</variable>
+		</variables>
+	</task>
 </exporter-configuration>
