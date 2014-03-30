@@ -39,6 +39,8 @@ interface DataStoreInterface
 
 	public function getObjectsByType($type, $sortfield="", $sorttype="asc", $activeOnly=true, $max=0, $start=0);
 	
+	public function getObjectsByField($fieldname, $fieldvalue, $types=null, $activeOnly=true, $max=0, $start=0);
+	
 	public function getObjectsByFieldvalue($searchstring, $types=null, $activeOnly=true, $max=0, $start=0);
 	
 	public function getObjectLinks($id);

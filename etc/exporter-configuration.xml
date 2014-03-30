@@ -1,19 +1,21 @@
 <exporter-configuration>
-	<task name="opennms">
+	<task name="example">
 		<sources>
-			<source objecttype="router" status="A" fieldname="monitoring" fieldvalue="true" />
+			<source objecttype="router" status="A" fieldname="manufacturer" fieldvalue="Cisco" />
 			<source objecttype="switch" status="A" />
 		</sources>
-		<destination class="ExternalSystemOpennms">
-			<parameter key="resturl" value="http://localhost:8980/opennms/rest" />
-			<parameter key="restuser" value="admin" />
-			<parameter key="restpassword" value="admin" />
-			<parameter key="requisitionname" value="yourcmdb" />
+		<destination class="ExternalSystemDummy">
+			<parameter key="testparameter1" value="value1" />
+			<parameter key="testparameter2" value="valu2" />
 		</destination>
 		<variables>
-			<variable name="ip">
-				<value objecttype="router" fieldname="ip" />
-				<value objecttype="switch" fieldname="managementip" />
+			<variable name="dummy1">
+				<value objecttype="router" fieldname="hostname" />
+				<value objecttype="switch" fieldname="management-ip" />
+			</variable>
+			<variable name="dummy2" default-value="0.0.0.0">
+				<value objecttype="router" fieldname="management-ip" />
+				<value objecttype="switch" fieldname="management-ip" />
 			</variable>
 		</variables>
 	</task>

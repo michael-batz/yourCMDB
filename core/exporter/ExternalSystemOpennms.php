@@ -26,7 +26,7 @@
 */
 class ExternalSystemOpennms
 {
-	public function setUp(ExporterConfig $configuration)
+	public function setUp(ExportDestination $destination, ExportVariables $variables)
 	{
 		;
 	}
@@ -36,7 +36,7 @@ class ExternalSystemOpennms
 		;
 	}
 
-	public function synchronize()
+	public function finishExport()
 	{
 		;
 	}

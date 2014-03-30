@@ -1,4 +1,3 @@
-#! /usr/bin/php5
 <?php
 /********************************************************************
 * This file is part of yourCMDB.
@@ -22,28 +21,41 @@
 *********************************************************************/
 
 /**
-* yourCMDB exporter - runs an export of objects
+* Export API - variables for an export task
 * @author Michael Batz <michael@yourcmdb.org>
 */
+class ExportVariables
+{
+
+	//all defined variables
+	private $variables;
 
 	/**
-        * autoloading of classes
-        */
-        function __autoload($className)
-        {
-                $coreBaseDir = "../core";
-                $paths = array('', 'model', 'config', 'controller', 'libs', 'rest', 'exporter');
-                $filename = $className.'.php';
-                foreach($paths as $path)
-                {
-                        if(file_exists("$coreBaseDir/$path/$filename"))
-                        {
-                                include "$coreBaseDir/$path/$filename";
-                        }
-                }
-        }
+	* create a new instance
+	* @param $exportVariables  	Array of ExportVariable
+	*/
+	function __construct($exportVariables)
+	{
+		$this->variables = $exportVariables;
+	}
 
-	new Exporter("example");
+	/**
+	* Returns the variable of the given name
+	* @param $name			variable name
+	* @return ExportVariable	ExportVariable or null, if not found
+	*/
+	public function getVariable($name)
+	{
+		foreach($this->variables as $variable)
+		{
+			if($variable->getName() == $name)
+			{
+				return $variable;
+			}
+		}
 
+		return null;
+	}
+	
+}
 ?>
-

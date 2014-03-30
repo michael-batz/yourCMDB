@@ -317,6 +317,66 @@ class MySQLDataStore implements DataStoreInterface
 	}
 
 	/**
+	* Search for objects. Get all objects with a specific value for a specific field
+	* @param $fieldname	Name of the field
+	* @param $fieldvalue	Value of the field
+	* @param $types		Array with object types or null. Only show objects of a specific type
+	* @returns 		Array with objects
+	*/
+	public function getObjectsByField($fieldname, $fieldvalue, $types=null, $activeOnly=true, $max=0, $start=0)
+	{
+		//escape strings
+		$fieldname = mysql_real_escape_string($fieldname, $this->dbConnection);
+		$fieldvalue = mysql_real_escape_string($fieldvalue, $this->dbConnection);
+		$activeOnly = mysql_real_escape_string($activeOnly, $this->dbConnection);
+		$max = mysql_real_escape_string($max, $this->dbConnection);
+		$start = mysql_real_escape_string($start, $this->dbConnection);
+		
+
+		//get all IDs
+                $sql = "SELECT distinct CmdbObject.assetid FROM CmdbObject, CmdbObjectField ";
+		$sql.= "WHERE CmdbObject.assetid = CmdbObjectField.assetid ";
+		if($activeOnly)
+		{
+			$sql.= "AND CmdbObject.active='A' ";
+		}
+		else
+		{
+			$sql.= "AND CmdbObject.active!='D' ";
+		}
+
+
+		if($types != null && count($types) != 0)
+		{
+			$sql.= "AND CmdbObject.type IN (";
+			for($i = 0; $i < count($types); $i++)
+			{
+				$sql.= "'".mysql_real_escape_string($types[$i], $this->dbConnection)."'";
+				if($i < (count($types) - 1))
+				{
+					$sql.= ", ";
+				}
+			}
+			$sql.= ") ";
+		}
+		$sql.= "AND fieldkey = '$fieldname' ";
+		$sql.= "AND fieldvalue = '$fieldvalue' ";
+		if($max != 0)
+		{
+			$sql.= "limit $start, $max";
+		}
+                $result = $this->dbGetData($sql);
+
+		//create array with CmdbObjects
+		$output = Array();
+		foreach($result as $objectID)
+		{
+			$output[] = $this->getObject($objectID['assetid']);
+		}
+		return $output;
+	}
+
+	/**
 	* Search for objects. Get all objects with a specific field value
 	* @param $searchstring	Searchstring
 	* @param $types		Array with object types or null. Only show objects of a specific type

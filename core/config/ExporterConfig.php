@@ -37,6 +37,9 @@ class ExporterConfig
 	//exporter destinations
 	private $destinations;
 
+	//variable bindings
+	private $variables;
+
 
 	/**
 	* creates a ExporterConfig object from xml file exporter-configuration.xml
@@ -49,6 +52,7 @@ class ExporterConfig
 		$this->tasks = Array();
 		$this->sources = Array();
 		$this->destinations = Array();
+		$this->variables = Array();
 
 		foreach($xmlobject->xpath('//task')  as $task)
 		{
@@ -80,6 +84,23 @@ class ExporterConfig
 				$destinationParameter[$key] = $value;
 			}
 			$this->destinations[$taskname] = new ExportDestination($destinationClass, $destinationParameter);
+
+			//get variable bindings
+			$variables = Array();
+			foreach($task[0]->variables->variable as $variable)
+			{
+				$variableName = (string)$variable['name'];
+				$variableDefault = (string)$variable['default-value'];
+				$variableValueField = Array();
+				foreach($variable->value as $value)
+				{
+					$valueObjectType = (string)$value['objecttype'];
+					$valueFieldname = (string)$value['fieldname'];
+					$variableValueField[$valueObjectType] = $valueFieldname;
+				}
+				$variables[] = new ExportVariable($variableName, $variableDefault, $variableValueField);
+			}
+			$this->variables[$taskname] = new ExportVariables($variables);
 		}
 	}
 
@@ -108,6 +129,16 @@ class ExporterConfig
 	{
 		return $this->destinations[$taskname];
 	}
+
+	/**
+	* Returns variable bindings for an export task
+	* @param $taskname	Name of the export task
+	*/
+	public function getVariablesForTask($taskname)
+	{
+		return $this->variables[$taskname];
+	}
+
 }
 
 ?>

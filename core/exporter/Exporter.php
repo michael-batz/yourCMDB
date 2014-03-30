@@ -42,6 +42,9 @@ class Exporter
 	//exporter destination
 	private $exportDestination;
 
+	//exporter variables
+	private $exportVariables;
+
 
 	function __construct($taskname)
 	{
@@ -58,6 +61,7 @@ class Exporter
 		$this->task = $taskname;
 		$this->exportSources = $this->config->getExporterConfig()->getSourcesForTask($taskname);
 		$this->exportDestination = $this->config->getExporterConfig()->getDestinationForTask($taskname);
+		$this->exportVariables = $this->config->getExporterConfig()->getVariablesForTask($taskname);
 
 
 		//run export
@@ -70,10 +74,43 @@ class Exporter
 	*/
 	private function runExport()
 	{
-		//ToDo: implementation
-		echo "Test";
-		print_r($this->exportSources);
-		print_r($this->exportDestination);
+		//set up exportDestination
+		$exportDestinationClass = $this->exportDestination->getClass();
+		$exportDestination = new $exportDestinationClass();
+		$exportDestination->setUp($this->exportDestination, $this->exportVariables);
+		
+
+		//walk through all ExportSources
+		foreach($this->exportSources as $exportSource)
+		{
+			//get objects to export
+			$objects = Array();
+			$exportSourceFieldname = $exportSource->getFieldname();
+			$exportSourceFieldvalue = $exportSource->getFieldvalue();
+			$exportSourceObjectTypes = array($exportSource->getObjectType());
+			$exportSourceStatusActive = true;
+			if($exportSource->getStatus() == "N")
+			{
+				$exportSourceStatusActive = false;
+			}
+			if($exportSourceFieldname == null || $exportSourceFieldvalue == null )
+			{
+				$objects = $this->datastore->getObjectsByType($exportSourceObjectTypes[0], "", "asc", $exportSourceStatusActive);
+			}
+			else
+			{
+				$objects = $this->datastore->getObjectsByField($exportSourceFieldname, $exportSourceFieldvalue, $exportSourceObjectTypes, $exportSourceStatusActive);
+			}
+
+			//export objects
+			foreach($objects as $object)
+			{
+				$exportDestination->addObject($object);
+			}
+		}
+
+		//finish export
+		$exportDestination->finishExport();
 	}
 }
 ?>

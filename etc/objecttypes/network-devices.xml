@@ -8,6 +8,7 @@
 		</links>
 		<fields>
 			<fieldgroup name="network">
+				<field name="hostname" type="text" label="Hostname" summaryfield="true"/>
 				<field name="management-ip" type="text" label="management IP" summaryfield="true"/>
 				<field name="snmpCommunity" type="text" label="SNMP community" default="public"/>
 				<field name="snmpVersion" type="text" label="SNMP version" default="v2c" />

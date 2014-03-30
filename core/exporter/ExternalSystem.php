@@ -26,10 +26,10 @@
 */
 interface ExternalSystem
 {
-	public function setUp(ExporterConfig $configuration);
+	public function setUp(ExportDestination $destination, ExportVariables $variables);
 
 	public function addObject(CmdbObject $object);
 
-	public function synchronize();
+	public function finishExport();
 }
 ?>
