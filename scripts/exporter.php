@@ -78,6 +78,13 @@
 		echo $e->getMessage()."\n";
 		echo "Please check exporter-configuration.xml\n";
 	}
+	catch(ExportExternalSystemException $e)
+	{
+		echo "yourCMDB Exporter\n";
+		echo "Error in communication with external system\n";
+		echo $e->getMessage()."\n";
+		echo "Please check the configuration or the external system\n";
+	}
 
 ?>
 
