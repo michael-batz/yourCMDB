@@ -50,11 +50,12 @@ class CmdbConfig
 	*/
 	public function __construct()
 	{
-		$this->configDatastore = new DatastoreConfig("../etc/datastore-configuration.xml");
-		$this->configObjectType = new ObjectTypeConfig("../etc/objecttype-configuration.xml");
-		$this->configView = new ViewConfig("../etc/view-configuration.xml");
-		$this->configDataExchange = new DataExchangeConfig("../etc/dataexchange-configuration.xml");
-		$this->configExporter = new ExporterConfig("../etc/exporter-configuration.xml");
+		$configurationBase = realpath(dirname(__FILE__)."/../../etc");
+		$this->configDatastore = new DatastoreConfig("$configurationBase/datastore-configuration.xml");
+		$this->configObjectType = new ObjectTypeConfig("$configurationBase/objecttype-configuration.xml");
+		$this->configView = new ViewConfig("$configurationBase/view-configuration.xml");
+		$this->configDataExchange = new DataExchangeConfig("$configurationBase/dataexchange-configuration.xml");
+		$this->configExporter = new ExporterConfig("$configurationBase/exporter-configuration.xml");
 	}
 
 
