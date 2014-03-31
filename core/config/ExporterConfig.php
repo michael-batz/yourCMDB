@@ -118,6 +118,10 @@ class ExporterConfig
 	*/
 	public function getSourcesForTask($taskname)
 	{
+		if(!isset($this->sources[$taskname]))
+		{
+			throw new ExportConfigurationException("No sources for task $taskname found");
+		}
 		return $this->sources[$taskname];
 	}
 
@@ -127,6 +131,10 @@ class ExporterConfig
 	*/
 	public function getDestinationForTask($taskname)
 	{
+		if(!isset($this->destinations[$taskname]))
+		{
+			throw new ExportConfigurationException("No destinations for task $taskname found");
+		}
 		return $this->destinations[$taskname];
 	}
 
@@ -136,6 +144,10 @@ class ExporterConfig
 	*/
 	public function getVariablesForTask($taskname)
 	{
+		if(!isset($this->variables[$taskname]))
+		{
+			throw new ExportConfigurationException("No variables for task $taskname found");
+		}
 		return $this->variables[$taskname];
 	}
 

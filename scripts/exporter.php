@@ -71,12 +71,12 @@
 	{
 		new Exporter($taskname);
 	}
-	catch(Exception $e)
+	catch(ExportConfigurationException $e)
 	{
 		echo "yourCMDB Exporter\n";
-		echo "Error starting Exporter\n";
+		echo "Error in Exporter configuration\n";
+		echo $e->getMessage()."\n";
 		echo "Please check exporter-configuration.xml\n";
-		echo "Error Detail: $e";
 	}
 
 ?>

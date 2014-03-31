@@ -57,12 +57,10 @@ class Exporter
 		$this->datastore = new $datastoreClass;
 
 		//get configuration for exporter task
-		//ToDo: error handling
 		$this->task = $taskname;
 		$this->exportSources = $this->config->getExporterConfig()->getSourcesForTask($taskname);
 		$this->exportDestination = $this->config->getExporterConfig()->getDestinationForTask($taskname);
 		$this->exportVariables = $this->config->getExporterConfig()->getVariablesForTask($taskname);
-
 
 		//run export
 		$this->runExport();
