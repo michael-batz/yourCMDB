@@ -44,7 +44,40 @@
                 }
         }
 
-	new Exporter("example");
+	/**
+	* print usage of exporter script
+	*/
+	function printUsage()
+	{
+		echo "yourCMDB Exporter\n";
+		echo "Usage: exporter.php <export taskname>\n";
+		echo "<export taskname> is the name of the export task to execute defined in exporter-configuration.xml\n\n";
+	}
+
+	//get taskname from script parameter
+	$taskname = "";
+	if($_SERVER['argc'] >= 2)
+	{
+		$taskname = $_SERVER['argv'][1];
+	}
+	else
+	{
+		printUsage();
+		exit();
+	}
+
+	//check if taskname is valid
+	try
+	{
+		new Exporter($taskname);
+	}
+	catch(Exception $e)
+	{
+		echo "yourCMDB Exporter\n";
+		echo "Error starting Exporter\n";
+		echo "Please check exporter-configuration.xml\n";
+		echo "Error Detail: $e";
+	}
 
 ?>
 
