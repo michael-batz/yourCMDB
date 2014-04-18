@@ -32,7 +32,7 @@
 * - dummy4
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class ExternalSystemDummy
+class ExternalSystemDummy implements ExternalSystem
 {
 	//ExportDestination
 	private $destination;

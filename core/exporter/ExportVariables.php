@@ -56,6 +56,18 @@ class ExportVariables
 
 		return null;
 	}
-	
+
+	/**
+	* Returns an array with all variable names
+	*/
+	public function getVariableNames()
+	{
+		$names = Array();
+		foreach($this->variables as $variable)
+		{
+			$names[] = $variable->getName();
+		}
+		return $names;
+	}	
 }
 ?>

@@ -19,4 +19,35 @@
 			</variable>
 		</variables>
 	</task>
+	<task name="opennms">
+		<sources>
+			<source objecttype="router" status="A" />
+			<source objecttype="switch" status="A" />
+		</sources>
+		<destination class="ExternalSystemOpennms">
+			<parameter key="resturl" value="http://192.168.0.105:8980/opennms/rest" />
+			<parameter key="restuser" value="admin" />
+			<parameter key="restpassword" value="admin" />
+			<parameter key="requisition" value="yourcmdb" />
+		</destination>
+		<variables>
+			<variable name="nodelabel">
+				<value objecttype="router" fieldname="hostname" />
+				<value objecttype="switch" fieldname="management-ip" />
+			</variable>
+			<variable name="ip" default-value="0.0.0.0">
+				<value objecttype="router" fieldname="management-ip" />
+				<value objecttype="switch" fieldname="management-ip" />
+			</variable>
+			<variable name="asset_city">
+				<value objecttype="router" fieldname="manufacturer" />
+				<value objecttype="switch" fieldname="management-ip" />
+			</variable>
+			<variable name="category_admin">
+				<value objecttype="router" fieldname="manufacturer" />
+				<value objecttype="switch" fieldname="management-ip" />
+			</variable>
+		</variables>
+	</task>
+
 </exporter-configuration>
