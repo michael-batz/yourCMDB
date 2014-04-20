@@ -41,8 +41,14 @@ class ExternalSystemOpennms implements ExternalSystem
 	//Name of OpenNMS requisition to use
 	private $requisition;
 
+	//array of services to bind on nodes
+	private $services;
+
 	//XML for requisition
 	private $requisitionXml;
+
+	//static var: category name lentgh
+	private static $categoryLength = 64;
 
 	//static var: asset field names -> length
 	private static $assetfields = array(
@@ -122,6 +128,17 @@ class ExternalSystemOpennms implements ExternalSystem
 		$this->restPassword = $destination->getParameterValue("restpassword");
 		$this->requisition = $destination->getParameterValue("requisition");
 
+		//set services array for services to bind on each node of the requisition
+		$this->services = Array();
+		if(in_array("services", $parameterKeys))
+		{
+			$services = explode(" ", $destination->getParameterValue("services"));
+			if($services != false)
+			{
+				$this->services = $services;
+			}
+		}
+
 		//check connection to OpenNMS
 		if(!($this->checkConnection()))
 		{
@@ -138,11 +155,11 @@ class ExternalSystemOpennms implements ExternalSystem
 		$nodeLabel = $this->variables->getVariable("nodelabel")->getValue($object);
 		$nodeForeignId = $object->getId();
 		$nodeInterfaces = array($this->variables->getVariable("ip")->getValue($object));
-		$nodeServices = array();
-		$nodeCategories = array();
+		$nodeServices = $this->services;
 
-		//define asset fields for node
+		//define asset fields and categories for node
 		$nodeAssets = array();
+		$nodeCategories = array();
 		//walk through all variables
 		foreach($this->variables->getVariableNames() as $variableName)
 		{
@@ -158,16 +175,28 @@ class ExternalSystemOpennms implements ExternalSystem
 					$nodeAssets[$fieldname] = $this->formatAssetfield($fieldvalue, $fieldlength);
 				}
 			}
+
+			//check if it is an "category_" variable
+			if(preg_match('/^category_(.*)$/', $variableName, $matches) == 1)
+			{
+				$categoryname = $matches[1];
+
+				//check if it is an unnamed category (example: "category_1")
+				if(preg_match('/[\d]+/', $categoryname) === 1)
+				{
+					$nodeCategories[]  = $this->formatCategoryName($this->variables->getVariable($variableName)->getValue($object));
+				}
+				else
+				{
+					$nodeCategories[]  = $this->formatCategoryName($categoryname. "-" .$this->variables->getVariable($variableName)->getValue($object));
+				}
+			}
 		}
 		
 
 		//add nodes to requisition
 		$xml = $this->addNode($nodeLabel, $nodeForeignId, $nodeInterfaces, $nodeServices, $nodeCategories, $nodeAssets);
 		$this->requisitionXml .= $xml;
-
-		//ToDo: SNMP config
-		
-		
 	}
 
 	public function finishExport()
@@ -341,12 +370,9 @@ class ExternalSystemOpennms implements ExternalSystem
 		foreach($interfaces as $interface)
 		{
 			$xml .= '<interface snmp-primary="P" status="1" ip-addr="'.$interface.'" descr="">';
-			if(isset($services["$interface"]))
+			foreach($services as $service)
 			{
-				foreach($services["$interface"] as $service)
-				{
-					$xml .= '<monitored-service service-name="'.$service.'"/>';
-				}
+				$xml .= '<monitored-service service-name="'.$service.'"/>';
 			}
 			$xml .= '</interface>';
 		}
@@ -379,6 +405,13 @@ class ExternalSystemOpennms implements ExternalSystem
 	private function formatAssetfield($value, $length)
 	{
 		$value = substr($value, 0, $length);
+		$value = htmlspecialchars($value);
+		return $value;
+	}
+
+	private function formatCategoryName($value)
+	{
+		$value = substr($value, 0, self::$categoryLength);
 		$value = htmlspecialchars($value);
 		return $value;
 	}

@@ -29,6 +29,7 @@
 			<parameter key="restuser" value="admin" />
 			<parameter key="restpassword" value="admin" />
 			<parameter key="requisition" value="yourcmdb" />
+			<parameter key="services" value="ICMP" />
 		</destination>
 		<variables>
 			<variable name="nodelabel">
@@ -44,8 +45,12 @@
 				<value objecttype="switch" fieldname="management-ip" />
 			</variable>
 			<variable name="category_admin">
+				<value objecttype="router" fieldname="Name" />
+				<value objecttype="switch" fieldname="Name" />
+			</variable>
+			<variable name="category_1">
 				<value objecttype="router" fieldname="manufacturer" />
-				<value objecttype="switch" fieldname="management-ip" />
+				<value objecttype="switch" fieldname="manufacturer" />
 			</variable>
 		</variables>
 	</task>
