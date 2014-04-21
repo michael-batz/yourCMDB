@@ -62,8 +62,10 @@ function showDatepicker(id)
 	$( id  ).datepicker
 	({
 		changeMonth:	true,
-		changeYear:	true
+		changeYear:	true,
+		dateFormat:	"dd.mm.yy"
 	});
+	$( id ).datepicker('show');
 };
 
 

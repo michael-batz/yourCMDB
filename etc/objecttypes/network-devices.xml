@@ -21,6 +21,7 @@
 			</fieldgroup>
 			<fieldgroup name="age">
 				<field name="setup-date" type="date" label="setup date" />
+				<field name="contract-date" type="date" label="service contract date" />
 			</fieldgroup>
 			<fieldgroup name="admin">
 				<field name="Name" type="text" />
@@ -28,6 +29,10 @@
 			</fieldgroup>
 			<fieldgroup name="Management">
 				<field name="monitoring" label="Monitoring with OpenNMS" type="boolean" />
+				<field name="config-backup" label="Backup of configuration" type="boolean" />
+			</fieldgroup>
+			<fieldgroup name="Comment">
+				<field name="comment" type="textarea" />
 			</fieldgroup>
 		</fields>
 	</object-type>

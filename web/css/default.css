@@ -244,6 +244,7 @@ div.content td
 div.content table.cols2 td
 {
 	text-align:	left;
+	vertical-align:	top;
 	width:		50%;
 }
 
@@ -474,7 +475,7 @@ div.objecttabs table
 	z-index:	10;
 }
 
-.ui-menu-item, .ui-widget-content
+.ui-menu-item, .ui-widget-content, .ui-datepicker
 {
 	font-size:	10pt;
 }

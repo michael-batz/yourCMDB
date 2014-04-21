@@ -34,8 +34,8 @@
 	<head>
 		<link rel="search" type="application/opensearchdescription+xml" title="yourCMDB QuickSearch" href="opensearch-plugin.php" />
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="css/default.css" />
 		<link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.10.3.custom.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/default.css" />
 		<script src="js/jquery-1.9.1.js" type="text/javascript"></script>
 		<script src="js/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
 		<script src="js/functions.js" type="text/javascript"></script>

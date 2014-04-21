@@ -49,6 +49,10 @@
 				showFieldForText($objectType, $name, $value, $writable);
 				break;
 
+			case "textarea":
+				showFieldForTextarea($name, $value, $writable);
+				break;
+
 			default:
 				showFieldForText($objectType, $name, $value, $writable);
 				break;
@@ -63,13 +67,13 @@
 				<input id="<?php echo $name; ?>" 
 					type="text" 
 					name="<?php echo $name; ?>" 
-					value="<?php echo $value; ?>" 
+					value="<?php echo htmlspecialchars($value); ?>" 
 					onfocus="javascript:showAutocompleter('#<?php echo $name; ?>', 'autocomplete.php?object=object&amp;var1=<?php echo $objectType;?>&amp;var2=<?php echo $name?>')" />
 			<?php
 		}
 		else
 		{
-			echo $value;
+			echo htmlspecialchars($value);
 		}
 	}
 
@@ -87,7 +91,21 @@
 		}
 		else
 		{
-			echo $value;
+			echo htmlspecialchars($value);
+		}
+	}
+
+	function showFieldForTextarea($name, $value, $writable)
+	{
+		if($writable)
+		{
+			?>
+				<textarea id="<?php echo $name; ?>" name="<?php echo $name; ?>" ><?php echo htmlspecialchars($value); ?></textarea>
+			<?php
+		}
+		else
+		{
+			echo nl2br(htmlspecialchars($value));
 		}
 	}
 
