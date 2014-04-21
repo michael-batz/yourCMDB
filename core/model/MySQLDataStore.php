@@ -94,15 +94,23 @@ class MySQLDataStore implements DataStoreInterface
 		$objectType = $result[0][0];
 		$objectStatus = $result[0][1];
 
-		//getting fields
+		//getting fields from database
 		$sql = "SELECT fieldkey, fieldvalue FROM CmdbObjectField WHERE assetid=$id";
 		$result = $this->dbGetData($sql);
 		$objectFields = Array();
+		$configFields = $this->configObjectTypes->getFields($objectType);
 		foreach($result as $row)
 		{
 			$fieldkey = $row['fieldkey'];
 			$fieldvalue = $row['fieldvalue'];
-			$objectFields[$fieldkey] = $fieldvalue;
+			//only gets the data, if there exists a configuration for the field
+			if(isset($configFields[$fieldkey]))
+			{
+				//interpret value
+				$fieldtype = $configFields[$fieldkey];
+				$fieldvalue = $this->interpreter->interpret($fieldvalue, $fieldtype);
+				$objectFields[$fieldkey] = $fieldvalue;
+			}
 		}
 
 
@@ -130,18 +138,23 @@ class MySQLDataStore implements DataStoreInterface
 		$sqlResult = $this->dbGetData($sql);
 		$objectID = $sqlResult[0][0];
 
-		//store object fields
+		//store object fields - only if they are defined in config
 		$objectFields = $cmdbObject->getFieldNames();
+		$configFields = $this->configObjectTypes->getFields($cmdbObject->getType());
 		foreach($objectFields as $objectField)
 		{
-			$escapedObjectFieldType = mysql_real_escape_string($this->configObjectTypes->getFieldType($cmdbObject->getType(), $objectField), $this->dbConnection);
-			$escapedObjectFieldValue = mysql_real_escape_string($cmdbObject->getFieldValue($objectField),$this->dbConnection);
-			$escapedObjectField = mysql_real_escape_string($objectField, $this->dbConnection);
-			$sql = "INSERT INTO CmdbObjectField(assetid, fieldkey, fieldtype, fieldvalue) VALUES('$objectID', '$escapedObjectField', '$escapedObjectFieldType', '$escapedObjectFieldValue')";
-			$sqlResult = $this->dbSetData($sql);
-			if($sqlResult == FALSE)
+			if(isset($configFields[$objectField]))
 			{
-				echo "Error inserting data into database";
+				$escapedObjectFieldType = mysql_real_escape_string($configFields[$objectField], $this->dbConnection);
+				$objectFieldValue = $this->interpreter->interpret($cmdbObject->getFieldValue($objectField), $configFields[$objectField]);
+				$escapedObjectFieldValue = mysql_real_escape_string($objectFieldValue, $this->dbConnection);
+				$escapedObjectField = mysql_real_escape_string($objectField, $this->dbConnection);
+				$sql = "INSERT INTO CmdbObjectField(assetid, fieldkey, fieldtype, fieldvalue) VALUES('$objectID', '$escapedObjectField', '$escapedObjectFieldType', '$escapedObjectFieldValue')";
+				$sqlResult = $this->dbSetData($sql);
+				if($sqlResult == FALSE)
+				{
+					echo "Error inserting data into database";
+				}
 			}
 		}
 
@@ -188,17 +201,22 @@ class MySQLDataStore implements DataStoreInterface
 		}
 	
 
-		//add new fields for object in database
+		//add new fields for object in database - only if they are defined in configuration
+		$configFields = $this->configObjectTypes->getFields($objectType);
 		foreach(array_keys($newFields) as $fieldName)
 		{
-			$escapedFieldValue = mysql_real_escape_string($newFields[$fieldName], $this->dbConnection);
-			$escapedFieldType = mysql_real_escape_string($this->configObjectTypes->getFieldType($objectType, $fieldName), $this->dbConnection);
-			$escapedFieldName = mysql_real_escape_string($fieldName, $this->dbConnection);
-                        $sql = "INSERT INTO CmdbObjectField(assetid, fieldkey, fieldtype, fieldvalue) VALUES('$id', '$escapedFieldName', '$escapedFieldType', '$escapedFieldValue')";
-			$sqlResult = $this->dbSetData($sql);
-			if($sqlResult == FALSE)
+			if(isset($configFields[$fieldName]))
 			{
-				error_log("Error inserting data into database");
+				$fieldValue = $this->interpreter->interpret($newFields[$fieldName], $configFields[$fieldName]);
+				$escapedFieldValue = mysql_real_escape_string($fieldValue, $this->dbConnection);
+				$escapedFieldType = mysql_real_escape_string($configFields[$fieldName], $this->dbConnection);
+				$escapedFieldName = mysql_real_escape_string($fieldName, $this->dbConnection);
+               	        	$sql = "INSERT INTO CmdbObjectField(assetid, fieldkey, fieldtype, fieldvalue) VALUES('$id', '$escapedFieldName', '$escapedFieldType', '$escapedFieldValue')";
+				$sqlResult = $this->dbSetData($sql);
+				if($sqlResult == FALSE)
+				{
+					error_log("Error inserting data into database");
+				}
 			}
 		}
 		
