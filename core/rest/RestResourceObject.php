@@ -57,6 +57,7 @@ class RestResourceObject extends RestResource
 					$output['objectFields']["$groupname"][] = Array(
 											"name" => $field,
 											"label"=> $this->config->getObjectTypeConfig()->getFieldLabel($object->getType(), $field),
+											"type" => $this->config->getObjectTypeConfig()->getFieldType($object->getType(), $field),
 											"value"=> $object->getFieldValue($field)
 											);
 				}
