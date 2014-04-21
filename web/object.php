@@ -28,6 +28,9 @@
 	//get header
 	include "include/header.inc.php";
 
+	//get UI Helper
+	include "object/ObjectUiHelper.php";
+
 	//get parameters
 	$paramId = getHttpGetVar("id", 0);
 	$paramIdB = getHttpGetVar("idb", 0);

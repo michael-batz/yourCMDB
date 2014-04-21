@@ -94,12 +94,7 @@
 		?>
 			<tr>
 				<td><?php echo $fieldLabel;?>:</td>
-				<td>
-					<input id="<?php echo $fieldName; ?>" 
-						type="<?php echo $fieldType; ?>" 
-						name="<?php echo $fieldName; ?>" 
-						value="<?php echo $fieldValue; ?>" 
-						onfocus="javascript:showAutocompleter('#<?php echo $fieldName; ?>', 'autocomplete.php?object=object&amp;var1=<?php echo $paramType;?>&amp;var2=<?php echo $fieldName?>')" /></td>
+				<td><?php showFieldForDataType($paramType, $fieldName, $fieldValue, $fieldType); ?></td>
 			</tr>
 		<?php
 		} ?>

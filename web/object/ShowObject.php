@@ -156,10 +156,15 @@
 					</tr>
 					<?php
 					foreach(array_keys($config->getObjectTypeConfig()->getFieldGroupFields($object->getType(), $groupname)) as $field)
-					{ ?>
+					{ 
+						$fieldValue = $object->getFieldValue($field);
+						$fieldName = $field;
+						$fieldLabel = $config->getObjectTypeConfig()->getFieldLabel($object->getType(), $field);
+						$fieldType = $config->getObjectTypeConfig()->getFieldType($object->getType(), $field);
+					  ?>
 						<tr>
-							<td><?php echo $config->getObjectTypeConfig()->getFieldLabel($object->getType(), $field);?>:</td>
-							<td><?php echo $object->getFieldValue($field)?></td>
+							<td><?php echo $fieldLabel;?>:</td>
+							<td><?php showFieldForDataType($object->getType(), $fieldName, $fieldValue, $fieldType, false);?></td>
 						</tr>
 					<?php
 					} ?>

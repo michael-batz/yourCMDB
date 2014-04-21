@@ -20,7 +20,7 @@
 				<field name="maintenance-contract" type="text" label="maintenance contract" />
 			</fieldgroup>
 			<fieldgroup name="age">
-				<field name="setup-date" type="text" label="setup date" />
+				<field name="setup-date" type="date" label="setup date" />
 			</fieldgroup>
 			<fieldgroup name="admin">
 				<field name="Name" type="text" />

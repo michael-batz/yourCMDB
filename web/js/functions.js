@@ -55,6 +55,19 @@ function showAutocompleter(id, source)
 };
 
 /**
+* Show Datepicker on input fields (use with JS event handler onfocus)
+*/
+function showDatepicker(id)
+{
+	$( id  ).datepicker
+	({
+		changeMonth:	true,
+		changeYear:	true
+	});
+};
+
+
+/**
 * Hides an element
 */
 function hideElement(id)
