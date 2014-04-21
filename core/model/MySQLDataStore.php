@@ -36,11 +36,15 @@ class MySQLDataStore implements DataStoreInterface
 	//database connection
 	private $dbConnection;
 
+	//data type interpreter
+	private $interpreter;
+
 	public function __construct()
 	{
 		$config = new CmdbConfig();
 		$this->configDatastore = $config->getDatastoreConfig()->getParameters();
 		$this->configObjectTypes = $config->getObjectTypeConfig();
+		$this->interpreter = new DataTypeInterpreter();
 
 		//open connection to database server
 		$this->dbConnection = mysql_connect($this->configDatastore['server'].":".$this->configDatastore['port'], $this->configDatastore['user'], $this->configDatastore['password']);
