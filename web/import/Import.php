@@ -58,6 +58,7 @@
 			{
 				//create objects for each line in csv file
 				$i = 0;
+				$j = 0;
 				while(($line = readCsv($file, 0, $delimiter, $enclosure)) !== FALSE)
 				{
 					//check start of import
@@ -73,6 +74,7 @@
 						//generate object and save to datastore
 						$cmdbObject = new CmdbObject($paramType, $objectFields);
 						$assetId = $datastore->addObject($cmdbObject);
+						$j++;
 					}
 
 					//increment counter
@@ -84,7 +86,7 @@
 				unlink($paramFilename);
 
 				//generate output
-				$paramMessage = "Import of $i objects was successful";
+				$paramMessage = "Import of $j objects was successful";
 
                 	}
 			else
