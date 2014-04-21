@@ -8,7 +8,6 @@ create table CmdbObject (
 create table CmdbObjectField (
   assetid INT UNSIGNED NOT NULL, 
   fieldkey VARCHAR(64) NOT NULL, 
-  fieldtype VARCHAR(64) NOT NULL,
   fieldvalue TEXT, 
   PRIMARY KEY (assetid, fieldkey), 
   FOREIGN KEY (assetid) REFERENCES CmdbObject(assetid) ON DELETE CASCADE

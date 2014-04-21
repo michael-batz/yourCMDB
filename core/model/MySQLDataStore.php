@@ -145,11 +145,10 @@ class MySQLDataStore implements DataStoreInterface
 		{
 			if(isset($configFields[$objectField]))
 			{
-				$escapedObjectFieldType = mysql_real_escape_string($configFields[$objectField], $this->dbConnection);
 				$objectFieldValue = $this->interpreter->interpret($cmdbObject->getFieldValue($objectField), $configFields[$objectField]);
 				$escapedObjectFieldValue = mysql_real_escape_string($objectFieldValue, $this->dbConnection);
 				$escapedObjectField = mysql_real_escape_string($objectField, $this->dbConnection);
-				$sql = "INSERT INTO CmdbObjectField(assetid, fieldkey, fieldtype, fieldvalue) VALUES('$objectID', '$escapedObjectField', '$escapedObjectFieldType', '$escapedObjectFieldValue')";
+				$sql = "INSERT INTO CmdbObjectField(assetid, fieldkey, fieldvalue) VALUES('$objectID', '$escapedObjectField', '$escapedObjectFieldValue')";
 				$sqlResult = $this->dbSetData($sql);
 				if($sqlResult == FALSE)
 				{
@@ -209,9 +208,8 @@ class MySQLDataStore implements DataStoreInterface
 			{
 				$fieldValue = $this->interpreter->interpret($newFields[$fieldName], $configFields[$fieldName]);
 				$escapedFieldValue = mysql_real_escape_string($fieldValue, $this->dbConnection);
-				$escapedFieldType = mysql_real_escape_string($configFields[$fieldName], $this->dbConnection);
 				$escapedFieldName = mysql_real_escape_string($fieldName, $this->dbConnection);
-               	        	$sql = "INSERT INTO CmdbObjectField(assetid, fieldkey, fieldtype, fieldvalue) VALUES('$id', '$escapedFieldName', '$escapedFieldType', '$escapedFieldValue')";
+               	        	$sql = "INSERT INTO CmdbObjectField(assetid, fieldkey, fieldvalue) VALUES('$id', '$escapedFieldName', '$escapedFieldValue')";
 				$sqlResult = $this->dbSetData($sql);
 				if($sqlResult == FALSE)
 				{
