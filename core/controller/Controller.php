@@ -48,7 +48,7 @@ class Controller
 		$this->datastore = new $datastoreClass;
 
 		//set version
-		$this->version = "0.5-dev";
+		$this->version = "0.5";
 		
 	}
 
