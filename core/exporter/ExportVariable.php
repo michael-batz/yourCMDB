@@ -33,8 +33,10 @@ class ExportVariable
 	private $defaultValue;
 
 	//fields by object type to get the value
-	//Array objectType -> fieldname
+	//Array objectType -> name 
+	//                 -> refobjectfield
 	private $fieldValue;
+
 
 	function __construct($name, $defaultValue, $fieldValue)
 	{
@@ -57,15 +59,40 @@ class ExportVariable
 	*/
 	public function getValue(CmdbObject $object)
 	{
+		$controller = new Controller();
+		$datastore = $controller->getDatastore();
+		$configObjecttype = $controller->getCmdbConfig()->getObjectTypeConfig();
 		$value = $this->defaultValue;
 
 		//if there is a configuration for that object type
 		//use the content of the specified field as value
 		$objectType = $object->getType();
-		if(isset($this->fieldValue[$objectType]))
+		if(isset($this->fieldValue[$objectType]['name']))
 		{
-			$fieldname = $this->fieldValue[$objectType];
+			$fieldname = $this->fieldValue[$objectType]['name'];
 			$value = $object->getFieldValue($fieldname);
+
+			//check if field is an object reference (type objectref)
+			if(preg_match('/objectref-.*/', $configObjecttype->getFieldType($objectType, $fieldname)) == 1)
+			{
+				try
+				{
+					//get referenced object
+					$refObject = $datastore->getObject($value);
+
+					//get value of referenced field if configured
+					if($this->fieldValue[$objectType]['refobjectfield'] != "")
+					{
+						$refFieldname = $this->fieldValue[$objectType]['refobjectfield'];
+						$value = $refObject->getFieldValue($refFieldname);
+					}
+					
+				}
+				catch(Exception $e)
+				{
+					;
+				}
+			}
 		}
 
 		//return the value

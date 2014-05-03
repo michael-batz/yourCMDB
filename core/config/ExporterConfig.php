@@ -96,7 +96,9 @@ class ExporterConfig
 				{
 					$valueObjectType = (string)$value['objecttype'];
 					$valueFieldname = (string)$value['fieldname'];
-					$variableValueField[$valueObjectType] = $valueFieldname;
+					$valueRefObjectField = (string)$value['refobjectfield'];
+					$variableValueField[$valueObjectType] = Array(	"name" 			=> $valueFieldname,
+											"refobjectfield" 	=> $valueRefObjectField);
 				}
 				$variables[] = new ExportVariable($variableName, $variableDefault, $variableValueField);
 			}

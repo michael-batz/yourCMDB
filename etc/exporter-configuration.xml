@@ -17,6 +17,9 @@
 				<value objecttype="router" fieldname="management-ip" />
 				<value objecttype="switch" fieldname="management-ip" />
 			</variable>
+			<variable name="dummy3" default-value="">
+				<value objecttype="router" fieldname="location" refobjectfield="city" />
+			</variable>
 		</variables>
 	</task>
 	<task name="opennms-example">
