@@ -35,6 +35,14 @@
 	*/
 	function showFieldForDataType($objectType, $name, $value, $type, $writable=true)
 	{
+		//get type parameter (field type in format <type>-<typeparameter>)
+		$typeParameter = "";
+		if(preg_match('/^(.*?)-(.*)/', $type, $matches) == 1)
+		{
+			$type = $matches[1];
+			$typeParameter = $matches[2];
+		}
+
 		switch($type)
 		{
 			case "boolean":
@@ -51,6 +59,10 @@
 
 			case "textarea":
 				showFieldForTextarea($name, $value, $writable);
+				break;
+
+			case "objectref";
+				showFieldForObjectref($typeParameter, $name, $value, $writable);
 				break;
 
 			default:
@@ -122,5 +134,82 @@
 		}
 		$checkboxString.= "/>";
 		echo $checkboxString;
+	}
+
+	function showFieldForObjectref($typeParameter, $name, $value, $writable)
+	{
+		//use global datastore variable
+		global $datastore, $config;
+
+		//get summary fields for object type
+		$summaryFields = array_keys($config->getObjectTypeConfig()->getSummaryFields($typeParameter));
+
+		//get summary of referenced object
+		$refObjectSummary = "";
+		try
+		{
+				$refObject = $datastore->getObject($value);
+				if($refObject->getType() == $typeParameter)
+				{
+					foreach($summaryFields as $summaryField)
+					{
+						$refObjectSummary .= $refObject->getFieldValue($summaryField);
+						$refObjectSummary .= " ";
+					}
+					$refObjectSummary .= "($typeParameter: $value)";
+				}
+		}
+		//do nothing on exception
+		catch(Exception $e)
+		{
+			;
+		}
+
+		//print header, null value and current value
+		if($writable)
+		{
+			echo "<select name=\"$name\" size=\"1\">";
+		}
+		else
+		{
+			echo "<select name=\"$name\" size=\"1\" disabled=\"disabled\">";
+		}
+		echo "<option value=\"\"></option>";
+		if($refObjectSummary != "")
+		{
+			echo "<option value=\"$value\" selected=\"selected\">$refObjectSummary</option>";
+		}
+
+		if($writable)
+		{
+			//get all objects by type
+			$refAllObjects = $datastore->getObjectsByType($typeParameter);
+			foreach($refAllObjects as $refAllObject)
+			{
+				$refAllObjectId = $refAllObject->getId();
+				$refAllObjectSummary = "";
+				foreach($summaryFields as $summaryField)
+				{
+					$refAllObjectSummary .= $refAllObject->getFieldValue($summaryField);
+					$refAllObjectSummary .= " ";
+				}
+				$refAllObjectSummary .= "($typeParameter: $refAllObjectId)";
+				echo "<option value=\"$refAllObjectId\">$refAllObjectSummary</option>";
+			}
+		}
+
+		//print footer
+		echo "</select>";
+
+		if(!$writable)
+		{
+			//print link to referenced object
+			if($value != "")
+			{
+				?>
+				<a href="object.php?id=<?php echo $value; ?>">show</a>
+				<?php
+			}
+		}
 	}
 ?>

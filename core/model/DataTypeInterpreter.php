@@ -29,7 +29,7 @@ class DataTypeInterpreter
 {
 
 	//datatypes
-	private static $types = Array("text", "textarea", "boolean","date");
+	private static $types = Array("text", "textarea", "boolean","date", "objectref");
 	
 	/**
 	* Creates a new data type interpreter
@@ -56,11 +56,23 @@ class DataTypeInterpreter
 	*/
 	public function interpret($value, $type)
 	{
+		//get type parameter (field type in format <type>-<typeparameter>)
+		$typeParameter = "";
+		if(preg_match('/^(.*?)-(.*)/', $type, $matches) == 1)
+		{
+			$type = $matches[1];
+			$typeParameter = $matches[2];
+		}
+
 		//interpret value
 		switch($type)
 		{
 			case "boolean":
 				$value = $this->interpretBoolean($value);
+				break;
+
+			case "objectref":
+				$value = $this->interpretObjectref($value, $typeParameter);
 				break;
 
 		}
@@ -82,6 +94,34 @@ class DataTypeInterpreter
 		{
 			return "false";
 		}
+	}
+
+	/**
+	* Check if the referenced object exists and has the correct type
+	* returns the assetId, if the reference is okay
+	* returns an empty string, if the referenced object does not exist
+	*/
+	private function interpretObjectref($value, $objecttype)
+	{
+		$controller = new Controller();
+		$datastore = $controller->getDatastore();
+
+		//check if referenced object exists
+		try
+		{
+			if($datastore->getObject($value)->getType() == $objecttype)
+			{
+				//return assetId, if object exists and has the correct type
+				return $value;
+			}
+			
+		}
+		catch(Exception $e)
+		{
+			//return empty string, if object was not found
+			return "";
+		}
+		return "";
 	}
 }
 ?>

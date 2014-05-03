@@ -19,6 +19,9 @@
 				<field name="serialno" type="text" label="serial number" />
 				<field name="maintenance-contract" type="text" label="maintenance contract" />
 			</fieldgroup>
+			<fieldgroup name="location">
+				<field name="location" type="objectref-datacenter" label="location" />
+			</fieldgroup>
 			<fieldgroup name="age">
 				<field name="setup-date" type="date" label="setup date" />
 				<field name="contract-date" type="date" label="service contract date" />

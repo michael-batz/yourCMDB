@@ -81,6 +81,12 @@ class MySQLDataStore implements DataStoreInterface
 
         public function getObject($id)
 	{
+		//check, if there is a parameter
+		if($id == "")
+		{
+			throw new NoSuchObjectException("Empty object ID");
+		}
+
 		//escape strings
 		$id = mysql_real_escape_string($id, $this->dbConnection);
 
