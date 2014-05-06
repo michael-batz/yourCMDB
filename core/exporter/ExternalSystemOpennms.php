@@ -52,59 +52,60 @@ class ExternalSystemOpennms implements ExternalSystem
 
 	//static var: asset field names -> length
 	private static $assetfields = array(
-					"category"		=> 64,
-					"manufacturer"		=> 64,
-					"vendor"		=> 64,
-					"modelnumber"		=> 64,
-					"serialnumber"		=> 64,
-					"description"		=> 128,
-					"circuitid"		=> 64,
-					"assetnumber"		=> 64,
-					"operatingsystem"	=> 64,
-					"rack"			=> 64,
-					"slot"			=> 64,
-					"port"			=> 64,
-					"region"		=> 64,
-					"division"		=> 64,
-					"department"		=> 64,
-					"address1"		=> 256,
-					"address2"		=> 256,
-					"city" 			=> 64,
-					"state"			=> 64,
-					"zip"			=> 64,
-					"building"		=> 64,
-					"floor"			=> 64,
-					"room"			=> 64,
-					"vendorphone"		=> 64,
-					"vendorfax"		=> 64,
-					"vendorassetnumber"	=> 64,
-					"dateinstalled"		=> 64,
-					"lease"			=> 64,
-					"leaseexpires"		=> 64,
-					"supportphone"		=> 64,
-					"maintcontract"		=> 64,
-					"maintcontractexpires"	=> 64,
-					"displaycategory"	=> 64,
-					"notifycategory"	=> 64,
-					"pollercategory"	=> 64,
-					"thresholdcategory"	=> 64,
-					"comment"		=> 512,
-					"username"		=> 32,
-					"password"		=> 32,
-					"enable"		=> 32,
-					"connection"		=> 32,
-					"cpu"			=> 64,
-					"ram"			=> 10,
-					"storagectrl"		=> 64,
-					"hdd1"			=> 64,
-					"hdd2"			=> 64,
-					"hdd3"			=> 64,
-					"hdd4"			=> 64,
-					"hdd5"			=> 64,
-					"hdd6"			=> 64,
-					"admin"			=> 32,
-					"snmpcommunity"		=> 32,
-					"country"		=> 32
+					"category"			=> 64,
+					"manufacturer"			=> 64,
+					"vendor"			=> 64,
+					"modelNumber"			=> 64,
+					"serialNumber"			=> 64,
+					"description"			=> 128,
+					"circuitId"			=> 64,
+					"assetNumber"			=> 64,
+					"operatingSystem"		=> 64,
+					"rack"				=> 64,
+					"rackunitheight"		=> 64,
+					"slot"				=> 64,
+					"port"				=> 64,
+					"region"			=> 64,
+					"division"			=> 64,
+					"department"			=> 64,
+					"address1"			=> 256,
+					"address2"			=> 256,
+					"city" 				=> 64,
+					"state"				=> 64,
+					"zip"				=> 64,
+					"building"			=> 64,
+					"floor"				=> 64,
+					"room"				=> 64,
+					"vendorPhone"			=> 64,
+					"vendorFax"			=> 64,
+					"vendorAssetNumber"		=> 64,
+					"dateInstalled"			=> 64,
+					"lease"				=> 64,
+					"leaseExpires"			=> 64,
+					"supportPhone"			=> 64,
+					"maintcontract"			=> 64,
+					"maintContractExpiration"	=> 64,
+					"displayCategory"		=> 64,
+					"notifyCategory"		=> 64,
+					"pollerCategory"		=> 64,
+					"thresholdCategory"		=> 64,
+					"comment"			=> 512,
+					"username"			=> 32,
+					"password"			=> 32,
+					"enable"			=> 32,
+					"connection"			=> 32,
+					"cpu"				=> 64,
+					"ram"				=> 10,
+					"storagectrl"			=> 64,
+					"hdd1"				=> 64,
+					"hdd2"				=> 64,
+					"hdd3"				=> 64,
+					"hdd4"				=> 64,
+					"hdd5"				=> 64,
+					"hdd6"				=> 64,
+					"admin"				=> 32,
+					"snmpcommunity"			=> 32,
+					"country"			=> 32
 					);
 
 	public function setUp(ExportDestination $destination, ExportVariables $variables)
@@ -182,7 +183,7 @@ class ExternalSystemOpennms implements ExternalSystem
 				$categoryname = $matches[1];
 
 				//check if it is an unnamed category (example: "category_1")
-				if(preg_match('/[\d]+/', $categoryname) === 1)
+				if(preg_match('/^[\d]+$/', $categoryname) === 1)
 				{
 					$nodeCategories[]  = $this->formatCategoryName($this->variables->getVariable($variableName)->getValue($object));
 				}
@@ -232,6 +233,7 @@ class ExternalSystemOpennms implements ExternalSystem
 			CURLOPT_CUSTOMREQUEST 	=> "$httpMethod",
 			CURLOPT_HTTPHEADER	=> array('Content-Type: application/xml'),
                         CURLOPT_URL             => "{$this->restUrl}/{$resource}",
+			CURLOPT_SSL_VERIFYPEER	=> FALSE,
                         CURLOPT_RETURNTRANSFER  => TRUE);
 		curl_setopt_array($curl, $curlOptions);
 		$result = curl_exec($curl);
@@ -259,6 +261,7 @@ class ExternalSystemOpennms implements ExternalSystem
                         CURLOPT_HTTPAUTH        => CURLAUTH_BASIC,
                         CURLOPT_USERPWD         => "{$this->restUser}:{$this->restPassword}",
                         CURLOPT_URL             => "{$this->restUrl}/{$resource}",
+			CURLOPT_SSL_VERIFYPEER	=> FALSE,
                         CURLOPT_RETURNTRANSFER  => true);
 		curl_setopt_array($curl, $curlOptions);
 		$result = curl_exec($curl);
@@ -293,6 +296,7 @@ class ExternalSystemOpennms implements ExternalSystem
                         CURLOPT_HTTPAUTH        => CURLAUTH_BASIC,
                         CURLOPT_USERPWD         => "{$this->restUser}:{$this->restPassword}",
                         CURLOPT_URL             => "{$this->restUrl}/{$resource}",
+			CURLOPT_SSL_VERIFYPEER	=> FALSE,
                         CURLOPT_RETURNTRANSFER  => TRUE);
                 curl_setopt_array($curl, $curlOptions);
                 $result = curl_exec($curl);
