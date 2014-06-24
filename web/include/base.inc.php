@@ -29,7 +29,7 @@ function __autoload($className)
 {
 	$scriptBaseDir = dirname(__FILE__);
 	$coreBaseDir = realpath("$scriptBaseDir/../../core");
-	$paths = array('', 'model', 'config', 'controller', 'libs', 'exporter');
+	$paths = array('', 'model', 'config', 'controller', 'libs', 'exporter', 'taskscheduler');
 	$filename = $className.'.php';
 	foreach($paths as $path)
 	{

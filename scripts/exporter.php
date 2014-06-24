@@ -33,7 +33,7 @@
         {
 		$scriptBaseDir = dirname(__FILE__);
                 $coreBaseDir = realpath("$scriptBaseDir/../core");
-                $paths = array('', 'model', 'config', 'controller', 'libs', 'rest', 'exporter');
+                $paths = array('', 'model', 'config', 'controller', 'libs', 'rest', 'exporter', 'taskscheduler');
                 $filename = $className.'.php';
                 foreach($paths as $path)
                 {

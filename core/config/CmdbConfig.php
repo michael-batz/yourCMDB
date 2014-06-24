@@ -43,6 +43,8 @@ class CmdbConfig
 	//exporter configuration
 	private $configExporter;
 
+	//task scheduler configuration
+	private $configTaskScheduler;
 
 	/**
 	* Creates a new configuration object
@@ -56,6 +58,7 @@ class CmdbConfig
 		$this->configView = new ViewConfig("$configurationBase/view-configuration.xml");
 		$this->configDataExchange = new DataExchangeConfig("$configurationBase/dataexchange-configuration.xml");
 		$this->configExporter = new ExporterConfig("$configurationBase/exporter-configuration.xml");
+		$this->configTaskScheduler = new TaskSchedulerConfig("$configurationBase/taskscheduler-configuration.xml");
 	}
 
 
@@ -99,6 +102,13 @@ class CmdbConfig
 		return $this->configExporter;
 	}
 
+	/**
+	* Returns a TaskSchedulerConfig object
+	*/
+	public function getTaskSchedulerConfig()
+	{
+		return $this->configTaskScheduler;
+	}
 
 }
 ?>

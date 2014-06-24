@@ -1,0 +1,3 @@
+<taskscheduler-configuration>
+	<task trigger="event" event="objectAdded" objecttype="router" action="exec" actionParameter="nodeAdded.sh" />
+</taskscheduler-configuration>
