@@ -36,6 +36,9 @@ class MySQLDataStore implements DataStoreInterface
 	//database connection
 	private $dbConnection;
 
+	//event processor
+	private $eventProcessor;
+
 	//data type interpreter
 	private $interpreter;
 
@@ -45,6 +48,7 @@ class MySQLDataStore implements DataStoreInterface
 		$this->configDatastore = $config->getDatastoreConfig()->getParameters();
 		$this->configObjectTypes = $config->getObjectTypeConfig();
 		$this->interpreter = new DataTypeInterpreter();
+		$this->eventProcessor = new EventProcessor();
 
 		//open connection to database server
 		$this->dbConnection = mysql_connect($this->configDatastore['server'].":".$this->configDatastore['port'], $this->configDatastore['user'], $this->configDatastore['password']);
@@ -171,6 +175,9 @@ class MySQLDataStore implements DataStoreInterface
 			echo "Error inserting data into database";
 		}
 
+		//generate objectAdded event
+		$this->eventProcessor->generateEvent("objectAdded", $objectID, $cmdbObject->getType());
+
 		//return objectID
 		return $objectID;
         }
@@ -232,6 +239,9 @@ class MySQLDataStore implements DataStoreInterface
 			error_log("Error inserting data into database");
 		}
 
+		//generate event
+		$this->eventProcessor->generateEvent("objectChanged", $id, $objectType);
+
 		return true;
         }
 
@@ -248,13 +258,15 @@ class MySQLDataStore implements DataStoreInterface
 		$id = mysql_real_escape_string($id, $this->dbConnection);
 		$newStatus = mysql_real_escape_string($newStatus, $this->dbConnection);
 
-		//check if object exists in database
-                $sql = "SELECT assetid from CmdbObject WHERE assetid=$id AND active!='D'";
-                $result = $this->dbGetData($sql);
-                if($result == null)
-                {
-                        throw new NoSuchObjectException("Object with id $id not found");
-                }
+		//getting objecttype
+		$sql = "SELECT type from CmdbObject WHERE assetid=$id AND active!='D'";
+		$result = $this->dbGetData($sql);
+		if($result == null)
+		{
+			throw new NoSuchObjectException("Object with id $id not found");
+		}
+		$objectType = $result[0][0];
+
 
 		//change status of the object
 		if($newStatus != 'A' && $newStatus != 'N')
@@ -263,6 +275,9 @@ class MySQLDataStore implements DataStoreInterface
 		}
 		$sql = "UPDATE CmdbObject SET active = '$newStatus' WHERE assetid = '$id'";
 		$sqlResult = $this->dbSetData($sql);
+
+		//generate event
+		$this->eventProcessor->generateEvent("objectChanged", $id, $objectType);
 	}
 
 
@@ -271,13 +286,14 @@ class MySQLDataStore implements DataStoreInterface
 		//escape strings
 		$id = mysql_real_escape_string($id, $this->dbConnection);
 
-		//check if object exists in database
-                $sql = "SELECT assetid from CmdbObject WHERE assetid=$id AND active!='D'";
-                $result = $this->dbGetData($sql);
-                if($result == null)
-                {
-                        throw new NoSuchObjectException("Object with id $id not found");
-                }
+		//getting objecttype
+		$sql = "SELECT type from CmdbObject WHERE assetid=$id AND active!='D'";
+		$result = $this->dbGetData($sql);
+		if($result == null)
+		{
+			throw new NoSuchObjectException("Object with id $id not found");
+		}
+		$objectType = $result[0][0];
 
 		//delete object fields
 		$sql = "DELETE FROM CmdbObjectField WHERE assetid=$id";
@@ -294,6 +310,9 @@ class MySQLDataStore implements DataStoreInterface
 		//add object log
 		$sql = "INSERT INTO CmdbObjectLog(assetid, action, date) VALUES('$id', 'delete', NOW())";
 		$sqlResult = $this->dbSetData($sql);
+
+		//generate event
+		$this->eventProcessor->generateEvent("objectDeleted", $id, $objectType);
 	}
 	
 	public function getObjectsByType($type, $sortfield="", $sorttype = "asc", $activeOnly=true, $max=0, $start=0)

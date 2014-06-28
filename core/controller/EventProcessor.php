@@ -45,6 +45,7 @@ class EventProcessor
 		$event = new CmdbEvent($eventType, $objectId, $objectType);
 
 		//process event
+		//error_log("EventProcessor: $eventType, $objectId, $objectType");
 	}
 }
 ?>
