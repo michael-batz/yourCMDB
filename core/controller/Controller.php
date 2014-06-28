@@ -34,6 +34,9 @@ class Controller
 	//configuration
 	private $config;
 
+	//eventProcessor
+	private $eventProcessor;
+	
 	//yourcmdb version
 	private $version;
 
@@ -46,6 +49,9 @@ class Controller
 		//create datastore object
 		$datastoreClass = $this->config->getDatastoreConfig()->getClass();
 		$this->datastore = new $datastoreClass;
+
+		//creates event processor object
+		$this->eventProcessor = new EventProcessor();
 
 		//set version
 		$this->version = "dev-snapshot";
@@ -68,6 +74,15 @@ class Controller
 	public function getDatastore()
 	{
 		return $this->datastore;
+	}
+
+	/**
+	* Returns cmdb event processor
+	*
+	*/
+	public function getEventProcessor()
+	{
+		return $this->eventProcessor;
 	}
 
 	/**
