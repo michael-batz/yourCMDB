@@ -54,23 +54,24 @@ class TaskSchedulerConfig
 			if($taskTrigger == "event")
 			{
 				$taskTaskObject = new Task($taskAction, $taskActionParm);
-				$this->eventTrigger[$taskEvent][$taskObjectType] = $taskTaskObject;
+				$this->eventTrigger[$taskEvent][$taskObjectType][] = $taskTaskObject;
 			}
 		}
 	}
 
 
 	/**
-	* Returns the task for the given event and objecttype
+	* Returns the tasks for the given event and objecttype
 	* or null if no task was found
+	* @return task[]
 	*/
-	public function getTaskForEvent($event, $objectType)
+	public function getTasksForEvent($event, $objectType)
 	{
 		if(isset($this->eventTrigger[$event][$objectType]))
 		{
 			return $this->eventTrigger[$event][$objectType];
 		}
-		return null;
+		return array();
 	}
 }
 

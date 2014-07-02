@@ -28,9 +28,11 @@
 class EventProcessor
 {
 
+	private $taskScheduler;
+
 	function __construct()
 	{
-		;
+		$this->taskScheduler = new TaskScheduler();
 	}
 
 	/**
@@ -45,7 +47,7 @@ class EventProcessor
 		$event = new CmdbEvent($eventType, $objectId, $objectType);
 
 		//process event
-		//error_log("EventProcessor: $eventType, $objectId, $objectType");
+		$this->taskScheduler->eventHandler($event);
 	}
 }
 ?>
