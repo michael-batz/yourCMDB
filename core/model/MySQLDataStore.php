@@ -742,5 +742,41 @@ class MySQLDataStore implements DataStoreInterface
 
 		return $output;
 	}
+
+	/*
+	* Add a job to the database
+	* @param $action		action of the job
+	* @param $actionParameter	paramater
+	* @param $timestamp		UNIX timestamp for executing the job - or null,
+	*				if job should be executed on the next run of
+	*				TaskScheduler
+	*/
+	public function addJob($action, $actionParameter, int $timestamp = null)
+	{
+		//escape strings
+		$action = mysql_real_escape_string($action, $this->dbConnection);
+		$actionParameter = mysql_real_escape_string($actionParameter, $this->dbConnection);
+
+		//create sql statement
+		$sql = "INSERT INTO CmdbJob(action, actionParameter, timestamp) VALUES('$action', '$actionParameter', ";
+		if($timestamp != null)
+		{
+			$sql .= "FROM_UNIXTIME($timestamp)";
+		}
+		else
+		{
+			$sql .= "null";
+		}
+		$sql .= ")";
+
+		//execute query and return result
+		$sqlResult = $this->dbSetData($sql);
+		if($sqlResult == FALSE)
+		{
+			error_log("Error creating cmdb job");
+		}
+		return $sqlResult;
+	}
+
 }
 ?>
