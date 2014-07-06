@@ -61,7 +61,7 @@ interface DataStoreInterface
 
 	public function getNLastChangedObjects($n);
 
-	public function addJob($action, $actionParameter, int $timestamp = null);
+	public function addJob(CmdbJob $job, int $timestamp = null);
 
 }
 ?>

@@ -21,44 +21,31 @@
 *********************************************************************/
 
 /**
-* TaskScheduler
+* job
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class TaskScheduler
+class CmdbJob
 {
-	//task scheduler config
-	private $configTaskScheduler;
+	//job action (for example 'exec')
+	private $action;
 
-	//datastore
-	private $datastore;
+	//parameter for action
+	private $actionParameter;
 
-	function __construct()
+	function __construct($action, $actionParameter=null)
 	{
-		$config = new CmdbConfig();
-		$this->configTaskScheduler = $config->getTaskSchedulerConfig();
-
-		//create datastore object
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$this->datastore = new $datastoreClass;
+		$this->action = $action;
+		$this->actionParameter = $actionParameter;
 	}
 
-	public function eventHandler(CmdbEvent $event)
+	public function getAction()
 	{
-		//check, if there are tasks for the given event
-		$tasks = $this->configTaskScheduler->getTasksForEvent($event->getEventType(), $event->getObjectType());
+		return $this->action;
+	}
 
-		//create jobs
-		foreach($tasks as $task)
-		{
-			$jobAction = $task->getAction();
-			$jobActionParm = $task->getActionParameter();
-			if($event->getObjectId() != null)
-			{
-				$jobActionParm .= " ".$event->getObjectId();
-			}
-			$job = new CmdbJob($jobAction, $jobActionParm);
-			$this->datastore->addJob($job);
-		}
+	public function getActionParameter()
+	{
+		return $this->actionParameter;
 	}
 }
 ?>
