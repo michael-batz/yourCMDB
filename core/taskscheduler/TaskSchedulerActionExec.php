@@ -22,7 +22,7 @@
 
 /**
 * TaskSchedulerAction - exec
-* executes a script
+* executes a script in background
 * @author Michael Batz <michael@yourcmdb.org>
 */
 class TaskSchedulerActionExec implements TaskSchedulerAction
@@ -37,7 +37,17 @@ class TaskSchedulerActionExec implements TaskSchedulerAction
 
 	public function execute()
 	{
-		system($this->job->getActionParameter());
+		//check OS
+		if (substr(php_uname(), 0, 7) == "Windows")
+		{
+			//Windows: use process handles
+        		pclose(popen("start /B ". $cmd, "r")); 
+    		}
+		else
+		{
+			//UNIX: use &-sign to execute in background
+			exec($this->job->getActionParameter() . " > /dev/null 2>&1 &");
+		}
 	}
 }
 ?>
