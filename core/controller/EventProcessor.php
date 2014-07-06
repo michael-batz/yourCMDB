@@ -28,11 +28,9 @@
 class EventProcessor
 {
 
-	private $taskScheduler;
-
 	function __construct()
 	{
-		$this->taskScheduler = new TaskScheduler();
+		;
 	}
 
 	/**
@@ -47,7 +45,8 @@ class EventProcessor
 		$event = new CmdbEvent($eventType, $objectId, $objectType);
 
 		//process event
-		$this->taskScheduler->eventHandler($event);
+		$taskScheduler = new TaskScheduler();
+		$taskScheduler->eventHandler($event);
 	}
 }
 ?>

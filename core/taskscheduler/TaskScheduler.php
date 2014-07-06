@@ -29,21 +29,23 @@ class TaskScheduler
 	//task scheduler config
 	private $configTaskScheduler;
 
+	//datastore
+	private $datastore;
+
 	function __construct()
 	{
 		$config = new CmdbConfig();
 		$this->configTaskScheduler = $config->getTaskSchedulerConfig();
+
+		//create datastore object
+		$datastoreClass = $config->getDatastoreConfig()->getClass();
+		$this->datastore = new $datastoreClass;
 	}
 
 	public function eventHandler(CmdbEvent $event)
 	{
 		//check, if there are tasks for the given event
 		$tasks = $this->configTaskScheduler->getTasksForEvent($event->getEventType(), $event->getObjectType());
-
-		//create datastore object
-		$config = new CmdbConfig();
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$datastore = new $datastoreClass;
 
 		//create jobs
 		foreach($tasks as $task)
@@ -54,7 +56,7 @@ class TaskScheduler
 			{
 				$jobActionParm .= " ".$event->getObjectId();
 			}
-			$datastore->addJob($jobAction, $jobActionParm);
+			$this->datastore->addJob($jobAction, $jobActionParm);
 		}
 	}
 }
