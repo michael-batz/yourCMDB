@@ -47,8 +47,17 @@ class TaskScheduler
 	*/
 	private function executeJob(CmdbJob $job)
 	{
-		//ToDo: implementation
-		error_log(print_r($job, true));
+		//check, if job action exists
+		$actionClassName = $job->getAction();
+		if(class_exists($actionClassName))
+		{
+			$action = new $actionClassName($job);
+			$action->execute();
+		}
+		else
+		{
+			error_log("unknown action $actionClassName. Ignoring job");
+		}
 	}
 
 	/**
