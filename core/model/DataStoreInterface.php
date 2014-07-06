@@ -63,5 +63,7 @@ interface DataStoreInterface
 
 	public function addJob(CmdbJob $job, int $timestamp = null);
 
+	public function getAndRemoveJobs();
+
 }
 ?>

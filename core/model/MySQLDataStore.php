@@ -739,7 +739,7 @@ class MySQLDataStore implements DataStoreInterface
 		return $output;
 	}
 
-	/*
+	/**
 	* Add a job to the database
 	* @param $job			CmdbJob object
 	* @param $timestamp		UNIX timestamp for executing the job - or null,
@@ -771,6 +771,52 @@ class MySQLDataStore implements DataStoreInterface
 			error_log("Error creating cmdb job");
 		}
 		return $sqlResult;
+	}
+
+	/**
+	* Gets all old (where timestamp is null or in past) jobs and remove them from database
+	* @returns	Array of CmdbJob objects to execute
+	*/
+	public function getAndRemoveJobs()
+	{
+		//sql query
+		$sql = "SELECT jobid, action, actionParameter FROM CmdbJob ";
+		$sql.= "WHERE (timestamp is null) or (timestamp < NOW())";
+		$result = $this->dbGetData($sql);
+
+		//create output
+		$jobIds = Array();
+		$output = Array();
+		foreach($result as $row)
+		{
+			$output[] = new CmdbJob($row[1], $row[2]);
+			$jobIds[] = $row[0];
+		}
+
+		//remove old jobs if there were some
+		if(count($jobIds) > 0)
+		{
+			$sql = "DELETE FROM CmdbJob WHERE jobid in (";
+			for($i = 0; $i < count($jobIds); $i++)
+			{
+				$sql.= "{$jobIds[$i]}";
+				if($i != (count($jobIds) - 1))
+				{
+					$sql.= " ,";
+				}
+			}
+			$sql .= ")";
+			$sqlResult = $this->dbSetData($sql);
+			if($sqlResult == FALSE)
+			{
+				error_log("Error deleting cmdb jobs");
+			}
+
+		}
+
+		//return output
+		return $output;
+
 	}
 
 }

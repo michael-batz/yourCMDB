@@ -42,6 +42,18 @@ class TaskScheduler
 		$this->datastore = new $datastoreClass;
 	}
 
+	/**
+	* Executes the given job
+	*/
+	private function executeJob(CmdbJob $job)
+	{
+		//ToDo: implementation
+		error_log(print_r($job, true));
+	}
+
+	/**
+	* Handle the given CmdbEvent and generate job, if configured
+	*/
 	public function eventHandler(CmdbEvent $event)
 	{
 		//check, if there are tasks for the given event
@@ -58,6 +70,20 @@ class TaskScheduler
 			}
 			$job = new CmdbJob($jobAction, $jobActionParm);
 			$this->datastore->addJob($job);
+		}
+	}
+
+	/**
+	* Get all current jobs for execution and executes the job
+	*/
+	public function executeJobs()
+	{
+		//get jobs to execute
+		$jobs = $this->datastore->getAndRemoveJobs();
+
+		foreach($jobs as $job)
+		{
+			$this->executeJob($job);
 		}
 	}
 }
