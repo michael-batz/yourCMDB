@@ -41,7 +41,7 @@ class TaskSchedulerActionExec implements TaskSchedulerAction
 		if (substr(php_uname(), 0, 7) == "Windows")
 		{
 			//Windows: use process handles
-        		pclose(popen("start /B ". $cmd, "r")); 
+        		pclose(popen("start /B ". $this->job->getActionParameter(), "r")); 
     		}
 		else
 		{
