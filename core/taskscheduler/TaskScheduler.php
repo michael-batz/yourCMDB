@@ -61,6 +61,27 @@ class TaskScheduler
 	}
 
 	/**
+	* Replaces variables in the given actionParameter with values from $event
+	*/
+	private function replaceActionParameter($actionParameter, CmdbEvent $event)
+	{
+		//replacement for ${objectId}
+		if($event->getObjectId() != null)
+		{
+			$actionParameter = str_replace('${objectId}', $event->getObjectId(), $actionParameter);
+		}
+
+		//replacement for ${objectType}
+		if($event->getObjectType() != null)
+		{
+			$actionParameter = str_replace('${objectType}', $event->getObjectType(), $actionParameter);
+		}
+
+		//return output
+		return $actionParameter;
+	}
+
+	/**
 	* Handle the given CmdbEvent and generate job, if configured
 	*/
 	public function eventHandler(CmdbEvent $event)
@@ -72,11 +93,7 @@ class TaskScheduler
 		foreach($tasks as $task)
 		{
 			$jobAction = $task->getAction();
-			$jobActionParm = $task->getActionParameter();
-			if($event->getObjectId() != null)
-			{
-				$jobActionParm .= " ".$event->getObjectId();
-			}
+			$jobActionParm = $this->replaceActionParameter($task->getActionParameter(), $event);
 			$job = new CmdbJob($jobAction, $jobActionParm);
 			$this->datastore->addJob($job);
 		}
