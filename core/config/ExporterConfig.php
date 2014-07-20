@@ -45,8 +45,11 @@ class ExporterConfig
 	* creates a ExporterConfig object from xml file exporter-configuration.xml
 	*/
 	public function __construct($xmlfile)
-	{
-		$xmlobject = simplexml_load_file($xmlfile);
+	{	
+		//get XML String
+		$xmlstring = file_get_contents($xmlfile);
+		$xmlstring = preg_replace_callback('#<includeconfig(.*?)file="(.*?)"(.*?)/>#',function ($match) use ($xmlfile){return file_get_contents(dirname($xmlfile)."/".$match[2]);},$xmlstring);
+		$xmlobject = simplexml_load_string($xmlstring);
 
 		//initialise arrays
 		$this->tasks = Array();

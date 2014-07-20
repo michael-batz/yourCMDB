@@ -1,0 +1,35 @@
+<task name="opennms-example">
+	<sources>
+		<source objecttype="router" status="A" fieldname="monitoring" fieldvalue="true" />
+		<source objecttype="switch" status="A" />
+	</sources>
+	<destination class="ExternalSystemOpennms">
+		<parameter key="resturl" value="http://127.0.0.1:8980/opennms/rest" />
+		<parameter key="restuser" value="admin" />
+		<parameter key="restpassword" value="admin" />
+		<parameter key="requisition" value="yourcmdb" />
+		<parameter key="services" value="ICMP" />
+	</destination>
+	<variables>
+		<variable name="nodelabel">
+			<value objecttype="router" fieldname="hostname" />
+			<value objecttype="switch" fieldname="management-ip" />
+		</variable>
+		<variable name="ip" default-value="0.0.0.0">
+			<value objecttype="router" fieldname="management-ip" />
+			<value objecttype="switch" fieldname="management-ip" />
+		</variable>
+		<variable name="asset_city">
+			<value objecttype="router" fieldname="manufacturer" />
+			<value objecttype="switch" fieldname="management-ip" />
+		</variable>
+		<variable name="category_admin">
+			<value objecttype="router" fieldname="Name" />
+			<value objecttype="switch" fieldname="Name" />
+		</variable>
+		<variable name="category_1">
+			<value objecttype="router" fieldname="manufacturer" />
+			<value objecttype="switch" fieldname="manufacturer" />
+		</variable>
+	</variables>
+</task>

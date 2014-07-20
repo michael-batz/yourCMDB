@@ -1,0 +1,23 @@
+<task name="example">
+	<sources>
+		<source objecttype="router" status="A" fieldname="manufacturer" fieldvalue="Cisco" />
+		<source objecttype="switch" status="A" />
+	</sources>
+	<destination class="ExternalSystemDummy">
+		<parameter key="testparameter1" value="value1" />
+		<parameter key="testparameter2" value="valu2" />
+	</destination>
+	<variables>
+		<variable name="dummy1">
+			<value objecttype="router" fieldname="hostname" />
+			<value objecttype="switch" fieldname="management-ip" />
+		</variable>
+		<variable name="dummy2" default-value="0.0.0.0">
+			<value objecttype="router" fieldname="management-ip" />
+			<value objecttype="switch" fieldname="management-ip" />
+		</variable>
+		<variable name="dummy3" default-value="">
+			<value objecttype="router" fieldname="location" refobjectfield="city" />
+		</variable>
+	</variables>
+</task>
