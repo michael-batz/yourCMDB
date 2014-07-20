@@ -23,6 +23,8 @@
 
 /**
 * Class to define available data types and data interpretation
+* used in functions that add/write/delete objects
+* not used in functions, that only read objects (for performance reasons)
 * @author Michael Batz <michael@yourcmdb.org>
 */
 class DataTypeInterpreter

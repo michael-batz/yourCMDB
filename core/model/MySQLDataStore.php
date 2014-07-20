@@ -145,9 +145,6 @@ class MySQLDataStore implements DataStoreInterface
 			//only gets the data, if there exists a configuration for the field
 			if(isset($configFields[$fieldkey]))
 			{
-				//interpret value
-				$fieldtype = $configFields[$fieldkey];
-				$fieldvalue = $this->interpreter->interpret($fieldvalue, $fieldtype);
 				$objectFields[$fieldkey] = $fieldvalue;
 			}
 		}
