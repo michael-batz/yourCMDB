@@ -27,6 +27,8 @@
 interface DataStoreInterface
 {
 
+	public function isObject($id, $type=null);
+
 	public function getObject($id);
 
 	public function addObject(CmdbObject $cmdbObject);

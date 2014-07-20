@@ -107,21 +107,14 @@ class DataTypeInterpreter
 		$datastore = $controller->getDatastore();
 
 		//check if referenced object exists
-		try
+		if($datastore->isObject($value, $objecttype))
 		{
-			if($datastore->getObject($value)->getType() == $objecttype)
-			{
-				//return assetId, if object exists and has the correct type
-				return $value;
-			}
-			
+			return $value;
 		}
-		catch(Exception $e)
+		else
 		{
-			//return empty string, if object was not found
 			return "";
 		}
-		return "";
 	}
 }
 ?>

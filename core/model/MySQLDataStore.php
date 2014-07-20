@@ -78,6 +78,39 @@ class MySQLDataStore implements DataStoreInterface
 	}
 
 
+	public function isObject($id, $type=null)
+	{
+		//check, if there is a parameter
+		if($id == "")
+		{
+			return false;
+		}
+
+		//escape strings
+		$id = mysql_real_escape_string($id, $this->dbConnection);
+
+		//getting objecttype
+		$sql = "SELECT type from CmdbObject WHERE assetid=$id AND active!='D'";
+		$result = $this->dbGetData($sql);
+		if($result == null)
+		{
+			return false;
+		}
+		$objectType = $result[0][0];
+
+		//check if the given object has the correct type
+		if($type != null)
+		{
+			if($objectType != $type)
+			{
+				return false;
+			}
+		}
+
+		//return true, of object exists
+		return true;
+		
+	}
 
         public function getObject($id)
 	{
