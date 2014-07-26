@@ -29,6 +29,10 @@
 	//get object links
 	$objectLinks = array_merge($datastore->getObjectLinks($paramId), $datastore->getLinkedObjects($paramId));
 
+	//get object references
+	$objectRefs = $datastore->getObjectReferences($paramId);
+
+
 	//create output strings
 	$urlList = "object.php?action=list&amp;type=".$object->getType();
 	$urlNew = "object.php?action=add&amp;type=".$object->getType();
@@ -54,6 +58,13 @@
 	<!-- confirmation for deleting this object  -->
 	<div class="blind" id="jsConfirm" title="Are you sure?">
 		<p>Do you really want to delete this object?</p>
+		<?php
+			$countObjectRefs = count($objectRefs);
+			if($countObjectRefs > 0)
+			{
+				echo "<p>There are $countObjectRefs objects that reference to this object. If you delete this object, all references will be set to null.</p>";
+			}
+		?>
 	</div>
 
 	<!-- submenu  -->
@@ -142,8 +153,9 @@
 		<div id="jsTabs" class="objecttabs">
 			<ul>
 				<li><a href="#tabs-1">Fields</a></li>
-				<li><a href="#tabs-2">Links</a></li>
-				<li><a href="#tabs-3">Log</a></li>
+				<li><a href="#tabs-2">Referenced by</a></li>
+				<li><a href="#tabs-3">Links</a></li>
+				<li><a href="#tabs-4">Log</a></li>
 			</ul>
 			<!-- object fields -->
 			<div id="tabs-1">
@@ -173,8 +185,36 @@
 				} ?>
 			</div>
 	
-			<!-- object links -->
+			<!-- object references -->
 			<div id="tabs-2">
+				<table>
+					<tr>
+						<th>AssetID</th>
+						<th>Type</th>
+						<th>Action</th>
+					</tr>
+					<!-- print object references -->
+					<?php
+					foreach($objectRefs as $refObjectId)
+					{
+						$refObjectType = $datastore->getObject($refObjectId)->getType();
+						$urlLinkShow = "object.php?action=show&amp;id=$refObjectId";
+						?>
+						<tr>
+							<td><?php echo $refObjectId; ?></td>
+							<td><?php echo $refObjectType; ?></td>
+							<td>
+								<a href="<?php echo $urlLinkShow;?>"><img src="img/icon_show.png" title="show object with reference" alt="show" /></a>&nbsp;&nbsp;&nbsp;
+							</td>
+						</tr>
+					<?php
+					}?>
+
+				</table>
+
+			</div>
+			<!-- object links -->
+			<div id="tabs-3">
 				<table>
 					<tr>
 						<th>AssetID</th>
@@ -214,7 +254,7 @@
 			</div>
 
 			<!-- object log -->
-			<div id="tabs-3">
+			<div id="tabs-4">
 				<table>
 					<tr>
 						<th>Date</th>

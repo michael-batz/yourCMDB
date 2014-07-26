@@ -86,6 +86,14 @@ class CmdbObject
 	}
 
 	/**
+	* Get fields of the object
+	*/
+	public function getFields()
+	{
+		return $this->objectFields;
+	}
+
+	/**
 	* Get Object ID
 	*/
 	public function getId()

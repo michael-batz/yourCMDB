@@ -274,6 +274,7 @@ class MySQLDataStore implements DataStoreInterface
         }
 
 
+
 	/**
 	* Change the status of the given object
 	* @param $id		ID of the object to change
@@ -311,7 +312,7 @@ class MySQLDataStore implements DataStoreInterface
 		//escape strings
 		$id = mysql_real_escape_string($id, $this->dbConnection);
 
-		//getting objecttype
+		//getting objecttype and references
 		$sql = "SELECT type from CmdbObject WHERE assetid=$id AND active!='D'";
 		$result = $this->dbGetData($sql);
 		if($result == null)
@@ -319,6 +320,7 @@ class MySQLDataStore implements DataStoreInterface
 			throw new NoSuchObjectException("Object with id $id not found");
 		}
 		$objectType = $result[0][0];
+		$references = $this->getObjectReferences($id);
 
 		//delete object fields
 		$sql = "DELETE FROM CmdbObjectField WHERE assetid=$id";
@@ -335,6 +337,13 @@ class MySQLDataStore implements DataStoreInterface
 		//add object log
 		$sql = "INSERT INTO CmdbObjectLog(assetid, action, date) VALUES('$id', 'delete', NOW())";
 		$sqlResult = $this->dbSetData($sql);
+
+		//delete references to object
+		foreach($references as $reference)
+		{
+			$referenceObject = $this->getObject($reference);
+			$this->changeObjectFields($reference, $referenceObject->getFields());
+		}
 
 		//generate event
 		$eventProcessor = new EventProcessor();
@@ -849,5 +858,51 @@ class MySQLDataStore implements DataStoreInterface
 
 	}
 
+	/**
+	* Get all objects that have a reference to the given object
+	* @param $objectId	ID of the given object
+	*/
+	public function getObjectReferences($objectId)
+	{
+		$output = Array();
+
+		//check, if object exists
+		$object = $this->getObject($objectId);
+		$dataType = "objectref-".$object->getType();
+
+		//get reference fields
+		$referenceFields = $this->configObjectTypes->getFieldsByType($dataType);
+
+		//check if there are reference fields and get referenced objects
+		if(count($referenceFields) > 0)
+		{
+			//create query
+			$sql = "SELECT distinct CmdbObjectField.assetid FROM CmdbObjectField ";
+			$sql.= "LEFT JOIN CmdbObject ON CmdbObjectField.assetid = CmdbObject.assetid ";
+			$sql.= "WHERE CmdbObjectField.fieldvalue = $objectId ";
+			$sql.= "AND (";
+			for($i = 0; $i < count($referenceFields); $i++)
+			{
+				$sql.= "(CmdbObject.type = '{$referenceFields[$i][0]}' ";
+				$sql.= "AND CmdbObjectField.fieldkey = '{$referenceFields[$i][1]}') ";
+				if($i != count($referenceFields) - 1)
+				{
+					$sql.= "OR ";
+				}
+
+			}
+			$sql.= ")";
+	                $result = $this->dbGetData($sql);
+
+			//create array with CmdbObjects
+			foreach($result as $row)
+			{
+				$output[] = $row['assetid'];
+			}
+		}
+
+		//return output
+		return $output; 
+	}
 }
 ?>

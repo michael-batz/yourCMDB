@@ -339,6 +339,34 @@ class ObjectTypeConfig
 
 		return $output;
 	}
+
+	/**
+	* Gets all object-field pairs where field has a specific data type
+	* @returns array(objectName,fieldName)
+	*/
+	public function getFieldsByType($dataType)
+	{
+		$output = Array();
+	
+		//walk through all object types
+		foreach(array_keys($this->objectFields) as $objectType)
+		{
+			//walk through all fields of th specific object type
+			foreach($this->objectFields[$objectType] as $fieldGroup)
+			{
+				foreach(array_keys($fieldGroup) as $fieldName)
+				{
+					if($fieldGroup[$fieldName]['type'] == $dataType)
+					{
+						$output[] = Array($objectType, $fieldName);
+					}
+				}
+			}
+		}
+
+		//return output
+		return $output;
+	}
 }
 
 ?>
