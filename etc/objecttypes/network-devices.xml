@@ -6,6 +6,9 @@
 		<links>
 			<link name="Search for manufacturer" href="http://www.google.de/#q=%manufacturer%" />
 		</links>
+		<eventdefs>
+			<eventdef name="exportObjects" label="Export Objects" />
+		</eventdefs>
 		<fields>
 			<fieldgroup name="network">
 				<field name="hostname" type="text" label="Hostname" summaryfield="true"/>

@@ -43,6 +43,9 @@ class ObjectTypeConfig
 	//external links for object
 	private $objectExternalLinks;
 
+	//custom event definitions
+	private $objectCustomEvents;
+
 	/**
 	* creates a ObjectTypeConfig object from xml file objecttype-configuration.xml
 	*/
@@ -109,6 +112,18 @@ class ObjectTypeConfig
 					$this->objectExternalLinks[$objectName][] = Array('name' => $linkName, 'href' => $linkHref);
 				}
 			}
+
+			//save custom event definitions for object
+			if(isset($objectType[0]->eventdefs[0]))
+			{
+				foreach($objectType[0]->eventdefs[0] as $objectEvent)
+				{
+					$eventName = (string)$objectEvent['name'];
+					$eventLabel = (string)$objectEvent['label'];
+					$this->objectCustomEvents[$objectName][] = Array('name' => $eventName, 'label' => $eventLabel);
+				}
+			}
+
 		}
 
 		//get object type groups
@@ -335,6 +350,25 @@ class ObjectTypeConfig
 		if(isset($this->objectExternalLinks[$objectType]))
 		{
 			$output = $this->objectExternalLinks[$objectType];
+		}
+
+		return $output;
+	}
+
+	/**
+	* Returns object custom events
+	* @param $objectType 	object type
+	* @returns 		array of object events (Array(name, label))
+	*/
+	public function getObjectEvents($objectType)
+	{
+		//default value: empty array
+		$output = Array();
+
+		//check, if events were set for the given object type
+		if(isset($this->objectCustomEvents[$objectType]))
+		{
+			$output = $this->objectCustomEvents[$objectType];
 		}
 
 		return $output;

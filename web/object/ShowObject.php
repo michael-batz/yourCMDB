@@ -138,7 +138,23 @@
 							?>
 						</ul>
 					</div>
-	
+
+					<!-- Object custom events -->
+					<div class="urls">
+						<h2>Custom Events</h2>
+						<ul>
+							<?php
+							foreach($config->getObjectTypeConfig()->getObjectEvents($object->getType()) as $objectEvent)
+							{
+								$objectEventName = $objectEvent['name'];
+								$objectEventLabel = $objectEvent['label'];
+								$objectEventUrl = "object.php?action=sendEvent&amp;event=$objectEventName&amp;id=".$object->getId();
+								echo "<li><a href=\"$objectEventUrl\">$objectEventLabel</a></li>";
+							}
+							?>
+						</ul>
+					</div>
+
 					<!-- object comment -->
 					<div class="comment">
 						<h2>Comment</h2>

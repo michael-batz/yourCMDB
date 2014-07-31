@@ -35,6 +35,7 @@
 	$paramId = getHttpGetVar("id", 0);
 	$paramIdB = getHttpGetVar("idb", 0);
 	$paramAction = getHttpGetVar("action", "show");
+	$paramEvent = getHttpGetVar("event", "");
 	$paramType = getHttpGetVar("type", "");
 	$paramMessage = "";
 	$paramMax = getHttpGetVar("max", $config->getViewConfig()->getContentTableLength());
@@ -216,6 +217,24 @@
 			catch(NoSuchObjectException $e)
 			{
 				$paramError = "Error deleting object link: object not found";
+				include "error/Error.php";
+				break;
+			}
+
+			//open object page
+			include "object/ShowObject.php";
+			break;
+
+		case "sendEvent":
+			try
+			{
+				$object = $datastore->getObject($paramId);
+				$controller->getEventProcessor()->generateEvent($paramEvent, $object->getId(), $object->getType());
+				$paramMessage = "Event $paramEvent was successfully sent";
+			}
+			catch(NoSuchObjectException $e)
+			{
+				$paramError = "Error sending event: object not found";
 				include "error/Error.php";
 				break;
 			}
