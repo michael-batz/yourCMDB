@@ -26,12 +26,11 @@
 
 	//this page needs the following variable to be set: $object
 
-	//get object links
+	//get object ressources
 	$objectLinks = array_merge($datastore->getObjectLinks($paramId), $datastore->getLinkedObjects($paramId));
-
-	//get object references
 	$objectRefs = $datastore->getObjectReferences($paramId);
-
+	$objectEvents = $config->getObjectTypeConfig()->getObjectEvents($object->getType());
+	$objectExternalLinks = $config->getObjectTypeConfig()->getObjectLinks($object->getType());
 
 	//create output strings
 	$urlList = "object.php?action=list&amp;type=".$object->getType();
@@ -121,11 +120,15 @@
 				<!-- additional information -->
 				<div class="additional">
 					<!-- Object External links -->
+					<?php 
+					if(count($objectExternalLinks) > 0)
+					{
+					?>
 					<div class="urls">
 						<h2>External Links</h2>
 						<ul>
 							<?php
-							foreach($config->getObjectTypeConfig()->getObjectLinks($object->getType()) as $objectExternalLink)
+							foreach($objectExternalLinks as $objectExternalLink)
 							{
 								$objectExternalLinkName = $objectExternalLink['name'];
 								$objectExternalLinkHref = preg_replace_callback(
@@ -138,13 +141,18 @@
 							?>
 						</ul>
 					</div>
+					<?php
+					}?>
 
 					<!-- Object custom events -->
+					<?php 
+					if(count($objectEvents) > 0)
+					{?>
 					<div class="urls">
 						<h2>Custom Events</h2>
 						<ul>
 							<?php
-							foreach($config->getObjectTypeConfig()->getObjectEvents($object->getType()) as $objectEvent)
+							foreach($objectEvents as $objectEvent)
 							{
 								$objectEventName = $objectEvent['name'];
 								$objectEventLabel = $objectEvent['label'];
@@ -154,12 +162,19 @@
 							?>
 						</ul>
 					</div>
+					<?php
+					}?>
 
 					<!-- object comment -->
+					<?php
+					if($staticObjectComment != "")
+					{?>
 					<div class="comment">
 						<h2>Comment</h2>
 						<p><?php echo $staticObjectComment; ?></p>
 					</div>
+					<?php
+					}?>
 				</div>
 			</div>
 		</div>
