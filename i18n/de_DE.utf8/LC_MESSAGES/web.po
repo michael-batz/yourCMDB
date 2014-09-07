@@ -1,0 +1,15 @@
+# yourCMDB WebUI German translation.
+# Copyright (C) 2014 Michael Batz
+# This file is distributed under the same license as the yourCMDB package.
+# Michael Batz <michael@yourcmdb.org>, 2014.
+#
+msgid ""
+msgstr ""
+"Language: de_DE.uft8\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: index.php:39
+msgid "Welcome to yourCMDB!"
+msgstr "Willkommen bei yourCMDB!"

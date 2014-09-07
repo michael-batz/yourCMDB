@@ -37,6 +37,9 @@ class ViewConfig
 	//qr codes ecclevel
 	private $qrCodeEccLevel;
 
+	//i18n language
+	private $language;
+
 	//menu items
 	private $menuItems;
 
@@ -59,7 +62,14 @@ class ViewConfig
 		{
 			$this->qrCodeEccLevel= (string) $xmlobject->{'qrcodes'}[0]['ecc-level'];
 		}
-		
+
+		//read language for internationalization
+		$this->language = "en_GB";
+		if(isset($xmlobject->{'i18n'}[0]['language']))
+		{
+			$this->language = (string) $xmlobject->{'i18n'}[0]['language'];
+		}
+	
 		//read menu items
 		foreach($xmlobject->xpath('//menu-item') as $menuItem)
 		{
@@ -129,6 +139,14 @@ class ViewConfig
 	public function getMenuItems()
 	{	
 		return $this->menuItems;
+	}
+
+	/**
+	* Returns locale for i18n
+	*/
+	public function getLocale()
+	{
+		return $this->language;
 	}
 }
 

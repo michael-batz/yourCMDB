@@ -92,4 +92,15 @@ $config = $controller->getCmdbConfig();
 $datastore = $controller->getDatastore();
 
 
+//setup i18n with gettext
+$i18nLocale = $config->getViewConfig()->getLocale();
+$i18nDomain = "web";
+$i18nCodeset = "utf-8";
+$scriptBaseDir = dirname(__FILE__);
+$i18nBaseDir = realpath("$scriptBaseDir/../../i18n");
+
+setlocale(LC_ALL, $i18nLocale);
+bindtextdomain($i18nDomain, $i18nBaseDir);
+bind_textdomain_codeset($i18nDomain, $i18nCodeset);
+textdomain($i18nDomain);
 ?>

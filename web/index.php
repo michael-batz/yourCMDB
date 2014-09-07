@@ -34,12 +34,12 @@
 	$urlShowObject = "object.php?action=show&amp;id=";
 	$urlEditObject = "object.php?action=edit&amp;id=";
 
+
+	//<!-- title -->
+	echo "<h1>".gettext("Welcome to yourCMDB!")."</h1>";
+
+
 ?>
-
-	<!-- title -->
-	<h1>Welcome to yourCMDB!</h1>
-
-
 	<!-- newest objects -->
 	<table class="list">
 		<tr>
