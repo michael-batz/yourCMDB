@@ -39,89 +39,78 @@
 	echo "<h1>".gettext("Welcome to yourCMDB!")."</h1>";
 
 
-?>
-	<!-- newest objects -->
-	<table class="list">
-		<tr>
-			<th class="center" colspan="4"><?php echo $rowCount; ?> Newest Objects</th>
-		</tr>
-		<?php
-		//get objecttypes and objectcount
-		foreach($newestObjects as $objectEntry)
+	//<!-- newest objects -->
+	echo "<table class=\"list\">";
+	echo "<tr>";
+	echo "<th class=\"center\" colspan=\"4\">";
+	printf(gettext("%s Newest Objects"), $rowCount);
+	echo "</th>";
+	echo "</tr>";
+	//get objecttypes and objectcount
+	foreach($newestObjects as $objectEntry)
+	{
+		$object = $objectEntry[0];
+		$objectDate = $objectEntry[1];
+		$objectId = $object->getId();
+		$objectType = $object->getType();
+		$urlShowObjectId = "$urlShowObject$objectId";			
+		$urlEditObjectId = "$urlEditObject$objectId&amp;type=$objectType";
+		//get object status icon
+		$statusIcon = "<img src=\"img/icon_active.png\" alt=\"".gettext("active")."\" title=\"".gettext("active object")."\" />";	
+		if($object->getStatus() != 'A')
 		{
-			$object = $objectEntry[0];
-			$objectDate = $objectEntry[1];
-			$objectId = $object->getId();
-			$objectType = $object->getType();
-
-			$urlShowObjectId = "$urlShowObject$objectId";
-			$urlEditObjectId = "$urlEditObject$objectId&amp;type=$objectType";
-
-			//get object status icon
-			$statusIcon = "<img src=\"img/icon_active.png\" alt=\"active\" title=\"active object\" />";
-			if($object->getStatus() != 'A')
-			{
-				$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"inactive\" title=\"inactive object\" />";
-			}
-
-
-			?>
-			<tr>
-				<td><?php echo "$statusIcon $objectId";?></td>
-				<td><?php echo $objectType;?></td>
-				<td><?php echo $objectDate;?></td>
-				<td class="right">
-					<a href="<?php echo $urlShowObjectId; ?>"><img src="img/icon_show.png" title="show" alt="show" /></a>&nbsp;&nbsp;&nbsp;
-					<a href="<?php echo $urlEditObjectId; ?>"><img src="img/icon_edit.png" title="edit" alt="edit" /></a>
-				</td>
-
-			</tr>
-		<?php
-		}?>
-	</table>
+			$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"".gettext("inactive")."\" title=\"".gettext("inactive object")."\" />";
+		}
+		echo "<tr>";
+		echo "<td>$statusIcon $objectId</td>";
+		echo "<td>$objectType</td>";
+		echo "<td>$objectDate</td>";
+		echo "<td class=\"right\">";
+		echo "<a href=\"$urlShowObjectId\"><img src=\"img/icon_show.png\" title=\"".gettext("show")."\" alt=\"".gettext("show")."\" /></a>&nbsp;&nbsp;&nbsp";
+		echo "<a href=\"$urlEditObjectId\"><img src=\"img/icon_edit.png\" title=\"".gettext("edit")."\" alt=\"".gettext("edit")."\" /></a>";
+		echo "</td>";
+		echo "</tr>";
+	}
+	echo "</table>";
 
 
-	<!-- last changed objects -->
-	<table class="list">
-		<tr>
-			<th class="center" colspan="4"><?php echo $rowCount; ?> Last Changed Objects</th>
-		</tr>
-		<?php
-		//get objecttypes and objectcount
-		foreach($lastChangedObjects as $objectEntry)
+	//<!-- last changed objects -->
+	echo "<table class=\"list\">";
+	echo "<tr>";
+	echo "<th class=\"center\" colspan=\"4\">";
+	printf(gettext("%s Last Changed Objects"), $rowCount);
+	echo "</th>";
+	echo "</tr>";
+	//get objecttypes and objectcount
+	foreach($lastChangedObjects as $objectEntry)
+	{
+		$object = $objectEntry[0];
+		$objectDate = $objectEntry[1];
+		$objectId = $object->getId();
+		$objectType = $object->getType();
+
+		$urlShowObjectId = "$urlShowObject$objectId";
+		$urlEditObjectId = "$urlEditObject$objectId&amp;type=$objectType";
+
+		//get object status icon
+		$statusIcon = "<img src=\"img/icon_active.png\" alt=\"".gettext("active")."\" title=\"".gettext("active object")."\" />";
+		if($object->getStatus() != 'A')
 		{
-			$object = $objectEntry[0];
-			$objectDate = $objectEntry[1];
-			$objectId = $object->getId();
-			$objectType = $object->getType();
+			$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"".gettext("inactive")."\" title=\"".gettext("inactive object")."\" />";
+		}
 
-			$urlShowObjectId = "$urlShowObject$objectId";
-			$urlEditObjectId = "$urlEditObject$objectId&amp;type=$objectType";
+		echo "<tr>";
+		echo "<td>$statusIcon $objectId</td>";
+		echo "<td>$objectType</td>";
+		echo "<td>$objectDate</td>";
+		echo "<td class=\"right\">";
+		echo "<a href=\"$urlShowObjectId\"><img src=\"img/icon_show.png\" title=\"".gettext("show")."\" alt=\"".gettext("show")."\" /></a>&nbsp;&nbsp;&nbsp;";
+		echo "<a href=\"$urlEditObjectId\"><img src=\"img/icon_edit.png\" title=\"".gettext("edit")."\" alt=\"".gettext("edit")."\" /></a>";
+		echo "</td>";
+		echo "</tr>";
+	}
+	echo "</table>";
 
-			//get object status icon
-			$statusIcon = "<img src=\"img/icon_active.png\" alt=\"active\" title=\"active object\" />";
-			if($object->getStatus() != 'A')
-			{
-				$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"inactive\" title=\"inactive object\" />";
-			}
-
-
-			?>
-			<tr>
-				<td><?php echo "$statusIcon $objectId";?></td>
-				<td><?php echo $objectType;?></td>
-				<td><?php echo $objectDate;?></td>
-				<td class="right">
-					<a href="<?php echo $urlShowObjectId; ?>"><img src="img/icon_show.png" title="show" alt="show" /></a>&nbsp;&nbsp;&nbsp;
-					<a href="<?php echo $urlEditObjectId; ?>"><img src="img/icon_edit.png" title="edit" alt="edit" /></a>
-				</td>
-
-			</tr>
-		<?php
-		}?>
-	</table>
-
-<?php 
 //include footer
 include "include/footer.inc.php";
 ?>

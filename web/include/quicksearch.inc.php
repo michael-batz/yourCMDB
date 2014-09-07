@@ -24,22 +24,28 @@
 * WebUI element: quicksearch
 * @author Michael Batz <michael@yourcmdb.org>
 */
+
+	echo "<div class=\"box\">";
+	echo "<h1>";
+	echo gettext("Quicksearch");
+	echo "</h1>";
+	echo "<form action=\"object.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<p>";
+	echo gettext("Asset ID:");
+	echo "<br />";
+	echo "<input type=\"text\" name=\"id \" />";
+	echo "<input type=\"hidden\" name=\"action\" value=\"show\" />";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "</p>";
+	echo "</form>";
+	echo "<form action=\"search.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<p>";
+	echo gettext("Searchstring:");
+	echo "<br />";
+	echo "<input id=\"quicksearch\" type=\"text\" name=\"searchstring\" onfocus=\"javascript:showAutocompleter('#quicksearch', 'autocomplete.php?object=quicksearch')\" />";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "</p>";
+	echo "</form>";
+	echo "</div>";
+
 ?>
-	<div class="box">
-		<h1>Quicksearch</h1>
-			<form action="object.php" method="get" accept-charset="UTF-8">
-				<p>
-					Asset ID:<br />
-					<input type="text" name="id" />
-					<input type="hidden" name="action" value="show" />
-					<input type="submit" value="Go" />
-				</p>
-			</form>
-			<form action="search.php" method="get" accept-charset="UTF-8">
-				<p>
-					Searchstring:<br />
-					<input id="quicksearch" type="text" name="searchstring" onfocus="javascript:showAutocompleter('#quicksearch', 'autocomplete.php?object=quicksearch')" />
-					<input type="submit" value="Go" />
-				</p>
-			</form>
-	</div>

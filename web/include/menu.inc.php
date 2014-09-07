@@ -28,34 +28,35 @@
 
 	//get object types from configuration
 	$objectGroups = $config->getObjectTypeConfig()->getObjectTypeGroups();
-?>
-	<div class="menu">
-		<?php include "quicksearch.inc.php"; ?>
 
-		<div class="box">
-			<h1>Objects</h1>
-			<ul id="jsMenu">
+	//start menu
+	echo "<div class=\"menu\">";
 
-				<?php
-				//walk through all object type groups
-		                foreach(array_keys($objectGroups) as $groupname)
-       		 	        {
-				?>
-					<li><a href="#"><?php echo $groupname;?></a><ul>
-				<?php
-					foreach($objectGroups[$groupname] as $objectType)
-					{
-				?>
-						<li>
-							<a  href="object.php?action=list&amp;type=<?php echo $objectType ?>">
-								<?php echo $objectType; ?> (<?php echo $datastore->getObjectCounts($objectType);?>)
-							</a>
-						</li>
-       		         	<?php 
-					}?>
-					</ul></li>
-				<?php
-				}?>
-			</ul>
-		</div>
-	</div>
+	//quick search box
+	include "quicksearch.inc.php";
+
+	//object menu
+	echo "<div class=\"box\">";
+	echo "<h1>";
+	echo gettext("Objects");
+	echo "</h1>";
+	echo "<ul id=\"jsMenu\">";
+	//walk through all object type groups
+	foreach(array_keys($objectGroups) as $groupname)
+	{
+		echo "<li><a href=\"#\">$groupname</a><ul>";
+		foreach($objectGroups[$groupname] as $objectType)
+		{
+			echo "<li>";
+			echo "<a  href=\"object.php?action=list&amp;type=$objectType\">";
+			echo "$objectType (".$datastore->getObjectCounts($objectType).")";
+			echo "</a>";
+			echo "</li>";
+		}
+		echo "</ul></li>";
+	}
+	echo "</ul>";
+	echo "</div>";
+
+	//end of menu
+	echo "</div>";

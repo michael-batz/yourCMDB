@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Language: de_DE.uft8\n"
+"Language: de_DE.utf8\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,3 +13,61 @@ msgstr ""
 #: index.php:39
 msgid "Welcome to yourCMDB!"
 msgstr "Willkommen bei yourCMDB!"
+
+#: index.php:46
+#, php-format
+msgid "%s Newest Objects"
+msgstr "%s zuletzt erzeugte Objekte"
+
+#: index.php:59 index.php:96
+msgid "active"
+msgstr "aktiv"
+
+#: index.php:59 index.php:96
+msgid "active object"
+msgstr "aktives Objekt"
+
+#: index.php:62 index.php:99
+msgid "inactive"
+msgstr "inaktiv"
+
+#: index.php:62 index.php:99
+msgid "inactive object"
+msgstr "inaktives Objekt"
+
+#: index.php:69 index.php:107
+msgid "show"
+msgstr "anzeigen"
+
+#: index.php:70 index.php:108
+msgid "edit"
+msgstr "ändern"
+
+#: index.php:81
+#, php-format
+msgid "%s Last Changed Objects"
+msgstr "%s zuletzt geänderte Objekte"
+
+#: include/footer.inc.php:27
+msgid "is published under GPLv3"
+msgstr "ist unter GPLv3 veröffentlicht"
+
+#: include/menu.inc.php:41
+msgid "Objects"
+msgstr "Objekte"
+
+#: include/quicksearch.inc.php:30
+msgid "Quicksearch"
+msgstr "Schnellsuche"
+
+#: include/quicksearch.inc.php:34
+msgid "Asset ID:"
+msgstr "Asset ID:"
+
+#: include/quicksearch.inc.php:38 include/quicksearch.inc.php:46
+msgid "Go"
+msgstr "Los!"
+
+#: include/quicksearch.inc.php:43
+msgid "Searchstring:"
+msgstr "Suchstring"

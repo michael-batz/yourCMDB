@@ -22,21 +22,20 @@
 
 	//get menu items from configuration
 	$menuitems = $config->getViewConfig()->getMenuItems();
+
+	echo "<div class=\"mainmenu\">";
+	echo "<ul>";
+
+	foreach(array_keys($menuitems) as $itemName)
+	{
+		echo "<li>";
+		echo "<a  href=\"{$menuitems[$itemName]}\">";
+		echo gettext($itemName);
+		echo "</a>";
+		echo "</li>";
+	}
+
+	echo "</ul>";
+	echo "</div>";
+
 ?>
-	<div class="mainmenu">
-		<ul>
-
-		<?php
-	                foreach(array_keys($menuitems) as $itemName)
-        	        { ?>
-				<li>
-					<a  href="<?php echo $menuitems[$itemName] ?>">
-						<?php echo $itemName; ?>
-					</a>
-				</li>
-                	<?php 
-			}
-		?>
-
-		</ul>
-	</div>

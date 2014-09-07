@@ -5,11 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Language: en_GB.uft8\n"
+"Language: en_GB.utf8\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: index.php:39
-msgid "Welcome to yourCMDB!"
-msgstr "Welcome to yourCMDB!"
+

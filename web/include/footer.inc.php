@@ -19,12 +19,13 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-?>
-		</div>
 
-		<!-- footer -->
-		<div class="footer">
-			<a href="http://www.yourcmdb.org">yourCMDB <?php echo $controller->getVersion(); ?></a> is published under GPLv3. &copy; 2013-2014 Michael Batz.
-		</div>
-	</body>
-</html>
+	echo "</div>";
+
+	//<!-- footer -->
+	echo "<div class=\"footer\">";
+	echo "<a href=\"http://www.yourcmdb.org\">yourCMDB ".$controller->getVersion()."</a> ".gettext("is published under GPLv3").". &copy; 2013-2014 Michael Batz.";
+	echo "</div>";
+	echo "</body>";
+	echo "</html>";
+?>
