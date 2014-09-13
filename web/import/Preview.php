@@ -97,7 +97,9 @@
 			fclose($file);
 
         		//generate output
-			echo "<h1>CSV Import - Preview (first lines of csv file)</h1>";
+			echo "<h1>";
+			echo gettext("CSV Import - Preview (first lines of csv file)");
+			echo "</h1>";
 			echo "<table>";
 			echo "<form action=\"import.php\" method=\"post\">";
 			echo "<tr>";
@@ -132,19 +134,20 @@
 			echo "<input type=\"hidden\" name=\"type\" value=\"$paramType\" />";
 			echo "<input type=\"hidden\" name=\"cols\" value=\"$cols\" />";
 
-			echo "Start in line <select name=\"firstrow\">";
+			echo gettext("Start in line ");
+			echo "<select name=\"firstrow\">";
 			for($i = 0; $i < $cols && $i < 5; $i++)
 			{
 				echo "<option>$i</option>";
 			}
-			echo "<input type=\"submit\" value=\"Go\" />";
+			echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
 			echo "</p>";
 			echo "</form>";
 		}
 		else
 		{
 			//print error
-			$paramError = "Could not read from uploaded file. Please check permissions.";
+			$paramError = gettext("Could not read from uploaded file. Please check permissions.");
 			include "import/Form.php";
 		}
 

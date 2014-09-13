@@ -41,86 +41,84 @@
 		printErrorMessage($paramError);
 	}
 
+	//<!-- headline  -->
+	echo "<h1>";
+	echo gettext("Import and Export");
+	echo "</h1>";
+
+	//<!-- import box  -->
+	echo "<form action=\"import.php\" enctype=\"multipart/form-data\" method=\"post\">";
+	echo "<table class=\"cols2\">";
+	echo "<tr><th colspan=\"2\">".gettext("Import Objects")."</th></tr>";
+	echo "<tr>";
+	echo "<td>".gettext("Object Type:")."</td>";
+	echo "<td><select name=\"type\">";
+	foreach(array_keys($objectTypes) as $group)
+	{
+		echo "<optgroup label=\"$group\">";
+		foreach($objectTypes[$group] as $type)
+		{
+			echo "<option>$type</option>";
+		}
+		echo "</optgroup>";
+	}
+	echo "</select></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td>".gettext("Import Format:")."</td>";
+	echo "<td><select name=\"format\">";
+	foreach($importFormats as $importFormat)
+	{
+		echo "<option>$importFormat</option>";
+	}
+	echo "</select></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td>".gettext("Import File:")."</td>";
+	echo "<td>";
+	echo "<input type=\"hidden\" name=\"action\" value=\"preview\" />";
+	echo "<input type=\"file\" name=\"file\" /></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td colspan=\"2\"><input type=\"submit\" value=\"".gettext("Go")."\" /></td>";
+	echo "</tr>";
+ 	echo "</table>";
+	echo "</form>";
+
+
+	//<!-- export box  -->
+	echo "<form action=\"export.php\" method=\"get\">";
+	echo "<table class=\"cols2\">";
+	echo "<tr><th colspan=\"2\">".gettext("Export Objects")."</th></tr>";
+	echo "<tr>";
+	echo "<td>".gettext("Object Type:")."</td>";
+	echo "<td><select name=\"type\">";
+	foreach(array_keys($objectTypes) as $group)
+	{
+		echo "<optgroup label=\"$group\">";
+		foreach($objectTypes[$group] as $type)
+		{
+			echo "<option>$type</option>";
+		}
+		echo "</optgroup>";
+	}
+	echo "</select></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td>".gettext("Output Format:")."</td>";
+	echo "<td><select name=\"format\">";
+	foreach($exportFormats as $exportFormat)
+	{
+		echo "<option>$exportFormat</option>";
+	}
+	echo "</select></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td colspan=\"2\">";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "</td>";
+	echo "</tr>";
+	echo "</table>";
+	echo "</form>";
+
 ?>
-	<!-- headline  -->
-	<h1>Import and Export</h1>
-
-	<!-- import box  -->
-	<form action="import.php" enctype="multipart/form-data" method="post">
-		<table class="cols2">
-			<tr><th colspan="2">Import Objects</th></tr>
-			<tr>
-				<td>Object Type:</td>
-				<td><select name="type">
-					<?php
-					foreach(array_keys($objectTypes) as $group)
-					{
-						echo "<optgroup label=\"$group\">";
-						foreach($objectTypes[$group] as $type)
-						{
-							echo "<option>$type</option>";
-						}
-						echo "</optgroup>";
-					}?>
-				</select></td>
-			</tr>
-			<tr>
-				<td>Import Format:</td>
-				<td><select name="format">
-					<?php
-					foreach($importFormats as $importFormat)
-					{
-						echo "<option>$importFormat</option>";
-					}?>
-				</select></td>
-			</tr>
-			<tr>
-				<td>Import File:</td>
-				<td>
-					<input type="hidden" name="action" value="preview" />
-					<input type="file" name="file" /></td>
-			</tr>
-			<tr>
-				<td colspan="2"><input type="submit" value="Go" /></td>
-			</tr>
- 		</table>
-	</form>
-
-
-	<!-- export box  -->
-	<form action="export.php" method="get">
-		<table class="cols2">
-			<tr><th colspan="2">Export Objects</th></tr>
-			<tr>
-				<td>Object Type:</td>
-				<td><select name="type">
-					<?php
-					foreach(array_keys($objectTypes) as $group)
-					{
-						echo "<optgroup label=\"$group\">";
-						foreach($objectTypes[$group] as $type)
-						{
-							echo "<option>$type</option>";
-						}
-						echo "</optgroup>";
-					}?>
-				</select></td>
-			</tr>
-			<tr>
-				<td>Output Format:</td>
-				<td><select name="format">
-					<?php
-					foreach($exportFormats as $exportFormat)
-					{
-						echo "<option>$exportFormat</option>";
-					}?>
-				</select></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<input type="submit" value="Go" />
-				</td>
-			</tr>
-		</table>
-	</form>
-

@@ -38,81 +38,83 @@
 	{
 		printErrorMessage($paramError);
 	}
+
+	//HTML output
+	echo "<h1>";
+	echo gettext("Search");
+	echo "</h1>";
+
+	//<!-- search for objects with a specific field value and type -->
+	echo "<form action=\"search.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<table class=\"cols2\">";
+	echo "<tr><th colspan=\"2\">".gettext("Search in all objects")."</th></tr>";
+	echo "<tr>";
+	echo "<td>".gettext("Searchstring")."</td>";
+	echo "<td><input type=\"text\" name=\"searchstring\" /></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td colspan=\"2\">";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "</td>";
+	echo "</tr>";
+	echo "</table>";
+	echo "</form>";
+
+
+
+	//<!-- search for objects with a specific field value and type -->
+	echo "<form action=\"search.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<table class=\"cols2\">";
+	echo "<tr><th colspan=\"2\">".gettext("Search for objects of a specific type")."</th></tr>";
+	echo "<tr>";
+	echo "<td>".gettext("Type:")."</td>";
+	echo "<td><select name=\"type\">";
+	foreach(array_keys($objectTypes) as $group)
+	{
+		echo "<optgroup label=\"$group\">";
+		foreach($objectTypes[$group] as $type)
+		{
+			echo "<option>$type</option>";
+		}
+		echo "</optgroup>";
+	}
+	echo "</select></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td>".gettext("Searchstring:")."</td>";
+	echo "<td><input type=\"text\" name=\"searchstring\" /></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td colspan=\"2\">";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "</td>";
+	echo "</tr>";
+	echo "</table>";
+	echo "</form>";
+
+
+	//<!-- search for objects with a specific field value and object type group -->
+	echo "<form action=\"search.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<table class=\"cols2\">";
+	echo "<tr><th colspan=\"2\">".gettext("Search for objects of a specific group")."</th></tr>";
+	echo "<tr>";
+	echo "<td>".gettext("Type:")."</td>";
+	echo "<td><select name=\"typegroup\">";
+	foreach(array_keys($objectTypes) as $group)
+	{
+		echo "<option>$group</option>";
+	}
+	echo "</select></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td>".gettext("Searchstring:")."</td>";
+	echo "<td><input type=\"text\" name=\"searchstring\" /></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td colspan=\"2\">";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "</td>";
+	echo "</tr>";
+	echo "</table>";
+	echo "</form>";
 ?>
-	<h1>Search</h1>
-
-	<!-- search for objects with a specific field value and type -->
-	<form action="search.php" method="get" accept-charset="UTF-8">
-		<table class="cols2">
-			<tr><th colspan="2">Search in all objects</th></tr>
-			<tr>
-				<td>Searchstring</td>
-				<td><input type="text" name="searchstring" /></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<input type="submit" value="Go" />
-				</td>
-			</tr>
-		</table>
-	</form>
-
-
-
-	<!-- search for objects with a specific field value and type -->
-	<form action="search.php" method="get" accept-charset="UTF-8">
-		<table class="cols2">
-			<tr><th colspan="2">Search for objects of a specific type</th></tr>
-			<tr>
-				<td>Type:</td>
-				<td><select name="type">
-					<?php
-					foreach(array_keys($objectTypes) as $group)
-					{
-						echo "<optgroup label=\"$group\">";
-						foreach($objectTypes[$group] as $type)
-						{
-							echo "<option>$type</option>";
-						}
-						echo "</optgroup>";
-					}?>
-				</select></td>
-			</tr>
-			<tr>
-				<td>Searchstring:</td>
-				<td><input type="text" name="searchstring" /></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<input type="submit" value="Go" />
-				</td>
-			</tr>
-		</table>
-	</form>
-
-
-	<!-- search for objects with a specific field value and object type group -->
-	<form action="search.php" method="get" accept-charset="UTF-8">
-		<table class="cols2">
-			<tr><th colspan="2">Search for objects of a specific group</th></tr>
-			<tr>
-				<td>Type:</td>
-				<td><select name="typegroup">
-					<?php
-					foreach(array_keys($objectTypes) as $group)
-					{
-						echo "<option>$group</option>";
-					}?>
-				</select></td>
-			</tr>
-			<tr>
-				<td>Searchstring:</td>
-				<td><input type="text" name="searchstring" /></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<input type="submit" value="Go" />
-				</td>
-			</tr>
-		</table>
-	</form>

@@ -86,12 +86,12 @@
 				unlink($paramFilename);
 
 				//generate output
-				$paramMessage = "Import of $j objects was successful";
+				$paramMessage = sprintf(gettext("Import of %s objects was successful"),$j);
 
                 	}
 			else
 			{
-				$paramError = "Could not read from CSV file.";
+				$paramError = gettext("Could not read from CSV file.");
 			}
 			break;
 

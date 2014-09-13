@@ -36,12 +36,15 @@
 	}
 
 
+
+
+	echo "<h1>";
+	echo gettext("yourCMDB Error");
+	echo "</h1>";
+
+	echo "<p>";
+	echo gettext("The error above should not be happened. Maybe you use a wrong URL or you found a bug.");
+	echo "<br />";
+	echo sprintf(gettext("Please check your setup or ask for help on the %s yourCMDB Website %s."), "<a href=\"http://www.yourcmdb.org\">", "</a>");
+	echo "</p>";
 ?>
-
-
-	<h1>yourCMDB Error</h1>
-
-	<p>
-		The error above should not be happened. Maybe you use a wrong URL or you found a bug.<br />
-		Please check your setup or ask for help on the <a href="http://www.yourcmdb.org">yourCMDB Website</a>.
-	</p>

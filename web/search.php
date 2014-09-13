@@ -92,15 +92,13 @@
 			else
 			{
 				//show search form with error message
-				$paramMessage = "No objects with field value $paramSearchString found. Please try again...";
+				$paramMessage = sprintf(gettext("No objects with field value %s found. Please try again..."), $paramSearchString);
 				include "search/SearchForm.php";
 			}
 			break;
 
 	}
-?>
 
-<?php 
 //include footer
 include "include/footer.inc.php";
 ?>

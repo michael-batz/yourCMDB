@@ -62,30 +62,30 @@
 	//generate link for show active/inactive objects
 	if($paramActiveOnly)
 	{
-		$textShowActive = "Show also inactive objects";
+		$textShowActive = gettext("Show also inactive objects");
 		$urlShowActive = $urlShowActiveBase."0";                
 	}
 	else    
 	{
-		$textShowActive = "Show only active objects";
+		$textShowActive = gettext("Show only active objects");
 		$urlShowActive = $urlShowActiveBase."1";
         }
-?>
 
 
-	<!-- submenu -->
-	<div class="submenu">
-		<a href="<?php echo $urlShowActive; ?>"><?php echo $textShowActive; ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		<a href="<?php echo $urlSearchForm; ?>">Search Form</a>
-	</div>
+	//<!-- submenu -->
+	echo "<div class=\"submenu\">";
+	echo "<a href=\"$urlShowActive\">$textShowActive</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlSearchForm\">".gettext("Search Form")."</a>";
+	echo "</div>";
 
 
-	<!-- title -->
-	<h1>Search Results (<?php echo $objectCount; ?>)</h1>
+	//<!-- title -->
+	echo "<h1>";
+	echo sprintf(gettext("Search Results (%s)"), $objectCount);
+	echo "</h1>";
 	
 
-	<table class="list">
-<?php
+	echo "<table class=\"list\">";
 	//print found objects
 	if($objects != null)
 	{
@@ -109,10 +109,10 @@
 			}
 		
 			//get status image
-			$statusIcon = "<img src=\"img/icon_active.png\" alt=\"active\" title=\"active object\" />";
+			$statusIcon = "<img src=\"img/icon_active.png\" alt=\"".gettext("active")."\" title=\"".gettext("active object")."\" />";
 			if($objectStatus != 'A')
 			{
-				$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"inactive\" title=\"inactive object\" />";
+				$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"".gettext("inactive")."\" title=\"".gettext("inactive object")."\" />";
 			}
 
 			//print headline
@@ -141,7 +141,7 @@
 			echo "<br />";
 
 			//print object summary
-			echo "Summary: ";
+			echo gettext("Summary: ");
 			$fieldnames = array_keys($objectSummaryFields);
 			for($j = 0; $j < count($fieldnames); $j++)
 			{
@@ -155,67 +155,73 @@
 				}
 			}
 			echo "</p></td></tr>";
-		}?>
-		</table>
+		}
+		echo "</table>";
 
-		<!-- list navigation  -->
-		<p class="listnav">
-                <?php
-                        //print prev button
-                        if($listPage != 1)
-                        {
-                                $listnavUrl = $listnavUrlBase .($listPage - 1);
-                                echo "<a href=\"$listnavUrl\">&lt; previous</a>";
-                        }
-                        else
-                        {
-                                echo "<a href=\"#\" class=\"disabled\">&lt; previous</a>";
-                        }
-                        //print page numbers
-                        for($i = 1; $i <= $listPages; $i++)
-                        {
-                                $listnavUrl = $listnavUrlBase .$i;
-                                if($i == $listPage)
-                                {
-                                        echo "<a href=\"$listnavUrl\" class=\"active\">$i</a>";
-                                }
-                                else
-                                {
-                                        echo "<a href=\"$listnavUrl\">$i</a>";
-                                }
+		//<!-- list navigation  -->
+		echo "<p class=\"listnav\">";
+		//print prev button
+		if($listPage != 1)
+		{
+			$listnavUrl = $listnavUrlBase .($listPage - 1);
+			echo "<a href=\"$listnavUrl\">&lt; ";
+			echo gettext("previous");
+			echo "</a>";
+		}
+		else
+		{
+			echo "<a href=\"#\" class=\"disabled\">&lt; ";
+			echo gettext("previous");
+			echo "</a>";
+		}
+		//print page numbers
+		for($i = 1; $i <= $listPages; $i++)
+		{
+			$listnavUrl = $listnavUrlBase .$i;
+			if($i == $listPage)
+			{
+				echo "<a href=\"$listnavUrl\" class=\"active\">$i</a>";
+			}
+			else
+			{
+				echo "<a href=\"$listnavUrl\">$i</a>";
+			}
 
-                                //jump to current page
-                                if($i == 3 && $listPage > 5)
-                                {
-                                        $i = $listPage - 2;
-                                        echo "...";
-                                }
-                                //jump to last page
-                                if($i > 3 && $i > $listPage && $i < ($listPages - 2))
-                                {
-                                        $i = $listPages - 2;
-                                        echo "...";
-                                }
-                        }
-			//print next button
-                        if($listPage != $listPages)
-                        {
-                                $listnavUrl = $listnavUrlBase .($listPage + 1);
-                                echo "<a href=\"$listnavUrl\">next &gt;</a>";
-                        }
-                        else
-                        {
-                                echo "<a href=\"#\" class=\"disabled\">next &gt;</a>";
-                        }
+			//jump to current page
+			if($i == 3 && $listPage > 5)
+			{
+				$i = $listPage - 2;
+				echo "...";
+			}
+			//jump to last page
+			if($i > 3 && $i > $listPage && $i < ($listPages - 2))
+			{
+				$i = $listPages - 2;
+				echo "...";
+			}
+		}
+		//print next button
+		if($listPage != $listPages)
+		{
+			$listnavUrl = $listnavUrlBase .($listPage + 1);
+			echo "<a href=\"$listnavUrl\">";
+			echo gettext("next");
+			echo " &gt;</a>";
+		}
+		else
+		{
+			echo "<a href=\"#\" class=\"disabled\">";
+			echo gettext("next");
+			echo " &gt;</a>";
+		}
+		echo "</p>";
 
-		?>
-		</p>
-
-	<?php
 	}
 	else
 	{
-		echo "<p>No objects found</p>";
+		echo "<p>";
+		echo gettext("No objects found");
+		echo "</p>";
 	}
 
 

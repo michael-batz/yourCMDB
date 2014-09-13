@@ -63,8 +63,8 @@ $outstream = fopen("php://output", 'w');
 
 //generate CSV header
 $csvHeader = Array();
-$csvHeader[] = "AssetID";
-$csvHeader[] = "Active";
+$csvHeader[] = gettext("AssetID");
+$csvHeader[] = gettext("Active");
 foreach($fieldnames as $fieldname)
 {
 	$csvHeader[] = $fieldname;
