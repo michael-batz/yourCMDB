@@ -206,9 +206,9 @@
 			//print link to referenced object
 			if($value != "")
 			{
-				?>
-				<a href="object.php?id=<?php echo $value; ?>">show</a>
-				<?php
+				echo "<a href=\"object.php?id=$value\">";
+				echo gettext("show");
+				echo "</a>";
 			}
 		}
 	}

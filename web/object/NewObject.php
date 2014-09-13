@@ -28,34 +28,38 @@
 
 	//get data
 	$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
+
+	//<!-- headline -->
+	echo "<h1>";
+	echo gettext("New Object");
+	echo "</h1>";
+
+	echo "<form action=\"object.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<table class=\"cols2\">";
+	echo "<tr><th colspan=\"2\">";
+	echo gettext("New Object");
+	echo "</th></tr>";
+	echo "<tr>";
+	echo "<td>";
+	echo gettext("Type:");
+	echo "</td>";
+	echo "<td><select name=\"type\">";
+	foreach(array_keys($objectTypes) as $group)
+	{
+		echo "<optgroup label=\"$group\">";
+		foreach($objectTypes[$group] as $type)
+		{
+			echo "<option>$type</option>";
+		}
+		echo "</optgroup>";
+	}
+	echo "</select></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td colspan=\"2\">";
+	echo "<input type=\"hidden\" name=\"action\" value=\"add\" />";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "</td></tr>";
+	echo "</table>";
+	echo "</form>";
 ?>
-	<!-- headline -->
-	<h1>New Object</h1>
-
-	<form action="object.php" method="get" accept-charset="UTF-8">
-		<table class="cols2">
-			<tr><th colspan="2">New Object</th></tr>
-			<tr>
-				<td>Type:</td>
-				<td><select name="type">
-					<?php
-					foreach(array_keys($objectTypes) as $group)
-					{
-						echo "<optgroup label=\"$group\">";
-						foreach($objectTypes[$group] as $type)
-						{
-							echo "<option>$type</option>";
-						}
-						echo "</optgroup>";
-					}?>
-
-				</select></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<input type="hidden" name="action" value="add" />
-					<input type="submit" value="Go" />
-				</td></tr>
-		</table>
-	</form>
-

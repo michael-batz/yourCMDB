@@ -40,11 +40,11 @@
 	}
 
 	//create output strings
-	$textTitle = "Edit Object $paramType:$paramId";
+	$textTitle = sprintf(gettext("Edit Object %s:%s"), $paramType, $paramId);
 	$formAction = "object.php?action=save&amp;type=$paramType&amp;id=$paramId";
 	if($paramAction == "add")
 	{
-		$textTitle = "Add $paramType Object";
+		$textTitle = sprintf(gettext("Add %s Object"), $paramType);
 		$formAction = "object.php?action=saveNew&amp;type=$paramType";
 	}
 	$checkboxString = "<input type=\"checkbox\" name=\"yourCMDB_active\" value=\"A\" checked=\"checked\" />";
@@ -53,34 +53,33 @@
 		$checkboxString = "<input type=\"checkbox\" name=\"yourCMDB_active\" value=\"A\" />";
 	}
 	
-?>
 
-	<!-- title -->
-	<div class="objectbox">
-	<h1><?php echo $textTitle; ?></h1>
-	<form method="post" action="<?php echo $formAction; ?>" accept-charset="UTF-8">
+	//<!-- title -->
+	echo "<div class=\"objectbox\">";
+	echo "<h1>$textTitle</h1>";
+	echo "<form method=\"post\" action=\"$formAction\" accept-charset=\"UTF-8\">";
 
 
-	<!-- set object active/inactive -->
-	<table class="cols2">
-	<tr>
-		<th colspan="2">Object Status</th>
-	</tr>
-	<tr>
-		<td>active</td>
-		<td><?php echo $checkboxString; ?></td>
-	</tr>
-	</table>
+	//<!-- set object active/inactive -->
+	echo "<table class=\"cols2\">";
+	echo "<tr>";
+	echo "<th colspan=\"2\">";
+	echo gettext("Object Status");
+	echo "</th>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td>active</td>";
+	echo "<td>$checkboxString</td>";
+	echo "</tr>";
+	echo "</table>";
 
-	<!-- object fields -->
-	<?php
+	//<!-- object fields -->
 	foreach($config->getObjectTypeConfig()->getFieldGroups($paramType) as $groupname)
-	{ ?>
-		<table class="cols2">
-		<tr>
-			<th colspan="2"><?php echo $groupname;?></th>
-		</tr>
-		<?php
+	{
+		echo "<table class=\"cols2\">";
+		echo "<tr>";
+		echo "<th colspan=\"2\">$groupname</th>";
+		echo "</tr>";
 		foreach(array_keys($config->getObjectTypeConfig()->getFieldGroupFields($paramType, $groupname)) as $field)
 		{
 			$fieldName = $field;
@@ -91,20 +90,20 @@
 			{
 				$fieldValue = $sourceObject->getFieldValue($fieldName);
 			}
-		?>
-			<tr>
-				<td><?php echo $fieldLabel;?>:</td>
-				<td><?php showFieldForDataType($paramType, $fieldName, $fieldValue, $fieldType); ?></td>
-			</tr>
-		<?php
-		} ?>
-                </table>
-	<?php
-	} ?>
+			echo "<tr>";
+			echo "<td>$fieldLabel:</td>";
+			echo "<td>";
+			echo showFieldForDataType($paramType, $fieldName, $fieldValue, $fieldType);
+			echo "</td>";
+			echo "</tr>";
+		}
+                echo "</table>";
+	}
 
 	
-		<p>
-			<input type="submit" value="Go" />
-		</p>
-	</form>
-	</div>
+	echo "<p>";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "</p>";
+	echo "</form>";
+	echo "</div>";
+?>

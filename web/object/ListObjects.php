@@ -71,141 +71,142 @@
 	//generate link for show active/inactive objects
 	if($paramActiveOnly)
 	{
-		$textShowActive = "Show also inactive objects";
+		$textShowActive = gettext("Show also inactive objects");
 		$urlShowActive = $urlShowActiveBase."0";		
 	}
 	else
 	{
-		$textShowActive = "Show only active objects";
+		$textShowActive = gettext("Show only active objects");
 		$urlShowActive = $urlShowActiveBase."1";		
 	}
 
 
+
+	//<!-- confirmation for deleting objects  -->
+	echo "<div class=\"blind\" id=\"jsConfirm\" title=\"".gettext("Are you sure?")."\">";
+	echo "<p>";
+	echo gettext("Do you really want to delete this object?");
+	echo "</p>";
+	echo "</div>";
+
+	//<!-- submenu -->
+	echo "<div class=\"submenu\">";
+	echo "<a href=\"$urlShowActive\">$textShowActive</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlAdd\">add object</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlCsvExport\">CSV export</a>";
+	echo "</div>";
+
+      	//<!-- print messages if available -->
+	if(isset($paramMessage) && $paramMessage != "")
+	{ 
+		printInfoMessage($paramMessage);   
+	}
+	if(isset($paramError) && $paramError != "")
+	{       
+		printErrorMessage($paramError);
+	}
+
+	//<!-- headline -->
+	echo "<h1>$paramType ($objectCount)</h1>";
+
+	//<!-- list objects -->
+	echo "<table class=\"list\">";
+
+	//<!-- table header -->
+	echo "<tr>";
+	echo "<th><a href=\"$urlSortBase\">";
+	echo gettext("AssetID");
+	echo "</a></th>";
+	foreach(array_keys($summaryFields) as $fieldname)
+	{
+		$urlSort = $urlSortBase .$fieldname;
+		echo "<th><a href=\"$urlSort\">".$config->getObjectTypeConfig()->getFieldLabel($paramType, $fieldname)."</a></th>";
+	}
+	echo "<th colspan=\"3\">&nbsp;</th>";
+	echo "</tr>";
+
+	//<!-- object summary -->
+	for($i = $listStart; $i <= $listEnd; $i++)
+	{ 
+		//get object status icon
+		$statusIcon = "<img src=\"img/icon_active.png\" alt=\"".gettext("active")."\" title=\"".gettext("active object")."\" />";
+		if($objects[$i]->getStatus() != 'A')
+		{
+			$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"".gettext("inactive")."\" title=\"".gettext("inactive object")."\" />";
+		}
+		echo "<tr>";
+		echo "<td>$statusIcon ".$objects[$i]->getId()."</td>";
+		foreach(array_keys($summaryFields) as $fieldname)
+		{ 
+			$urlObjectShow = "object.php?action=show&amp;id=". $objects[$i]->getId();
+			$urlObjectEdit = "object.php?action=edit&amp;id=". $objects[$i]->getId()."&amp;type=".$objects[$i]->getType();
+			$urlObjectDelete = "javascript:showConfirmation('object.php?action=delete&amp;id=". $objects[$i]->getId()."')";
+			echo "<td>".$objects[$i]->getFieldValue($fieldname)."</td>";
+		}
+		echo "<td class=\"right\">";
+		echo "<a href=\"$urlObjectShow\"><img src=\"img/icon_show.png\" title=\"".gettext("show")."\" alt=\"".gettext("show")."\" /></a>&nbsp;&nbsp;&nbsp;";
+		echo "<a href=\"$urlObjectEdit\"><img src=\"img/icon_edit.png\" title=\"".gettext("edit")."\" alt=\"".gettext("edit")."\" /></a>&nbsp;&nbsp;&nbsp;";
+		echo "<a href=\"$urlObjectDelete\"><img src=\"img/icon_delete.png\" title=\"".gettext("delete")."\" alt=\"".gettext("delete")."\" /></a>";
+		echo "</td>";
+		echo "</tr>";
+	}
+	echo "</table>";
+
+	//<!-- list navigation  -->
+	echo "<p class=\"listnav\">";
+	//print prev button
+	if($listPage != 1)
+	{
+		$listnavUrl = $listnavUrlBase .($listPage - 1);
+		echo "<a href=\"$listnavUrl\">&lt; ";
+		echo gettext("previous");
+		echo "</a>";
+	}
+	else
+	{
+		echo "<a href=\"#\" class=\"disabled\">&lt; ";
+		echo gettext("previous");
+		echo "</a>";
+	}
+	//print page numbers
+	for($i = 1; $i <= $listPages; $i++)
+	{
+		$listnavUrl = $listnavUrlBase .$i;
+		if($i == $listPage)
+		{
+			echo "<a href=\"$listnavUrl\" class=\"active\">$i</a>";
+		}
+		else
+		{
+			echo "<a href=\"$listnavUrl\">$i</a>";
+		}
+
+		//jump to current page
+		if($i == 3 && $listPage > 5)
+		{
+			$i = $listPage - 2;
+			echo "...";
+		}
+		//jump to last page
+		if($i > 3 && $i > $listPage && $i < ($listPages - 2))
+		{
+			$i = $listPages - 2;
+			echo "...";
+		}
+	}
+	//print next button
+	if($listPage != $listPages)
+	{
+		$listnavUrl = $listnavUrlBase .($listPage + 1);
+		echo "<a href=\"$listnavUrl\">";
+		echo gettext("next");
+		echo " &gt;</a>";
+	}
+	else
+	{
+		echo "<a href=\"#\" class=\"disabled\">";
+		echo gettext("next"); 
+		echo " &gt;</a>";
+	}
+	echo "</p>";
 ?>
-
-	<!-- confirmation for deleting objects  -->
-	<div class="blind" id="jsConfirm" title="Are you sure?">
-		<p>Do you really want to delete this object?</p>
-	</div>
-
-	<!-- submenu -->
-	<div class="submenu">
-		<a href="<?php echo $urlShowActive; ?>"><?php echo $textShowActive; ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		<a href="<?php echo $urlAdd; ?>">add object</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		<a href="<?php echo $urlCsvExport; ?>">CSV export</a>
-	</div>
-
-      	<!-- print messages if available -->
-        <?php
-                if(isset($paramMessage) && $paramMessage != "")
-                { 
-                        printInfoMessage($paramMessage);   
-                }
-                if(isset($paramError) && $paramError != "")
-                {       
-                        printErrorMessage($paramError);
-                }
-
-        ?>
-   
-	<!-- headline -->
-	<h1><?php echo $paramType; ?> (<?php echo $objectCount; ?>)</h1>
-
-	<!-- list objects -->
-	<table class="list">
-		<!-- table header -->
-		<tr>
-			<th><a href="<?php echo "$urlSortBase"; ?>">AssetID</a></th>
-			<?php
-                        foreach(array_keys($summaryFields) as $fieldname)
-                        {
-				$urlSort = $urlSortBase .$fieldname;
-                                echo "<th><a href=\"$urlSort\">".$config->getObjectTypeConfig()->getFieldLabel($paramType, $fieldname)."</a></th>";
-                        }
-			?>
-			<th colspan="3">&nbsp;</th>
-		</tr>
-		<!-- object summary -->
-			<?php
-			for($i = $listStart; $i <= $listEnd; $i++)
-			{ 
-				//get object status icon
-				$statusIcon = "<img src=\"img/icon_active.png\" alt=\"active\" title=\"active object\" />";
-				if($objects[$i]->getStatus() != 'A')
-				{
-					$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"inactive\" title=\"inactive object\" />";
-				}
-			?>
-				<tr>
-					<td><?php echo "$statusIcon ".$objects[$i]->getId(); ?></td>
-					<?php
-					foreach(array_keys($summaryFields) as $fieldname)
-					{ 
-						$urlObjectShow = "object.php?action=show&amp;id=". $objects[$i]->getId();
-						$urlObjectEdit = "object.php?action=edit&amp;id=". $objects[$i]->getId()."&amp;type=".$objects[$i]->getType();
-						$urlObjectDelete = "javascript:showConfirmation('object.php?action=delete&amp;id=". $objects[$i]->getId()."')";
-					?>
-						<td><?php echo $objects[$i]->getFieldValue($fieldname);?></td>
-					<?php
-					} ?>
-					<td class="right">
-						<a href="<?php echo $urlObjectShow; ?>"><img src="img/icon_show.png" title="show" alt="show" /></a>&nbsp;&nbsp;&nbsp;
-						<a href="<?php echo $urlObjectEdit; ?>"><img src="img/icon_edit.png" title="edit" alt="edit" /></a>&nbsp;&nbsp;&nbsp;
-						<a href="<?php echo $urlObjectDelete; ?>"><img src="img/icon_delete.png" title="delete" alt="delete" /></a>
-					</td>
-				</tr>
-			<?php
-                        } ?>
-	</table>
-
-	<!-- list navigation  -->
-	<p class="listnav">
-		<?php
-			//print prev button
-			if($listPage != 1)
-			{
-				$listnavUrl = $listnavUrlBase .($listPage - 1);
-				echo "<a href=\"$listnavUrl\">&lt; previous</a>";
-			}
-			else
-			{
-				echo "<a href=\"#\" class=\"disabled\">&lt; previous</a>";
-			}
-			//print page numbers
-			for($i = 1; $i <= $listPages; $i++)
-			{
-				$listnavUrl = $listnavUrlBase .$i;
-				if($i == $listPage)
-				{
-					echo "<a href=\"$listnavUrl\" class=\"active\">$i</a>";
-				}
-				else
-				{
-					echo "<a href=\"$listnavUrl\">$i</a>";
-				}
-
-				//jump to current page
-				if($i == 3 && $listPage > 5)
-				{
-					$i = $listPage - 2;
-					echo "...";
-				}
-				//jump to last page
-				if($i > 3 && $i > $listPage && $i < ($listPages - 2))
-				{
-					$i = $listPages - 2;
-					echo "...";
-				}
-			}
-			//print next button
-			if($listPage != $listPages)
-			{
-				$listnavUrl = $listnavUrlBase .($listPage + 1);
-				echo "<a href=\"$listnavUrl\">next &gt;</a>";
-			}
-			else
-			{
-				echo "<a href=\"#\" class=\"disabled\">next &gt;</a>";
-			}
-		?>
-	</p>

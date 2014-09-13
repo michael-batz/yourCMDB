@@ -64,7 +64,7 @@
 			catch(NoSuchObjectException $e)
 			{
 				//show error message and search form
-				$paramError = "No object with AssetID $paramId found...";
+				$paramError = sprintf(gettext("No object with AssetID %s found..."), $paramId);
 				include "search/SearchForm.php";
 				break;
 			}
@@ -88,7 +88,7 @@
 			//check, if HTTP POST variables are set
 			if(count($_POST) <= 0)
 			{
-				$paramError = "No data were set when saving an object.";
+				$paramError = gettext("No data were set when saving an object.");
 				include "error/Error.php";
 				break;
 			}	
@@ -109,12 +109,12 @@
 			}
 			catch(NoSuchObjectException $e)
 			{
-				$paramError = "Error saving new object";
+				$paramError = gettext("Error saving new object");
 				include "error/Error.php";
 				break;
 			}
 			//show new object
-			$paramMessage = "New Object successfully created";
+			$paramMessage = gettext("New Object successfully created");
 			include "object/ShowObject.php";
 			break;
 
@@ -134,7 +134,7 @@
 				//check, if HTTP POST variables are set
 				if(count($_POST) <= 0)
 				{
-					$paramError = "No data were set when saving an object.";
+					$paramError = gettext("No data were set when saving an object.");
 					include "object/ShowObject.php";
 					break;
 				}	
@@ -144,12 +144,12 @@
 			}
 			catch(NoSuchObjectException $e)
 			{
-				$paramError = "Error saving object";
+				$paramError = gettext("Error saving object");
 				include "error/Error.php";
 				break;
 			}
 			//show changed object
-			$paramMessage = "Object successfully changed";
+			$paramMessage = gettext("Object successfully changed");
 			include "object/ShowObject.php";
 			break;
 
@@ -162,12 +162,12 @@
 			}
 			catch(NoSuchObjectException $e)
 			{
-				$paramError = "Error deleting object: Object not found";
+				$paramError = gettext("Error deleting object: Object not found");
 				include "error/Error.php";
 				break;
 			}
 			//show object list with message
-			$paramMessage = "Object deleted";
+			$paramMessage = gettext("Object deleted");
 			include "object/ListObjects.php";
 			break;
 
@@ -179,7 +179,7 @@
 			}
 			catch(NoSuchObjectException $e)
 			{
-				$paramError = "Object for adding links not found.";
+				$paramError = gettext("Object for adding links not found.");
 				include "error/Error.php";
 				break;
 			}
@@ -188,18 +188,18 @@
 			try
 			{
 				$result = $datastore->addObjectLink($paramId, $paramIdB);
-				$paramMessage = "Object link successfully added";
+				$paramMessage = gettext("Object link successfully added");
 			}
 			catch(NoSuchObjectException $e)
 			{
-				$paramError = "Error adding object link: Object B not found";
+				$paramError = gettext("Error adding object link: Object B not found");
 			}
 			catch(ObjectActionNotAllowed $e)
 			{
-				$paramError = "Link object $paramId with object $paramIdB is not allowed.";
+				$paramError = sprintf(gettext("Link object %s with object %s is not allowed."), $paramId, $paramIdB);
 				if($paramId != $paramIdB)
 				{
-					$paramError.= " The object link already exists.";
+					$paramError.= gettext(" The object link already exists.");
 				}
 			}
 			//open object page
@@ -212,11 +212,11 @@
 				//delete link
 				$object = $datastore->getObject($paramId);
 				$result = $datastore->deleteObjectLink($paramId, $paramIdB);
-				$paramMessage = "Object link was successfully deleted";
+				$paramMessage = gettext("Object link was successfully deleted");
 			}
 			catch(NoSuchObjectException $e)
 			{
-				$paramError = "Error deleting object link: object not found";
+				$paramError = gettext("Error deleting object link: object not found");
 				include "error/Error.php";
 				break;
 			}
@@ -230,11 +230,11 @@
 			{
 				$object = $datastore->getObject($paramId);
 				$controller->getEventProcessor()->generateEvent($paramEvent, $object->getId(), $object->getType());
-				$paramMessage = "Event $paramEvent was successfully sent";
+				$paramMessage = sprintf(gettext("Event %s was successfully sent"), $paramEvent);
 			}
 			catch(NoSuchObjectException $e)
 			{
-				$paramError = "Error sending event: object not found";
+				$paramError = gettext("Error sending event: object not found");
 				include "error/Error.php";
 				break;
 			}
