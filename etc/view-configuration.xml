@@ -6,7 +6,7 @@
 	<menu-items>
 		<menu-item name="Home" url="index.php" />
 		<menu-item name="Search" url="search.php" />
-		<menu-item name="Add Object" url="object.php?action=new" />
+		<menu-item name="New Object" url="object.php?action=new" />
 		<menu-item name="Import-Export" url="import.php" />
 	</menu-items>
 </view-configuration>

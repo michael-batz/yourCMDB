@@ -33,7 +33,7 @@
 	echo "<p>";
 	echo gettext("Asset ID:");
 	echo "<br />";
-	echo "<input type=\"text\" name=\"id \" />";
+	echo "<input type=\"text\" name=\"id\" />";
 	echo "<input type=\"hidden\" name=\"action\" value=\"show\" />";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
 	echo "</p>";
