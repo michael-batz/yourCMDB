@@ -140,7 +140,7 @@
 		{ 
 			$urlObjectShow = "object.php?action=show&amp;id=". $objects[$i]->getId();
 			$urlObjectEdit = "object.php?action=edit&amp;id=". $objects[$i]->getId()."&amp;type=".$objects[$i]->getType();
-			$urlObjectDelete = "javascript:showConfirmation('object.php?action=delete&amp;id=". $objects[$i]->getId()."')";
+			$urlObjectDelete = "javascript:showConfirmation('object.php?action=delete&amp;id=". $objects[$i]->getId()."', '".gettext("Yes")."', '".gettext("Cancel")."')";
 			echo "<td>".$objects[$i]->getFieldValue($fieldname)."</td>";
 		}
 		echo "<td class=\"right\">";

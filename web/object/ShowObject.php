@@ -37,7 +37,7 @@
 	$urlNew = "object.php?action=add&amp;type=".$object->getType();
 	$urlDuplicate = "object.php?action=add&amp;type=".$object->getType()."&amp;id=".$object->getId();
 	$urlEdit = "object.php?action=edit&amp;type=".$object->getType()."&amp;id=".$object->getId();
-	$urlDelete = "javascript:showConfirmation('object.php?action=delete&amp;id=".$object->getId()."')";
+	$urlDelete = "javascript:showConfirmation('object.php?action=delete&amp;id=".$object->getId()."', '".gettext("Yes")."', '".gettext("Cancel")."')";
 	$urlQrCode = $config->getViewConfig()->getQrCodeUrlPrefix() ."/shortlink.php?id=". $object->getId();
 	$statusImage = "<img src=\"img/icon_active.png\" alt=\"".gettext("active")."\" title=\"".gettext("active object")."\"/>";
 	if($object->getStatus() == 'N')

@@ -67,13 +67,15 @@
 		case "quicksearch":
 			//add entry for search in all objects
 			$value = "search for $paramSearchstring in all objects";
-			$output[] = array("id" => $value, "label" => $value, "value" => $value);
+			$label = sprintf(gettext("search for %s in all objects"), $paramSearchString);
+			$output[] = array("id" => $value, "label" => $label, "value" => $value);
 
 			//add entries for search in object groups
 			foreach(array_keys($config->getObjectTypeConfig()->getObjectTypeGroups()) as $groupname)
 			{
 				$value = "search for $paramSearchstring in group $groupname";
-				$output[] = array("id" => $value, "label" => $value, "value" => $value);
+				$label = sprintf(gettext("search for %s in group %s"), $paramSearchString, $groupname);
+				$output[] = array("id" => $value, "label" => $label, "value" => $value);
 			}
 		break;
 

@@ -32,14 +32,14 @@ function openUrl(url)
 /**
 * Ask for confirmation for an action
 */
-function showConfirmation(urlAction)
+function showConfirmation(urlAction, button1Label, button2Label)
 {
+	var buttonDefs = {};
+	buttonDefs[button1Label] = function(){openUrl(urlAction);};
+	buttonDefs[button2Label] = function(){$( this ).dialog("close");};
 	$( "#jsConfirm" ).dialog({
 			modal: true,
-			buttons: {
-					"Yes": function(){openUrl(urlAction);},
-					"Canel": function(){$( this ).dialog("close");},
-				}
+			buttons:buttonDefs,
 		});
 };
 
