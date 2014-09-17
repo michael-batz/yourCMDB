@@ -458,35 +458,40 @@ class MySQLDataStore implements DataStoreInterface
 
 	/**
 	* Search for objects. Get all objects with a specific field value
-	* @param $searchstring	Searchstring
+	* @param $searchstrings	Array of searchstrings
 	* @param $types		Array with object types or null. Only show objects of a specific type
 	* @returns 		Array with objects
 	*/
-	public function getObjectsByFieldvalue($searchstring, $types=null, $activeOnly=true, $max=0, $start=0)
+	public function getObjectsByFieldvalue($searchstrings, $types=null, $activeOnly=true, $max=0, $start=0)
 	{
 		//escape strings
-		$searchstring = mysql_real_escape_string($searchstring, $this->dbConnection);
 		$activeOnly = mysql_real_escape_string($activeOnly, $this->dbConnection);
 		$max = mysql_real_escape_string($max, $this->dbConnection);
 		$start = mysql_real_escape_string($start, $this->dbConnection);
 		
 
 		//get all IDs
-                $sql = "SELECT distinct CmdbObject.assetid FROM CmdbObject, CmdbObjectField ";
-		$sql.= "WHERE CmdbObject.assetid = CmdbObjectField.assetid ";
+		$sql = "SELECT o.assetid FROM CmdbObject o ";
+		$sql.= "WHERE ";
+		//sql searchstrings
+		foreach($searchstrings as $searchstring)
+		{
+			$searchstring = mysql_real_escape_string($searchstring, $this->dbConnection);
+			$sql.= "o.assetid IN (SELECT assetid FROM CmdbObjectField WHERE fieldvalue like '%$searchstring%') AND ";
+		}
+		//sql activeonly
 		if($activeOnly)
 		{
-			$sql.= "AND CmdbObject.active='A' ";
+			$sql.= "o.active='A' ";
 		}
 		else
 		{
-			$sql.= "AND CmdbObject.active!='D' ";
+			$sql.= "o.active!='D' ";
 		}
-
-
+		//sql object types
 		if($types != null && count($types) != 0)
 		{
-			$sql.= "AND CmdbObject.type IN (";
+			$sql.= "AND o.type IN (";
 			for($i = 0; $i < count($types); $i++)
 			{
 				$sql.= "'".mysql_real_escape_string($types[$i], $this->dbConnection)."'";
@@ -497,10 +502,10 @@ class MySQLDataStore implements DataStoreInterface
 			}
 			$sql.= ") ";
 		}
-		$sql.= "AND fieldvalue like '%$searchstring%' ";
+		//sql limit
 		if($max != 0)
 		{
-			$sql.= "limit $start, $max";
+			$sql.= "LIMIT $start, $max";
 		}
                 $result = $this->dbGetData($sql);
 

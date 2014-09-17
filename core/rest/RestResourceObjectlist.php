@@ -44,7 +44,7 @@ class RestResourceObjectlist extends RestResource
 			switch($listtype)
 			{
 				case "by-fieldvalue":
-					$objects = $this->datastore->getObjectsByFieldvalue($searchvalue, null, false, 0, 0); 
+					$objects = $this->datastore->getObjectsByFieldvalue(array($searchvalue), null, false, 0, 0); 
 					break;
 
 				case "by-objecttype":
