@@ -56,13 +56,17 @@
 	echo "<p>";
 	echo gettext("Searchstring:");
 	echo "<br />";
-	echo "<input id=\"quicksearch\" type=\"text\" value=\"$paramSearchString\" name=\"searchstring\" onfocus=\"javascript:showSearchBar('#quicksearchoptions')\"/>";
+	echo "<input id=\"quicksearch\" type=\"text\" value=\"$paramSearchString\" name=\"searchstring[]\" onfocus=\"javascript:showSearchBar('#quicksearchoptions')\"/>";
 	echo "</p>";
 	echo "</fieldset>";
 	//search options
 	echo "<fieldset class=\"searchoptions\" id=\"quicksearchoptions\">";
 	echo "<table>";
 	//active objects
+	echo "<tr>";
+	echo "<td>".gettext("Searchstring 2")."</td>";
+	echo "<td><input type=\"text\" name=\"searchstring[]\"/></td>";
+	echo "</tr>";
 	echo "<tr>";
 	echo "<td>".gettext("show inactive objects")."</td>";
 	if($paramActiveOnly == "1")

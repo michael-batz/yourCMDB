@@ -73,15 +73,15 @@
 			{
 				$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
 				$searchTypes = $objectTypes[$paramTypeGroup];
-				$objects = $datastore->getObjectsByFieldvalue(array($paramSearchString), $searchTypes, $paramActiveOnly);
+				$objects = $datastore->getObjectsByFieldvalue($paramSearchString, $searchTypes, $paramActiveOnly);
 			}
 			else if($paramType != "")
 			{
-				$objects = $datastore->getObjectsByFieldvalue(array($paramSearchString), array($paramType), $paramActiveOnly);
+				$objects = $datastore->getObjectsByFieldvalue($paramSearchString, array($paramType), $paramActiveOnly);
 			}
 			else
 			{
-				$objects = $datastore->getObjectsByFieldvalue(array($paramSearchString), null, $paramActiveOnly);
+				$objects = $datastore->getObjectsByFieldvalue($paramSearchString, null, $paramActiveOnly);
 			}
 
 			if(count($objects) > 0)
