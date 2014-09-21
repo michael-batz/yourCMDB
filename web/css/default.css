@@ -482,6 +482,26 @@ div.objecttabs table
 }
 
 /**
+* searchbar
+*
+**/
+table#searchbarStrings
+{
+	width:		50px;
+	float: 		left;
+}
+table#searchbarOptions
+{
+	margin-left: 300px;
+}
+
+p#searchbarFooter
+{
+	clear:		both;
+	text-align:	center;
+}
+
+/**
 * jQuery Elements
 *
 **/

@@ -62,13 +62,13 @@
 	echo "<p>";
 	echo gettext("Searchstring:");
 	echo "<br />";
-	echo "<input id=\"quicksearch\" type=\"text\" value=\"$searchstring0\" name=\"searchstring[]\" onfocus=\"javascript:showSearchBar('#quicksearchoptions')\"/>";
+	echo "<input id=\"quicksearch\" type=\"text\" value=\"$searchstring0\" name=\"searchstring[]\" onfocus=\"javascript:showSearchBar('#searchbar')\"/>";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
 	echo "</p>";
 	echo "</fieldset>";
 	//search options
-	echo "<fieldset class=\"searchoptions\" id=\"quicksearchoptions\">";
-	echo "<table id=\"searchoptionstable\">";
+	echo "<fieldset class=\"searchoptions\" id=\"searchbar\">";
+	echo "<table id=\"searchbarStrings\">";
 	//additional search strings
 	for($i = 1; $i < count($paramSearchString); $i++)
 	{
@@ -81,9 +81,11 @@
 		echo "</tr>";
 	}
 	echo "<tr>";
-	echo "<td colspan=\"2\"><input type=\"button\" value=\"".gettext('add searchstring')."\" onclick=\"javascript:searchbarAddField('#searchoptionstable', '".gettext('searchstring')."', 'searchstring[]', '')\"></td>";
+	echo "<td colspan=\"2\"><input type=\"button\" value=\"".gettext('add searchstring')."\" onclick=\"javascript:searchbarAddField('#searchbarStrings', '".gettext('searchstring')."', 'searchstring[]', '')\"></td>";
 	echo "</tr>";
+	echo "</table>";
 	//active objects
+	echo "<table id=\"searchbarOptions\">";
 	echo "<tr>";
 	echo "<td>".gettext("show inactive objects")."</td>";
 	if($paramActiveOnly == "1")
@@ -137,6 +139,12 @@
 	echo "</select></td>";
 	echo "</tr>";
 	echo "</table>";
+
+	//searchbar footer
+	echo "<p id=\"searchbarFooter\">";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "<input type=\"reset\" value=\"".gettext("Clear")."\" />";
+	echo "</p>";
 	echo "</fieldset>";
 	echo "</form>";
 	echo "</div>";
