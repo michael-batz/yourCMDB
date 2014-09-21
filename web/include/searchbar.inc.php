@@ -21,22 +21,28 @@
 *********************************************************************/
 
 /**
-* WebUI element: quicksearch
+* WebUI element: search bar
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
 	//get data
 	$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
 	//get possibly set parameters
-        $paramSearchString = getHttpGetVar("searchstring", "");
         $paramType = getHttpGetVar("type", "");
         $paramTypeGroup = getHttpGetVar("typegroup", "");
         $paramActiveOnly = getHttpGetVar("activeonly", "1");
+        $paramSearchString = getHttpGetVar("searchstring", Array());
 
+	//searchstrings
+	$searchstring0 = "";
+	if(isset($paramSearchString[0]))
+	{
+		$searchstring0 = $paramSearchString[0];
+	}
 
 	echo "<div class=\"box\">";
 	echo "<h1>";
-	echo gettext("Quicksearch");
+	echo gettext("Search");
 	echo "</h1>";
 
 	//Search by AssetID
@@ -56,17 +62,28 @@
 	echo "<p>";
 	echo gettext("Searchstring:");
 	echo "<br />";
-	echo "<input id=\"quicksearch\" type=\"text\" value=\"$paramSearchString\" name=\"searchstring[]\" onfocus=\"javascript:showSearchBar('#quicksearchoptions')\"/>";
+	echo "<input id=\"quicksearch\" type=\"text\" value=\"$searchstring0\" name=\"searchstring[]\" onfocus=\"javascript:showSearchBar('#quicksearchoptions')\"/>";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
 	echo "</p>";
 	echo "</fieldset>";
 	//search options
 	echo "<fieldset class=\"searchoptions\" id=\"quicksearchoptions\">";
-	echo "<table>";
-	//active objects
+	echo "<table id=\"searchoptionstable\">";
+	//additional search strings
+	for($i = 1; $i < count($paramSearchString); $i++)
+	{
+		echo "<tr>";
+		echo "<td>".gettext("serachstring")."</td>";
+		echo "<td>";
+		echo "<input type=\"text\" name=\"searchstring[]\" value=\"{$paramSearchString[$i]}\" />";
+		echo "<input type=\"button\" value=\"remove\" onclick=\"javascript:searchbarRemoveField($(this).parent().parent())\" />";
+		echo "</td>";
+		echo "</tr>";
+	}
 	echo "<tr>";
-	echo "<td>".gettext("Searchstring 2")."</td>";
-	echo "<td><input type=\"text\" name=\"searchstring[]\"/></td>";
+	echo "<td colspan=\"2\"><input type=\"button\" value=\"".gettext('add searchstring')."\" onclick=\"javascript:searchbarAddField('#searchoptionstable', '".gettext('searchstring')."', 'searchstring[]', '')\"></td>";
 	echo "</tr>";
+	//active objects
 	echo "<tr>";
 	echo "<td>".gettext("show inactive objects")."</td>";
 	if($paramActiveOnly == "1")
@@ -118,10 +135,6 @@
 		echo "</optgroup>";
 	}
 	echo "</select></td>";
-	echo "</tr>";
-	//submit button
-	echo "<tr>";
-	echo "<td colspan=\"2\"><input type=\"submit\" value=\"".gettext("Go")."\" /></td>";
 	echo "</tr>";
 	echo "</table>";
 	echo "</fieldset>";

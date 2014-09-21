@@ -38,6 +38,7 @@
 		<link rel="stylesheet" type="text/css" href="css/default.css" />
 		<script src="js/jquery-1.9.1.js" type="text/javascript"></script>
 		<script src="js/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+		<script src="js/searchbar.js" type="text/javascript"></script>
 		<script src="js/functions.js" type="text/javascript"></script>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<title>yourCMDB</title>

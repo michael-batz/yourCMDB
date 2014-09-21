@@ -54,22 +54,6 @@ function showAutocompleter(id, source)
 	});
 };
 
-/**
-* Show SearchBar (use with JS event handler onfocus)
-*/
-function showSearchBar(id)
-{
-	$( id  ).show('blind');
-};
-
-/**
-* Hide SearchBar (use with JS event handler onblur)
-*/
-function hideSearchBar(id)
-{
-	$( id  ).hide('blind');
-};
-
 
 /**
 * Show Datepicker on input fields (use with JS event handler onfocus)

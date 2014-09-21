@@ -32,8 +32,8 @@
 	//start menu
 	echo "<div class=\"menu\">";
 
-	//quick search box
-	include "quicksearch.inc.php";
+	//search bar box
+	include "searchbar.inc.php";
 
 	//object menu
 	echo "<div class=\"box\">";
