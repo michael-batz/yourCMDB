@@ -32,7 +32,7 @@ function showSearchBar(id)
 /**
 * Hide SearchBar (use with JS event handler onblur)
 */
-function hideSearchBar(id)
+function searchbarHide(id)
 {
 	$( id  ).hide('blind');
 };
@@ -44,8 +44,8 @@ function searchbarAddField(id, caption, name, value)
 {
 	var htmlstring;
 	htmlstring = '<tr>';
-	htmlstring += '<td>' + caption + '</td>';
-	htmlstring += '<td><input type="text" name="' + name + '" value="' + value + '"><input type="button" value="remove" onclick="javascript:searchbarRemoveField($(this).parent().parent())"/></td>';
+	htmlstring += '<td><input type="text" name="' + name + '" value="' + value + '"></td>';
+	htmlstring += '<td><a href="#" onclick="javascript:searchbarRemoveField($(this).parent().parent())"><img src="img/icon_delete.png" alt="delete" /></a></td>';
 	htmlstring += '</tr>';
 	$( id  ).add(htmlstring).prependTo( id );
 };

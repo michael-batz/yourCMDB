@@ -60,6 +60,9 @@ a:hover, a:active
 fieldset
 {
 	border:		none;
+	margin:		0px;
+	padding:	0px;
+	padding-bottom:	5px;
 	
 }
 
@@ -158,17 +161,6 @@ div.header div.mainmenu li
 	margin:		20px;
 }
 
-.searchoptions
-{
-	display:	none;
-	position:	absolute;
-	background:	#FFFFFF;
-	border:         1pt solid;
-        border-radius:  5px;
-        width:          250px;
-        font-size:      9pt;
-
-}
 
 /**
 * Menu 
@@ -485,16 +477,33 @@ div.objecttabs table
 * searchbar
 *
 **/
+.searchoptions
+{
+	display:	none;
+	position:	absolute;
+	background:	#FFFFFF;
+	border:         1pt solid;
+        border-radius:  5px;
+        font-size:      9pt;
+	z-index:	11;
+}
+
+
 table#searchbarStrings
 {
-	width:		50px;
+	width:		200px;
 	float: 		left;
 }
 table#searchbarOptions
 {
-	margin-left: 300px;
+	margin-left: 	250px;
+	width:		250px;
 }
 
+p#searchbarHeader
+{
+	text-align:	right;
+}
 p#searchbarFooter
 {
 	clear:		both;

@@ -66,22 +66,27 @@
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
 	echo "</p>";
 	echo "</fieldset>";
-	//search options
+
+
+	//search bar options hover menu
 	echo "<fieldset class=\"searchoptions\" id=\"searchbar\">";
+	echo "<p id=\"searchbarHeader\"><a href=\"#\" onclick=\"javascript:searchbarHide('#searchbar')\"><img src=\"img/icon_delete.png\" /></a></p>";
 	echo "<table id=\"searchbarStrings\">";
 	//additional search strings
 	for($i = 1; $i < count($paramSearchString); $i++)
 	{
 		echo "<tr>";
-		echo "<td>".gettext("serachstring")."</td>";
-		echo "<td>";
-		echo "<input type=\"text\" name=\"searchstring[]\" value=\"{$paramSearchString[$i]}\" />";
-		echo "<input type=\"button\" value=\"remove\" onclick=\"javascript:searchbarRemoveField($(this).parent().parent())\" />";
-		echo "</td>";
+		echo "<td><input type=\"text\" name=\"searchstring[]\" value=\"{$paramSearchString[$i]}\" /></td>";
+		echo "<td><a href=\"#\" onclick=\"javascript:searchbarRemoveField($(this).parent().parent())\"><img src=\"img/icon_delete.png\" alt=\"delete\"/></a></td>";
 		echo "</tr>";
 	}
+	//add searchstring link
 	echo "<tr>";
-	echo "<td colspan=\"2\"><input type=\"button\" value=\"".gettext('add searchstring')."\" onclick=\"javascript:searchbarAddField('#searchbarStrings', '".gettext('searchstring')."', 'searchstring[]', '')\"></td>";
+	echo "<td colspan=\"2\">";
+	echo "<a href=\"#\" onclick=\"javascript:searchbarAddField('#searchbarStrings', '".gettext('searchstring')."', 'searchstring[]', '')\">";
+	echo "<img src=\"img/icon_show.png\" alt=\"add searchstring\"/>add searchstring";
+	echo "</a>";
+	echo "</td>";
 	echo "</tr>";
 	echo "</table>";
 	//active objects
