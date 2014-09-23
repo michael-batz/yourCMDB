@@ -21,42 +21,37 @@
 *********************************************************************/
 
 /**
-* WebUI element: show menu with object types
+* WebUI element: search bar
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
 
-	//get object types from configuration
-	$objectGroups = $config->getObjectTypeConfig()->getObjectTypeGroups();
-
-	//start menu
-	echo "<div class=\"menu\">";
-
-	//quicksearch box
-	include "quicksearch.inc.php";
-
-	//object menu
 	echo "<div class=\"box\">";
 	echo "<h1>";
-	echo gettext("Objects");
+	echo gettext("Search");
 	echo "</h1>";
-	echo "<ul id=\"jsMenu\">";
-	//walk through all object type groups
-	foreach(array_keys($objectGroups) as $groupname)
-	{
-		echo "<li><a href=\"#\">$groupname</a><ul>";
-		foreach($objectGroups[$groupname] as $objectType)
-		{
-			echo "<li>";
-			echo "<a  href=\"object.php?action=list&amp;type=$objectType\">";
-			echo "$objectType (".$datastore->getObjectCounts($objectType).")";
-			echo "</a>";
-			echo "</li>";
-		}
-		echo "</ul></li>";
-	}
-	echo "</ul>";
+
+	//Search by AssetID
+	echo "<form action=\"object.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<p>";
+	echo gettext("Asset ID:");
+	echo "<br />";
+	echo "<input type=\"text\" name=\"id\" />";
+	echo "<input type=\"hidden\" name=\"action\" value=\"show\" />";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "</p>";
+	echo "</form>";
+
+	//Search by field value
+	echo "<form action=\"search.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<p>";
+	echo gettext("Searchstring:");
+	echo "<br />";
+	echo "<input id=\"quicksearch\" type=\"text\" name=\"searchstring[]\" />";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "</p>";
+
+
 	echo "</div>";
 
-	//end of menu
-	echo "</div>";
+?>

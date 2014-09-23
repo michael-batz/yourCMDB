@@ -55,28 +55,8 @@
 
 
 	//urls
-	$urlSearchForm = "search.php";
-	$urlShowActiveBase = "search.php?searchstring=$paramSearchString&amp;typegroup=$paramTypeGroup&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=";
 	$listnavUrlBase = "search.php?searchstring=$paramSearchString&amp;typegroup=$paramTypeGroup&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=$paramActiveOnly&amp;page=";
 
-	//generate link for show active/inactive objects
-	if($paramActiveOnly)
-	{
-		$textShowActive = gettext("Show also inactive objects");
-		$urlShowActive = $urlShowActiveBase."0";                
-	}
-	else    
-	{
-		$textShowActive = gettext("Show only active objects");
-		$urlShowActive = $urlShowActiveBase."1";
-        }
-
-
-	//<!-- submenu -->
-	echo "<div class=\"submenu\">";
-	echo "<a href=\"$urlShowActive\">$textShowActive</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlSearchForm\">".gettext("Search Form")."</a>";
-	echo "</div>";
 
 
 	//<!-- title -->

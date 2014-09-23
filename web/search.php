@@ -31,12 +31,12 @@
 
 
 	//get parameter
-	$paramSearchString = getHttpGetVar("searchstring", "");
 	$paramType = getHttpGetVar("type", "");
 	$paramTypeGroup = getHttpGetVar("typegroup", "");
 	$paramMax = getHttpGetVar("max", $config->getViewConfig()->getContentTableLength());
         $paramPage = getHttpGetVar("page", "1");
         $paramActiveOnly = getHttpGetVar("activeonly", "1");
+        $paramSearchString = getHttpGetVar("searchstring", Array());
 
 	//get data from quicksearch syntax
 	if(preg_match('/^search for (.*?) in (.*)$/', $paramSearchString, $matches) == 1 && $paramType == "" && $paramTypeGroup == "")
@@ -52,53 +52,38 @@
 	}
 
 
-	//define action
-	$action = "form";
-	if($paramSearchString != "")
+	//show search form
+	include "search/SearchForm.php";
+
+	//get all searched objects
+	$objects = null;
+	if($paramTypeGroup != "")
 	{
-		$action = "result";
+		$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
+		$searchTypes = $objectTypes[$paramTypeGroup];
+		$objects = $datastore->getObjectsByFieldvalue($paramSearchString, $searchTypes, $paramActiveOnly);
+	}
+	else if($paramType != "")
+	{
+		$objects = $datastore->getObjectsByFieldvalue($paramSearchString, array($paramType), $paramActiveOnly);
+	}
+	else
+	{
+		$objects = $datastore->getObjectsByFieldvalue($paramSearchString, null, $paramActiveOnly);
 	}
 
-	switch($action)
+	if(count($objects) > 0)
 	{
-		case "form":
-			//show search form
-			include "search/SearchForm.php";
-			break;
-
-		case "result":
-			//get all searched objects
-			$objects = null;
-			if($paramTypeGroup != "")
-			{
-				$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
-				$searchTypes = $objectTypes[$paramTypeGroup];
-				$objects = $datastore->getObjectsByFieldvalue($paramSearchString, $searchTypes, $paramActiveOnly);
-			}
-			else if($paramType != "")
-			{
-				$objects = $datastore->getObjectsByFieldvalue($paramSearchString, array($paramType), $paramActiveOnly);
-			}
-			else
-			{
-				$objects = $datastore->getObjectsByFieldvalue($paramSearchString, null, $paramActiveOnly);
-			}
-
-			if(count($objects) > 0)
-			{
-				//show search results
-				include "search/SearchResult.php";
-			}
-			else
-			{
-				//show search form with error message
-				$paramMessage = sprintf(gettext("No objects with field value %s found. Please try again..."), $paramSearchString);
-				include "search/SearchForm.php";
-			}
-			break;
-
+		//show search results
+		include "search/SearchResult.php";
+	}
+	else
+	{
+		//show search form with error message
+		$paramMessage = sprintf(gettext("No objects with field value %s found. Please try again..."), $paramSearchString);
 	}
 
-//include footer
-include "include/footer.inc.php";
+
+	//include footer
+	include "include/footer.inc.php";
 ?>

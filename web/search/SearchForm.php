@@ -29,6 +29,13 @@
 	//get data
 	$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
 
+	//searchstrings
+	$searchstring0 = "";
+	if(isset($paramSearchString[0]))
+	{
+		$searchstring0 = $paramSearchString[0];
+	}
+
 	//print messages if available
 	if(isset($paramMessage) && $paramMessage != "")
 	{
@@ -44,77 +51,97 @@
 	echo gettext("Search");
 	echo "</h1>";
 
-	//<!-- search for objects with a specific field value and type -->
+
+
+
+	echo "<div class=\"searchbar\">";
 	echo "<form action=\"search.php\" method=\"get\" accept-charset=\"UTF-8\">";
-	echo "<table class=\"cols2\">";
-	echo "<tr><th colspan=\"2\">".gettext("Search in all objects")."</th></tr>";
+
+
+	//search strings
+	echo "<table id=\"searchbarStrings\">";
 	echo "<tr>";
-	echo "<td>".gettext("Searchstring")."</td>";
-	echo "<td><input type=\"text\" name=\"searchstring\" /></td>";
+	echo "<td><input id=\"quicksearch\" type=\"text\" value=\"$searchstring0\" name=\"searchstring[]\" /></td>";
+	echo "<td>&nbsp;</td>";
 	echo "</tr>";
+	//additional search strings
+	for($i = 1; $i < count($paramSearchString); $i++)
+	{
+		echo "<tr>";
+		echo "<td><input type=\"text\" name=\"searchstring[]\" value=\"{$paramSearchString[$i]}\" /></td>";
+		echo "<td><a href=\"#\" onclick=\"javascript:searchbarRemoveField($(this).parent().parent())\"><img src=\"img/icon_delete.png\" alt=\"delete\"/></a></td>";
+		echo "</tr>";
+	}
+	//add searchstring link
 	echo "<tr>";
 	echo "<td colspan=\"2\">";
-	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "<a href=\"#\" onclick=\"javascript:searchbarAddField('#searchbarStrings', '".gettext('searchstring')."', 'searchstring[]', '')\">";
+	echo "<img src=\"img/icon_show.png\" alt=\"add searchstring\"/>add searchstring";
+	echo "</a>";
 	echo "</td>";
 	echo "</tr>";
 	echo "</table>";
-	echo "</form>";
-
-
-
-	//<!-- search for objects with a specific field value and type -->
-	echo "<form action=\"search.php\" method=\"get\" accept-charset=\"UTF-8\">";
-	echo "<table class=\"cols2\">";
-	echo "<tr><th colspan=\"2\">".gettext("Search for objects of a specific type")."</th></tr>";
+	//active objects
+	echo "<table id=\"searchbarOptions\">";
+	echo "<tr>";
+	echo "<td>".gettext("show inactive objects")."</td>";
+	if($paramActiveOnly == "1")
+	{
+		echo "<td><input type=\"checkbox\" name=\"activeonly\" value=\"0\"/></td>";
+	}
+	else
+	{
+		echo "<td><input type=\"checkbox\" name=\"activeonly\" value=\"0\" checked=\"checked\" /></td>";
+	}
+	echo "</tr>";
+	//objecttype group
+	echo "<tr>";
+	echo "<td>".gettext("objecttype group")."</td>";
+	echo "<td><select name=\"typegroup\">";
+	echo "<option></option>";
+        foreach(array_keys($objectTypes) as $group)
+        {
+		if($paramTypeGroup == $group)
+		{
+                	echo "<option selected=\"selected\">$group</option>";
+		}
+		else
+		{
+                	echo "<option>$group</option>";
+		}
+        }
+        echo "</select></td>";
+	echo "</tr>";
+	//objecttype
 	echo "<tr>";
 	echo "<td>".gettext("Type:")."</td>";
 	echo "<td><select name=\"type\">";
+	echo "<option></option>";
 	foreach(array_keys($objectTypes) as $group)
 	{
 		echo "<optgroup label=\"$group\">";
 		foreach($objectTypes[$group] as $type)
 		{
-			echo "<option>$type</option>";
+			if($paramType == $type)
+			{
+				echo "<option selected=\"selected\">$type</option>";
+			}
+			else
+			{
+				echo "<option>$type</option>";
+			}
 		}
 		echo "</optgroup>";
 	}
 	echo "</select></td>";
 	echo "</tr>";
-	echo "<tr>";
-	echo "<td>".gettext("Searchstring:")."</td>";
-	echo "<td><input type=\"text\" name=\"searchstring\" /></td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td colspan=\"2\">";
-	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
-	echo "</td>";
-	echo "</tr>";
 	echo "</table>";
-	echo "</form>";
 
-
-	//<!-- search for objects with a specific field value and object type group -->
-	echo "<form action=\"search.php\" method=\"get\" accept-charset=\"UTF-8\">";
-	echo "<table class=\"cols2\">";
-	echo "<tr><th colspan=\"2\">".gettext("Search for objects of a specific group")."</th></tr>";
-	echo "<tr>";
-	echo "<td>".gettext("Type:")."</td>";
-	echo "<td><select name=\"typegroup\">";
-	foreach(array_keys($objectTypes) as $group)
-	{
-		echo "<option>$group</option>";
-	}
-	echo "</select></td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td>".gettext("Searchstring:")."</td>";
-	echo "<td><input type=\"text\" name=\"searchstring\" /></td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td colspan=\"2\">";
+	//searchbar footer
+	echo "<p id=\"searchbarFooter\">";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
-	echo "</td>";
-	echo "</tr>";
-	echo "</table>";
+	echo "<input type=\"reset\" value=\"".gettext("Clear")."\" />";
+	echo "</p>";
 	echo "</form>";
+	echo "</div>";
 ?>

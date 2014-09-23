@@ -57,14 +57,7 @@ a:hover, a:active
 	display:	none;
 }
 
-fieldset
-{
-	border:		none;
-	margin:		0px;
-	padding:	0px;
-	padding-bottom:	5px;
-	
-}
+
 
 div.box
 {
@@ -477,17 +470,20 @@ div.objecttabs table
 * searchbar
 *
 **/
-.searchoptions
+div.searchbar
 {
-	display:	none;
-	position:	absolute;
-	background:	#FFFFFF;
-	border:         1pt solid;
-        border-radius:  5px;
-        font-size:      9pt;
-	z-index:	11;
+	margin-left:	auto;
+	margin-right:	auto;
+	border:		1pt solid #000000;
+	border-radius:	5px;
+	width:		80%;
+	min-width:	600px;
 }
 
+div.searchbar table
+{
+	border:		none;
+}
 
 table#searchbarStrings
 {
