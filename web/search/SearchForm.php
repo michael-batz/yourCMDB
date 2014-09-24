@@ -25,16 +25,9 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-
 	//get data
 	$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
 
-	//searchstrings
-	$searchstring0 = "";
-	if(isset($paramSearchString[0]))
-	{
-		$searchstring0 = $paramSearchString[0];
-	}
 
 	//print messages if available
 	if(isset($paramMessage) && $paramMessage != "")
@@ -45,6 +38,8 @@
 	{
 		printErrorMessage($paramError);
 	}
+
+
 
 	//HTML output
 	echo "<h1>";
@@ -61,26 +56,24 @@
 	//search strings
 	echo "<table id=\"searchbarStrings\">";
 	echo "<tr>";
-	echo "<td><input id=\"quicksearch\" type=\"text\" value=\"$searchstring0\" name=\"searchstring[]\" /></td>";
+	echo "<td><input type=\"text\" value=\"{$searchstrings[0]}\" name=\"searchstring[]\" /></td>";
 	echo "<td>&nbsp;</td>";
 	echo "</tr>";
 	//additional search strings
-	for($i = 1; $i < count($paramSearchString); $i++)
+	for($i = 1; $i < count($searchstrings); $i++)
 	{
 		echo "<tr>";
-		echo "<td><input type=\"text\" name=\"searchstring[]\" value=\"{$paramSearchString[$i]}\" /></td>";
+		echo "<td><input type=\"text\" name=\"searchstring[]\" value=\"{$searchstrings[$i]}\" /></td>";
 		echo "<td><a href=\"#\" onclick=\"javascript:searchbarRemoveField($(this).parent().parent())\"><img src=\"img/icon_delete.png\" alt=\"delete\"/></a></td>";
 		echo "</tr>";
 	}
+	echo "</table>";
 	//add searchstring link
-	echo "<tr>";
-	echo "<td colspan=\"2\">";
+	echo "<p>";
 	echo "<a href=\"#\" onclick=\"javascript:searchbarAddField('#searchbarStrings', '".gettext('searchstring')."', 'searchstring[]', '')\">";
 	echo "<img src=\"img/icon_show.png\" alt=\"add searchstring\"/>add searchstring";
 	echo "</a>";
-	echo "</td>";
-	echo "</tr>";
-	echo "</table>";
+	echo "</p>";
 	//active objects
 	echo "<table id=\"searchbarOptions\">";
 	echo "<tr>";

@@ -38,49 +38,63 @@
         $paramActiveOnly = getHttpGetVar("activeonly", "1");
         $paramSearchString = getHttpGetVar("searchstring", Array());
 
-	//get data from quicksearch syntax
-	if(preg_match('/^search for (.*?) in (.*)$/', $paramSearchString, $matches) == 1 && $paramType == "" && $paramTypeGroup == "")
+	//get data
+	$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
+
+	//create searchstrings array with searchstrings[0] set and removed empty values
+	$searchstrings = Array();
+	$searchstrings[0] = "";
+	for($i = 0; $i < count($paramSearchString); $i++)
 	{
-		//regex match from searchstring
-		$paramSearchString = $matches[1];
-		$paramSearchType = $matches[2];
-		//check search type
-		if(preg_match('/^group (.*)$/', $paramSearchType, $matchesSearchType) == 1)
+		if($i == 0)
 		{
-			$paramTypeGroup = $matchesSearchType[1];
+			$searchstrings[$i] = $paramSearchString[$i];
+		}
+		//remove empty searchstrings
+		elseif($paramSearchString[$i] != "")
+		{
+			$searchstrings[] = $paramSearchString[$i];
 		}
 	}
 
 
-	//show search form
-	include "search/SearchForm.php";
-
 	//get all searched objects
 	$objects = null;
-	if($paramTypeGroup != "")
+	if($searchstrings[0] != "")
 	{
-		$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
-		$searchTypes = $objectTypes[$paramTypeGroup];
-		$objects = $datastore->getObjectsByFieldvalue($paramSearchString, $searchTypes, $paramActiveOnly);
-	}
-	else if($paramType != "")
-	{
-		$objects = $datastore->getObjectsByFieldvalue($paramSearchString, array($paramType), $paramActiveOnly);
-	}
-	else
-	{
-		$objects = $datastore->getObjectsByFieldvalue($paramSearchString, null, $paramActiveOnly);
-	}
+		if($paramTypeGroup != "")
+		{
+			$searchTypes = $objectTypes[$paramTypeGroup];
+			$objects = $datastore->getObjectsByFieldvalue($searchstrings, $searchTypes, $paramActiveOnly);
+		}
+		else if($paramType != "")
+		{
+			$objects = $datastore->getObjectsByFieldvalue($searchstrings, array($paramType), $paramActiveOnly);
+		}
+		else
+		{
+			$objects = $datastore->getObjectsByFieldvalue($searchstrings, null, $paramActiveOnly);
+		}
 
-	if(count($objects) > 0)
-	{
-		//show search results
-		include "search/SearchResult.php";
+		if(count($objects) > 0)
+		{
+			//show search form
+			include "search/SearchForm.php";
+			//show search results
+			include "search/SearchResult.php";
+		}
+		else
+		{
+			//show search form with error message
+			$paramMessage = gettext("No objects for this search parameters found. Please try again...");
+			//show search form
+			include "search/SearchForm.php";
+		}
 	}
 	else
 	{
-		//show search form with error message
-		$paramMessage = sprintf(gettext("No objects with field value %s found. Please try again..."), $paramSearchString);
+		//show search form
+		include "search/SearchForm.php";
 	}
 
 

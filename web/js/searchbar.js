@@ -21,21 +21,6 @@
 
 //JavaScript functions for search bar
 
-/**
-* Show SearchBar (use with JS event handler onfocus)
-*/
-function showSearchBar(id)
-{
-	$( id  ).show('blind');
-};
-
-/**
-* Hide SearchBar (use with JS event handler onblur)
-*/
-function searchbarHide(id)
-{
-	$( id  ).hide('blind');
-};
 
 /**
 * add search field
@@ -47,11 +32,11 @@ function searchbarAddField(id, caption, name, value)
 	htmlstring += '<td><input type="text" name="' + name + '" value="' + value + '"></td>';
 	htmlstring += '<td><a href="#" onclick="javascript:searchbarRemoveField($(this).parent().parent())"><img src="img/icon_delete.png" alt="delete" /></a></td>';
 	htmlstring += '</tr>';
-	$( id  ).add(htmlstring).prependTo( id );
+	$( id  ).add(htmlstring).appendTo( id );
 };
 
 /**
-* add search field
+* remove search field
 */
 function searchbarRemoveField(id)
 {

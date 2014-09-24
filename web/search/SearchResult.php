@@ -55,8 +55,12 @@
 
 
 	//urls
-	$listnavUrlBase = "search.php?searchstring=$paramSearchString&amp;typegroup=$paramTypeGroup&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=$paramActiveOnly&amp;page=";
-
+	$listnavUrlBase = "search.php?typegroup=$paramTypeGroup&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=$paramActiveOnly";
+	foreach($searchstrings as $searchstring)
+	{
+		$listnavUrlBase .= "&amp;searchstring[]=$searchstring";
+	}
+	$listnavUrlBase .= "&amp;page=";
 
 
 	//<!-- title -->
@@ -82,9 +86,12 @@
 			$objectMatchFields = Array();
 			foreach($objectFields as $fieldname)
 			{
-				if(stristr($objects[$i]->getFieldValue($fieldname), $paramSearchString) !== FALSE)
+				foreach($searchstrings as $searchstring)
 				{
-					$objectMatchFields[] = $fieldname;
+					if(stristr($objects[$i]->getFieldValue($fieldname), $searchstring) !== FALSE)
+					{
+						$objectMatchFields[] = $fieldname;
+					}
 				}
 			}
 		
@@ -108,9 +115,12 @@
 				$fieldlabel = $config->getObjectTypeConfig()->getFieldLabel($objectType, $fieldname);
 				$fieldvalue = $objects[$i]->getFieldValue($fieldname);
 				//mark search string in fieldvalues (use case insensitive match)
-				if(preg_match("/.*?((?i:$paramSearchString)).*?/", $fieldvalue, $matchSearchString) == 1)
+				foreach($searchstrings as $searchstring)
 				{
-					$fieldvalue = str_replace($matchSearchString[1], "<em>$matchSearchString[1]</em>", $fieldvalue);
+					if(preg_match("/.*?((?i:$searchstring)).*?/", $fieldvalue, $matchSearchString) == 1)
+					{
+						$fieldvalue = str_replace($matchSearchString[1], "<em>$matchSearchString[1]</em>", $fieldvalue);
+					}
 				}
 				echo "$fieldlabel: $fieldvalue";
 				if($j < count($objectMatchFields) - 1)

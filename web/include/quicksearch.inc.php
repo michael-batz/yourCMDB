@@ -50,6 +50,7 @@
 	echo "<input id=\"quicksearch\" type=\"text\" name=\"searchstring[]\" />";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
 	echo "</p>";
+	echo "</form>";
 
 
 	echo "</div>";
