@@ -50,7 +50,7 @@
 
 
 	echo "<div class=\"searchbar\">";
-	echo "<form action=\"search.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<form id=\"searchbarForm\" action=\"search.php\" method=\"get\" accept-charset=\"UTF-8\">";
 
 
 	//search strings
@@ -62,7 +62,7 @@
 	//additional search strings
 	for($i = 1; $i < count($searchstrings); $i++)
 	{
-		echo "<tr>";
+		echo "<tr class=\"searchstringAdditional\">";
 		echo "<td><input type=\"text\" name=\"searchstring[]\" value=\"{$searchstrings[$i]}\" /></td>";
 		echo "<td><a href=\"#\" onclick=\"javascript:searchbarRemoveField($(this).parent().parent())\"><img src=\"img/icon_delete.png\" alt=\"delete\"/></a></td>";
 		echo "</tr>";
@@ -133,7 +133,7 @@
 	//searchbar footer
 	echo "<p id=\"searchbarFooter\">";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
-	echo "<input type=\"reset\" value=\"".gettext("Clear")."\" />";
+	echo "<input type=\"button\" value=\"".gettext("Clear Search")."\" onclick=\"javascript:searchbarClear()\" />";
 	echo "</p>";
 	echo "</form>";
 	echo "</div>";

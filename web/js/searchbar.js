@@ -28,7 +28,7 @@
 function searchbarAddField(id, caption, name, value)
 {
 	var htmlstring;
-	htmlstring = '<tr>';
+	htmlstring = '<tr class="searchstringAdditional">';
 	htmlstring += '<td><input type="text" name="' + name + '" value="' + value + '"></td>';
 	htmlstring += '<td><a href="#" onclick="javascript:searchbarRemoveField($(this).parent().parent())"><img src="img/icon_delete.png" alt="delete" /></a></td>';
 	htmlstring += '</tr>';
@@ -42,3 +42,20 @@ function searchbarRemoveField(id)
 {
 	$( id  ).remove();
 };
+
+/**
+* clear search form
+*/
+function searchbarClear()
+{
+	//remove additional search strings
+	$( "tr.searchstringAdditional"  ).remove();
+
+	//clear other input fields
+	$( "#searchbarForm input[name='searchstring[]']" ).val('');
+	$( "#searchbarForm input[name='activeonly']" ).prop('checked', false);
+	$( "#searchbarForm select[name='typegroup']" ).val('');
+	$( "#searchbarForm select[name='type']" ).val('');
+};
+
+
