@@ -211,7 +211,7 @@ div.content table
 	border-color:	#212121;
 	border-spacing:	0px;
 	border-radius:	5px;
-	width:		75%;
+	width:		80%;
 }
 
 div.content table.blindsmall
@@ -332,7 +332,7 @@ table.list th.center
 **/
 p.listnav
 {
-	width:		75%;
+	width:		80%;
 	min-width:	600px;
 	margin-left:	auto;
 	margin-right:	auto;
@@ -474,26 +474,46 @@ div.searchbar
 {
 	margin-left:	auto;
 	margin-right:	auto;
+	margin-top:	50px;
 	border:		1pt solid #000000;
 	border-radius:	5px;
 	width:		80%;
 	min-width:	600px;
 }
 
+div.searchbar h1
+{
+	margin:		0px;
+	padding:	2px;
+	text-align:	center;
+	background:	#000000;
+	color:		#FFFFFF;
+
+}
+
 div.searchbar table
 {
 	border:		none;
+	text-align:	left;
 }
 
-table#searchbarStrings
+div.searchbarContainer
 {
-	width:		200px;
-	float: 		left;
+	display:	table;
+	table-layout:	fixed;
+	width:		100%;
 }
-table#searchbarOptions
+
+div.searchbarLeft
 {
-	margin-left: 	250px;
-	width:		250px;
+	display:	table-cell;
+	width:		100%;
+}
+
+div.searchbarRight
+{
+	display:	table-cell;
+	width:		100%;
 }
 
 p#searchbarHeader

@@ -26,16 +26,19 @@
 */
 
 	//HTML output
+	echo "<div class=\"searchbar\">";
 	echo "<h1>";
 	echo gettext("Search");
 	echo "</h1>";
-
-	echo "<div class=\"searchbar\">";
 	echo "<form id=\"searchbarForm\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\" onsubmit=\"javascript:searchbarSubmit('#searchbarForm','#searchbarResult')\">";
 
 
 	//search strings
+	echo "<div class=\"searchbarContainer\">";
+	echo "<div class=\"searchbarLeft\">";
 	echo "<table id=\"searchbarStrings\">";
+
+	//default  search field
 	echo "<tr>";
 	echo "<td><input type=\"text\" value=\"{$searchstrings[0]}\" name=\"searchstring[]\" /></td>";
 	echo "<td>&nbsp;</td>";
@@ -55,7 +58,9 @@
 	echo "<img src=\"img/icon_show.png\" alt=\"add searchstring\"/>add searchstring";
 	echo "</a>";
 	echo "</p>";
+	echo "</div>";
 	//active objects
+	echo "<div class=\"searchbarRight\">";
 	echo "<table id=\"searchbarOptions\">";
 	echo "<tr>";
 	echo "<td>".gettext("show inactive objects")."</td>";
@@ -110,6 +115,8 @@
 	echo "</select></td>";
 	echo "</tr>";
 	echo "</table>";
+	echo "</div>";
+	echo "</div>";
 
 	//searchbar footer
 	echo "<p id=\"searchbarFooter\">";

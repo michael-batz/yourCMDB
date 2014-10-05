@@ -56,11 +56,12 @@
 		break;
 
 		case "opensearch":
+			//add searchterm
+			$output[] = $paramSearchstring;
+
+			//add suggestions
 			$values = $datastore->getAllFieldValues(null, null, $paramSearchstring, 10);
-			foreach($values as $value)
-			{
-				$output[] = array("id" => $value, "label" => $value, "value" => $value);
-			}
+			$output[] = $values;
 		break;
 	}
 
