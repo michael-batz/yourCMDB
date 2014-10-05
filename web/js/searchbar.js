@@ -58,4 +58,8 @@ function searchbarClear()
 	$( "#searchbarForm select[name='type']" ).val('');
 };
 
-
+function searchbarSubmit(selectorForm, selectorResult)
+{
+	var url = 'search/SearchResult.php?' + $( selectorForm ).serialize();
+	openUrlAjax(url, selectorResult);
+};

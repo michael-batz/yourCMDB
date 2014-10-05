@@ -21,23 +21,13 @@
 *********************************************************************/
 
 /**
-* WebUI element: search
+* WebUI element: search result frame
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-
-	//get header
-	include "include/header.inc.php";
-
-	//search functions
-	include "search/SearchFunctions.php";
-
-	//show search form
-	include "search/SearchForm.php";
-
-	//load search result using AJAX
-	include "search/SearchResultFrame.php";
-
-	//include footer
-	include "include/footer.inc.php";
+	echo "<div id=\"searchbarResult\">";
+	echo "<script language=\"JavaScript\">";
+	echo "openUrlAjax('search/SearchResult.php?$paramString', '#searchbarResult');";
+	echo "</script>";
+	echo "</div>";
 ?>

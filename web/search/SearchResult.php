@@ -22,11 +22,32 @@
 
 /**
 * WebUI element: search results
+* loaded using AJAX call
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
+	//include base functions
+	include "../include/base.inc.php";
+	include "SearchFunctions.php";
 
-	//var $objects must be set
+	//get all searched objects
+	$objects = null;
+	if($searchstrings[0] != "")
+	{
+		if($paramTypeGroup != "")
+		{
+			$searchTypes = $objectTypes[$paramTypeGroup];
+			$objects = $datastore->getObjectsByFieldvalue($searchstrings, $searchTypes, $paramActiveOnly);
+		}
+		else if($paramType != "")
+		{
+			$objects = $datastore->getObjectsByFieldvalue($searchstrings, array($paramType), $paramActiveOnly);
+		}
+		else
+		{
+			$objects = $datastore->getObjectsByFieldvalue($searchstrings, null, $paramActiveOnly);
+		}
+	}
 
 	//calculate list view
         $objectCount = count($objects);
@@ -55,7 +76,7 @@
 
 
 	//urls
-	$listnavUrlBase = "search.php?typegroup=$paramTypeGroup&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=$paramActiveOnly";
+	$listnavUrlBase = "search/SearchResult.php?typegroup=$paramTypeGroup&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=$paramActiveOnly";
 	foreach($searchstrings as $searchstring)
 	{
 		$listnavUrlBase .= "&amp;searchstring[]=$searchstring";
@@ -154,7 +175,7 @@
 		if($listPage != 1)
 		{
 			$listnavUrl = $listnavUrlBase .($listPage - 1);
-			echo "<a href=\"$listnavUrl\">&lt; ";
+			echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult')\">&lt; ";
 			echo gettext("previous");
 			echo "</a>";
 		}
@@ -170,11 +191,11 @@
 			$listnavUrl = $listnavUrlBase .$i;
 			if($i == $listPage)
 			{
-				echo "<a href=\"$listnavUrl\" class=\"active\">$i</a>";
+				echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult')\" class=\"active\">$i</a>";
 			}
 			else
 			{
-				echo "<a href=\"$listnavUrl\">$i</a>";
+				echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult')\">$i</a>";
 			}
 
 			//jump to current page
@@ -194,7 +215,7 @@
 		if($listPage != $listPages)
 		{
 			$listnavUrl = $listnavUrlBase .($listPage + 1);
-			echo "<a href=\"$listnavUrl\">";
+			echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult')\">";
 			echo gettext("next");
 			echo " &gt;</a>";
 		}

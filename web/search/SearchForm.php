@@ -25,32 +25,13 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-	//get data
-	$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
-
-
-	//print messages if available
-	if(isset($paramMessage) && $paramMessage != "")
-	{
-		printInfoMessage($paramMessage);
-	}
-	if(isset($paramError) && $paramError != "")
-	{
-		printErrorMessage($paramError);
-	}
-
-
-
 	//HTML output
 	echo "<h1>";
 	echo gettext("Search");
 	echo "</h1>";
 
-
-
-
 	echo "<div class=\"searchbar\">";
-	echo "<form id=\"searchbarForm\" action=\"search.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<form id=\"searchbarForm\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\" onsubmit=\"javascript:searchbarSubmit('#searchbarForm','#searchbarResult')\">";
 
 
 	//search strings

@@ -30,6 +30,14 @@ function openUrl(url)
 };
 
 /**
+* AJAX loader
+*/
+function openUrlAjax(url, selector)
+{
+	$( selector ).load(url);
+};
+
+/**
 * Ask for confirmation for an action
 */
 function showConfirmation(urlAction, button1Label, button2Label)
