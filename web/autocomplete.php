@@ -40,61 +40,28 @@
 	switch($paramObject)
 	{
 		case "object":
-			$values = $datastore->getAllValuesOfObjectField($paramVar1, $paramVar2);
+			$values = $datastore->getAllFieldValues($paramVar1, $paramVar2, $paramSearchstring, 10);
 			foreach($values as $value)
 			{
-				//get suggestions for empty fields
-				if($paramSearchstring == "")
-				{
-					$output[] = array("id" => $value, "label" => $value, "value" => $value);
-				}
-				else
-				{
-					if(strpos(strtolower($value), strtolower($paramSearchstring)) !== false)
-					{
-						$output[] = array("id" => $value, "label" => $value, "value" => $value);
-					}
-				}
-
-				//max 10 suggestions
-				if(count($output) >= 10)
-				{
-					break;
-				}
+				$output[] = array("id" => $value, "label" => $value, "value" => $value);
 			}
 		break;
 
 		case "quicksearch":
-			//add entry for search in all objects
-			$value = "search for $paramSearchstring in all objects";
-			$label = sprintf(gettext("search for %s in all objects"), $paramSearchString);
-			$output[] = array("id" => $value, "label" => $label, "value" => $value);
-
-			//add entries for search in object groups
-			foreach(array_keys($config->getObjectTypeConfig()->getObjectTypeGroups()) as $groupname)
+			$values = $datastore->getAllFieldValues(null, null, $paramSearchstring, 10);
+			foreach($values as $value)
 			{
-				$value = "search for $paramSearchstring in group $groupname";
-				$label = sprintf(gettext("search for %s in group %s"), $paramSearchString, $groupname);
-				$output[] = array("id" => $value, "label" => $label, "value" => $value);
+				$output[] = array("id" => $value, "label" => $value, "value" => $value);
 			}
 		break;
 
 		case "opensearch":
-			//add search term
-			$output[] = $paramSearchstring;
-
-			//add entry for search in all objects
-			$values = Array();
-			$values[] = "search for $paramSearchstring in all objects";
-
-			//add entries for search in object groups
-			foreach(array_keys($config->getObjectTypeConfig()->getObjectTypeGroups()) as $groupname)
+			$values = $datastore->getAllFieldValues(null, null, $paramSearchstring, 10);
+			foreach($values as $value)
 			{
-				$values[] = "search for $paramSearchstring in group $groupname";
+				$output[] = array("id" => $value, "label" => $value, "value" => $value);
 			}
-			$output[] = $values;
 		break;
-
 	}
 
 	//JSON output

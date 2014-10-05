@@ -47,7 +47,8 @@
 	echo "<p>";
 	echo gettext("Searchstring:");
 	echo "<br />";
-	echo "<input id=\"quicksearch\" type=\"text\" name=\"searchstring[]\" />";
+	echo "<input id=\"quicksearchInput\" type=\"text\" name=\"searchstring[]\" ";
+	echo "		onfocus=\"javascript:showAutocompleter('#quicksearchInput', 'autocomplete.php?object=quicksearch')\"/>";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
 	echo "</p>";
 	echo "</form>";

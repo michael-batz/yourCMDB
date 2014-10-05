@@ -665,23 +665,38 @@ class MySQLDataStore implements DataStoreInterface
 	}
 
 	/**
-	* Get all fieldvalues of a specific field of an object type
-	* @param $objecttype	Type of object
-	* @param $fieldname	Name of the field to get the values
+	* Get all fieldvalues
+	* @param $objecttype	show only fieldvalues of a specific object type
+	* @param $fieldname	show only fieldvalues of a specific field name
+	* @param $searchstring	show only fieldvalues starting with searchstring
+	* @param $limit		max count of results
 	*/
-	public function getAllValuesOfObjectField($objecttype, $fieldname)
+	public function getAllFieldValues($objecttype=null, $fieldname=null, $searchstring=null, $limit=10)
 	{
 		//escape strings
 		$objecttype = mysql_real_escape_string($objecttype, $this->dbConnection);
 		$fieldname = mysql_real_escape_string($fieldname, $this->dbConnection);
+		$searchstring = mysql_real_escape_string($searchstring, $this->dbConnection);
+		$limit = mysql_real_escape_string($limit, $this->dbConnection);
 
 		//create sql query
 		$sql = "SELECT distinct fieldvalue FROM CmdbObjectField ";
-		$sql.= "LEFT JOIN CmdbObject ON CmdbObjectField.assetid = CmdbObject.assetid ";
-		$sql.= "WHERE CmdbObject.type = '$objecttype' ";
-		$sql.= "AND CmdbObjectField.fieldkey = '$fieldname' ";
-		$sql.= "AND CmdbObjectField.fieldvalue !='' ";
-		$sql.= "ORDER BY fieldvalue ASC";
+		$sql.= "LEFT JOIN CmdbObject ON CmdbObjectField.assetid = CmdbObject.assetid WHERE ";
+		if($objecttype != null)
+		{
+			$sql.= "CmdbObject.type = '$objecttype' AND ";
+		}
+		if($fieldname != null)
+		{
+			$sql.= "CmdbObjectField.fieldkey = '$fieldname' AND ";
+		}
+		if($searchstring != null)
+		{
+			$sql.= "CmdbObjectField.fieldvalue like '$searchstring%' AND ";
+		}
+		$sql.= "CmdbObjectField.fieldvalue !='' ";
+		$sql.= "ORDER BY fieldvalue ASC ";
+		$sql.= "LIMIT $limit";
 		$result = $this->dbGetData($sql);
 
 		//create array with field values

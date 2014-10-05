@@ -55,7 +55,7 @@ interface DataStoreInterface
 
 	public function getObjectCounts($type);
 
-	public function getAllValuesOfObjectField($objecttype, $fieldname);
+	public function getAllFieldValues($objecttype=null, $fieldname=null, $searchstring=null, $limit=10);
 	
 	public function getObjectLog($objectId);
 
