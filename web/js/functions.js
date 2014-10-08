@@ -32,9 +32,13 @@ function openUrl(url)
 /**
 * AJAX loader
 */
-function openUrlAjax(url, selector)
+function openUrlAjax(url, selector, scrollTo)
 {
 	$( selector ).load(url);
+	if(scrollTo)
+	{
+		$( 'html, body' ).animate({scrollTop: $( selector ).offset().top}, 'slow');
+	}
 };
 
 /**

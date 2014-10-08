@@ -175,7 +175,7 @@
 		if($listPage != 1)
 		{
 			$listnavUrl = $listnavUrlBase .($listPage - 1);
-			echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult')\">&lt; ";
+			echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult', true)\">&lt; ";
 			echo gettext("previous");
 			echo "</a>";
 		}
@@ -191,11 +191,11 @@
 			$listnavUrl = $listnavUrlBase .$i;
 			if($i == $listPage)
 			{
-				echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult')\" class=\"active\">$i</a>";
+				echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult', true)\" class=\"active\">$i</a>";
 			}
 			else
 			{
-				echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult')\">$i</a>";
+				echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult', true)\">$i</a>";
 			}
 
 			//jump to current page
@@ -215,7 +215,7 @@
 		if($listPage != $listPages)
 		{
 			$listnavUrl = $listnavUrlBase .($listPage + 1);
-			echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult')\">";
+			echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult', true)\">";
 			echo gettext("next");
 			echo " &gt;</a>";
 		}

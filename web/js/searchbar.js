@@ -61,5 +61,5 @@ function searchbarClear()
 function searchbarSubmit(selectorForm, selectorResult)
 {
 	var url = 'search/SearchResult.php?' + $( selectorForm ).serialize();
-	openUrlAjax(url, selectorResult);
+	openUrlAjax(url, selectorResult, true);
 };

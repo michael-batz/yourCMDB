@@ -27,7 +27,7 @@
 
 	echo "<div id=\"searchbarResult\">";
 	echo "<script language=\"JavaScript\">";
-	echo "openUrlAjax('search/SearchResult.php?$paramString', '#searchbarResult');";
+	echo "openUrlAjax('search/SearchResult.php?$paramString', '#searchbarResult', false);";
 	echo "</script>";
 	echo "</div>";
 ?>
