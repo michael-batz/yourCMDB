@@ -118,11 +118,10 @@
 	echo "</div>";
 	echo "</div>";
 
-	//searchbar footer
+	//searchform footer
 	echo "<p id=\"searchbarFooter\">";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
 	echo "<input type=\"button\" value=\"".gettext("Clear Search")."\" onclick=\"javascript:searchbarClear()\" />";
 	echo "</p>";
 	echo "</form>";
-	echo "</div>";
 ?>

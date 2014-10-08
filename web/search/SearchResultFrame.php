@@ -30,4 +30,7 @@
 	echo "openUrlAjax('search/SearchResult.php?$paramString', '#searchbarResult', false);";
 	echo "</script>";
 	echo "</div>";
+
+	//searchbar footer
+	echo "</div>";
 ?>
