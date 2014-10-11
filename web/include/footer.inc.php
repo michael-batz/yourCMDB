@@ -26,6 +26,12 @@
 	echo "<div class=\"footer\">";
 	echo "<a href=\"http://www.yourcmdb.org\">yourCMDB ".$controller->getVersion()."</a> ".gettext("is published under GPLv3").". &copy; 2013-2014 Michael Batz.";
 	echo "</div>";
+
+	//<!-- scroller  -->
+	echo "<div class=\"scroller\" id=\"jsScroller\">";
+	echo "<a href=\"javascript:scrollToElement('body')\">".gettext("to the top")."</a>";
+	echo "</div>";
+
 	echo "</body>";
 	echo "</html>";
 ?>

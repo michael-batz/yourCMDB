@@ -37,9 +37,19 @@ function openUrlAjax(url, selector, scrollTo)
 	$( selector ).load(url);
 	if(scrollTo)
 	{
-		$( 'html, body' ).animate({scrollTop: $( selector ).offset().top}, 'slow');
+		scrollToElement(selector);
 	}
 };
+
+/**
+* Scroll to specific element
+*/
+function scrollToElement(selector)
+{
+	$( 'html, body' ).animate({scrollTop: $( selector ).offset().top}, 'slow');
+};
+
+
 
 /**
 * Ask for confirmation for an action
@@ -88,7 +98,7 @@ function showDatepicker(id)
 function hideElement(id)
 {
 	$( id ).hide('slide', {}, 1000);
-}
+};
 
 
 function jqueryUiStart()
@@ -104,6 +114,19 @@ function jqueryUiStart()
 	$(function() 
 	{
 		$( "#jsMenu" ).menu();
+	});
+
+	//setup event handler scroller
+	$(window).scroll(function()
+	{
+		if($(window).scrollTop() > 100)
+		{
+			$( "#jsScroller" ).show('fade', 1000);
+		}
+		else
+		{
+			$( "#jsScroller" ).hide('fade', 1000);
+		}
 	});
 
 };
