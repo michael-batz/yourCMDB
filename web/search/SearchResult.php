@@ -231,7 +231,14 @@
 	else
 	{
 		echo "<p>";
-		echo gettext("No objects found");
+		echo gettext("No objects found for searchstrings ");
+		foreach($searchstrings as $searchstring)
+		{
+			if($searchstring != "")
+			{
+				echo "\"<i>$searchstring</i>\" ";
+			}
+		}
 		echo "</p>";
 	}
 
