@@ -129,7 +129,7 @@
 			echo "$statusIcon $objectType: $objectId</a><br />";
 
 			//print matches
-			echo "Matches: ";
+			echo gettext("Matches: ");
 			for($j = 0; $j < count($objectMatchFields); $j++)
 			{
 				$fieldname = $objectMatchFields[$j];

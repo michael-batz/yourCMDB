@@ -48,14 +48,14 @@
 	{
 		echo "<tr class=\"searchstringAdditional\">";
 		echo "<td><input type=\"text\" name=\"searchstring[]\" value=\"{$searchstrings[$i]}\" /></td>";
-		echo "<td><a href=\"#\" onclick=\"javascript:searchbarRemoveField($(this).parent().parent())\"><img src=\"img/icon_delete.png\" alt=\"delete\"/></a></td>";
+		echo "<td><a href=\"#\" onclick=\"javascript:searchbarRemoveField($(this).parent().parent())\"><img src=\"img/icon_delete.png\" alt=\"".gettext("delete")."\"/></a></td>";
 		echo "</tr>";
 	}
 	echo "</table>";
 	//add searchstring link
 	echo "<p>";
 	echo "<a href=\"#\" onclick=\"javascript:searchbarAddField('#searchbarStrings', '".gettext('searchstring')."', 'searchstring[]', '')\">";
-	echo "<img src=\"img/icon_show.png\" alt=\"add searchstring\"/>add searchstring";
+	echo "<img src=\"img/icon_show.png\" alt=\"".gettext("add searchstring")."\"/>".gettext("add searchstring");
 	echo "</a>";
 	echo "</p>";
 	echo "</div>";

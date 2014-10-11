@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yourCMDB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-14 12:27+0100\n"
+"POT-Creation-Date: 2014-10-11 15:42+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Michael Batz <michael@yourcmdb.org>\n"
 "Language-Team: Michael Batz <michael@yourcmdb.org>\n"
@@ -27,81 +27,71 @@ msgstr ""
 msgid "No object with AssetID %s found..."
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:91
-#: /var/www/yourcmdb/web/object.php:137
+#: /var/www/yourcmdb/web/object.php:97
+#: /var/www/yourcmdb/web/object.php:143
 msgid "No data were set when saving an object."
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:112
+#: /var/www/yourcmdb/web/object.php:118
 msgid "Error saving new object"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:117
+#: /var/www/yourcmdb/web/object.php:123
 msgid "New Object successfully created"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:147
+#: /var/www/yourcmdb/web/object.php:153
 msgid "Error saving object"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:152
+#: /var/www/yourcmdb/web/object.php:158
 msgid "Object successfully changed"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:165
+#: /var/www/yourcmdb/web/object.php:171
 msgid "Error deleting object: Object not found"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:170
+#: /var/www/yourcmdb/web/object.php:176
 msgid "Object deleted"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:182
+#: /var/www/yourcmdb/web/object.php:188
 msgid "Object for adding links not found."
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:191
+#: /var/www/yourcmdb/web/object.php:197
 msgid "Object link successfully added"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:195
+#: /var/www/yourcmdb/web/object.php:201
 msgid "Error adding object link: Object B not found"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:199
+#: /var/www/yourcmdb/web/object.php:205
 #, php-format
 msgid "Link object %s with object %s is not allowed."
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:202
+#: /var/www/yourcmdb/web/object.php:208
 msgid " The object link already exists."
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:215
+#: /var/www/yourcmdb/web/object.php:221
 msgid "Object link was successfully deleted"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:219
+#: /var/www/yourcmdb/web/object.php:225
 msgid "Error deleting object link: object not found"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:233
+#: /var/www/yourcmdb/web/object.php:239
 #, php-format
 msgid "Event %s was successfully sent"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object.php:237
+#: /var/www/yourcmdb/web/object.php:243
 msgid "Error sending event: object not found"
-msgstr ""
-
-#: /var/www/yourcmdb/web/autocomplete.php:70
-#, php-format
-msgid "search for %s in all objects"
-msgstr ""
-
-#: /var/www/yourcmdb/web/autocomplete.php:77
-#, php-format
-msgid "search for %s in group %s"
 msgstr ""
 
 #: /var/www/yourcmdb/web/index.php:39
@@ -115,48 +105,48 @@ msgstr ""
 
 #: /var/www/yourcmdb/web/index.php:59
 #: /var/www/yourcmdb/web/index.php:96
-#: /var/www/yourcmdb/web/object/ListObjects.php:132
+#: /var/www/yourcmdb/web/object/ListObjects.php:125
 #: /var/www/yourcmdb/web/object/ShowObject.php:42
-#: /var/www/yourcmdb/web/search/SearchResult.php:112
+#: /var/www/yourcmdb/web/search/SearchResult.php:120
 msgid "active"
 msgstr ""
 
 #: /var/www/yourcmdb/web/index.php:59
 #: /var/www/yourcmdb/web/index.php:96
-#: /var/www/yourcmdb/web/object/ListObjects.php:132
+#: /var/www/yourcmdb/web/object/ListObjects.php:125
 #: /var/www/yourcmdb/web/object/ShowObject.php:42
-#: /var/www/yourcmdb/web/search/SearchResult.php:112
+#: /var/www/yourcmdb/web/search/SearchResult.php:120
 msgid "active object"
 msgstr ""
 
 #: /var/www/yourcmdb/web/index.php:62
 #: /var/www/yourcmdb/web/index.php:99
-#: /var/www/yourcmdb/web/object/ListObjects.php:135
+#: /var/www/yourcmdb/web/object/ListObjects.php:128
 #: /var/www/yourcmdb/web/object/ShowObject.php:45
-#: /var/www/yourcmdb/web/search/SearchResult.php:115
+#: /var/www/yourcmdb/web/search/SearchResult.php:123
 msgid "inactive"
 msgstr ""
 
 #: /var/www/yourcmdb/web/index.php:62
 #: /var/www/yourcmdb/web/index.php:99
-#: /var/www/yourcmdb/web/object/ListObjects.php:135
+#: /var/www/yourcmdb/web/object/ListObjects.php:128
 #: /var/www/yourcmdb/web/object/ShowObject.php:45
-#: /var/www/yourcmdb/web/search/SearchResult.php:115
+#: /var/www/yourcmdb/web/search/SearchResult.php:123
 msgid "inactive object"
 msgstr ""
 
 #: /var/www/yourcmdb/web/index.php:69
 #: /var/www/yourcmdb/web/index.php:107
-#: /var/www/yourcmdb/web/object/ListObjects.php:147
-#: /var/www/yourcmdb/web/object/ShowObject.php:229
-#: /var/www/yourcmdb/web/object/ShowObject.php:254
+#: /var/www/yourcmdb/web/object/ListObjects.php:140
+#: /var/www/yourcmdb/web/object/ShowObject.php:221
+#: /var/www/yourcmdb/web/object/ShowObject.php:246
 #: /var/www/yourcmdb/web/object/ObjectUiHelper.php:210
 msgid "show"
 msgstr ""
 
 #: /var/www/yourcmdb/web/index.php:70
 #: /var/www/yourcmdb/web/index.php:108
-#: /var/www/yourcmdb/web/object/ListObjects.php:148
+#: /var/www/yourcmdb/web/object/ListObjects.php:141
 #: /var/www/yourcmdb/web/object/ShowObject.php:75
 msgid "edit"
 msgstr ""
@@ -166,18 +156,11 @@ msgstr ""
 msgid "%s Last Changed Objects"
 msgstr ""
 
-#: /var/www/yourcmdb/web/search.php:95
-#, php-format
-msgid "No objects with field value %s found. Please try again..."
-msgstr ""
-
 #: /var/www/yourcmdb/web/object/ListObjects.php:74
-#: /var/www/yourcmdb/web/search/SearchResult.php:65
 msgid "Show also inactive objects"
 msgstr ""
 
 #: /var/www/yourcmdb/web/object/ListObjects.php:79
-#: /var/www/yourcmdb/web/search/SearchResult.php:70
 msgid "Show only active objects"
 msgstr ""
 
@@ -191,39 +174,39 @@ msgstr ""
 msgid "Do you really want to delete this object?"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ListObjects.php:118
-#: /var/www/yourcmdb/web/object/ShowObject.php:216
-#: /var/www/yourcmdb/web/object/ShowObject.php:240
+#: /var/www/yourcmdb/web/object/ListObjects.php:111
+#: /var/www/yourcmdb/web/object/ShowObject.php:208
+#: /var/www/yourcmdb/web/object/ShowObject.php:232
 msgid "AssetID"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ListObjects.php:143
+#: /var/www/yourcmdb/web/object/ListObjects.php:136
 #: /var/www/yourcmdb/web/object/ShowObject.php:40
 msgid "Yes"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ListObjects.php:143
+#: /var/www/yourcmdb/web/object/ListObjects.php:136
 #: /var/www/yourcmdb/web/object/ShowObject.php:40
 msgid "Cancel"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ListObjects.php:149
+#: /var/www/yourcmdb/web/object/ListObjects.php:142
 #: /var/www/yourcmdb/web/object/ShowObject.php:76
-#: /var/www/yourcmdb/web/object/ShowObject.php:255
+#: /var/www/yourcmdb/web/object/ShowObject.php:247
 msgid "delete"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ListObjects.php:162
-#: /var/www/yourcmdb/web/object/ListObjects.php:168
-#: /var/www/yourcmdb/web/search/SearchResult.php:168
-#: /var/www/yourcmdb/web/search/SearchResult.php:174
+#: /var/www/yourcmdb/web/object/ListObjects.php:155
+#: /var/www/yourcmdb/web/object/ListObjects.php:161
+#: /var/www/yourcmdb/web/search/SearchResult.php:179
+#: /var/www/yourcmdb/web/search/SearchResult.php:185
 msgid "previous"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ListObjects.php:202
-#: /var/www/yourcmdb/web/object/ListObjects.php:208
-#: /var/www/yourcmdb/web/search/SearchResult.php:208
-#: /var/www/yourcmdb/web/search/SearchResult.php:214
+#: /var/www/yourcmdb/web/object/ListObjects.php:195
+#: /var/www/yourcmdb/web/object/ListObjects.php:201
+#: /var/www/yourcmdb/web/search/SearchResult.php:219
+#: /var/www/yourcmdb/web/search/SearchResult.php:225
 msgid "next"
 msgstr ""
 
@@ -242,13 +225,8 @@ msgid "Object Status"
 msgstr ""
 
 #: /var/www/yourcmdb/web/object/EditObject.php:105
-#: /var/www/yourcmdb/web/object/ShowObject.php:267
+#: /var/www/yourcmdb/web/object/ShowObject.php:259
 #: /var/www/yourcmdb/web/object/NewObject.php:61
-#: /var/www/yourcmdb/web/search/SearchForm.php:57
-#: /var/www/yourcmdb/web/search/SearchForm.php:89
-#: /var/www/yourcmdb/web/search/SearchForm.php:115
-#: /var/www/yourcmdb/web/import/Form.php:83
-#: /var/www/yourcmdb/web/import/Form.php:118
 msgid "Go"
 msgstr ""
 
@@ -269,70 +247,70 @@ msgstr ""
 msgid "duplicate"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:99
+#: /var/www/yourcmdb/web/object/ShowObject.php:91
 msgid "QR-Code for object"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:105
+#: /var/www/yourcmdb/web/object/ShowObject.php:97
 msgid "Summary"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:124
+#: /var/www/yourcmdb/web/object/ShowObject.php:116
 msgid "External Links"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:148
+#: /var/www/yourcmdb/web/object/ShowObject.php:140
 msgid "Custom Events"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:167
+#: /var/www/yourcmdb/web/object/ShowObject.php:159
 msgid "Comment"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:181
+#: /var/www/yourcmdb/web/object/ShowObject.php:173
 msgid "Fields"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:182
+#: /var/www/yourcmdb/web/object/ShowObject.php:174
 msgid "Referenced by"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:183
+#: /var/www/yourcmdb/web/object/ShowObject.php:175
 msgid "Links"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:184
+#: /var/www/yourcmdb/web/object/ShowObject.php:176
 msgid "Log"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:217
-#: /var/www/yourcmdb/web/object/ShowObject.php:241
+#: /var/www/yourcmdb/web/object/ShowObject.php:209
+#: /var/www/yourcmdb/web/object/ShowObject.php:233
 msgid "Type"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:218
-#: /var/www/yourcmdb/web/object/ShowObject.php:242
-#: /var/www/yourcmdb/web/object/ShowObject.php:277
+#: /var/www/yourcmdb/web/object/ShowObject.php:210
+#: /var/www/yourcmdb/web/object/ShowObject.php:234
+#: /var/www/yourcmdb/web/object/ShowObject.php:269
 msgid "Action"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:229
+#: /var/www/yourcmdb/web/object/ShowObject.php:221
 msgid "show object with reference"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:254
+#: /var/www/yourcmdb/web/object/ShowObject.php:246
 msgid "show linked object"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:255
+#: /var/www/yourcmdb/web/object/ShowObject.php:247
 msgid "delete link"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:263
+#: /var/www/yourcmdb/web/object/ShowObject.php:255
 msgid "Add new link to object with ID:"
 msgstr ""
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:276
+#: /var/www/yourcmdb/web/object/ShowObject.php:268
 msgid "Date"
 msgstr ""
 
@@ -342,79 +320,77 @@ msgid "New Object"
 msgstr ""
 
 #: /var/www/yourcmdb/web/object/NewObject.php:44
-#: /var/www/yourcmdb/web/search/SearchForm.php:70
-#: /var/www/yourcmdb/web/search/SearchForm.php:101
 msgid "Type:"
 msgstr ""
 
-#: /var/www/yourcmdb/web/search/SearchResult.php:78
-msgid "Search Form"
-msgstr ""
-
-#: /var/www/yourcmdb/web/search/SearchResult.php:84
+#: /var/www/yourcmdb/web/search/SearchResult.php:89
 #, php-format
 msgid "Search Results (%s)"
 msgstr ""
 
-#: /var/www/yourcmdb/web/search/SearchResult.php:144
+#: /var/www/yourcmdb/web/search/SearchResult.php:132
+msgid "Matches: "
+msgstr ""
+
+#: /var/www/yourcmdb/web/search/SearchResult.php:155
 msgid "Summary: "
 msgstr ""
 
-#: /var/www/yourcmdb/web/search/SearchResult.php:223
-msgid "No objects found"
+#: /var/www/yourcmdb/web/search/SearchResult.php:234
+msgid "No objects found for searchstrings "
 msgstr ""
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:44
+#: /var/www/yourcmdb/web/search/SearchForm.php:31
+#: /var/www/yourcmdb/web/include/quicksearch.inc.php:31
 msgid "Search"
 msgstr ""
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:50
-msgid "Search in all objects"
+#: /var/www/yourcmdb/web/search/SearchForm.php:57
+msgid "searchstring"
 msgstr ""
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:52
-msgid "Searchstring"
+#: /var/www/yourcmdb/web/search/SearchForm.php:58
+msgid "add searchstring"
 msgstr ""
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:68
-msgid "Search for objects of a specific type"
+#: /var/www/yourcmdb/web/search/SearchForm.php:66
+msgid "show inactive objects"
 msgstr ""
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:84
-#: /var/www/yourcmdb/web/search/SearchForm.php:110
-msgid "Searchstring:"
+#: /var/www/yourcmdb/web/search/SearchForm.php:78
+msgid "objecttype group"
 msgstr ""
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:99
-msgid "Search for objects of a specific group"
+#: /var/www/yourcmdb/web/search/SearchForm.php:124
+msgid "Clear Search"
 msgstr ""
 
-#: /var/www/yourcmdb/web/import/Form.php:46
+#: /var/www/yourcmdb/web/import/Form.php:39
 msgid "Import and Export"
 msgstr ""
 
-#: /var/www/yourcmdb/web/import/Form.php:52
+#: /var/www/yourcmdb/web/import/Form.php:45
 msgid "Import Objects"
 msgstr ""
 
-#: /var/www/yourcmdb/web/import/Form.php:54
-#: /var/www/yourcmdb/web/import/Form.php:94
+#: /var/www/yourcmdb/web/import/Form.php:47
+#: /var/www/yourcmdb/web/import/Form.php:87
 msgid "Object Type:"
 msgstr ""
 
-#: /var/www/yourcmdb/web/import/Form.php:68
+#: /var/www/yourcmdb/web/import/Form.php:61
 msgid "Import Format:"
 msgstr ""
 
-#: /var/www/yourcmdb/web/import/Form.php:77
+#: /var/www/yourcmdb/web/import/Form.php:70
 msgid "Import File:"
 msgstr ""
 
-#: /var/www/yourcmdb/web/import/Form.php:92
+#: /var/www/yourcmdb/web/import/Form.php:85
 msgid "Export Objects"
 msgstr ""
 
-#: /var/www/yourcmdb/web/import/Form.php:108
+#: /var/www/yourcmdb/web/import/Form.php:101
 msgid "Output Format:"
 msgstr ""
 
@@ -443,29 +419,33 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: /var/www/yourcmdb/web/error/Error.php:42
+#: /var/www/yourcmdb/web/error/Error.php:32
 msgid "yourCMDB Error"
 msgstr ""
 
-#: /var/www/yourcmdb/web/error/Error.php:46
+#: /var/www/yourcmdb/web/error/Error.php:36
 msgid "The error above should not be happened. Maybe you use a wrong URL or you found a bug."
 msgstr ""
 
-#: /var/www/yourcmdb/web/error/Error.php:48
+#: /var/www/yourcmdb/web/error/Error.php:38
 #, php-format
 msgid "Please check your setup or ask for help on the %s yourCMDB Website %s."
 msgstr ""
 
-#: /var/www/yourcmdb/web/include/quicksearch.inc.php:30
-msgid "Quicksearch"
+#: /var/www/yourcmdb/web/include/quicksearch.inc.php:37
+msgid "Asset ID:"
 msgstr ""
 
-#: /var/www/yourcmdb/web/include/quicksearch.inc.php:34
-msgid "Asset ID:"
+#: /var/www/yourcmdb/web/include/quicksearch.inc.php:48
+msgid "Searchstring:"
 msgstr ""
 
 #: /var/www/yourcmdb/web/include/footer.inc.php:27
 msgid "is published under GPLv3"
+msgstr ""
+
+#: /var/www/yourcmdb/web/include/footer.inc.php:32
+msgid "to the top"
 msgstr ""
 
 #: /var/www/yourcmdb/web/include/menu.inc.php:41
