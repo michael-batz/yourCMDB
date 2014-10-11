@@ -47,34 +47,44 @@ class MySQLDataStore implements DataStoreInterface
 		$this->interpreter = new DataTypeInterpreter();
 
 		//open connection to database server
-		$this->dbConnection = mysql_connect($this->configDatastore['server'].":".$this->configDatastore['port'], $this->configDatastore['user'], $this->configDatastore['password']);
-		if($this->dbConnection == FALSE)
+		try
+		{
+			$dbConnectionString = "mysql:";
+			$dbConnectionString .= "host=".$this->configDatastore['server'].";";
+			$dbConnectionString .= "port=".$this->configDatastore['port'].";";
+			$dbConnectionString .= "dbname=".$this->configDatastore['db'].";";
+			$dbConnectionString .= "charset=utf8";
+			$dbConnectionOptions = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'); 
+			$this->dbConnection = new PDO($dbConnectionString, $this->configDatastore['user'], $this->configDatastore['password'], $dbConnectionOptions);
+		}
+		catch(Exception $e)
 		{
 			echo "Error Connecting to MySQL Server";
 			exit();
 		}
-		mysql_set_charset('utf8', $this->dbConnection);
-		mysql_select_db($this->configDatastore['db'], $this->dbConnection);
+		//mysql_set_charset('utf8', $this->dbConnection);
 
 	}
 
 	private function dbGetData($sql)
 	{
-		$sqlResult = mysql_query($sql, $this->dbConnection);
-		$output = Array();
-		while($row = mysql_fetch_array($sqlResult))
-		{
-			$output[] = $row;
-		}
+		$sqlResult = $this->dbConnection->query($sql);
+		$output = $sqlResult->fetchAll();
 
-		mysql_free_result($sqlResult);
 		return $output;
 	}
 
 	private function dbSetData($sql)
 	{
-		$sqlResult = mysql_query($sql, $this->dbConnection);
-		return $sqlResult;
+		$sqlResult = $this->dbConnection->exec($sql);
+		if($sqlResult === false)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 
@@ -87,7 +97,7 @@ class MySQLDataStore implements DataStoreInterface
 		}
 
 		//escape strings
-		$id = mysql_real_escape_string($id, $this->dbConnection);
+		$id = intval($id);
 
 		//getting objecttype
 		$sql = "SELECT type from CmdbObject WHERE assetid=$id AND active!='D'";
@@ -121,7 +131,7 @@ class MySQLDataStore implements DataStoreInterface
 		}
 
 		//escape strings
-		$id = mysql_real_escape_string($id, $this->dbConnection);
+		$id = intval($id);
 
 		//getting objecttype
 		$sql = "SELECT type, active from CmdbObject WHERE assetid=$id AND active!='D'";
@@ -159,8 +169,8 @@ class MySQLDataStore implements DataStoreInterface
 	public function addObject(CmdbObject $cmdbObject)
         {
 		//escape strings
-		$escapedObjectType = mysql_real_escape_string($cmdbObject->getType(), $this->dbConnection);
-		$escapedObjectStatus = mysql_real_escape_string($cmdbObject->getStatus(), $this->dbConnection);
+		$escapedObjectType = $cmdbObject->getType();
+		$escapedObjectStatus = $cmdbObject->getStatus();
 
 		//Generate CmdbObject and get ObjectID from database
 		$sql = "INSERT INTO CmdbObject(type, active) VALUES('$escapedObjectType', '$escapedObjectStatus')";
@@ -182,8 +192,8 @@ class MySQLDataStore implements DataStoreInterface
 			if(isset($configFields[$objectField]))
 			{
 				$objectFieldValue = $this->interpreter->interpret($cmdbObject->getFieldValue($objectField), $configFields[$objectField]);
-				$escapedObjectFieldValue = mysql_real_escape_string($objectFieldValue, $this->dbConnection);
-				$escapedObjectField = mysql_real_escape_string($objectField, $this->dbConnection);
+				$escapedObjectFieldValue = $objectFieldValue;
+				$escapedObjectField = $objectField;
 				$sql = "INSERT INTO CmdbObjectField(assetid, fieldkey, fieldvalue) VALUES('$objectID', '$escapedObjectField', '$escapedObjectFieldValue')";
 				$sqlResult = $this->dbSetData($sql);
 				if($sqlResult == FALSE)
@@ -218,7 +228,7 @@ class MySQLDataStore implements DataStoreInterface
 	public function changeObjectFields($id, $newFields)
         {
 		//escape strings
-		$id = mysql_real_escape_string($id, $this->dbConnection);
+		$id = intval($id);
 
 		//getting objecttype
 		$sql = "SELECT type from CmdbObject WHERE assetid=$id AND active!='D'";
@@ -247,8 +257,8 @@ class MySQLDataStore implements DataStoreInterface
 			if(isset($configFields[$fieldName]))
 			{
 				$fieldValue = $this->interpreter->interpret($newFields[$fieldName], $configFields[$fieldName]);
-				$escapedFieldValue = mysql_real_escape_string($fieldValue, $this->dbConnection);
-				$escapedFieldName = mysql_real_escape_string($fieldName, $this->dbConnection);
+				$escapedFieldValue = $fieldValue;
+				$escapedFieldName = $fieldName;
                	        	$sql = "INSERT INTO CmdbObjectField(assetid, fieldkey, fieldvalue) VALUES('$id', '$escapedFieldName', '$escapedFieldValue')";
 				$sqlResult = $this->dbSetData($sql);
 				if($sqlResult == FALSE)
@@ -284,8 +294,8 @@ class MySQLDataStore implements DataStoreInterface
 	public function changeObjectStatus($id, $newStatus)
 	{
 		//escape strings
-		$id = mysql_real_escape_string($id, $this->dbConnection);
-		$newStatus = mysql_real_escape_string($newStatus, $this->dbConnection);
+		$id = intval($id);
+		$newStatus = $newStatus;
 
 		//getting objecttype
 		$sql = "SELECT type from CmdbObject WHERE assetid=$id AND active!='D'";
@@ -310,7 +320,7 @@ class MySQLDataStore implements DataStoreInterface
 	public function deleteObject($id)
 	{
 		//escape strings
-		$id = mysql_real_escape_string($id, $this->dbConnection);
+		$id = intval($id);
 
 		//getting objecttype and references
 		$sql = "SELECT type from CmdbObject WHERE assetid=$id AND active!='D'";
@@ -353,12 +363,12 @@ class MySQLDataStore implements DataStoreInterface
 	public function getObjectsByType($type, $sortfield="", $sorttype = "asc", $activeOnly=true, $max=0, $start=0)
 	{
 		//escape strings
-		$type = mysql_real_escape_string($type, $this->dbConnection);
-		$sortfield = mysql_real_escape_string($sortfield, $this->dbConnection);
-		$sorttype = mysql_real_escape_string($sorttype, $this->dbConnection);
-		$activeOnly = mysql_real_escape_string($activeOnly, $this->dbConnection);
-		$max = mysql_real_escape_string($max, $this->dbConnection);
-		$start = mysql_real_escape_string($start, $this->dbConnection);
+		$type = $type;
+		$sortfield = $sortfield;
+		$sorttype = $sorttype;
+		$activeOnly = $activeOnly;
+		$max = intval($max);
+		$start = intval($start);
 
 		//get all IDs
 		$sql = "SELECT distinct CmdbObject.assetid FROM CmdbObject ";
@@ -406,11 +416,11 @@ class MySQLDataStore implements DataStoreInterface
 	public function getObjectsByField($fieldname, $fieldvalue, $types=null, $activeOnly=true, $max=0, $start=0)
 	{
 		//escape strings
-		$fieldname = mysql_real_escape_string($fieldname, $this->dbConnection);
-		$fieldvalue = mysql_real_escape_string($fieldvalue, $this->dbConnection);
-		$activeOnly = mysql_real_escape_string($activeOnly, $this->dbConnection);
-		$max = mysql_real_escape_string($max, $this->dbConnection);
-		$start = mysql_real_escape_string($start, $this->dbConnection);
+		$fieldname = $fieldname;
+		$fieldvalue = $fieldvalue;
+		$activeOnly = $activeOnly;
+		$max = intval($max);
+		$start = intval($start);
 		
 
 		//get all IDs
@@ -431,7 +441,7 @@ class MySQLDataStore implements DataStoreInterface
 			$sql.= "AND CmdbObject.type IN (";
 			for($i = 0; $i < count($types); $i++)
 			{
-				$sql.= "'".mysql_real_escape_string($types[$i], $this->dbConnection)."'";
+				$sql.= "'".$types[$i]."'";
 				if($i < (count($types) - 1))
 				{
 					$sql.= ", ";
@@ -465,9 +475,9 @@ class MySQLDataStore implements DataStoreInterface
 	public function getObjectsByFieldvalue($searchstrings, $types=null, $activeOnly=true, $max=0, $start=0)
 	{
 		//escape strings
-		$activeOnly = mysql_real_escape_string($activeOnly, $this->dbConnection);
-		$max = mysql_real_escape_string($max, $this->dbConnection);
-		$start = mysql_real_escape_string($start, $this->dbConnection);
+		$activeOnly = $activeOnly;
+		$max = intval($max);
+		$start = intval($start);
 		
 
 		//get all IDs
@@ -476,7 +486,7 @@ class MySQLDataStore implements DataStoreInterface
 		//sql searchstrings
 		foreach($searchstrings as $searchstring)
 		{
-			$searchstring = mysql_real_escape_string($searchstring, $this->dbConnection);
+			$searchstring = $searchstring;
 			$sql.= "o.assetid IN (SELECT assetid FROM CmdbObjectField WHERE fieldvalue like '%$searchstring%') AND ";
 		}
 		//sql activeonly
@@ -494,7 +504,7 @@ class MySQLDataStore implements DataStoreInterface
 			$sql.= "AND o.type IN (";
 			for($i = 0; $i < count($types); $i++)
 			{
-				$sql.= "'".mysql_real_escape_string($types[$i], $this->dbConnection)."'";
+				$sql.= "'".$types[$i]."'";
 				if($i < (count($types) - 1))
 				{
 					$sql.= ", ";
@@ -525,7 +535,7 @@ class MySQLDataStore implements DataStoreInterface
 	public function getObjectLinks($id)
 	{
 		//escape strings
-		$id = mysql_real_escape_string($id, $this->dbConnection);
+		$id = intval($id);
 
 		$sql = "SELECT distinct assetidB from CmdbObjectLink WHERE assetidA=$id";
 		$result = $this->dbGetData($sql);
@@ -546,7 +556,7 @@ class MySQLDataStore implements DataStoreInterface
 	public function getLinkedObjects($id)
 	{	
 		//escape strings
-		$id = mysql_real_escape_string($id, $this->dbConnection);
+		$id = intval($id);
 
 		$sql = "SELECT distinct assetidA from CmdbObjectLink WHERE assetidB=$id";
 		$result = $this->dbGetData($sql);
@@ -570,8 +580,8 @@ class MySQLDataStore implements DataStoreInterface
         public function addObjectLink($idA, $idB)
 	{
 		//escape strings
-		$idA = mysql_real_escape_string($idA, $this->dbConnection);
-		$idB = mysql_real_escape_string($idB, $this->dbConnection);
+		$idA = intval($idA);
+		$idB = intval($idB);
 
 		//check, if A = B
 		if($idA == $idB)
@@ -631,8 +641,8 @@ class MySQLDataStore implements DataStoreInterface
         public function deleteObjectLink($idA, $idB)
 	{
 		//escape strings
-		$idA = mysql_real_escape_string($idA, $this->dbConnection);
-		$idB = mysql_real_escape_string($idB, $this->dbConnection);
+		$idA = intval($idA);
+		$idB = intval($idB);
 
 		//delete link
 		$sql = "DELETE FROM CmdbObjectLink WHERE (assetidA=$idA AND assetidB=$idB) ";
@@ -655,7 +665,7 @@ class MySQLDataStore implements DataStoreInterface
 	public function getObjectCounts($type)
 	{
 		//escape strings
-		$type = mysql_real_escape_string($type, $this->dbConnection);
+		$type = $type;
 
 		$sql = "SELECT count(*) FROM CmdbObject WHERE type='$type' AND active='A'";
 		$result = $this->dbGetData($sql);
@@ -674,10 +684,10 @@ class MySQLDataStore implements DataStoreInterface
 	public function getAllFieldValues($objecttype=null, $fieldname=null, $searchstring=null, $limit=10)
 	{
 		//escape strings
-		$objecttype = mysql_real_escape_string($objecttype, $this->dbConnection);
-		$fieldname = mysql_real_escape_string($fieldname, $this->dbConnection);
-		$searchstring = mysql_real_escape_string($searchstring, $this->dbConnection);
-		$limit = mysql_real_escape_string($limit, $this->dbConnection);
+		$objecttype = $objecttype;
+		$fieldname = $fieldname;
+		$searchstring = $searchstring;
+		$limit = intval($limit);
 
 		//create sql query
 		$sql = "SELECT distinct fieldvalue FROM CmdbObjectField ";
@@ -716,7 +726,7 @@ class MySQLDataStore implements DataStoreInterface
 	public function getObjectLog($objectId)
 	{
 		//escape strings
-		$objectId = mysql_real_escape_string($objectId, $this->dbConnection);
+		$objectId = intval($objectId);
 
 		//check if object exists in database
                 $sql = "SELECT assetid from CmdbObject WHERE assetid=$objectId AND active!='D'";
@@ -750,7 +760,7 @@ class MySQLDataStore implements DataStoreInterface
 	public function getNNewestObjects($n)
 	{
 		//escape strings
-		$n = mysql_real_escape_string($n, $this->dbConnection);
+		$n = intval($n);
 
 		//create sql query
 		$sql = "SELECT CmdbObjectLog.assetid, MAX(CmdbObjectLog.date) FROM CmdbObjectLog ";
@@ -778,7 +788,7 @@ class MySQLDataStore implements DataStoreInterface
         public function getNLastChangedObjects($n)
 	{
 		//escape strings
-		$n = mysql_real_escape_string($n, $this->dbConnection);
+		$n = intval($n);
 
 		//create sql query
 		$sql = "SELECT CmdbObjectLog.assetid, MAX(CmdbObjectLog.date) FROM CmdbObjectLog ";
@@ -808,8 +818,8 @@ class MySQLDataStore implements DataStoreInterface
 	public function addJob(CmdbJob $job, int $timestamp = null)
 	{
 		//escape strings
-		$action = mysql_real_escape_string($job->getAction(), $this->dbConnection);
-		$actionParameter = mysql_real_escape_string($job->getActionParameter(), $this->dbConnection);
+		$action = $job->getAction();
+		$actionParameter = $job->getActionParameter();
 
 		//create sql statement
 		$sql = "INSERT INTO CmdbJob(action, actionParameter, timestamp) VALUES('$action', '$actionParameter', ";
