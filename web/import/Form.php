@@ -31,15 +31,8 @@
 	//get objecttypes
 	$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
 
-	//print messages if available
-	if(isset($paramMessage) && $paramMessage != "")
-	{
-		printInfoMessage($paramMessage);
-	}
-	if(isset($paramError) && $paramError != "")
-	{
-		printErrorMessage($paramError);
-	}
+	//print messagebar
+	include "include/messagebar.inc.php";
 
 	//<!-- headline  -->
 	echo "<h1>";

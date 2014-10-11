@@ -21,20 +21,16 @@
 *********************************************************************/
 
 /**
-* WebUI element: error page
+* WebUI element: message bar - shows error/info message if available
 * @author Michael Batz <michael@yourcmdb.org>
 */
-
-	//print messagebar
-	include "include/messagebar.inc.php";
-
-	echo "<h1>";
-	echo gettext("yourCMDB Error");
-	echo "</h1>";
-
-	echo "<p>";
-	echo gettext("The error above should not be happened. Maybe you use a wrong URL or you found a bug.");
-	echo "<br />";
-	echo sprintf(gettext("Please check your setup or ask for help on the %s yourCMDB Website %s."), "<a href=\"http://www.yourcmdb.org\">", "</a>");
-	echo "</p>";
+	//<!-- print messages if available -->
+	if(isset($paramMessage) && $paramMessage != "")
+	{	
+		printInfoMessage($paramMessage); 
+	}
+	if(isset($paramError) && $paramError != "")
+	{	
+		printErrorMessage($paramError); 
+	}
 ?>

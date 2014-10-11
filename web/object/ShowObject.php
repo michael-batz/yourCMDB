@@ -76,16 +76,8 @@
 	echo "<a href=\"$urlDelete\">".gettext("delete")."</a>";
 	echo "</div>";
 
-	//<!-- print messages if available -->
-	if(isset($paramMessage) && $paramMessage != "")
-	{	
-		printInfoMessage($paramMessage); 
-	}
-	if(isset($paramError) && $paramError != "")
-	{	
-		printErrorMessage($paramError); 
-	}
-
+	//print messagebar
+	include "include/messagebar.inc.php";
 
 	echo "<div class=\"objectbox\">";
 	echo "<h1>$textTitle</h1>";
