@@ -1,7 +1,2 @@
 <taskscheduler-configuration>
-	<task trigger="event" event="objectAdded" objecttype="router" action="TaskSchedulerActionExec" actionParameter="/root/nodeAdded.sh ${objectId}" />
-	<task trigger="event" event="objectAdded" objecttype="router" action="TaskSchedulerActionExec" actionParameter="/root/nodeAdded2.sh ${objectType}" />
-	<task trigger="event" event="objectAdded" objecttype="router" action="TaskSchedulerActionExec" actionParameter="/root/nodeAdded3.sh" />
-	<task trigger="event" event="exportObjects" objecttype="router" action="TaskSchedulerActionExport" actionParameter="example" />
-	<task trigger="event" event="objectAdded" objecttype="switch" action="TaskSchedulerActionExport" actionParameter="example" />
 </taskscheduler-configuration>
