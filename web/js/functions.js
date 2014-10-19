@@ -32,8 +32,12 @@ function openUrl(url)
 /**
 * AJAX loader
 */
-function openUrlAjax(url, selector, scrollTo)
+function openUrlAjax(url, selector, scrollTo, showWaitingAnimation)
 {
+	if(showWaitingAnimation)
+	{
+		$( selector ).html('<p class="waiting"><img src="img/waiting.gif" /></p>');
+	}
 	$( selector ).load(url);
 	if(scrollTo)
 	{

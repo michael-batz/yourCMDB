@@ -114,6 +114,11 @@ p.message-error
 	padding:	5px;
 }
 
+p.waiting
+{
+	text-align:	center;
+}
+
 /**
 * Header  
 *
