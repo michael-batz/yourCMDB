@@ -91,6 +91,34 @@ $controller = new Controller();
 $config = $controller->getCmdbConfig();
 $datastore = $controller->getDatastore();
 
+//session handling
+session_start();
+$authAuthenticated = false;
+$authUser = "";
+$authAccessgroup = "";
+if(isset($_SESSION['authAuthenticated'], $_SESSION['authUser'], $_SESSION['authAccessgroup']) && $_SESSION['authAuthenticated'] == true)
+{
+	//if user is authenticated, set session vars
+	$authAuthenticated = true;
+	$authUser = $_SESSION['authUser'];
+	$authAccessgroup = $_SESSION['authAccessgroup'];
+}
+else
+{
+	//if user is not authenticated, try to authenticate
+	$authUser = getHttpPostVar("authUser", "");
+	$authPassword = getHttpPostVar("authPassword", "");
+
+	//ToDo: authentication function
+	if($authUser == "admin" && $authPassword == "admin")
+	{
+		$authAuthenticated = true;
+		$_SESSION['authAuthenticated'] = true;
+		$_SESSION['authUser'] = $authUser;
+		$_SESSION['authAccessgroup'] = "all";
+	}
+
+}
 
 //setup i18n with gettext
 $i18nLocale = $config->getViewConfig()->getLocale();
