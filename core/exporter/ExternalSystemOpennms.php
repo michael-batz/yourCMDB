@@ -47,8 +47,14 @@ class ExternalSystemOpennms implements ExternalSystem
 	//XML for requisition
 	private $requisitionXml;
 
+	//verify SSL peer
+	private $sslVerify;
+
 	//static var: category name lentgh
 	private static $categoryLength = 64;
+
+	//static var: nodelabel length
+	private static $nodelabelLength = 255;
 
 	//static var: asset field names -> length
 	private static $assetfields = array(
@@ -140,6 +146,13 @@ class ExternalSystemOpennms implements ExternalSystem
 			}
 		}
 
+		//SSL verify option
+		$this->sslVerify = "true";
+		if(in_array("sslVerify", $parameterKeys))
+		{
+			$this->sslVerify = $destination->getParameterValue("sslVerify");
+		}
+
 		//check connection to OpenNMS
 		if(!($this->checkConnection()))
 		{
@@ -153,10 +166,20 @@ class ExternalSystemOpennms implements ExternalSystem
 	public function addObject(CmdbObject $object)
 	{
 		//define node parameters
-		$nodeLabel = $this->variables->getVariable("nodelabel")->getValue($object);
+		$nodeLabel = $this->formatField($this->variables->getVariable("nodelabel")->getValue($object), self::$nodelabelLength);
 		$nodeForeignId = $object->getId();
 		$nodeInterfaces = array($this->variables->getVariable("ip")->getValue($object));
 		$nodeServices = $this->services;
+
+		//remove invalid ip interfaces
+		for($i = 0; $i < count($nodeInterfaces); $i++)
+		{
+			if(filter_var($nodeInterfaces[$i], FILTER_VALIDATE_IP) === FALSE)
+			{
+				unset($nodeInterfaces[$i]);
+			}
+		}
+		
 
 		//define asset fields and categories for node
 		$nodeAssets = array();
@@ -173,7 +196,7 @@ class ExternalSystemOpennms implements ExternalSystem
 				{
 					$fieldvalue = $this->variables->getVariable($variableName)->getValue($object);
 					$fieldlength = self::$assetfields[$fieldname];
-					$nodeAssets[$fieldname] = $this->formatAssetfield($fieldvalue, $fieldlength);
+					$nodeAssets[$fieldname] = $this->formatField($fieldvalue, $fieldlength);
 				}
 			}
 
@@ -185,11 +208,11 @@ class ExternalSystemOpennms implements ExternalSystem
 				//check if it is an unnamed category (example: "category_1")
 				if(preg_match('/^[\d]+$/', $categoryname) === 1)
 				{
-					$nodeCategories[]  = $this->formatCategoryName($this->variables->getVariable($variableName)->getValue($object));
+					$nodeCategories[]  = $this->formatField($this->variables->getVariable($variableName)->getValue($object), self::$categoryLength);
 				}
 				else
 				{
-					$nodeCategories[]  = $this->formatCategoryName($categoryname. "-" .$this->variables->getVariable($variableName)->getValue($object));
+					$nodeCategories[]  = $this->formatField($categoryname. "-" .$this->variables->getVariable($variableName)->getValue($object), self::$categoryLength);
 				}
 			}
 		}
@@ -233,8 +256,12 @@ class ExternalSystemOpennms implements ExternalSystem
 			CURLOPT_CUSTOMREQUEST 	=> "$httpMethod",
 			CURLOPT_HTTPHEADER	=> array('Content-Type: application/xml'),
                         CURLOPT_URL             => "{$this->restUrl}/{$resource}",
-			CURLOPT_SSL_VERIFYPEER	=> FALSE,
                         CURLOPT_RETURNTRANSFER  => TRUE);
+		if($this->sslVerify != "true")
+		{
+			$curlOptions[CURLOPT_SSL_VERIFYPEER] = FALSE;
+			$curlOptions[CURLOPT_SSL_VERIFYHOST] = FALSE;
+		}
 		curl_setopt_array($curl, $curlOptions);
 		$result = curl_exec($curl);
 		$curlHttpResponse = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -261,8 +288,12 @@ class ExternalSystemOpennms implements ExternalSystem
                         CURLOPT_HTTPAUTH        => CURLAUTH_BASIC,
                         CURLOPT_USERPWD         => "{$this->restUser}:{$this->restPassword}",
                         CURLOPT_URL             => "{$this->restUrl}/{$resource}",
-			CURLOPT_SSL_VERIFYPEER	=> FALSE,
                         CURLOPT_RETURNTRANSFER  => true);
+		if($this->sslVerify != "true")
+		{
+			$curlOptions[CURLOPT_SSL_VERIFYPEER] = FALSE;
+			$curlOptions[CURLOPT_SSL_VERIFYHOST] = FALSE;
+		}
 		curl_setopt_array($curl, $curlOptions);
 		$result = curl_exec($curl);
 		$curlHttpResponse = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -296,8 +327,12 @@ class ExternalSystemOpennms implements ExternalSystem
                         CURLOPT_HTTPAUTH        => CURLAUTH_BASIC,
                         CURLOPT_USERPWD         => "{$this->restUser}:{$this->restPassword}",
                         CURLOPT_URL             => "{$this->restUrl}/{$resource}",
-			CURLOPT_SSL_VERIFYPEER	=> FALSE,
                         CURLOPT_RETURNTRANSFER  => TRUE);
+		if($this->sslVerify != "true")
+		{
+			$curlOptions[CURLOPT_SSL_VERIFYPEER] = FALSE;
+			$curlOptions[CURLOPT_SSL_VERIFYHOST] = FALSE;
+		}
                 curl_setopt_array($curl, $curlOptions);
                 $result = curl_exec($curl);
                 $curlHttpResponse = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -406,16 +441,10 @@ class ExternalSystemOpennms implements ExternalSystem
 		return $xml;
 	}
 
-	private function formatAssetfield($value, $length)
+
+	private function formatField($value, $length)
 	{
 		$value = substr($value, 0, $length);
-		$value = htmlspecialchars($value);
-		return $value;
-	}
-
-	private function formatCategoryName($value)
-	{
-		$value = substr($value, 0, self::$categoryLength);
 		$value = htmlspecialchars($value);
 		return $value;
 	}
