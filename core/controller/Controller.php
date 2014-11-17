@@ -54,7 +54,7 @@ class Controller
 		$this->eventProcessor = new EventProcessor();
 
 		//set version
-		$this->version = "0.7";
+		$this->version = "0.7.1";
 		
 	}
 
