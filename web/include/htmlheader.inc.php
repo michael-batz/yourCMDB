@@ -21,13 +21,6 @@
 *********************************************************************/
 ?>
 
-<?php
-	//load base for WebUI
-	require "base.inc.php";
-
-?>
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
@@ -44,15 +37,5 @@
 		<title>yourCMDB</title>
 	</head>
 	<body>
-		<!-- header -->
-		<div class="header">
-			<h1 onclick="javascript:openUrl('index.php')">yourCMDB</h1>
-			<?php include "mainmenu.inc.php"; ?>
-		</div>
+		<noscript><p>You need to enable JavaScript for yourCMDB.</p></noscript>
 
-		<?php include "menu.inc.php"; ?>
-		
-
-		<!-- start main content -->
-		<div class="content">
-			<noscript><p>You need to enable JavaScript for yourCMDB.</p></noscript>

@@ -20,16 +20,15 @@
 *
 *********************************************************************/
 
-/**
-* WebUI element: check authentication
-*/
+	echo "</div>";
 
-if(!$authAuthenticated)
-{
-	//get baseUrl from config
-	$baseUrl = $config->getViewConfig()->getBaseUrl();
+	//<!-- footer -->
+	echo "<div class=\"footer\">";
+	echo "<a href=\"http://www.yourcmdb.org\">yourCMDB ".$controller->getVersion()."</a> ".gettext("is published under GPLv3").". &copy; 2013-2014 Michael Batz.";
+	echo "</div>";
 
-	header("Location: $baseUrl/login.php");
-	exit();
-}
+	//<!-- scroller  -->
+	echo "<div class=\"scroller\" id=\"jsScroller\">";
+	echo "<a href=\"javascript:scrollToElement('body')\">".gettext("to the top")."</a>";
+	echo "</div>";
 ?>

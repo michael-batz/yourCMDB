@@ -27,7 +27,9 @@
 
 
 	//get header
-	include "include/header.inc.php";
+	include "include/base.inc.php";
+	include "include/htmlheader.inc.php";
+	include "include/yourcmdbheader.inc.php";
 
 	//search functions
 	include "search/SearchFunctions.php";
@@ -39,5 +41,6 @@
 	include "search/SearchResultFrame.php";
 
 	//include footer
-	include "include/footer.inc.php";
+	include "include/yourcmdbfooter.inc.php";
+	include "include/htmlfooter.inc.php";
 ?>

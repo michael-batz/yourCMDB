@@ -19,17 +19,16 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-
-/**
-* WebUI element: check authentication
-*/
-
-if(!$authAuthenticated)
-{
-	//get baseUrl from config
-	$baseUrl = $config->getViewConfig()->getBaseUrl();
-
-	header("Location: $baseUrl/login.php");
-	exit();
-}
 ?>
+	<!-- header -->
+	<div class="header">
+		<h1 onclick="javascript:openUrl('index.php')">yourCMDB</h1>
+		<?php include "mainmenu.inc.php"; ?>
+	</div>
+
+	<?php include "menu.inc.php"; ?>
+	
+
+	<!-- start main content -->
+	<div class="content">
+		<noscript><p>You need to enable JavaScript for yourCMDB.</p></noscript>
