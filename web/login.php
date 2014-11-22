@@ -19,27 +19,35 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-/**
-* WebUI element: export data
-* @author Michael Batz <michael@yourcmdb.org>
-*/
 
-	//load WebUI base
-	require "include/base.inc.php";
-	require "include/auth.inc.php";
+	//get header
+	include "include/base.inc.php";
+	include "include/htmlheader.inc.php";
 
-	//get parameter
-	$paramType = getHttpGetVar("type", "");
-	$paramFormat = getHttpGetVar("format", "csv");
+	//title
+	echo "<h1>".gettext("Welcome to yourCMDB!")."</h1>";
 
-	//get data
-	$objects = $datastore->getObjectsByType($paramType);
+	//login form
+	echo "<form name\"login\" method=\"POST\" action=\"index.php\">";
+	echo "<table>";
 
-	switch($paramFormat)
-	{
-		case "csv":
-			include "export/ExportCsv.php";
-			break;
-	}
+	echo "<tr>";
+	echo "<td>".gettext("user:")."</td>";
+	echo "<td><input type=\"text\" name=\"authUser\"/></td>";
+	echo "</tr>";
+
+	echo "<tr>";
+	echo "<td>".gettext("password:")."</td>";
+	echo "<td><input type=\"password\" name=\"authPassword\"/></td>";
+	echo "</tr>";
+
+	echo "<tr>";
+	echo "<td colspan=\"2\"><input type=\"submit\" value=\"".gettext("Go!")."\"/></td>";
+	echo "</tr>";
+
+	echo "</table>";
+	echo "</form>";
+
+	//include footer
+	include "include/htmlfooter.inc.php";
 ?>
-

@@ -19,27 +19,16 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-/**
-* WebUI element: export data
-* @author Michael Batz <michael@yourcmdb.org>
-*/
 
-	//load WebUI base
-	require "include/base.inc.php";
-	require "include/auth.inc.php";
+	//get header
+	include "include/base.inc.php";
 
-	//get parameter
-	$paramType = getHttpGetVar("type", "");
-	$paramFormat = getHttpGetVar("format", "csv");
+	//destroy session vars
+	unset($_SESSION['authAuthenticated']);
+	unset($_SESSION['authUser']);
+	unset($_SESSION['authAccessgroup']);
+	$authAuthenticated = false;
 
-	//get data
-	$objects = $datastore->getObjectsByType($paramType);
-
-	switch($paramFormat)
-	{
-		case "csv":
-			include "export/ExportCsv.php";
-			break;
-	}
+	//redirect to login page	
+	include "include/auth.inc.php";
 ?>
-

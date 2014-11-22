@@ -1,6 +1,6 @@
 <view-configuration>
 	<content-tables length="20" />
-	<url base="http://127.0.0.1/yourcmdb" />
+	<url base="http://10.0.1.105/yourcmdb/web" />
 	<qrcodes ecc-level="L" />
 	<i18n language="en_GB.utf8" />
 	<menu-items>
@@ -8,5 +8,6 @@
 		<menu-item name="Search" url="search.php" />
 		<menu-item name="New Object" url="object.php?action=new" />
 		<menu-item name="Import-Export" url="import.php" />
+		<menu-item name="Logout" url="logout.php" />
 	</menu-items>
 </view-configuration>

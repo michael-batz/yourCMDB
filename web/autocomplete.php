@@ -26,6 +26,7 @@
 
 	//include functions
 	require "include/base.inc.php";
+	require "include/auth.inc.php";
 
 	//get parameters
 	$paramSearchstring = getHttpGetVar("term", "");

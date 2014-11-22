@@ -26,6 +26,7 @@
 
 	//load WebUI base
 	require "include/base.inc.php";
+	require "include/auth.inc.php";
 
 	//get parameters
 	$paramId = getHttpGetVar("id", "");

@@ -27,6 +27,7 @@
 
 	//get header
 	include "include/base.inc.php";
+	include "include/auth.inc.php";
 	include "include/htmlheader.inc.php";
 	include "include/yourcmdbheader.inc.php";
 

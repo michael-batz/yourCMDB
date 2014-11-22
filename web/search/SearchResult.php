@@ -28,6 +28,7 @@
 
 	//include base functions
 	include "../include/base.inc.php";
+	include "../include/auth.inc.php";
 	include "SearchFunctions.php";
 
 	//get all searched objects
