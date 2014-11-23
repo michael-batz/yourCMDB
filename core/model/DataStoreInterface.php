@@ -69,5 +69,14 @@ interface DataStoreInterface
 	
 	public function getObjectReferences($objectId);
 
+	public function addUser(CmdbLocalUser $user);
+	
+	public function changeUser($username, CmdbLocalUser $newuser);
+
+	public function deleteUser($username);
+
+	public function getUser($username);
+
+	public function getUsers();
 }
 ?>

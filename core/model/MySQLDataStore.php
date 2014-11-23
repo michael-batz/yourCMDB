@@ -931,5 +931,54 @@ class MySQLDataStore implements DataStoreInterface
 		//return output
 		return $output; 
 	}
+
+	public function addUser(CmdbLocalUser $user)
+	{
+		$username = $user->getUsername();
+		$passwordHash = $user->getPasswordHash();
+		$sql = "INSERT INTO CmdbLocalUser(username, passwordhash) VALUES('$username', '$passwordHash')";
+
+		//execute query and return result
+		$sqlResult = $this->dbSetData($sql);
+		if($sqlResult == FALSE)
+		{
+			error_log("Error creating cmdb user");
+		}
+		return $sqlResult;
+	}
+        
+        public function changeUser($username, CmdbLocalUser $newuser)
+	{
+		;
+	}
+
+        public function deleteUser($username)
+	{
+		;
+	}
+
+        public function getUser($username)
+	{
+		$sql = "SELECT username, passwordhash from CmdbLocalUser WHERE username='$username'";
+		$result = $this->dbGetData($sql);
+		if(count($result) > 0)
+		{
+			return new CmdbLocalUser($result[0][0], $result[0][1]);
+		}
+		return null;
+	}
+
+        public function getUsers()
+	{
+		$sql = "SELECT username, passwordhash from CmdbLocalUser WHERE username='$username'";
+		$result = $this->dbGetData($sql);
+		$output = Array();
+		foreach($result as $row)
+		{
+			$output[] = new CmdbLocalUser($row[0], $row[1]);
+		}
+		return $output;
+	}
+
 }
 ?>

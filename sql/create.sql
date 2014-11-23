@@ -36,3 +36,8 @@ create table CmdbJob (
   PRIMARY KEY (jobid)
 ) CHARACTER SET utf8 ENGINE=INNODB;
 
+create table CmdbLocalUser (
+  username VARCHAR(255) NOT NULL,
+  passwordhash TEXT NOT NULL,
+  PRIMARY KEY (username)
+) CHARACTER SET utf8 ENGINE=INNODB;

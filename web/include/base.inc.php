@@ -29,7 +29,7 @@ function __autoload($className)
 {
 	$scriptBaseDir = dirname(__FILE__);
 	$coreBaseDir = realpath("$scriptBaseDir/../../core");
-	$paths = array('', 'model', 'config', 'controller', 'libs', 'exporter', 'taskscheduler');
+	$paths = array('', 'security', 'model', 'config', 'controller', 'libs', 'exporter', 'taskscheduler');
 	$filename = $className.'.php';
 	foreach($paths as $path)
 	{
@@ -93,6 +93,8 @@ $datastore = $controller->getDatastore();
 
 //session handling
 session_start();
+//ToDo: make AuthenticationProvider configurable
+$authProvider = new AuthenticationProviderLocal();
 $authAuthenticated = false;
 $authUser = "";
 $authAccessgroup = "";
@@ -110,7 +112,7 @@ else
 	$authPassword = getHttpPostVar("authPassword", "");
 
 	//ToDo: authentication function
-	if($authUser == "admin" && $authPassword == "admin")
+	if($authProvider->authenticate($authUser,$authPassword))
 	{
 		$authAuthenticated = true;
 		$_SESSION['authAuthenticated'] = true;
