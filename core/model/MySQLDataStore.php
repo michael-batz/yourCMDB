@@ -936,7 +936,8 @@ class MySQLDataStore implements DataStoreInterface
 	{
 		$username = $user->getUsername();
 		$passwordHash = $user->getPasswordHash();
-		$sql = "INSERT INTO CmdbLocalUser(username, passwordhash) VALUES('$username', '$passwordHash')";
+		$accessGroup = $user->getAccessGroup();
+		$sql = "INSERT INTO CmdbLocalUser(username, passwordhash, accessgroup) VALUES('$username', '$passwordHash', '$accessGroup')";
 
 		//execute query and return result
 		$sqlResult = $this->dbSetData($sql);
@@ -959,23 +960,23 @@ class MySQLDataStore implements DataStoreInterface
 
         public function getUser($username)
 	{
-		$sql = "SELECT username, passwordhash from CmdbLocalUser WHERE username='$username'";
+		$sql = "SELECT username, passwordhash, accessgroup from CmdbLocalUser WHERE username='$username'";
 		$result = $this->dbGetData($sql);
 		if(count($result) > 0)
 		{
-			return new CmdbLocalUser($result[0][0], $result[0][1]);
+			return new CmdbLocalUser($result[0][0], $result[0][1], $result[0][2]);
 		}
 		return null;
 	}
 
         public function getUsers()
 	{
-		$sql = "SELECT username, passwordhash from CmdbLocalUser WHERE username='$username'";
+		$sql = "SELECT username, passwordhash, accessgroup from CmdbLocalUser";
 		$result = $this->dbGetData($sql);
 		$output = Array();
 		foreach($result as $row)
 		{
-			$output[] = new CmdbLocalUser($row[0], $row[1]);
+			$output[] = new CmdbLocalUser($row[0], $row[1], $row[2]);
 		}
 		return $output;
 	}

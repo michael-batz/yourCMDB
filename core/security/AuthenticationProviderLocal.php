@@ -55,6 +55,11 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 		return false;
 	}
 
+	public function getAccessGroup($username)
+	{
+		return "all";
+	}
+
 	public function addUser($username, $password)
 	{
 		$passwordHash = $this->createHash($username, $password);

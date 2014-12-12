@@ -32,10 +32,14 @@ class CmdbLocalUser
 	//passwordHash
 	private $passwordHash;
 
-	function __construct($username, $passwordHash)
+	//access group
+	private $accessGroup;
+
+	function __construct($username, $passwordHash, $accessGroup)
 	{
 		$this->username = $username;
 		$this->passwordHash = $passwordHash;
+		$this->accessGroup = $accessGroup;
 	}
 
 	public function getUsername()
@@ -46,6 +50,11 @@ class CmdbLocalUser
 	public function getPasswordHash()
 	{
 		return $this->passwordHash;
+	}
+
+	public function getAccessGroup()
+	{
+		return $this->accessGroup;
 	}
 }
 ?>

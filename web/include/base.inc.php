@@ -117,7 +117,7 @@ else
 		$authAuthenticated = true;
 		$_SESSION['authAuthenticated'] = true;
 		$_SESSION['authUser'] = $authUser;
-		$_SESSION['authAccessgroup'] = "all";
+		$_SESSION['authAccessgroup'] = $authProvider->getAccessGroup($authUser);
 	}
 
 }

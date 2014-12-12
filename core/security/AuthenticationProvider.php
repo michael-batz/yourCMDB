@@ -29,5 +29,7 @@ interface AuthenticationProvider
 
 	public function authenticate($username, $password);
 
+	public function getAccessgroup($username);
+
 }
 ?>
