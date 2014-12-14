@@ -572,6 +572,28 @@ p#searchbarFooter
 }
 
 /**
+* login page
+*
+**/
+#loginBox
+{
+	width:		400px;
+	margin-left:	auto;
+	margin-right:	auto;
+	text-align:	center;
+}
+
+#loginBox table
+{
+	width:		50%;
+	margin-left:	auto;
+	margin-right:	auto;
+	text-align:	left;
+}
+
+
+
+/**
 * jQuery Elements
 *
 **/

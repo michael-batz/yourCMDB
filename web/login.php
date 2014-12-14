@@ -24,11 +24,11 @@
 	include "include/base.inc.php";
 	include "include/htmlheader.inc.php";
 
-	//title
-	echo "<h1>".gettext("Welcome to yourCMDB!")."</h1>";
-
 	//login form
-	echo "<form name\"login\" method=\"POST\" action=\"index.php\">";
+	echo "<div class=\"box\" id=\"loginBox\">";
+	echo "<form method=\"post\" action=\"index.php\">";
+	echo "<h1>".gettext("Welcome to yourCMDB!")."</h1>";
+	echo "<p><img src=\"img/logo.png\" /></p>";
 	echo "<table>";
 
 	echo "<tr>";
@@ -47,6 +47,7 @@
 
 	echo "</table>";
 	echo "</form>";
+	echo "</div>";
 
 	//include footer
 	include "include/htmlfooter.inc.php";
