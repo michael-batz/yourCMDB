@@ -31,4 +31,7 @@
 	echo "<div class=\"scroller\" id=\"jsScroller\">";
 	echo "<a href=\"javascript:scrollToElement('body')\">".gettext("to the top")."</a>";
 	echo "</div>";
+
+	//<!-- end pagecontainer -->
+	echo "</div>";
 ?>

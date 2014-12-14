@@ -33,7 +33,6 @@ html,body
 	font-size:	12pt;
 	font-family:	sans-serif;
 
-	background:	url('../img/menu-background.png') repeat-y;
 }
 
 em
@@ -117,6 +116,16 @@ p.message-error
 p.waiting
 {
 	text-align:	center;
+}
+
+/**
+* Page container
+*
+**/
+div.pagecontainer
+{
+	min-height:	100%;
+	background:	url('../img/menu-background.png') repeat-y;
 }
 
 /**
