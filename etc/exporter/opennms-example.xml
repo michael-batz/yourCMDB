@@ -9,6 +9,7 @@
 		<parameter key="restpassword" value="admin" />
 		<parameter key="requisition" value="yourcmdb" />
 		<parameter key="services" value="ICMP" />
+		<parameter key="rescanExisting" value="dbOnly" />
 	</destination>
 	<variables>
 		<variable name="nodelabel">
