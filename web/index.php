@@ -69,7 +69,7 @@
 		echo "<td>$objectType</td>";
 		echo "<td>$objectDate</td>";
 		echo "<td class=\"right\">";
-		echo "<a href=\"$urlShowObjectId\"><img src=\"img/icon_show.png\" title=\"".gettext("show")."\" alt=\"".gettext("show")."\" /></a>&nbsp;&nbsp;&nbsp";
+		echo "<a href=\"$urlShowObjectId\"><img src=\"img/icon_show.png\" title=\"".gettext("show")."\" alt=\"".gettext("show")."\" /></a>&nbsp;&nbsp;&nbsp;";
 		echo "<a href=\"$urlEditObjectId\"><img src=\"img/icon_edit.png\" title=\"".gettext("edit")."\" alt=\"".gettext("edit")."\" /></a>";
 		echo "</td>";
 		echo "</tr>";
