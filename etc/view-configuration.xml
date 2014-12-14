@@ -8,6 +8,5 @@
 		<menu-item name="Search" url="search.php" />
 		<menu-item name="New Object" url="object.php?action=new" />
 		<menu-item name="Import-Export" url="import.php" />
-		<menu-item name="Logout" url="logout.php" />
 	</menu-items>
 </view-configuration>

@@ -24,6 +24,14 @@
 		<!-- header -->
 		<div class="header">
 			<h1 onclick="javascript:openUrl('index.php')">yourCMDB</h1>
+			<div id="userinfo">
+				<?php
+				if($authAuthenticated)
+				{
+					echo "$authUser (<a href=\"logout.php\">logout</a>)";
+				}
+				?>
+			</div>
 			<?php include "mainmenu.inc.php"; ?>
 		</div>
 

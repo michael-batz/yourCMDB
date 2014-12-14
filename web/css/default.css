@@ -149,11 +149,13 @@ div.header h1
 	padding-left:	95px;
 	font-size:	16pt;
 	display:	inline-block;
+	float:		left;
 }
 
 div.mainmenu
 {
 	text-align:	right;
+	clear:		both;
 }
 
 div.header div.mainmenu ul
@@ -168,6 +170,12 @@ div.header div.mainmenu li
 	margin:		20px;
 }
 
+#userinfo
+{
+	position:	absolute;
+	right:		20px;
+	top:		45px;
+}
 
 /**
 * Menu 
