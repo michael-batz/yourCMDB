@@ -24,6 +24,9 @@
 	include "include/base.inc.php";
 	include "include/htmlheader.inc.php";
 
+	//login container
+	echo "<div class=\"logincontainer\">";
+	
 	//login form
 	echo "<div class=\"box\" id=\"loginBox\">";
 	echo "<form method=\"post\" action=\"index.php\">";
@@ -47,6 +50,9 @@
 
 	echo "</table>";
 	echo "</form>";
+	echo "</div>";
+
+	//end login container
 	echo "</div>";
 
 	//include footer

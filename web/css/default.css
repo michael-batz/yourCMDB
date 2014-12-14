@@ -129,6 +129,20 @@ div.pagecontainer
 }
 
 /**
+* login container
+*
+**/
+div.logincontainer
+{
+	min-height:	100%;
+	min-width:	100%;
+	overflow:	auto;
+	background:	url('../img/login-background.jpg') no-repeat;
+	background-size:cover;	
+}
+
+
+/**
 * Header  
 *
 **/
@@ -586,8 +600,9 @@ p#searchbarFooter
 #loginBox
 {
 	width:		400px;
-	margin-left:	auto;
+	margin-top:	100px;
 	margin-right:	auto;
+	margin-left:	auto;
 	text-align:	center;
 }
 
