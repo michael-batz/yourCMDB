@@ -71,7 +71,7 @@ class ExternalSystemOpennms implements ExternalSystem
 					"assetNumber"			=> 64,
 					"operatingSystem"		=> 64,
 					"rack"				=> 64,
-					"rackunitheight"		=> 64,
+					"rackunitheight"		=> 2,
 					"slot"				=> 64,
 					"port"				=> 64,
 					"region"			=> 64,
