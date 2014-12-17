@@ -50,6 +50,9 @@ class ExternalSystemOpennms implements ExternalSystem
 	//verify SSL peer
 	private $sslVerify;
 
+	//rescan existing nodes when importing
+	private $rescanExisting;
+
 	//static var: category name lentgh
 	private static $categoryLength = 64;
 
@@ -68,7 +71,7 @@ class ExternalSystemOpennms implements ExternalSystem
 					"assetNumber"			=> 64,
 					"operatingSystem"		=> 64,
 					"rack"				=> 64,
-					"rackunitheight"		=> 64,
+					"rackunitheight"		=> 2,
 					"slot"				=> 64,
 					"port"				=> 64,
 					"region"			=> 64,
@@ -151,6 +154,13 @@ class ExternalSystemOpennms implements ExternalSystem
 		if(in_array("sslVerify", $parameterKeys))
 		{
 			$this->sslVerify = $destination->getParameterValue("sslVerify");
+		}
+
+		//rescanExisting
+		$this->rescanExisting = "true";
+		if(in_array("rescanExisting", $parameterKeys))
+		{
+			$this->rescanExisting = $destination->getParameterValue("rescanExisting");
 		}
 
 		//check connection to OpenNMS
@@ -386,7 +396,7 @@ class ExternalSystemOpennms implements ExternalSystem
 	private function importRequisition($name)
 	{
 		$xml = "";
-		$resource = "requisitions/$name/import";
+		$resource = "requisitions/$name/import?rescanExisting=".$this->rescanExisting;
 		return $this->sendData($resource, "PUT", $xml);
 	}
 
