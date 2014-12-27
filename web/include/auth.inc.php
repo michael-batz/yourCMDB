@@ -21,15 +21,46 @@
 *********************************************************************/
 
 /**
-* WebUI element: check authentication
+* WebUI element: authenication with user session
 */
 
-if(!$authAuthenticated)
-{
-	//get baseUrl from config
-	$baseUrl = $config->getViewConfig()->getBaseUrl();
-
-	header("Location: $baseUrl/login.php");
-	exit();
-}
+	session_start();
+	//ToDo: make AuthenticationProvider configurable
+	$authProvider = new AuthenticationProviderLocal();
+	$authAuthenticated = false;
+	$authUser = "";
+	$authAccessgroup = "";
+	if(isset($_SESSION['authAuthenticated'], $_SESSION['authUser'], $_SESSION['authAccessgroup']) && $_SESSION['authAuthenticated'] == true)
+	{
+		//if user is authenticated, set session vars
+		$authAuthenticated = true;
+		$authUser = $_SESSION['authUser'];
+		$authAccessgroup = $_SESSION['authAccessgroup'];
+	}
+	else
+	{
+		//if user is not authenticated, try to get authentication data from HTTP POST Vars (authUser, authPassword)
+		$authUser = getHttpPostVar("authUser", "");
+		$authPassword = getHttpPostVar("authPassword", "");
+	
+		//authentication function
+		if($authProvider->authenticate($authUser,$authPassword))
+		{
+			$authAuthenticated = true;
+			$_SESSION['authAuthenticated'] = true;
+			$_SESSION['authUser'] = $authUser;
+			$_SESSION['authAccessgroup'] = $authProvider->getAccessGroup($authUser);
+		}
+	
+	}
+	
+	//check authentication
+	if(!$authAuthenticated)
+	{
+		//get baseUrl from config
+		$baseUrl = $config->getViewConfig()->getBaseUrl();
+	
+		header("Location: $baseUrl/login.php");
+		exit();
+	}
 ?>

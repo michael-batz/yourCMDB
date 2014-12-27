@@ -25,24 +25,33 @@
 * @author: Michael Batz <michael@yourcmdb.org>
 */
 
+	//get WebUI base
+	include "include/base.inc.php";
 
-	/**
-	* autoloading of classes
-	*/
-	function __autoload($className)
+	//check authentication (HTTP Basic AUTH)
+	//ToDo: make AuthenticationProvider configurable
+	$authProvider = new AuthenticationProviderLocal();
+	$authUser = "";
+	$authAccessgroup = "";
+	$authAuthenticated = false;
+	if(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']))
 	{
-		$scriptBaseDir = dirname(__FILE__);
-                $coreBaseDir = realpath("$scriptBaseDir/../core");
-		$paths = array('', 'model', 'config', 'controller', 'libs', 'rest', 'exporter', 'taskscheduler');
-		$filename = $className.'.php';
-		foreach($paths as $path)
+		$authUser = $_SERVER['PHP_AUTH_USER'];
+		$authPassword = $_SERVER['PHP_AUTH_PW'];
+
+		if($authProvider->authenticate($authUser,$authPassword))
 		{
-			if(file_exists("$coreBaseDir/$path/$filename"))
-			{
-				include "$coreBaseDir/$path/$filename";
-			}
+			$authAccessgroup = $authProvider->getAccessGroup($authUser);
+			$authAuthenticated = true;
 		}
 	}
+	if(!$authAuthenticated)
+	{
+		$response = new RestResponse(401);
+		$response->sendResponse();
+		exit();
+	}
+
 
 	//get request details
 	//parse PATH_INFO string to array and ignore leading slash
@@ -80,8 +89,9 @@
 	if($restResource == null)
 	{
 		//error and exit
-		header("HTTP/1.0 404 Not Found");;
-		exit(-1);
+		$response = new RestResponse(404);
+		$response->sendResponse();
+		exit();
 	}
 
 	//execute operation on RestResource

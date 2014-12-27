@@ -60,6 +60,10 @@ class RestResponse
 				$this->sendHttp400();
 				break;
 
+			case 401:
+				$this->sendHttp401();
+				break;
+
 			case 404:
 				$this->sendHttp404();
 				break;
@@ -99,6 +103,12 @@ class RestResponse
 	private function sendHttp400()
 	{
 		header("HTTP/1.1 400 Bad Request");
+	}
+
+	private function sendHttp401()
+	{
+		header("HTTP/1.1 401 Unauthorized");
+		header("WWW-Authenticate: Basic realm=\"yourCMDB REST API\"");
 	}
 
 	private function sendHttp404()

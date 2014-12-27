@@ -22,6 +22,7 @@
 
 	//get header
 	include "include/base.inc.php";
+	include "include/auth.inc.php";
 
 	//destroy session vars
 	unset($_SESSION['authAuthenticated']);
@@ -29,6 +30,9 @@
 	unset($_SESSION['authAccessgroup']);
 	$authAuthenticated = false;
 
-	//redirect to login page	
-	include "include/auth.inc.php";
+	//redirect to login page
+	$baseUrl = $config->getViewConfig()->getBaseUrl();
+	header("Location: $baseUrl/login.php");
+	exit();
+
 ?>

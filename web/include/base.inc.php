@@ -29,7 +29,7 @@ function __autoload($className)
 {
 	$scriptBaseDir = dirname(__FILE__);
 	$coreBaseDir = realpath("$scriptBaseDir/../../core");
-	$paths = array('', 'security', 'model', 'config', 'controller', 'libs', 'exporter', 'taskscheduler');
+	$paths = array('', 'security', 'model', 'config', 'controller', 'libs', 'exporter', 'taskscheduler', 'rest');
 	$filename = $className.'.php';
 	foreach($paths as $path)
 	{
@@ -90,37 +90,6 @@ function printErrorMessage($message)
 $controller = new Controller();
 $config = $controller->getCmdbConfig();
 $datastore = $controller->getDatastore();
-
-//session handling
-session_start();
-//ToDo: make AuthenticationProvider configurable
-$authProvider = new AuthenticationProviderLocal();
-$authAuthenticated = false;
-$authUser = "";
-$authAccessgroup = "";
-if(isset($_SESSION['authAuthenticated'], $_SESSION['authUser'], $_SESSION['authAccessgroup']) && $_SESSION['authAuthenticated'] == true)
-{
-	//if user is authenticated, set session vars
-	$authAuthenticated = true;
-	$authUser = $_SESSION['authUser'];
-	$authAccessgroup = $_SESSION['authAccessgroup'];
-}
-else
-{
-	//if user is not authenticated, try to authenticate
-	$authUser = getHttpPostVar("authUser", "");
-	$authPassword = getHttpPostVar("authPassword", "");
-
-	//ToDo: authentication function
-	if($authProvider->authenticate($authUser,$authPassword))
-	{
-		$authAuthenticated = true;
-		$_SESSION['authAuthenticated'] = true;
-		$_SESSION['authUser'] = $authUser;
-		$_SESSION['authAccessgroup'] = $authProvider->getAccessGroup($authUser);
-	}
-
-}
 
 //setup i18n with gettext
 $i18nLocale = $config->getViewConfig()->getLocale();
