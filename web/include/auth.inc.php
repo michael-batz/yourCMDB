@@ -25,8 +25,7 @@
 */
 
 	session_start();
-	//ToDo: make AuthenticationProvider configurable
-	$authProvider = new AuthenticationProviderLocal();
+	$authProvider = $controller->getAuthProvider("web");
 	$authAuthenticated = false;
 	$authUser = "";
 	$authAccessgroup = "";

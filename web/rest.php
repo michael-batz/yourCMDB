@@ -29,8 +29,7 @@
 	include "include/base.inc.php";
 
 	//check authentication (HTTP Basic AUTH)
-	//ToDo: make AuthenticationProvider configurable
-	$authProvider = new AuthenticationProviderLocal();
+	$authProvider = $controller->getAuthProvider("rest");
 	$authUser = "";
 	$authAccessgroup = "";
 	$authAuthenticated = false;

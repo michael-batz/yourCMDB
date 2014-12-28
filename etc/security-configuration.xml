@@ -1,0 +1,12 @@
+<security-configuration>
+	<authentication>
+		<authproviders>
+			<authprovider name="local-auth" class="AuthenticationProviderLocal" />
+			<authprovider name="ldap-auth" class="AuthenticationProviderLdap" />
+		</authproviders>
+		<authmethods>
+			<authmethod part="web" authprovider="local-auth" />
+			<authmethod part="rest" authprovider="local-auth" />
+		</authmethods>
+	</authentication>
+</security-configuration>

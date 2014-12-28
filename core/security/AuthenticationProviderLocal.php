@@ -28,25 +28,18 @@
 class AuthenticationProviderLocal implements AuthenticationProvider
 {
 
-	//datastore
-	private $datstore;
-
-	//configuration
-	private $config;
-
 	function __construct()
 	{
-		$config = new CmdbConfig();
-		$this->config = $config;
-
-		//create datastore object
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$this->datastore = new $datastoreClass;
+		;
 	}
 
 	public function authenticate($username, $password)
 	{
-		$userobject = $this->datastore->getUser($username);
+		$config = new CmdbConfig();
+		$datastoreClass = $config->getDatastoreConfig()->getClass();
+		$datastore = new $datastoreClass;
+
+		$userobject = $datastore->getUser($username);
 		$passwordHash = $this->createHash($username, $password);
 		if($userobject != null && $userobject->getPasswordHash() == $passwordHash)
 		{
@@ -62,8 +55,12 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 
 	public function addUser($username, $password)
 	{
+		$config = new CmdbConfig();
+		$datastoreClass = $config->getDatastoreConfig()->getClass();
+		$datastore = new $datastoreClass;
+
 		$passwordHash = $this->createHash($username, $password);
-		return $this->datastore->addUser(new CmdbLocalUser($username, $passwordHash));
+		return $datastore->addUser(new CmdbLocalUser($username, $passwordHash));
 	}
 
 	private function createHash($username, $password)

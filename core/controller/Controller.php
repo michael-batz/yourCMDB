@@ -86,6 +86,16 @@ class Controller
 	}
 
 	/**
+	* Returns cmdb authentication provider for given part
+	*
+	*/
+	public function getAuthProvider($part)
+	{
+		$securityConfiguration = $this->config->getSecurityConfig();
+		return $securityConfiguration->getAuthProvider($part);
+	}
+
+	/**
 	* Returns version
 	*
 	*/

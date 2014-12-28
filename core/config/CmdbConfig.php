@@ -46,6 +46,9 @@ class CmdbConfig
 	//task scheduler configuration
 	private $configTaskScheduler;
 
+	//security configuration
+	private $configSecurity;
+
 	/**
 	* Creates a new configuration object
 	* Reads configuration from xml files and returns configuration objects
@@ -59,6 +62,7 @@ class CmdbConfig
 		$this->configDataExchange = new DataExchangeConfig("$configurationBase/dataexchange-configuration.xml");
 		$this->configExporter = new ExporterConfig("$configurationBase/exporter-configuration.xml");
 		$this->configTaskScheduler = new TaskSchedulerConfig("$configurationBase/taskscheduler-configuration.xml");
+		$this->configSecurity = new SecurityConfig("$configurationBase/security-configuration.xml");
 	}
 
 
@@ -108,6 +112,14 @@ class CmdbConfig
 	public function getTaskSchedulerConfig()
 	{
 		return $this->configTaskScheduler;
+	}
+
+	/**
+	* Returns a SecurityConfig object
+	*/
+	public function getSecurityConfig()
+	{
+		return $this->configSecurity;
 	}
 
 }
