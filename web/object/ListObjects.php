@@ -92,7 +92,7 @@
 	//<!-- submenu -->
 	echo "<div class=\"submenu\">";
 	echo "<a href=\"$urlShowActive\">$textShowActive</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlAdd\">add object</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlAdd\">".gettext("add new object")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
 	echo "<a href=\"$urlCsvExport\">CSV export</a>";
 	echo "</div>";
 
