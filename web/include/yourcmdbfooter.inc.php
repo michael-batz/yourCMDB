@@ -2,7 +2,7 @@
 /********************************************************************
 * This file is part of yourCMDB.
 *
-* Copyright 2013-2014 Michael Batz
+* Copyright 2013-2015 Michael Batz
 *
 *
 * yourCMDB is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
 
 	//<!-- footer -->
 	echo "<div class=\"footer\">";
-	echo "<a href=\"http://www.yourcmdb.org\">yourCMDB ".$controller->getVersion()."</a> ".gettext("is published under GPLv3").". &copy; 2013-2014 Michael Batz.";
+	echo "<a href=\"http://www.yourcmdb.org\">yourCMDB ".$controller->getVersion()."</a> ".gettext("is published under GPLv3").". &copy; 2013-2015 Michael Batz.";
 	echo "</div>";
 
 	//<!-- scroller  -->
