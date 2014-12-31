@@ -2,7 +2,14 @@
 	<authentication>
 		<authproviders>
 			<authprovider name="local-auth" class="AuthenticationProviderLocal" />
-			<authprovider name="ldap-auth" class="AuthenticationProviderLdap" />
+			<authprovider name="ldap-auth" class="AuthenticationProviderLdap">
+				<parameter key="url" value="ldap://localhost:389" />
+				<parameter key="useLdapV3" value="true" />
+				<parameter key="bindDn" value="cn=admin,dc=yourcmdb,dc=org" />
+				<parameter key="bindPw" value="cmdb" />
+				<parameter key="baseDn" value="ou=users,dc=yourcmdb,dc=org" />
+				<parameter key="searchFilter" value="(uid=%username%)" />
+			</authprovider>
 		</authproviders>
 		<authmethods>
 			<authmethod part="web" authprovider="local-auth" />

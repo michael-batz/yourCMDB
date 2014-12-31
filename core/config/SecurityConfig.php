@@ -49,7 +49,7 @@ class SecurityConfig
 			$authproviderClass = (string) $authprovider['class'];
 			//read parameters of authprovider
 			$authproviderParams = array();
-			foreach($authprovider[0]->param as $param)
+			foreach($authprovider[0]->parameter as $param)
 			{
 				$paramKey = (string) $param['key'];
 				$paramValue = (string) $param['value'];

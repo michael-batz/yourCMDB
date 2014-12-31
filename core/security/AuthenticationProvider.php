@@ -26,6 +26,7 @@
 */
 interface AuthenticationProvider
 {
+	public function __construct($parameters);
 
 	public function authenticate($username, $password);
 

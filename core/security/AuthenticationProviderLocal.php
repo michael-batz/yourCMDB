@@ -28,8 +28,9 @@
 class AuthenticationProviderLocal implements AuthenticationProvider
 {
 
-	function __construct()
+	function __construct($parameters)
 	{
+		//no parameters needed - so doing nothing here
 		;
 	}
 
