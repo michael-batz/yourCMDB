@@ -1,0 +1,53 @@
+<?php
+/********************************************************************
+* This file is part of yourCMDB.
+*
+* Copyright 2013-2015 Michael Batz
+*
+*
+* yourCMDB is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* yourCMDB is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
+*
+*********************************************************************/
+
+	//get header
+	include "include/base.inc.php";
+	include "include/auth.inc.php";
+	include "include/htmlheader.inc.php";
+	include "include/yourcmdbheader.inc.php";
+
+	//<!-- title -->
+	echo "<h1>".gettext("Admin")."</h1>";
+
+	//<!-- start admin tabs -->
+	echo "<div id=\"jsAccordion\">";
+
+	//user manager
+	echo "<h3>".gettext("Usermanager")."</h3>";
+	echo "<div>";
+	include "admin/LocalUsers.php";
+	echo "</div>";
+	//about
+	echo "<h3>".gettext("About")."</h3>";
+	echo "<div>";
+	include "admin/About.php";
+	echo "</div>";
+
+	//<!-- end admin tabs -->
+	echo "</div>";
+
+
+	//include footer
+	include "include/yourcmdbfooter.inc.php";
+	include "include/htmlfooter.inc.php";
+?>

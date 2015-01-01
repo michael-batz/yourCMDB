@@ -120,6 +120,12 @@ function jqueryUiStart()
 		$( "#jsMenu" ).menu();
 	});
 
+	//generate accordion
+	$(function()
+	{
+		$( "#jsAccordion" ).accordion();
+	});
+
 	//setup event handler scroller
 	$(window).scroll(function()
 	{
