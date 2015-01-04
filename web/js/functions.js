@@ -123,7 +123,12 @@ function jqueryUiStart()
 	//generate accordion
 	$(function()
 	{
-		$( "#jsAccordion" ).accordion();
+		$( "#jsAccordion" ).accordion
+		(
+			{
+				heightStyle: "content"
+			}
+		);
 	});
 
 	//setup event handler scroller

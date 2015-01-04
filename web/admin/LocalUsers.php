@@ -25,6 +25,74 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
+	//include base functions
+	include "../include/base.inc.php";
+	include "../include/auth.inc.php";
+
+	//central objects
+	$authProviderLocal = new AuthenticationProviderLocal(null);
+
+
+	//execute actions if required
+	$action = getHttpGetVar("action", "");
+	switch($action)
+	{
+		case "addUser":
+			$username = getHttpGetVar("username", "");
+			$password = getHttpGetVar("password", "");
+			$accessgroup = getHttpGetVar("accessgroup", "");
+			$authProviderLocal->addUser($username, $password, $accessgroup);
+			break;
+
+		case "deleteUser":
+			$username = getHttpGetVar("username", "");
+			$authProviderLocal->deleteUser($username);
+			break;
+	}
+
 	//get data
+	$users = $authProviderLocal->getUsers();
+
+	//output: header
 	echo "<p>user management</p>";
+
+	//navigation
+	echo "<p>";
+	echo "<a href=\"javascript:adminAuthAddUser('".gettext("Go!")."', '".gettext("Cancel")."')\">".gettext("add user")."</a>";
+	echo "</p>";
+
+	//output: user table
+	echo "<table>";
+	echo "<tr>";
+	echo "<th>".gettext("username")."</th>";
+	echo "<th>".gettext("access group")."</th>";
+	echo "<th>&nbsp;</th>";
+	echo "</tr>";
+	foreach($users as $user)
+	{
+		$userName = $user->getUsername();
+		$userAccessgroup = $user->getAccessgroup();
+		$urlUserDelete = "javascript:openUrlAjax('admin/LocalUsers.php?action=deleteUser&amp;username=$userName', '#adminTabAuthentication', false, true)";
+
+		echo "<tr>";
+		echo "<td>$userName</td>";
+		echo "<td>$userAccessgroup</td>";
+		echo "<td>";
+		echo "<a href=\"$urlUserDelete\"><img src=\"img/icon_delete.png\" title=\"".gettext("delete")."\" alt=\"".gettext("delete")."\" /></a>";
+		echo "</td>";
+		echo "</tr>";
+	}
+	echo "</table>";
+
+	//output: add user form
+	echo "<div class=\"blind\" id=\"adminAuthAddUser\" title=\"".gettext("add new user")."\">";
+	echo "<form id=\"adminAuthAddUserForm\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<table>";
+	echo "<input type=\"hidden\" name=\"action\" value=\"addUser\">";
+	echo "<tr><td>".gettext("username:")."</td><td><input type=\"text\" name=\"username\"></td></tr>";
+	echo "<tr><td>".gettext("password:")."</td><td><input type=\"password\" name=\"password\"></td></tr>";
+	echo "<tr><td>".gettext("access group:")."</td><td><input type=\"text\" name=\"accessgroup\"></td></tr>";
+	echo "</table>";
+	echo "</form>";
+	echo "</div>";
 ?>

@@ -955,7 +955,16 @@ class MySQLDataStore implements DataStoreInterface
 
         public function deleteUser($username)
 	{
-		;
+		$username = $this->dbConnection->quote($username);
+		$sql = "DELETE FROM CmdbLocalUser WHERE username=$username";
+
+		//execute query and return result
+		$sqlResult = $this->dbSetData($sql);
+		if($sqlResult == FALSE)
+		{
+			error_log("Error deleting cmdb user $username");
+		}
+		return $sqlResult;
 	}
 
         public function getUser($username)

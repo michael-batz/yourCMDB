@@ -1,4 +1,3 @@
-<?php
 /********************************************************************
 * This file is part of yourCMDB.
 *
@@ -20,37 +19,32 @@
 *
 *********************************************************************/
 
-	//get header
-	include "include/base.inc.php";
-	include "include/auth.inc.php";
-	include "include/htmlheader.inc.php";
-	include "include/yourcmdbheader.inc.php";
+//JavaScript functions for admin section
 
-	//<!-- title -->
-	echo "<h1>".gettext("Admin")."</h1>";
+/**
+* Shows add user form
+*/
+function adminAuthAddUser(button1Label, button2Label)
+{
+	var buttonDefs = {};
+	//button 1
+	buttonDefs[button1Label] = function()
+	{
+		openUrlAjax('admin/LocalUsers.php?' + $( '#adminAuthAddUserForm' ).serialize(), '#adminTabAuthentication', false, true);
+		$( this ).dialog("close");
+	};
+	//button 2
+	buttonDefs[button2Label] = function()
+	{
+		$( this ).dialog("close");
+	};
 
-	//<!-- start admin tabs -->
-	echo "<div id=\"jsAccordion\">";
-
-	//tab: about
-	echo "<h3>".gettext("About")."</h3>";
-	echo "<div>";
-	include "admin/About.php";
-	echo "</div>";
-
-	//tab: user manager
-	echo "<h3>".gettext("Authentication")."</h3>";
-	echo "<div id=\"adminTabAuthentication\">";
-	echo "<script language=\"JavaScript\">";
-	echo "openUrlAjax('admin/LocalUsers.php?', '#adminTabAuthentication', false, true);";
-	echo "</script>";
-	echo "</div>";
-
-	//<!-- end admin tabs -->
-	echo "</div>";
-
-
-	//include footer
-	include "include/yourcmdbfooter.inc.php";
-	include "include/htmlfooter.inc.php";
-?>
+	//create dialog
+	$( "#adminAuthAddUser"  ).dialog
+	(
+		{
+			modal:	true,
+			buttons:buttonDefs
+		}
+	);
+};
