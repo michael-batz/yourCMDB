@@ -30,7 +30,10 @@
 	include "../include/auth.inc.php";
 
 	//central objects
+	$configSecurity = $config->getSecurityConfig();
 	$authProviderLocal = new AuthenticationProviderLocal(null);
+	$authProviderInfoWeb = get_class($configSecurity->getAuthProvider("web"));
+	$authProviderInfoRest = get_class($configSecurity->getAuthProvider("rest"));
 
 
 	//execute actions if required
@@ -55,6 +58,14 @@
 
 	//get data
 	$users = $authProviderLocal->getUsers();
+
+
+	//output: authentication provider info
+	echo "<table>";
+	echo "<tr><th colspan=\"2\">".gettext("authentication methods")."</th></tr>";
+	echo "<tr><td>WebUi</td><td>$authProviderInfoWeb</td></tr>";
+	echo "<tr><td>REST API</td><td>$authProviderInfoRest</td></tr>";
+	echo "</table>";
 
 	//output: header
 	echo "<p>user management</p>";
