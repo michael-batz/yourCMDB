@@ -46,7 +46,10 @@
 
 		case "deleteUser":
 			$username = getHttpGetVar("username", "");
-			$authProviderLocal->deleteUser($username);
+			if($username != $authUser)
+			{
+				$authProviderLocal->deleteUser($username);
+			}
 			break;
 	}
 
@@ -78,7 +81,11 @@
 		echo "<td>$userName</td>";
 		echo "<td>$userAccessgroup</td>";
 		echo "<td>";
-		echo "<a href=\"$urlUserDelete\"><img src=\"img/icon_delete.png\" title=\"".gettext("delete")."\" alt=\"".gettext("delete")."\" /></a>";
+		//prevent a user from deleting its own user account
+		if($userName != $authUser)
+		{
+			echo "<a href=\"$urlUserDelete\"><img src=\"img/icon_delete.png\" title=\"".gettext("delete")."\" alt=\"".gettext("delete")."\" /></a>";
+		}
 		echo "</td>";
 		echo "</tr>";
 	}
