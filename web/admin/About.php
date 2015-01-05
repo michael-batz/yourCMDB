@@ -26,8 +26,31 @@
 */
 
 	//get data
-	$aboutVersion = $controller->getVersion();
+	$aboutCmdbVersion = $controller->getVersion();
+	$aboutOs = php_uname('s');
+	$aboutPhp = phpversion();
+	$aboutPhpSapi = php_sapi_name();
+	$aboutDbVersion = $datastore->getDbServerVersion();
 
-	//output
-	echo "<p>yourcmdb $aboutVersion</p>";
+	//output: yourcmdb information
+	echo "<div>";
+	echo "<img src=\"img/logo.png\" alt=\"yourCMDB\" title=\"yourCMDB\" />";
+	echo "<p>";
+	echo gettext("yourCMDB is published under GPLv3.");
+	echo "<br />";
+	echo "&copy; 2013-2015 Michael Batz";
+	echo "<br />";
+	echo "<a href=\"http://www.yourcmdb.org\">http://www.yourcmdb.org</a>";
+	echo "</p>";
+	echo "</div>";
+
+	//output: version information
+	echo "<table>";
+	echo "<tr><th colspan=\"2\">".gettext("version information")."</th></tr>";
+	echo "<tr><td>".gettext("yourCMDB:")."</td><td>$aboutCmdbVersion</td></tr>";
+	echo "<tr><td>".gettext("operating system:")."</td><td>$aboutOs</td></tr>";
+	echo "<tr><td>".gettext("PHP:")."</td><td>$aboutPhp</td></tr>";
+	echo "<tr><td>".gettext("PHP server api:")."</td><td>$aboutPhpSapi</td></tr>";
+	echo "<tr><td>".gettext("database server:")."</td><td>$aboutDbVersion</td></tr>";
+	echo "</table>";
 ?>

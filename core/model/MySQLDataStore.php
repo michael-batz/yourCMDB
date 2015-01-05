@@ -89,6 +89,10 @@ class MySQLDataStore implements DataStoreInterface
 		}
 	}
 
+	public function getDbServerVersion()
+	{
+		return $this->dbConnection->getAttribute(PDO::ATTR_SERVER_VERSION);
+	}
 
 	public function isObject($id, $type=null)
 	{
