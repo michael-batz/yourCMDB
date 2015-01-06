@@ -24,16 +24,22 @@
 	include "include/base.inc.php";
 	include "include/htmlheader.inc.php";
 
+	$loginError = getHttpGetVar("error", "false");
+
 	//login container
 	echo "<div class=\"logincontainer\">";
-	
+
 	//login form
 	echo "<div class=\"box\" id=\"loginBox\">";
 	echo "<form method=\"post\" action=\"index.php\">";
 	echo "<h1>".gettext("Welcome to yourCMDB!")."</h1>";
+	if($loginError != "false")
+	{
+		printErrorMessage(gettext("Sorry, wrong username or password. Please try again..."));
+	}
 	echo "<p><img src=\"img/logo.png\" /></p>";
-	echo "<table>";
 
+	echo "<table>";
 	echo "<tr>";
 	echo "<td>".gettext("user:")."</td>";
 	echo "<td><input type=\"text\" name=\"authUser\"/></td>";

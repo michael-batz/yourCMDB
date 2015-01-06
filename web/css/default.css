@@ -92,7 +92,6 @@ img
 
 p.message-info
 {
-	width:		100%;
 	text-align:	left;
 	font-size:	8pt;
 	border:		1pt solid #FF9900;
@@ -104,7 +103,6 @@ p.message-info
 
 p.message-error
 {
-	width:		100%;
 	text-align:	left;
 	font-size:	8pt;
 	border:		1pt solid #FF0022;

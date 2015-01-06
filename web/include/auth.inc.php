@@ -25,10 +25,18 @@
 */
 
 	session_start();
+	$baseUrl = $config->getViewConfig()->getBaseUrl();
 	$authProvider = $controller->getAuthProvider("web");
+	//set defaults
 	$authAuthenticated = false;
 	$authUser = "";
 	$authAccessgroup = "";
+
+	//get HTTP POST vars for authentication
+	$authUserPost = getHttpPostVar("authUser", "");
+	$authPasswordPost = getHttpPostVar("authPassword", "");
+
+	//check, if user is already authenticated
 	if(isset($_SESSION['authAuthenticated'], $_SESSION['authUser'], $_SESSION['authAccessgroup']) && $_SESSION['authAuthenticated'] == true)
 	{
 		//if user is authenticated, set session vars
@@ -36,19 +44,23 @@
 		$authUser = $_SESSION['authUser'];
 		$authAccessgroup = $_SESSION['authAccessgroup'];
 	}
-	else
+	//try to authenticate if HTTP POST vars are set
+	elseif($authUserPost != "")
 	{
-		//if user is not authenticated, try to get authentication data from HTTP POST Vars (authUser, authPassword)
-		$authUser = getHttpPostVar("authUser", "");
-		$authPassword = getHttpPostVar("authPassword", "");
-	
 		//authentication function
-		if($authProvider->authenticate($authUser,$authPassword))
+		if($authProvider->authenticate($authUserPost,$authPasswordPost))
 		{
 			$authAuthenticated = true;
+			$authUser = $authUserPost;
 			$_SESSION['authAuthenticated'] = true;
 			$_SESSION['authUser'] = $authUser;
 			$_SESSION['authAccessgroup'] = $authProvider->getAccessGroup($authUser);
+		}
+		//redirect to login page with error flag
+		else
+		{
+			header("Location: $baseUrl/login.php?error=1");
+			exit();
 		}
 	
 	}
@@ -56,9 +68,6 @@
 	//check authentication
 	if(!$authAuthenticated)
 	{
-		//get baseUrl from config
-		$baseUrl = $config->getViewConfig()->getBaseUrl();
-	
 		header("Location: $baseUrl/login.php");
 		exit();
 	}
