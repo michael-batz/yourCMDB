@@ -952,9 +952,29 @@ class MySQLDataStore implements DataStoreInterface
 		return $sqlResult;
 	}
         
-        public function changeUser($username, CmdbLocalUser $newuser)
+        public function changeUser($username, CmdbLocalUser $newUser)
 	{
-		;
+		//check, if user exists
+		$user = $this->getUser($username);
+		if($user == null || $username != ($newUser->getUsername()))
+		{
+			error_log("Error changing cmdb user $username. User not found.");
+			return false;
+		}
+
+		//update user
+		$newAccessGroup = $this->dbConnection->quote($newUser->getAccessGroup());
+		$newPasswordHash = $this->dbConnection->quote($newUser->getPasswordHash());
+		$newUsername = $this->dbConnection->quote($newUser->getUsername());
+		$sql = "UPDATE CmdbLocalUser SET passwordhash=$newPasswordHash, accessgroup=$newAccessGroup ";
+		$sql.= "WHERE username=$newUsername";
+		$sqlResult = $this->dbSetData($sql);
+		if($sqlResult == FALSE)
+		{
+			error_log("Error changing cmdb user $username");
+		}
+		return $sqlResult;
+
 	}
 
         public function deleteUser($username)

@@ -54,6 +54,21 @@
 				$authProviderLocal->deleteUser($username);
 			}
 			break;
+		case "editUser":
+			$username = getHttpGetVar("username", "");
+			$password = getHttpGetVar("password", "");
+			$accessgroup = getHttpGetVar("accessgroup", "");
+			//only change password if field is not empty
+			if($password != "")
+			{
+				$authProviderLocal->resetPassword($username, $password);
+			}
+			//only change accessgroup if field is not empty
+			if($accessgroup != "")
+			{
+				$authProviderLocal->setAccessGroup($username, $accessgroup);
+			}
+			break;
 	}
 
 	//get data
@@ -87,15 +102,17 @@
 		$userName = $user->getUsername();
 		$userAccessgroup = $user->getAccessgroup();
 		$urlUserDelete = "javascript:openUrlAjax('admin/LocalUsers.php?action=deleteUser&amp;username=$userName', '#adminTabAuthentication', false, true)";
+		$urlUserEdit = "javascript:adminAuthEditUser('$userName', '".gettext("Go!")."', '".gettext("Cancel")."')";
 
 		echo "<tr>";
 		echo "<td>$userName</td>";
 		echo "<td>$userAccessgroup</td>";
 		echo "<td>";
-		//prevent a user from deleting its own user account
+		//prevent a user from deleting and changing its own user account
 		if($userName != $authUser)
 		{
 			echo "<a href=\"$urlUserDelete\"><img src=\"img/icon_delete.png\" title=\"".gettext("delete")."\" alt=\"".gettext("delete")."\" /></a>";
+			echo "<a href=\"$urlUserEdit\"><img src=\"img/icon_edit.png\" title=\"".gettext("edit")."\" alt=\"".gettext("edit")."\" /></a>";
 		}
 		echo "</td>";
 		echo "</tr>";
@@ -110,6 +127,18 @@
 	echo "<tr><td>".gettext("username:")."</td><td><input type=\"text\" name=\"username\"></td></tr>";
 	echo "<tr><td>".gettext("password:")."</td><td><input type=\"password\" name=\"password\"></td></tr>";
 	echo "<tr><td>".gettext("access group:")."</td><td><input type=\"text\" name=\"accessgroup\"></td></tr>";
+	echo "</table>";
+	echo "</form>";
+	echo "</div>";
+
+	//output: edit user form
+	echo "<div class=\"blind\" id=\"adminAuthEditUser\" title=\"".gettext("edit user")."\">";
+	echo "<form id=\"adminAuthEditUserForm\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<p>".gettext("Leave fields empty, that you do not wish to change.")."</p>";
+	echo "<table>";
+	echo "<input type=\"hidden\" name=\"action\" value=\"editUser\">";
+	echo "<tr><td>".gettext("new password:")."</td><td><input type=\"password\" name=\"password\"></td></tr>";
+	echo "<tr><td>".gettext("new access group:")."</td><td><input type=\"text\" name=\"accessgroup\"></td></tr>";
 	echo "</table>";
 	echo "</form>";
 	echo "</div>";

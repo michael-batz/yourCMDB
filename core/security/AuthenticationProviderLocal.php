@@ -82,6 +82,41 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 		return $datastore->deleteUser($username);
 	}
 
+	public function resetPassword($username, $newPassword)
+	{
+		$config = new CmdbConfig();
+		$datastoreClass = $config->getDatastoreConfig()->getClass();
+		$datastore = new $datastoreClass;
+
+		//create new user object
+		$newAccessGroup = $this->getAccessGroup($username);
+		$newPasswordHash = $this->createHash($username, $newPassword);
+		$newUserObject = new CmdbLocalUser($username, $newPasswordHash, $newAccessGroup);
+
+		//change user in datastore
+		return $datastore->changeUser($username, $newUserObject);
+	}
+
+	public function setAccessGroup($username, $newAccessGroup)
+	{
+		$config = new CmdbConfig();
+		$datastoreClass = $config->getDatastoreConfig()->getClass();
+		$datastore = new $datastoreClass;
+
+		//create new user object
+		$user = $datastore->getUser($username);
+		if($user == null)
+		{
+			return false;
+		}
+		$newPasswordHash = $user->getPasswordHash();
+		$newUserObject = new CmdbLocalUser($username, $newPasswordHash, $newAccessGroup);
+
+		//change user in datastore
+		return $datastore->changeUser($username, $newUserObject);
+	}
+
+
 	private function createHash($username, $password)
 	{
 		$passwordHash = hash("sha256", "yourcmdb".$username.$password);

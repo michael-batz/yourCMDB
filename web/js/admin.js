@@ -48,3 +48,31 @@ function adminAuthAddUser(button1Label, button2Label)
 		}
 	);
 };
+
+/**
+* Shows edit user form
+*/
+function adminAuthEditUser(username, button1Label, button2Label)
+{
+	var buttonDefs = {};
+	//button 1
+	buttonDefs[button1Label] = function()
+	{
+		openUrlAjax('admin/LocalUsers.php?username=' + username + "&" + $( '#adminAuthEditUserForm' ).serialize(), '#adminTabAuthentication', false, true);
+		$( this ).dialog("close");
+	};
+	//button 2
+	buttonDefs[button2Label] = function()
+	{
+		$( this ).dialog("close");
+	};
+
+	//create dialog
+	$( "#adminAuthEditUser"  ).dialog
+	(
+		{
+			modal:	true,
+			buttons:buttonDefs
+		}
+	);
+};
