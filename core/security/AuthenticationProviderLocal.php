@@ -51,7 +51,16 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 
 	public function getAccessGroup($username)
 	{
-		return "all";
+		$config = new CmdbConfig();
+		$datastoreClass = $config->getDatastoreConfig()->getClass();
+		$datastore = new $datastoreClass;
+
+		$userobject = $datastore->getUser($username);
+		if($userobject == null)
+		{
+			return null;
+		}
+		return $userobject->getAccessGroup();
 	}
 
 	public function addUser($username, $password, $accessgroup)

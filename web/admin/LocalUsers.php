@@ -44,29 +44,59 @@
 			$username = getHttpGetVar("username", "");
 			$password = getHttpGetVar("password", "");
 			$accessgroup = getHttpGetVar("accessgroup", "");
-			$authProviderLocal->addUser($username, $password, $accessgroup);
+			$result = $authProviderLocal->addUser($username, $password, $accessgroup);
+			if($result)
+			{
+				printInfoMessage(sprintf(gettext("user %s successfully created"), $username));
+			}
+			else
+			{
+				printErrorMessage(sprintf(gettext("Error creating user  %s"), $username));
+			}
 			break;
 
 		case "deleteUser":
 			$username = getHttpGetVar("username", "");
 			if($username != $authUser)
 			{
-				$authProviderLocal->deleteUser($username);
+				$result = $authProviderLocal->deleteUser($username);
+				if($result)
+				{
+					printInfoMessage(sprintf(gettext("user %s successfully deleted"), $username));
+				}
+				else
+				{
+					printErrorMessage(sprintf(gettext("Error deleting user  %s"), $username));
+				}
 			}
 			break;
+
 		case "editUser":
 			$username = getHttpGetVar("username", "");
 			$password = getHttpGetVar("password", "");
 			$accessgroup = getHttpGetVar("accessgroup", "");
+			$message = "";
 			//only change password if field is not empty
 			if($password != "")
 			{
-				$authProviderLocal->resetPassword($username, $password);
+				$result = $authProviderLocal->resetPassword($username, $password);
+				if($result)
+				{
+					$message .= gettext("Password successfully changed. ");
+				}
 			}
 			//only change accessgroup if field is not empty
 			if($accessgroup != "")
 			{
-				$authProviderLocal->setAccessGroup($username, $accessgroup);
+				$result = $authProviderLocal->setAccessGroup($username, $accessgroup);
+				if($result)
+				{
+					$message .= gettext("Accessgroup successfully changed. ");
+				}
+			}
+			if($message != "")
+			{
+				printInfoMessage(sprintf(gettext("User %s successfully changed. "), $username) .$message);
 			}
 			break;
 	}

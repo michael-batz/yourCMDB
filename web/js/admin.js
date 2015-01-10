@@ -59,7 +59,7 @@ function adminAuthEditUser(username, button1Label, button2Label)
 	buttonDefs[button1Label] = function()
 	{
 		openUrlAjax('admin/LocalUsers.php?username=' + username + "&" + $( '#adminAuthEditUserForm' ).serialize(), '#adminTabAuthentication', false, true);
-		$( this ).dialog("close");
+		$( this ).remove();
 	};
 	//button 2
 	buttonDefs[button2Label] = function()
