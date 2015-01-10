@@ -31,7 +31,7 @@ function adminAuthAddUser(button1Label, button2Label)
 	buttonDefs[button1Label] = function()
 	{
 		openUrlAjax('admin/LocalUsers.php?' + $( '#adminAuthAddUserForm' ).serialize(), '#adminTabAuthentication', false, true);
-		$( this ).dialog("close");
+		$( this ).remove();
 	};
 	//button 2
 	buttonDefs[button2Label] = function()

@@ -40,7 +40,7 @@ em
 	background:	#FFFF00;
 }
 
-a
+a, div.submenu a
 {
 	color:		#FF0022;
 	text-decoration: none;
@@ -634,4 +634,17 @@ p#searchbarFooter
 	max-height: 	100px;
 	overflow-y: 	auto;
 	overflow-x:	hidden;
+}
+
+.ui-accordion .ui-accordion-content
+{
+	padding-top:	0px;
+	padding-left:	20px;	
+	padding-right:	20px;	
+	padding-bottom:	20px;	
+}
+
+.ui-accordion-header-active
+{
+	background:	url("images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #E6E6E6;
 }

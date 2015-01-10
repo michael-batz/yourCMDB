@@ -26,11 +26,16 @@
 */
 
 	//get data
+	$configSecurity = $config->getSecurityConfig();
+	$authProviderInfoWeb = get_class($configSecurity->getAuthProvider("web"));
+	$authProviderInfoRest = get_class($configSecurity->getAuthProvider("rest"));
+
 	$aboutCmdbVersion = $controller->getVersion();
 	$aboutOs = php_uname('s');
 	$aboutPhp = phpversion();
 	$aboutPhpSapi = php_sapi_name();
 	$aboutDbVersion = $datastore->getDbServerVersion();
+
 
 	//output: yourcmdb information
 	echo "<div>";
@@ -45,12 +50,18 @@
 	echo "</div>";
 
 	//output: version information
-	echo "<table>";
-	echo "<tr><th colspan=\"2\">".gettext("version information")."</th></tr>";
+	echo "<table class=\"list\">";
+	echo "<tr><th colspan=\"2\" class=\"center\">".gettext("version information")."</th></tr>";
 	echo "<tr><td>".gettext("yourCMDB:")."</td><td>$aboutCmdbVersion</td></tr>";
 	echo "<tr><td>".gettext("operating system:")."</td><td>$aboutOs</td></tr>";
 	echo "<tr><td>".gettext("PHP:")."</td><td>$aboutPhp</td></tr>";
 	echo "<tr><td>".gettext("PHP server api:")."</td><td>$aboutPhpSapi</td></tr>";
 	echo "<tr><td>".gettext("database server:")."</td><td>$aboutDbVersion</td></tr>";
+
+	//output: authentication provider info
+	echo "<tr><th colspan=\"2\" class=\"center\">".gettext("authentication methods")."</th></tr>";
+	echo "<tr><td>WebUi</td><td>$authProviderInfoWeb</td></tr>";
+	echo "<tr><td>REST API</td><td>$authProviderInfoRest</td></tr>";
 	echo "</table>";
+
 ?>

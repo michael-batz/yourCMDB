@@ -30,11 +30,7 @@
 	include "../include/auth.inc.php";
 
 	//central objects
-	$configSecurity = $config->getSecurityConfig();
 	$authProviderLocal = new AuthenticationProviderLocal(null);
-	$authProviderInfoWeb = get_class($configSecurity->getAuthProvider("web"));
-	$authProviderInfoRest = get_class($configSecurity->getAuthProvider("rest"));
-
 
 	//execute actions if required
 	$action = getHttpGetVar("action", "");
@@ -104,25 +100,20 @@
 	//get data
 	$users = $authProviderLocal->getUsers();
 
-
-	//output: authentication provider info
-	echo "<table>";
-	echo "<tr><th colspan=\"2\">".gettext("authentication methods")."</th></tr>";
-	echo "<tr><td>WebUi</td><td>$authProviderInfoWeb</td></tr>";
-	echo "<tr><td>REST API</td><td>$authProviderInfoRest</td></tr>";
-	echo "</table>";
+	//output: navigation
+	echo "<div class=\"submenu\">";
+	echo "<p>";
+	echo "<a href=\"javascript:adminAuthAddUser('".gettext("Go!")."', '".gettext("Cancel")."')\"><img src=\"img/icon_add.png\" alt=\"".gettext("add new user")."\"/>".gettext("add new user")."</a>";
+	echo "</p>";
+	echo "</div>";
 
 	//output: header
-	echo "<p>user management</p>";
-
-	//navigation
-	echo "<p>";
-	echo "<a href=\"javascript:adminAuthAddUser('".gettext("Go!")."', '".gettext("Cancel")."')\">".gettext("add user")."</a>";
-	echo "</p>";
+	echo "<h1>local user management</h1>";
 
 	//output: user table
-	echo "<table>";
+	echo "<table class=\"list\">";
 	echo "<tr>";
+	echo "<th>&nbsp;</th>";
 	echo "<th>".gettext("username")."</th>";
 	echo "<th>".gettext("access group")."</th>";
 	echo "<th>&nbsp;</th>";
@@ -135,14 +126,15 @@
 		$urlUserEdit = "javascript:adminAuthEditUser('$userName', '".gettext("Go!")."', '".gettext("Cancel")."')";
 
 		echo "<tr>";
+		echo "<td><img src=\"img/icon_user.png\" alt=\"".gettext("user")."\" /></td>";
 		echo "<td>$userName</td>";
 		echo "<td>$userAccessgroup</td>";
 		echo "<td>";
 		//prevent a user from deleting and changing its own user account
 		if($userName != $authUser)
 		{
+			echo "<a href=\"$urlUserEdit\"><img src=\"img/icon_edit.png\" title=\"".gettext("edit")."\" alt=\"".gettext("edit")."\" /></a>&nbsp;&nbsp;&nbsp;";
 			echo "<a href=\"$urlUserDelete\"><img src=\"img/icon_delete.png\" title=\"".gettext("delete")."\" alt=\"".gettext("delete")."\" /></a>";
-			echo "<a href=\"$urlUserEdit\"><img src=\"img/icon_edit.png\" title=\"".gettext("edit")."\" alt=\"".gettext("edit")."\" /></a>";
 		}
 		echo "</td>";
 		echo "</tr>";
