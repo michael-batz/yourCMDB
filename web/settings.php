@@ -19,25 +19,18 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-?>
-	<div class="pagecontainer">
-		<!-- header -->
-		<div class="header">
-			<h1 onclick="javascript:openUrl('index.php')">yourCMDB</h1>
-			<div id="userinfo">
-				<?php
-				if($authAuthenticated)
-				{
-					echo "$authUser (<a href=\"logout.php\">logout</a>&nbsp;<a href=\"settings.php\">settings</a>)";
-				}
-				?>
-			</div>
-			<?php include "mainmenu.inc.php"; ?>
-		</div>
 
-		<?php include "menu.inc.php"; ?>
-		
-	
-		<!-- start main content -->
-		<div class="content">
-			<noscript><p>You need to enable JavaScript for yourCMDB.</p></noscript>
+	//get header
+	include "include/base.inc.php";
+	include "include/auth.inc.php";
+	include "include/htmlheader.inc.php";
+	include "include/yourcmdbheader.inc.php";
+
+	//<!-- title -->
+	echo "<h1>".gettext("User settings")."</h1>";
+
+
+	//include footer
+	include "include/yourcmdbfooter.inc.php";
+	include "include/htmlfooter.inc.php";
+?>
