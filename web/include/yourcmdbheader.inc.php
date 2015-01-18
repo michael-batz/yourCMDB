@@ -28,7 +28,10 @@
 				<?php
 				if($authAuthenticated)
 				{
-					echo "$authUser (<a href=\"logout.php\">logout</a>&nbsp;<a href=\"settings.php\">settings</a>)";
+					echo "$authUser ";
+					echo "<a href=\"settings.php\"><img src=\"img/icon_settings_24.png\" title=\"".gettext("user settings")."\" alt=\"".gettext("user settings")."\"></a>";
+					echo "&nbsp;&nbsp;";
+					echo "<a href=\"logout.php\"><img src=\"img/icon_logout_24.png\" title=\"".gettext("logout")."\" alt=\"".gettext("logout")."\"></a>";
 				}
 				?>
 			</div>
