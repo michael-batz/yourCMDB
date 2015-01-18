@@ -65,6 +65,11 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 
 	public function addUser($username, $password, $accessgroup)
 	{
+		//check if username and password is a valid value
+		if($username == "" || $password == "")
+		{
+			throw new SecurityChangeUserException("Inavlid username or password");
+		}
 		$config = new CmdbConfig();
 		$datastoreClass = $config->getDatastoreConfig()->getClass();
 		$datastore = new $datastoreClass;
@@ -93,6 +98,12 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 
 	public function resetPassword($username, $newPassword)
 	{
+		//check if username and password is a valid value
+		if($newPassword == "")
+		{
+			throw new SecurityChangeUserException("Inavlid username or password");
+		}
+
 		$config = new CmdbConfig();
 		$datastoreClass = $config->getDatastoreConfig()->getClass();
 		$datastore = new $datastoreClass;

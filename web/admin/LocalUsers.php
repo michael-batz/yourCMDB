@@ -40,14 +40,20 @@
 			$username = getHttpGetVar("username", "");
 			$password = getHttpGetVar("password", "");
 			$accessgroup = getHttpGetVar("accessgroup", "");
-			$result = $authProviderLocal->addUser($username, $password, $accessgroup);
-			if($result)
-			{
-				printInfoMessage(sprintf(gettext("user %s successfully created"), $username));
+			try{
+				$result = $authProviderLocal->addUser($username, $password, $accessgroup);
+				if($result)
+				{
+					printInfoMessage(sprintf(gettext("user %s successfully created"), $username));
+				}
+				else
+				{
+					printErrorMessage(sprintf(gettext("Error creating user  %s"), $username));
+				}
 			}
-			else
+			catch(SecurityChangeUserException $e)
 			{
-				printErrorMessage(sprintf(gettext("Error creating user  %s"), $username));
+					printErrorMessage(sprintf(gettext("Error creating user  %s. Empty username or password"), $username));
 			}
 			break;
 
