@@ -25,6 +25,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<link rel="search" type="application/opensearchdescription+xml" title="yourCMDB QuickSearch" href="opensearch-plugin.php" />
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 		<link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.10.3.custom.min.css" />
@@ -35,7 +36,6 @@
 		<script src="js/admin.js" type="text/javascript"></script>
 		<script src="js/searchbar.js" type="text/javascript"></script>
 		<script src="js/functions.js" type="text/javascript"></script>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<title>yourCMDB</title>
 	</head>
 	<body>

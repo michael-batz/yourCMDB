@@ -29,8 +29,12 @@
 	include "../include/base.inc.php";
 	include "../include/auth.inc.php";
 
-	//central objects
-	$authProviderLocal = new AuthenticationProviderLocal(null);
+	//central objects: $authProvider
+	$functionalityPasswordChange = false;
+	if(method_exists($authProvider, "resetPassword"))
+	{
+		$functionalityPasswordChange = true;
+	}
 
 	//execute actions if required
 	$action = getHttpGetVar("action", "");
@@ -40,8 +44,14 @@
 			$oldPassword = getHttpGetVar("oldPassword", "");
 			$newPassword = getHttpGetVar("newPassword", "");
 			$newPassword2 = getHttpGetVar("newPassword2", "");
+			//check, if AuthenticationProvider allows password changeing
+			if(!$functionalityPasswordChange)
+			{
+				printErrorMessage(gettext("Password changeing is not allowed."));
+				break;
+			}
 			//check if oldPassword is correct
-			$result = $authProviderLocal->authenticate($authUser, $oldPassword);
+			$result = $authProvider->authenticate($authUser, $oldPassword);
 			if(!$result)
 			{
 				printErrorMessage(gettext("Password not changed. Your old password was not correct."));
@@ -50,7 +60,7 @@
 			//check new passwords and set the new passwordonly change password if field is not empty
 			if($newPassword != "" && $newPassword == $newPassword2)
 			{
-				$result = $authProviderLocal->resetPassword($authUser, $newPassword);
+				$result = $authProvider->resetPassword($authUser, $newPassword);
 				if($result)
 				{
 					printInfoMessage(gettext("Password successfully changed."));
@@ -64,9 +74,8 @@
 	}
 
 	//get user data
-	$user = $authProviderLocal->getUser($authUser);
-	$userName = $user->getUsername();
-	$userAccessgroup = $user->getAccessgroup();
+	$userName = $authUser;
+	$userAccessgroup = $authAccessgroup;
 	$urlChangePassword = "javascript:settingsUserDetailsChangePassword('".gettext("Go!")."', '".gettext("Cancel")."')";
 
 	//output: header
@@ -79,8 +88,11 @@
 	echo "</tr>";
 	echo "<tr><td>".gettext("username")."</td><td>$userName</td></tr>";
 	echo "<tr><td>".gettext("access group")."</td><td>$userAccessgroup</td></tr>";
-	echo "<tr><td>".gettext("password")."</td>";
-	echo "<td><a href=\"$urlChangePassword\"><img src=\"img/icon_edit.png\" title=\"".gettext("change password")."\" alt=\"".gettext("change password")."\" /></a></td></tr>";
+	if($functionalityPasswordChange)
+	{
+		echo "<tr><td>".gettext("password")."</td>";
+		echo "<td><a href=\"$urlChangePassword\"><img src=\"img/icon_edit.png\" title=\"".gettext("change password")."\" alt=\"".gettext("change password")."\" /></a></td></tr>";
+	}
 	echo "</table>";
 
 	//output: edit user form
