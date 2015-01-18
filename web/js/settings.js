@@ -1,4 +1,3 @@
-<?php
 /********************************************************************
 * This file is part of yourCMDB.
 *
@@ -20,31 +19,32 @@
 *
 *********************************************************************/
 
-	//get header
-	include "include/base.inc.php";
-	include "include/auth.inc.php";
-	include "include/htmlheader.inc.php";
-	include "include/yourcmdbheader.inc.php";
+//JavaScript functions for user settings section
 
-	//<!-- title -->
-	echo "<h1>".gettext("User settings")."</h1>";
+/**
+* Shows change password form
+*/
+function settingsUserDetailsChangePassword(button1Label, button2Label)
+{
+	var buttonDefs = {};
+	//button 1
+	buttonDefs[button1Label] = function()
+	{
+		openUrlAjax('settings/UserDetails.php?' + $( '#settingsUserDetailsChangePasswordForm' ).serialize(), '#settingsTabUserDetails', false, true);
+		$( this ).remove();
+	};
+	//button 2
+	buttonDefs[button2Label] = function()
+	{
+		$( this ).dialog("close");
+	};
 
-	//<!-- start tabs -->
-	echo "<div id=\"jsAccordion\">";
-
-	//tab: change password
-	echo "<h3>".gettext("user details")."</h3>";
-	echo "<div id=\"settingsTabUserDetails\">";
-	echo "<script language=\"JavaScript\">";
-	echo "openUrlAjax('settings/UserDetails.php?', '#settingsTabUserDetails', false, true);";
-	echo "</script>";
-	echo "</div>";
-
-	//<!-- end tabs -->
-	echo "</div>";
-
-
-	//include footer
-	include "include/yourcmdbfooter.inc.php";
-	include "include/htmlfooter.inc.php";
-?>
+	//create dialog
+	$( "#settingsUserDetailsChangePassword"  ).dialog
+	(
+		{
+			modal:	true,
+			buttons:buttonDefs
+		}
+	);
+};
