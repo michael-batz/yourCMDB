@@ -1014,5 +1014,30 @@ class MySQLDataStore implements DataStoreInterface
 		return $output;
 	}
 
+        public function getAccessRights($accessgroup, $applicationparts)
+	{
+		$accessgroup = $this->dbConnection->quote($accessgroup);
+		$sql = "SELECT applicationpart, access from CmdbAccessRules ";
+		$sql.= "WHERE accessgroup = $accessgroup ";
+		$sql.= "AND applicationpart IN (";
+		for($i = 0; $i < count($applicationparts); $i++)
+		{
+			$applicationpart = $this->dbConnection->quote($applicationparts[$i]);
+			$sql.= "$applicationpart";
+			if($i != count($applicationparts) - 1)
+			{
+				$sql.= ", ";
+			}
+		}
+		$sql.= ")";
+		$result = $this->dbGetData($sql);
+		$output = Array();
+		foreach($result as $row)
+		{
+			$output[] = Array($row[0], $row[1]);
+		}
+		return $output;
+	}
+
 }
 ?>

@@ -78,5 +78,7 @@ interface DataStoreInterface
 	public function getUser($username);
 
 	public function getUsers();
+
+	public function getAccessRights($accessgroup, $applicationparts);
 }
 ?>
