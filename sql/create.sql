@@ -54,3 +54,4 @@ insert into CmdbLocalUser (username, passwordhash, accessgroup)  VALUES('admin',
 insert into CmdbAccessRules (accessgroup, applicationpart, access)  VALUES('admin', 'default', 2);
 insert into CmdbAccessRules (accessgroup, applicationpart, access)  VALUES('user', 'default', 2);  
 insert into CmdbAccessRules (accessgroup, applicationpart, access)  VALUES('user', 'admin', 0);
+insert into CmdbAccessRules (accessgroup, applicationpart, access)  VALUES('user', 'rest', 0);

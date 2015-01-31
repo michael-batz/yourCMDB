@@ -30,6 +30,7 @@
 
 	//check authentication (HTTP Basic AUTH)
 	$authProvider = $controller->getAuthProvider("rest");
+	$authorisationProvider = $controller->getAuthorisationProvider("rest");
 	$authUser = "";
 	$authAccessgroup = "";
 	$authAuthenticated = false;
@@ -41,7 +42,11 @@
 		if($authProvider->authenticate($authUser,$authPassword))
 		{
 			$authAccessgroup = $authProvider->getAccessGroup($authUser);
-			$authAuthenticated = true;
+			//only authenticate user, if the user has REST permissions
+			if($authorisationProvider->authorise($authAccessgroup, "rest") == 2)
+			{
+				$authAuthenticated = true;
+			}
 		}
 	}
 	if(!$authAuthenticated)

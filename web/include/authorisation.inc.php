@@ -34,7 +34,7 @@
 	//check authorisation
 	$authorisationResult = $authorisationProvider->authorise($authAccessgroup, $authorisationAppPart);
 
-	if($authorisationResult == 0)
+	if($authorisationResult != 2)
 	{
 		//unauthorised
 		header("Location: $baseUrl/unauthorised.php");
