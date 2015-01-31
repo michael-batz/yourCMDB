@@ -20,41 +20,15 @@
 *
 *********************************************************************/
 
-	//base
+	//get header
 	include "include/base.inc.php";
-
-	//authentication and authorisation
-	$authorisationAppPart = "admin";
 	include "include/auth.inc.php";
-	include "include/authorisation.inc.php";
-
-	//header
 	include "include/htmlheader.inc.php";
 	include "include/yourcmdbheader.inc.php";
 
-	//<!-- title -->
-	echo "<h1>".gettext("Admin")."</h1>";
-
-	//<!-- start admin tabs -->
-	echo "<div id=\"jsAccordion\">";
-
-	//tab: about
-	echo "<h3>".gettext("About")."</h3>";
-	echo "<div>";
-	include "admin/About.php";
-	echo "</div>";
-
-	//tab: user manager
-	echo "<h3>".gettext("Authentication")."</h3>";
-	echo "<div id=\"adminTabAuthentication\">";
-	echo "<script language=\"JavaScript\">";
-	echo "openUrlAjax('admin/LocalUsers.php?', '#adminTabAuthentication', false, true);";
-	echo "</script>";
-	echo "</div>";
-
-	//<!-- end admin tabs -->
-	echo "</div>";
-
+	//error message
+	echo "<h1>".gettext("Unauthorised!")."</h1>";
+	echo "<p>".gettext("You don't have the permission to access this page. Sorry.")."</p>";
 
 	//include footer
 	include "include/yourcmdbfooter.inc.php";

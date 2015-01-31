@@ -96,6 +96,15 @@ class Controller
 	}
 
 	/**
+	* Returns cmdb authorisation provider for given part
+	*
+	*/
+	public function getAuthorisationProvider($part)
+	{
+		return new AuthorisationProviderLocal();
+	}
+
+	/**
 	* Returns version
 	*
 	*/

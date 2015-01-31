@@ -25,9 +25,13 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-	//include base functions
+	//include base
 	include "../include/base.inc.php";
+
+	//authentication and authorisation
+	$authorisationAppPart = "admin";
 	include "../include/auth.inc.php";
+	include "../include/authorisation.inc.php";
 
 	//central objects
 	$authProviderLocal = new AuthenticationProviderLocal(null);
