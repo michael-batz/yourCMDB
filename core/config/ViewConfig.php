@@ -71,6 +71,7 @@ class ViewConfig
 		}
 	
 		//read menu items
+		$this->menuItems = Array();
 		foreach($xmlobject->xpath('//menu-item') as $menuItem)
 		{
 			$this->menuItems[(string)$menuItem['name']] = (string) $menuItem['url'];

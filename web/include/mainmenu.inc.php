@@ -20,12 +20,24 @@
 *
 *********************************************************************/
 
-	//get menu items from configuration
+	//get AuthorisationProvider
+	$authorisationProvider = $controller->getAuthorisationProvider("web");
+
+	//get additional menu items from configuration
 	$menuitems = $config->getViewConfig()->getMenuItems();
 
 	echo "<div class=\"mainmenu\">";
 	echo "<ul>";
+	echo "<li><a href=\"index.php\">".gettext("Home")."</a></li>";
+	echo "<li><a href=\"search.php\">".gettext("Search")."</a></li>";
+	echo "<li><a href=\"object.php?action=new\">".gettext("New Object")."</a></li>";
+	echo "<li><a href=\"import.php\">".gettext("Import-Export")."</a></li>";
+	if(isset($authAccessgroup) && $authorisationProvider->authorise($authAccessgroup, "admin") != 0)
+	{
+		echo "<li><a href=\"admin.php\">".gettext("Admin")."</a></li>";
+	}
 
+	//add additional menu items from configuration
 	foreach(array_keys($menuitems) as $itemName)
 	{
 		echo "<li>";

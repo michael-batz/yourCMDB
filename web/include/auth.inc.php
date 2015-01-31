@@ -52,9 +52,10 @@
 		{
 			$authAuthenticated = true;
 			$authUser = $authUserPost;
+			$authAccessgroup = $authProvider->getAccessGroup($authUser);
 			$_SESSION['authAuthenticated'] = true;
 			$_SESSION['authUser'] = $authUser;
-			$_SESSION['authAccessgroup'] = $authProvider->getAccessGroup($authUser);
+			$_SESSION['authAccessgroup'] = $authAccessgroup;
 		}
 		//redirect to login page with error flag
 		else
