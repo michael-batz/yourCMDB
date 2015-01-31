@@ -34,6 +34,7 @@
 	$authUser = "";
 	$authAccessgroup = "";
 	$authAuthenticated = false;
+	$accessRest = 0;
 	if(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']))
 	{
 		$authUser = $_SERVER['PHP_AUTH_USER'];
@@ -42,11 +43,8 @@
 		if($authProvider->authenticate($authUser,$authPassword))
 		{
 			$authAccessgroup = $authProvider->getAccessGroup($authUser);
-			//only authenticate user, if the user has REST permissions
-			if($authorisationProvider->authorise($authAccessgroup, "rest") == 2)
-			{
-				$authAuthenticated = true;
-			}
+			$accessRest = $authorisationProvider->authorise($authAccessgroup, "rest");
+			$authAuthenticated = true;
 		}
 	}
 	if(!$authAuthenticated)
@@ -98,27 +96,36 @@
 		exit();
 	}
 
-	//execute operation on RestResource
+	//execute operation on RestResource if access rights are OK
+	$restResponse = new RestResponse(403);
 	switch($requestMethod)
 	{
 		case "GET":
-			$restResponse = $restResource->getResource();
+			if($accessRest > 0)
+			{
+				$restResponse = $restResource->getResource();
+			}
 			break;
 
 		case "DELETE":
-			$restResponse = $restResource->deleteResource();
+			if($accessRest == 2)
+			{
+				$restResponse = $restResource->deleteResource();
+			}
 			break;
 
 		case "POST":
-			$restResponse = $restResource->postResource($requestData);
+			if($accessRest == 2)
+			{
+				$restResponse = $restResource->postResource($requestData);
+			}
 			break;
 
 		case "PUT":
-			$restResponse = $restResource->putResource($requestData);
-			break;
-
-		default:
-			$restResponse = $restResource->getResource();
+			if($accessRest == 2)
+			{
+				$restResponse = $restResource->putResource($requestData);
+			}
 			break;
 	}
 	$restResponse->sendResponse();
