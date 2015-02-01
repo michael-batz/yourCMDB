@@ -104,6 +104,13 @@ function hideElement(id)
 	$( id ).hide('slide', {}, 1000);
 };
 
+/**
+* remove an element
+*/
+function removeElement(id)
+{
+	$( id  ).remove();
+};
 
 function jqueryUiStart()
 {

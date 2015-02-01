@@ -34,5 +34,35 @@ interface AuthorisationProvider
 	*				0 = no access, 1 = readonly, 2 = read/write
 	*/
 	public function authorise($accessgroup, $applicationpart);
+
+	/**
+	* Returns an array with all known access groups
+	*/
+	public function getAccessgroups();
+
+	/**
+	* Returns all access rights for the given accessgroup
+	* @param $accessgroup		accessgroup of the user
+	* @return			Array('applicationpart', 'access permission')
+	*/
+	public function getAccessRights($accessgroup);
+
+	/**
+	* Set or update access rights for given accessgroup
+	* @param $accessgroup		accessgroup of the user
+	* @param $accessRights		Array('applicationpart', 'access permission')
+	* @return 			true, if there was no error
+	*				false, if there was an error
+	*/
+	public function setAccessRights($accessgroup, $accessRights);
+
+	/**
+	* Deletes all access rights for given accessgroup
+	* @param $accessgroup		accessgroup of the user
+	* @return 			true, if there was no error
+	*				false, if there was an error
+	*/
+	public function deleteAccessRights($accessgroup);
+
 }
 ?>

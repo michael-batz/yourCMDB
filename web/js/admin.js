@@ -76,3 +76,56 @@ function adminAuthEditUser(username, button1Label, button2Label)
 		}
 	);
 };
+
+/**
+* Shows edit accessgroup form
+*/
+function adminAuthorisationEditGroup(accessgroup, button1Label, button2Label)
+{
+	var buttonDefs = {};
+	//button 1
+	buttonDefs[button1Label] = function()
+	{
+		openUrlAjax('admin/Authorisation.php?name=' + accessgroup + "&" + $( '#adminAuthorisationEditGroupForm' ).serialize(), '#adminTabAuthorisation', false, true);
+		$( this ).remove();
+	};
+	//button 2
+	buttonDefs[button2Label] = function()
+	{
+		$( this ).dialog("close");
+	};
+
+	//load form content
+	openUrlAjax('admin/Authorisation.php?action=editGroupForm&name=' + accessgroup, '#adminAuthorisationEditGroupForm', false, true);
+
+	//create dialog
+	$( "#adminAuthorisationEditGroup"  ).dialog
+	(
+		{
+			modal:	true,
+			buttons:buttonDefs
+		}
+	);
+};
+
+/**
+* add access right entry
+*/
+function adminAuthorisationEditGroupAddEntry(id)
+{
+	var htmlstring;
+	var fieldid;
+	fieldid = $( 'tr' ).length;
+	htmlstring = '<tr id="adminAuthorisationEditGroupFieldnewAccess_' + fieldid + '">';
+	htmlstring += '<td><input type="text" name="newAccess_' + fieldid + '" /></td>';
+	htmlstring += '<td><select name="newAccessSelect_' + fieldid + '">';
+	htmlstring += '<option value="0">no access</option>';
+	htmlstring += '<option value="1">read only</option>';
+	htmlstring += '<option value="2">read-write</option>';
+	htmlstring += '</select></td>';
+	htmlstring += '<td><a href="javascript:removeElement(\'#adminAuthorisationEditGroupFieldnewAccess_' + fieldid + '\')"><img src="img/icon_delete.png" alt="delete" /></a></td>';
+	htmlstring += '</tr>';
+	$( id  ).add(htmlstring).appendTo( id );
+};
+
+

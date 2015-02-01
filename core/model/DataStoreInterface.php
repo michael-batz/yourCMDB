@@ -27,58 +27,46 @@
 interface DataStoreInterface
 {
 
+	/* functions for accessing objects */
 	public function isObject($id, $type=null);
-
 	public function getObject($id);
-
 	public function addObject(CmdbObject $cmdbObject);
-
 	public function changeObjectFields($id, $newFields);
-	
 	public function changeObjectStatus($id, $newStatus);
-	
 	public function deleteObject($id);
-
 	public function getObjectsByType($type, $sortfield="", $sorttype="asc", $activeOnly=true, $max=0, $start=0);
-	
 	public function getObjectsByField($fieldname, $fieldvalue, $types=null, $activeOnly=true, $max=0, $start=0);
-	
 	public function getObjectsByFieldvalue($searchstring, $types=null, $activeOnly=true, $max=0, $start=0);
+	public function getAllFieldValues($objecttype=null, $fieldname=null, $searchstring=null, $limit=10);
+	public function getObjectCounts($type);
+	public function getObjectReferences($objectId);
 	
+	/* functions for accessing object links */
 	public function getObjectLinks($id);
-
 	public function getLinkedObjects($id);
-
 	public function addObjectLink($idA, $idB);
-
 	public function deleteObjectLink($idA, $idB);
 
-	public function getObjectCounts($type);
-
-	public function getAllFieldValues($objecttype=null, $fieldname=null, $searchstring=null, $limit=10);
-	
+	/* functions for accessing object logs */
 	public function getObjectLog($objectId);
-
 	public function getNNewestObjects($n);
-
 	public function getNLastChangedObjects($n);
-
+	
+	/* functions for manageing jobs */
 	public function addJob(CmdbJob $job, int $timestamp = null);
-
 	public function getAndRemoveJobs();
-	
-	public function getObjectReferences($objectId);
 
+	/* functions for local user management */
 	public function addUser(CmdbLocalUser $user);
-	
 	public function changeUser($username, CmdbLocalUser $newuser);
-
 	public function deleteUser($username);
-
 	public function getUser($username);
-
 	public function getUsers();
 
-	public function getAccessRights($accessgroup, $applicationparts);
+	/* functions for local authorisation */
+	public function getAccessRights($accessgroup, $applicationparts = null);
+	public function getAccessgroups();
+	public function deleteAccessRights($accessgroup);
+	public function setAccessRights($accessgroup, $accessRights);
 }
 ?>

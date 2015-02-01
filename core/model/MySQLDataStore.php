@@ -1014,22 +1014,25 @@ class MySQLDataStore implements DataStoreInterface
 		return $output;
 	}
 
-        public function getAccessRights($accessgroup, $applicationparts)
+        public function getAccessRights($accessgroup, $applicationparts = null)
 	{
 		$accessgroup = $this->dbConnection->quote($accessgroup);
 		$sql = "SELECT applicationpart, access from CmdbAccessRules ";
 		$sql.= "WHERE accessgroup = $accessgroup ";
-		$sql.= "AND applicationpart IN (";
-		for($i = 0; $i < count($applicationparts); $i++)
+		if($applicationparts != null)
 		{
-			$applicationpart = $this->dbConnection->quote($applicationparts[$i]);
-			$sql.= "$applicationpart";
-			if($i != count($applicationparts) - 1)
+			$sql.= "AND applicationpart IN (";
+			for($i = 0; $i < count($applicationparts); $i++)
 			{
-				$sql.= ", ";
+				$applicationpart = $this->dbConnection->quote($applicationparts[$i]);
+				$sql.= "$applicationpart";
+				if($i != count($applicationparts) - 1)
+				{
+					$sql.= ", ";
+				}
 			}
+			$sql.= ")";
 		}
-		$sql.= ")";
 		$result = $this->dbGetData($sql);
 		$output = Array();
 		foreach($result as $row)
@@ -1039,5 +1042,54 @@ class MySQLDataStore implements DataStoreInterface
 		return $output;
 	}
 
+	public function getAccessgroups()
+	{
+		$sql = "SELECT distinct accessgroup from CmdbAccessRules ";
+		$sql.= "ORDER BY accessgroup";
+		$result = $this->dbGetData($sql);
+		$output = Array();
+		foreach($result as $row)
+		{
+			$output[] = $row[0];
+		}
+		return $output;
+	}
+
+	public function deleteAccessRights($accessgroup)
+	{
+		$accessgroup = $this->dbConnection->quote($accessgroup);
+		$sql = "DELETE FROM CmdbAccessRules ";
+		$sql.= "WHERE accessgroup = $accessgroup";
+		$sqlResult = $this->dbSetData($sql);
+		if($sqlResult == FALSE)
+		{
+			error_log("Error deleting access rights from group $accessgroup");
+		}
+		return $sqlResult;
+
+	}
+
+	public function setAccessRights($accessgroup, $accessRights)
+	{
+		//delete old rights
+		$this->deleteAccessRights($accessgroup);
+
+		//setup new rights
+		$accessgroup = $this->dbConnection->quote($accessgroup);
+		foreach($accessRights as $accessRight)
+		{
+			$accessRightName = $this->dbConnection->quote($accessRight[0]);
+			$accessRightValue = intval($accessRight[1]);
+			$sql = "INSERT INTO CmdbAccessRules (accessgroup, applicationpart, access) ";
+			$sql.= "VALUES($accessgroup, $accessRightName, $accessRightValue)";
+			$sqlResult = $this->dbSetData($sql);
+			if($sqlResult == FALSE)
+			{
+				error_log("Error inserting access rights for group $accessgroup");
+				return false;
+			}
+		}
+		return true;
+	}
 }
 ?>

@@ -52,6 +52,14 @@
 	echo "</script>";
 	echo "</div>";
 
+	//tab: authorisation
+	echo "<h3>".gettext("Authorisation")."</h3>";
+	echo "<div id=\"adminTabAuthorisation\">";
+	echo "<script language=\"JavaScript\">";
+	echo "openUrlAjax('admin/Authorisation.php?', '#adminTabAuthorisation', false, true);";
+	echo "</script>";
+	echo "</div>";
+
 	//<!-- end admin tabs -->
 	echo "</div>";
 

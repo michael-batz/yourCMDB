@@ -41,14 +41,14 @@ class AuthorisationProviderLocal implements AuthorisationProvider
 
 		/* 
 		* setup array with possible application parts. 
-		* Example: objects.router => objects.router, objects, default 
+		* Example: objects/router => objects/router, objects, default 
 		*/
 		$applicationparts = array();
 		$applicationparts[] = "default";
 		$applicationparts[] = $applicationpart;
-		while(strrpos($applicationpart, '.') !== FALSE)
+		while(strrpos($applicationpart, '/') !== FALSE)
 		{
-			$newlength = strrpos($applicationpart, '.');
+			$newlength = strrpos($applicationpart, '/');
 			$applicationpart = substr($applicationpart, 0, $newlength);
 			$applicationparts[] = $applicationpart;
 		}
@@ -62,7 +62,7 @@ class AuthorisationProviderLocal implements AuthorisationProvider
 		{
 			$accessRightAppPart = $accessRight[0];
 			$accessRightAccess = $accessRight[1];
-			$accessRightMatchLevel = substr_count($accessRightAppPart, '.');
+			$accessRightMatchLevel = substr_count($accessRightAppPart, '/');
 			if($accessRightAppPart == "default")
 			{
 				$permissionDefault = $accessRightAccess;
@@ -87,5 +87,63 @@ class AuthorisationProviderLocal implements AuthorisationProvider
 
 		return $permission;		
 	}
+
+	/**
+        * Returns an array with all known access groups
+        */
+        public function getAccessgroups()
+	{
+		$config = new CmdbConfig();
+		$datastoreClass = $config->getDatastoreConfig()->getClass();
+		$datastore = new $datastoreClass;
+
+		return $datastore->getAccessgroups();
+	}
+
+	/**
+	* Returns all access rights for the given accessgroup
+	* @param $accessgroup		accessgroup of the user
+	* @return			Array(Array('applicationpart', 'access permission'))
+	*/
+	public function getAccessRights($accessgroup)
+	{
+		$config = new CmdbConfig();
+		$datastoreClass = $config->getDatastoreConfig()->getClass();
+		$datastore = new $datastoreClass;
+
+		return $datastore->getAccessRights($accessgroup);
+	}
+
+	/**
+	* Set or update access rights for given accessgroup
+	* @param $accessgroup		accessgroup of the user
+	* @param $accessRights		Array('applicationpart', 'access permission')
+	* @return 			true, if there was no error
+	*				false, if there was an error
+	*/
+	public function setAccessRights($accessgroup, $accessRights)
+	{
+		$config = new CmdbConfig();
+		$datastoreClass = $config->getDatastoreConfig()->getClass();
+		$datastore = new $datastoreClass;
+
+		return $datastore->setAccessRights($accessgroup, $accessRights);
+	}
+
+	/**
+	* Deletes all access rights for given accessgroup
+	* @param $accessgroup		accessgroup of the user
+	* @return 			true, if there was no error
+	*				false, if there was an error
+	*/
+	public function deleteAccessRights($accessgroup)
+	{
+		$config = new CmdbConfig();
+		$datastoreClass = $config->getDatastoreConfig()->getClass();
+		$datastore = new $datastoreClass;
+
+		return $datastore->deleteAccessRights($accessgroup);
+	}
+
 }
 ?>
