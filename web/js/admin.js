@@ -44,7 +44,8 @@ function adminAuthAddUser(button1Label, button2Label)
 	(
 		{
 			modal:	true,
-			buttons:buttonDefs
+			buttons:buttonDefs,
+			width:  500
 		}
 	);
 };
@@ -72,7 +73,8 @@ function adminAuthEditUser(username, button1Label, button2Label)
 	(
 		{
 			modal:	true,
-			buttons:buttonDefs
+			buttons:buttonDefs,
+			width:  500
 		}
 	);
 };
@@ -103,7 +105,8 @@ function adminAuthorisationEditGroup(accessgroup, button1Label, button2Label)
 	(
 		{
 			modal:	true,
-			buttons:buttonDefs
+			buttons:buttonDefs,
+			width:  500
 		}
 	);
 };

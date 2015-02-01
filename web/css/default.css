@@ -629,6 +629,11 @@ p#searchbarFooter
 	font-size:	10pt;
 }
 
+.ui-dialog table
+{
+	width:		90%;
+}
+
 .ui-autocomplete
 {
 	max-height: 	100px;

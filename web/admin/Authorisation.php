@@ -47,8 +47,18 @@
 			$htmlselectoptions.= "<option value=\"1\">".gettext("read only")."</option>";
 			$htmlselectoptions.= "<option value=\"2\">".gettext("read-write")."</option>";
 			echo "<input type=\"hidden\" name=\"action\" value=\"editGroup\" />";
-			echo "<input type=\"hidden\" name=\"name\" value=\"$accessgroup\" />";
-			echo "<p>".sprintf(gettext("Rights for group %s"), $accessgroup)."</p>";
+			if($accessgroup != "")
+			{
+				echo "<p>".sprintf(gettext("Rights for group %s"), $accessgroup)."</p>";
+				echo "<input type=\"hidden\" name=\"name\" value=\"$accessgroup\" />";
+			}
+			else
+			{
+				echo "<p>";
+				echo gettext("Add new access group with name:");
+				echo "<input type=\"text\" name=\"name\"  />";
+				echo "</p>";
+			}
 			echo "<table id=\"adminAuthorisationEditGroupFormTable\">";
 			foreach($accessRights as $accessRight)
 			{
@@ -78,38 +88,61 @@
 			echo "</table>";
 			//link for adding new access entries
 			echo "<a href=\"javascript:adminAuthorisationEditGroupAddEntry('#adminAuthorisationEditGroupFormTable')\">";
-			echo "add new</a>";
+			echo "<img src=\"img/icon_add.png\" title=\"".gettext("add")."\" alt=\"".gettext("add")."\" />".gettext("add access right")."</a>";
 			exit();
 			break;
 
 		case "editGroup":
 			$accessgroup = getHttpGetVar("name", "");
-			$newAccessRights = Array();
-			foreach(array_keys($_GET) as $inputVarName)
+			//only updating group if accessgroup name was set
+			if($accessgroup != "")
 			{
-				if(preg_match("#access/(.*)#", $inputVarName, $matches) === 1)
+				//get new access rights from user input
+				$newAccessRights = Array();
+				foreach(array_keys($_GET) as $inputVarName)
 				{
-					$applicationPart = $matches[1];
-					$accessRight = $_GET[$inputVarName];
-					$newAccessRights[] = Array($applicationPart, $accessRight);
+					$applicationPart = "";
+					$accessRight = 0;
+					//check existing access entries
+					if(preg_match("#access/(.*)#", $inputVarName, $matches) === 1)
+					{
+						$applicationPart = $matches[1];
+						$accessRight = $_GET[$inputVarName];
+					}
+					//check new access entries
+					if(preg_match("#newAccess_(.*)#", $inputVarName, $matches) === 1)
+					{
+						$id = $matches[1];
+						$applicationPart = $_GET[$inputVarName];
+						$accessRight = $_GET["newAccessSelect_$id"];
+					}
+					//only set access right, if applicationPart is not empty
+					if($applicationPart != "")
+					{
+						$newAccessRights[] = Array($applicationPart, $accessRight);
+					}
+	
 				}
-				if(preg_match("#newAccess_(.*)#", $inputVarName, $matches) === 1)
+				if(count($newAccessRights) > 0 )
 				{
-					$id = $matches[1];
-					$applicationPart = $_GET[$inputVarName];
-					$accessRight = $_GET["newAccessSelect_$id"];
-					$newAccessRights[] = Array($applicationPart, $accessRight);
+					$result = $authorisationProviderLocal->setAccessRights($accessgroup, $newAccessRights);
+					if($result)
+					{
+						printInfoMessage(sprintf(gettext("access group %s successfully updated"), $accessgroup));
+					}
+					else
+					{
+						printErrorMessage(sprintf(gettext("Error updating access rights for access group %s"), $accessgroup));
+					}
 				}
-
-			}
-			$result = $authorisationProviderLocal->setAccessRights($accessgroup, $newAccessRights);
-			if($result)
-			{
-				printInfoMessage(sprintf(gettext("access group %s successfully updated"), $accessgroup));
+				else
+				{
+					printErrorMessage(sprintf(gettext("Error updating access rights for access group %s. A group cannot have 0 access rights."), $accessgroup));
+				}
 			}
 			else
 			{
-				printErrorMessage(sprintf(gettext("Error updating access rights for access group %s"), $accessgroup));
+				printErrorMessage(gettext("Error updating access rights. No group name defined."));
 			}
 			break;
 		case "deleteGroup":
@@ -130,6 +163,14 @@
 
 	//get data
 	$accessgroups = $authorisationProviderLocal->getAccessgroups();
+
+	//output: navigation
+	echo "<div class=\"submenu\">";
+	echo "<p>";
+	echo "<a href=\"javascript:adminAuthorisationEditGroup('', '".gettext("Go!")."', '".gettext("Cancel")."')\"><img src=\"img/icon_add.png\" alt=\"".gettext("add new access group")."\"/>";
+	echo gettext("add new access group")."</a>";
+	echo "</p>";
+	echo "</div>";
 
 	//output: header
 	echo "<h1>access rights management</h1>";
