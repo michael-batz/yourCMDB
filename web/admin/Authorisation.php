@@ -43,9 +43,9 @@
 		case "editGroupForm":
 			$accessgroup = getHttpGetVar("name", "");
 			$accessRights = $authorisationProviderLocal->getAccessRights($accessgroup);
-			$htmlselectoptions = "<option value=\"0\">".gettext("no access")."</option>";
-			$htmlselectoptions.= "<option value=\"1\">".gettext("read only")."</option>";
-			$htmlselectoptions.= "<option value=\"2\">".gettext("read-write")."</option>";
+			$htmlselectoptions = "<option value=\"0\">no access</option>";
+			$htmlselectoptions.= "<option value=\"1\">read only</option>";
+			$htmlselectoptions.= "<option value=\"2\">read-write</option>";
 			echo "<input type=\"hidden\" name=\"action\" value=\"editGroup\" />";
 			if($accessgroup != "")
 			{
@@ -70,13 +70,13 @@
 				switch($accessRightValue)
 				{
 					case 0:
-						echo "<option value=\"0\" selected=\"true\">".gettext("no access")."</option>";
+						echo "<option value=\"0\" selected=\"true\">no access</option>";
 						break;
 					case 1:
-						echo "<option value=\"1\" selected=\"true\">".gettext("read only")."</option>";
+						echo "<option value=\"1\" selected=\"true\">read only</option>";
 						break;
 					case 2:
-						echo "<option value=\"2\" selected=\"true\">".gettext("read-write")."</option>";
+						echo "<option value=\"2\" selected=\"true\">read-write</option>";
 						break;
 
 				}
