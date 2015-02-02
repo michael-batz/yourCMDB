@@ -91,9 +91,9 @@
 
 	//<!-- submenu -->
 	echo "<div class=\"submenu\">";
-	echo "<a href=\"$urlShowActive\">$textShowActive</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlAdd\">".gettext("add new object")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlCsvExport\">CSV export</a>";
+	echo "<a href=\"$urlShowActive\"><img src=\"img/icon_tags.png\" class=\"icon\" alt=\"".gettext("switch")."\" title=\"".gettext("switch")."\" />$textShowActive</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlAdd\"><img src=\"img/icon_add.png\" class=\"icon\" alt=\"".gettext("add")."\" title=\"".gettext("add")."\" />".gettext("add new object")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlCsvExport\"><img src=\"img/icon_export.png\" class=\"icon\" alt=\"".gettext("export")."\" title=\"".gettext("export")."\" />CSV export</a>";
 	echo "</div>";
 
 	//print messagebar

@@ -44,7 +44,8 @@ function settingsUserDetailsChangePassword(button1Label, button2Label)
 	(
 		{
 			modal:	true,
-			buttons:buttonDefs
+			buttons:buttonDefs,
+			width: 	500
 		}
 	);
 };

@@ -90,6 +90,11 @@ img
 	vertical-align:	middle;
 }
 
+img.icon
+{
+	margin-right:	5px;
+}
+
 p.message-info
 {
 	text-align:	left;

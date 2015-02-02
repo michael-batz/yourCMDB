@@ -75,7 +75,7 @@ function getHttpPostVar($variableName, $defaultValue)
 */
 function printInfoMessage($message)
 {
-	echo "<p class=\"message-info\" alt=\"Info\" id=\"message-info\" onClick=\"javascript:hideElement('#message-info')\"><img src=\"img/icon_comment.png\">$message</p>";
+	echo "<p class=\"message-info\" alt=\"Info\" id=\"message-info\" onClick=\"javascript:hideElement('#message-info')\"><img src=\"img/icon_message.png\" class=\"icon\" />$message</p>";
 }
 
 /**
@@ -83,7 +83,7 @@ function printInfoMessage($message)
 */
 function printErrorMessage($message)
 {
-	echo "<p class=\"message-error\" alt=\"Error\" id=\"message-error\" onClick=\"javascript:hideElement('#message-error')\"><img src=\"img/icon_delete.png\">$message</p>";
+	echo "<p class=\"message-error\" alt=\"Error\" id=\"message-error\" onClick=\"javascript:hideElement('#message-error')\"><img src=\"img/icon_error.png\" class=\"icon\" />$message</p>";
 }
 
 //get configuration

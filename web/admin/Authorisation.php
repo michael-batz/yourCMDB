@@ -88,7 +88,7 @@
 			echo "</table>";
 			//link for adding new access entries
 			echo "<a href=\"javascript:adminAuthorisationEditGroupAddEntry('#adminAuthorisationEditGroupFormTable')\">";
-			echo "<img src=\"img/icon_add.png\" title=\"".gettext("add")."\" alt=\"".gettext("add")."\" />".gettext("add access right")."</a>";
+			echo "<img src=\"img/icon_add.png\" class=\"icon\" title=\"".gettext("add")."\" alt=\"".gettext("add")."\" />".gettext("add access right")."</a>";
 			exit();
 			break;
 
@@ -167,7 +167,7 @@
 	//output: navigation
 	echo "<div class=\"submenu\">";
 	echo "<p>";
-	echo "<a href=\"javascript:adminAuthorisationEditGroup('', '".gettext("Go!")."', '".gettext("Cancel")."')\"><img src=\"img/icon_add.png\" alt=\"".gettext("add new access group")."\"/>";
+	echo "<a href=\"javascript:adminAuthorisationEditGroup('', '".gettext("Go!")."', '".gettext("Cancel")."')\"><img src=\"img/icon_add.png\" class=\"icon\" alt=\"".gettext("add new access group")."\"/>";
 	echo gettext("add new access group")."</a>";
 	echo "</p>";
 	echo "</div>";

@@ -69,11 +69,11 @@
 
 	//<!-- submenu  -->
 	echo "<div class=\"submenu\">";
-	echo "<a href=\"$urlList\">".gettext("object list")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlNew\">".gettext("add new object")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlDuplicate\">".gettext("duplicate")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlEdit\">".gettext("edit")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlDelete\">".gettext("delete")."</a>";
+	echo "<a href=\"$urlList\"><img src=\"img/icon_list.png\" class=\"icon\" alt=\"".gettext("list")."\" title=\"".gettext("list")."\" />".gettext("object list")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlNew\"><img src=\"img/icon_add.png\" class=\"icon\" alt=\"".gettext("add")."\" title=\"".gettext("add")."\" />".gettext("add new object")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlDuplicate\"><img src=\"img/icon_duplicate.png\" class=\"icon\" alt=\"".gettext("duplicate")."\" title=\"".gettext("duplicate")."\" />".gettext("duplicate")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlEdit\"><img src=\"img/icon_edit.png\" class=\"icon\" alt=\"".gettext("edit")."\" title=\"".gettext("edit")."\" />".gettext("edit")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlDelete\"><img src=\"img/icon_delete.png\" class=\"icon\" alt=\"".gettext("delete")."\" title=\"".gettext("delete")."\" />".gettext("delete")."</a>";
 	echo "</div>";
 
 	//print messagebar
