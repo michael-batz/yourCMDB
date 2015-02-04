@@ -49,9 +49,21 @@
 		break;
 
 		case "quicksearch":
-			$values = $datastore->getAllFieldValues(null, null, $paramSearchstring, 10);
+			//check, if searchstring consists of multiple words
+			$searchstring = $paramSearchstring;
+			$searchstringFirstPart = "";
+			if(preg_match("/(.*) (.*?)$/", $paramSearchstring, $matches) === 1)
+			{
+				$searchstring = $matches[2];
+				$searchstringFirstPart = $matches[1];
+			}
+			$values = $datastore->getAllFieldValues(null, null, $searchstring, 10);
 			foreach($values as $value)
 			{
+				if($paramSearchstring != $searchstring)
+				{
+					$value = "$searchstringFirstPart $value";
+				}
 				$output[] = array("id" => $value, "label" => $value, "value" => $value);
 			}
 		break;
@@ -61,8 +73,25 @@
 			$output[] = $paramSearchstring;
 
 			//add suggestions
-			$values = $datastore->getAllFieldValues(null, null, $paramSearchstring, 10);
-			$output[] = $values;
+			//check, if searchstring consists of multiple words
+			$searchstring = $paramSearchstring;
+			$searchstringFirstPart = "";
+			if(preg_match("/(.*) (.*?)$/", $paramSearchstring, $matches) === 1)
+			{
+				$searchstring = $matches[2];
+				$searchstringFirstPart = $matches[1];
+			}
+			$values = $datastore->getAllFieldValues(null, null, $searchstring, 10);
+			$editedValues = Array();
+			foreach($values as $value)
+			{
+				if($paramSearchstring != $searchstring)
+				{
+					$value = "$searchstringFirstPart $value";
+				}
+				$editedValues[] = $value;
+			}
+			$output[] = $editedValues;
 		break;
 	}
 

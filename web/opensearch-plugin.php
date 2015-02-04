@@ -38,6 +38,6 @@
 		<Description>yourCMDB QuickSearch</Description>
 		<InputEncoding>UTF-8</InputEncoding>
 		<Image width="16" height="16" type="image/x-icon"><?php echo $baseUrl; ?>/favicon.ico</Image>
-		<Url type="text/html" method="GET" template="<?php echo $baseUrl; ?>/search.php?searchstring[]={searchTerms}" />
+		<Url type="text/html" method="GET" template="<?php echo $baseUrl; ?>/search.php?searchstring={searchTerms}" />
 		<Url type="application/x-suggestions+json" method="GET" template="<?php echo $baseUrl; ?>/autocomplete.php?object=opensearch&amp;term={searchTerms}" />
 	</OpenSearchDescription>

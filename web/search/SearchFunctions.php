@@ -32,26 +32,15 @@
 	$paramMax = getHttpGetVar("max", $config->getViewConfig()->getContentTableLength());
         $paramPage = getHttpGetVar("page", "1");
         $paramActiveOnly = getHttpGetVar("activeonly", "1");
-        $paramSearchString = getHttpGetVar("searchstring", Array());
+        $paramSearchString = getHttpGetVar("searchstring", "");
 
 	//get data
 	$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
 
-	//create searchstrings array with searchstrings[0] set and removed empty values
+	//parse searchstring. create array with single words
 	$searchstrings = Array();
-	$searchstrings[0] = "";
-	for($i = 0; $i < count($paramSearchString); $i++)
+	if($paramSearchString != "")
 	{
-		if($i == 0)
-		{
-			$searchstrings[$i] = $paramSearchString[$i];
-		}
-		//remove empty searchstrings
-		elseif($paramSearchString[$i] != "")
-		{
-			$searchstrings[] = $paramSearchString[$i];
-		}
+		$searchstrings = array_filter(explode(" ", $paramSearchString));
 	}
-
-
 ?>

@@ -33,7 +33,7 @@
 
 	//get all searched objects
 	$objects = null;
-	if($searchstrings[0] != "")
+	if(count($searchstrings) > 0)
 	{
 		if($paramTypeGroup != "")
 		{
@@ -77,11 +77,8 @@
 
 
 	//urls
-	$listnavUrlBase = "search/SearchResult.php?typegroup=$paramTypeGroup&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=$paramActiveOnly";
-	foreach($searchstrings as $searchstring)
-	{
-		$listnavUrlBase .= "&amp;searchstring[]=$searchstring";
-	}
+	$listnavUrlBase = "search/SearchResult.php?typegroup=".urlencode($paramTypeGroup)."&amp;type=".urlencode($paramType)."&amp;max=".urlencode($paramMax)."&amp;activeonly=".urlencode($paramActiveOnly);
+	$listnavUrlBase .= "&amp;searchstring=".urlencode($paramSearchString);
 	$listnavUrlBase .= "&amp;page=";
 
 
@@ -113,6 +110,7 @@
 					if(stristr($objects[$i]->getFieldValue($fieldname), $searchstring) !== FALSE)
 					{
 						$objectMatchFields[] = $fieldname;
+						break;
 					}
 				}
 			}
@@ -232,14 +230,8 @@
 	else
 	{
 		echo "<p>";
-		echo gettext("No objects found for searchstrings ");
-		foreach($searchstrings as $searchstring)
-		{
-			if($searchstring != "")
-			{
-				echo "\"<i>$searchstring</i>\" ";
-			}
-		}
+		echo gettext("No objects found for searchstring ");
+		echo "<i>$paramSearchString</i>";
 		echo "</p>";
 	}
 

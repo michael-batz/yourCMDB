@@ -40,24 +40,9 @@
 
 	//default  search field
 	echo "<tr>";
-	echo "<td><input type=\"text\" value=\"{$searchstrings[0]}\" name=\"searchstring[]\" /></td>";
+	echo "<td><input type=\"text\" value=\"$paramSearchString\" name=\"searchstring\" /></td>";
 	echo "<td>&nbsp;</td>";
 	echo "</tr>";
-	//additional search strings
-	for($i = 1; $i < count($searchstrings); $i++)
-	{
-		echo "<tr class=\"searchstringAdditional\">";
-		echo "<td><input type=\"text\" name=\"searchstring[]\" value=\"{$searchstrings[$i]}\" /></td>";
-		echo "<td><a href=\"#\" onclick=\"javascript:searchbarRemoveField($(this).parent().parent())\"><img src=\"img/icon_delete.png\" class=\"icon\" alt=\"".gettext("delete")."\"/></a></td>";
-		echo "</tr>";
-	}
-	echo "</table>";
-	//add searchstring link
-	echo "<p>";
-	echo "<a href=\"#\" onclick=\"javascript:searchbarAddField('#searchbarStrings', '".gettext('searchstring')."', 'searchstring[]', '')\">";
-	echo "<img src=\"img/icon_add.png\" class=\"icon\" alt=\"".gettext("add searchstring")."\"/>".gettext("add searchstring");
-	echo "</a>";
-	echo "</p>";
 	echo "</div>";
 	//active objects
 	echo "<div class=\"searchbarRight\">";
