@@ -31,7 +31,7 @@ class DataTypeInterpreter
 {
 
 	//datatypes
-	private static $types = Array("text", "textarea", "boolean","date", "objectref");
+	private static $types = Array("text", "textarea", "boolean","date", "objectref", "password");
 	
 	/**
 	* Creates a new data type interpreter

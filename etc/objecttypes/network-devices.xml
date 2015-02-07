@@ -37,6 +37,10 @@
 				<field name="monitoring" label="Monitoring with OpenNMS" type="boolean" />
 				<field name="config-backup" label="Backup of configuration" type="boolean" />
 			</fieldgroup>
+			<fieldgroup name="access">
+				<field name="access-username" label="Username" type="text" />
+				<field name="access-password" label="Password" type="password" />
+			</fieldgroup>
 			<fieldgroup name="Comment">
 				<field name="comment" type="textarea" />
 			</fieldgroup>

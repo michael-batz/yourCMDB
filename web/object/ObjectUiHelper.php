@@ -57,6 +57,10 @@
 				showFieldForText($objectType, $name, $value, $writable);
 				break;
 
+			case "password":
+				showFieldForPassword($objectType, $name, $value, $writable);
+				break;
+
 			case "textarea":
 				showFieldForTextarea($name, $value, $writable);
 				break;
@@ -86,6 +90,26 @@
 		else
 		{
 			echo htmlspecialchars($value);
+		}
+	}
+
+	function showFieldForPassword($objectType, $name, $value, $writable)
+	{
+		if($writable)
+		{
+			?>
+				<input id="<?php echo $name; ?>" 
+					type="text" 
+					name="<?php echo $name; ?>" 
+					value="<?php echo htmlspecialchars($value); ?>" 
+					onfocus="javascript:showAutocompleter('#<?php echo $name; ?>', 'autocomplete.php?object=object&amp;var1=<?php echo $objectType;?>&amp;var2=<?php echo $name?>')" />
+			<?php
+				echo "<a href=\"javascript:createPassword('#$name')\"><img src=\"img/icon_add.png\" class=\"icon\"/ alt=\"".gettext("generate")."\" title=\"".gettext("generate")."\"></a>";
+		}
+		else
+		{
+			echo "<input id=\"$name\" type=\"hidden\" name=\"$name\" value=\"".htmlspecialchars($value)."\" />";
+			echo "<a href=\"javascript:showPassword('#$name')\"><img src=\"img/icon_show.png\" class=\"icon\" title=\"".gettext("show")."\" alt=\"".gettext("show")."\"/></a>";
 		}
 	}
 

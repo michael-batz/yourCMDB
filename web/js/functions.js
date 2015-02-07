@@ -112,6 +112,40 @@ function removeElement(id)
 	$( id  ).remove();
 };
 
+/**
+* show password in a password field
+*/
+function showPassword(id)
+{
+	//get value
+	var value = $( id ).attr("value");
+	var parentObject = $( id ).parent();
+	$( id  ).remove();
+	parentObject.html(value);
+	
+};
+
+/**
+* create password in the given input field
+*/
+function createPassword(id)
+{
+	//create new password
+	var alphabet = "abcdefghijklmnopqrstuvwxyz1234567890";
+	var length = 12;
+	var password = '';
+	for(var i = 0; i < length; i++)
+	{
+		password = password + alphabet.charAt(randomBetweenInt(0, alphabet.length - 1));
+	}
+	$( id  ).attr('value', password);
+};
+
+function randomBetweenInt(min, max)
+{
+	return Math.floor(Math.random() * (max - min + 1)) - min;
+}
+
 function jqueryUiStart()
 {
 
