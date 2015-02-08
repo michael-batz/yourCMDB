@@ -7,8 +7,13 @@
 				<parameter key="useLdapV3" value="true" />
 				<parameter key="bindDn" value="cn=admin,dc=yourcmdb,dc=org" />
 				<parameter key="bindPw" value="cmdb" />
-				<parameter key="baseDn" value="ou=users,dc=yourcmdb,dc=org" />
+				<parameter key="baseDn" value="dc=yourcmdb,dc=org" />
 				<parameter key="searchFilter" value="(uid=%username%)" />
+				<parameter key="searchFilterGroup" value="(memberUid=%username%)" />
+				<parameter key="defaultAccessgroup" value="default" />
+				<parameter key="groupmap_admin" value="admin" />
+				<parameter key="groupmap_rest" value="rest" />
+				<parameter key="groupmap_user" value="user" />
 			</authprovider>
 		</authproviders>
 		<authmethods>
