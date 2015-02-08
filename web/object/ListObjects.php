@@ -65,7 +65,7 @@
 	$urlShowActiveBase = "object.php?action=list&amp;type=$paramType&amp;activeonly=";
 	$urlAdd = "object.php?action=add&amp;type=$paramType";
 	$urlCsvExport = "export.php?format=csv&amp;type=$paramType";
-	$listnavUrlBase= "object.php?action=list&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=$paramActiveOnly&amp;page=";
+	$listnavUrlBase= "object.php?action=list&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=$paramActiveOnly&amp;sorttype=$paramSortType&amp;sort=$paramSort&amp;page=";
 	$urlSortBase= "object.php?action=list&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=$paramActiveOnly&amp;sorttype=$urlSortType&amp;sort=";
 
 	//generate link for show active/inactive objects
@@ -134,7 +134,11 @@
 			$urlObjectShow = "object.php?action=show&amp;id=". $objects[$i]->getId();
 			$urlObjectEdit = "object.php?action=edit&amp;id=". $objects[$i]->getId()."&amp;type=".$objects[$i]->getType();
 			$urlObjectDelete = "javascript:showConfirmation('object.php?action=delete&amp;id=". $objects[$i]->getId()."', '".gettext("Yes")."', '".gettext("Cancel")."')";
-			echo "<td>".$objects[$i]->getFieldValue($fieldname)."</td>";
+			$fieldValue = $objects[$i]->getFieldValue($fieldname);
+			$fieldType = $summaryFields[$fieldname];
+			echo "<td>";
+			showFieldForDataType($paramType, "$fieldname-$i", $fieldValue, $fieldType, false);
+			echo "</td>";
 		}
 		echo "<td class=\"right\">";
 		echo "<a href=\"$urlObjectShow\"><img src=\"img/icon_show.png\" title=\"".gettext("show")."\" alt=\"".gettext("show")."\" /></a>&nbsp;&nbsp;&nbsp;";

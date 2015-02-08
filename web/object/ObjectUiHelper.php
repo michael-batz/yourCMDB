@@ -231,7 +231,7 @@
 			if($value != "")
 			{
 				echo "<a href=\"object.php?id=$value\">";
-				echo gettext("show");
+				echo "<img src=\"img/icon_show.png\" alt=\"".gettext("show")."\" title=\"".gettext("show")."\" />";
 				echo "</a>";
 			}
 		}
