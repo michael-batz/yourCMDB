@@ -172,6 +172,12 @@ function jqueryUiStart()
 		);
 	});
 
+	//autofocus for login page
+	$(function()
+	{
+		$( "#loginUsername" ).focus();
+	});
+
 	//setup event handler scroller
 	$(window).scroll(function()
 	{

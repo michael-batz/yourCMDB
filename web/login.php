@@ -42,7 +42,7 @@
 	echo "<table>";
 	echo "<tr>";
 	echo "<td>".gettext("user:")."</td>";
-	echo "<td><input type=\"text\" name=\"authUser\"/></td>";
+	echo "<td><input type=\"text\" id=\"loginUsername\" name=\"authUser\"/></td>";
 	echo "</tr>";
 
 	echo "<tr>";
