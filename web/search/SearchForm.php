@@ -33,20 +33,14 @@
 	echo "<form id=\"searchbarForm\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\" onsubmit=\"javascript:searchbarSubmit('#searchbarForm','#searchbarResult')\">";
 
 
-	//search strings
-	echo "<div class=\"searchbarContainer\">";
-	echo "<div class=\"searchbarLeft\">";
-	echo "<table id=\"searchbarStrings\">";
-
 	//default  search field
-	echo "<tr>";
-	echo "<td><input type=\"text\" value=\"$paramSearchString\" name=\"searchstring\" /></td>";
-	echo "<td>&nbsp;</td>";
-	echo "</tr>";
-	echo "</div>";
-	//active objects
-	echo "<div class=\"searchbarRight\">";
 	echo "<table id=\"searchbarOptions\">";
+	echo "<tr>";
+	echo "<td>".gettext("searchstring")."</td>";
+	echo "<td><input type=\"text\" value=\"$paramSearchString\" name=\"searchstring\" id=\"searchbarSearchstring\" ";
+	echo "			onfocus=\"javascript:showAutocompleter('#searchbarSearchstring', 'autocomplete.php?object=quicksearch')\"/></td>";
+	echo "</tr>";
+	//active objects
 	echo "<tr>";
 	echo "<td>".gettext("show inactive objects")."</td>";
 	if($paramActiveOnly == "1")
@@ -100,8 +94,6 @@
 	echo "</select></td>";
 	echo "</tr>";
 	echo "</table>";
-	echo "</div>";
-	echo "</div>";
 
 	//searchform footer
 	echo "<p id=\"searchbarFooter\">";

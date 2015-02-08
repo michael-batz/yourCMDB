@@ -104,7 +104,7 @@
 					value="<?php echo htmlspecialchars($value); ?>" 
 					onfocus="javascript:showAutocompleter('#<?php echo $name; ?>', 'autocomplete.php?object=object&amp;var1=<?php echo $objectType;?>&amp;var2=<?php echo $name?>')" />
 			<?php
-				echo "<a href=\"javascript:createPassword('#$name')\"><img src=\"img/icon_add.png\" class=\"icon\"/ alt=\"".gettext("generate")."\" title=\"".gettext("generate")."\"></a>";
+				echo "<a href=\"javascript:createPassword('#$name')\"><img src=\"img/icon_generate.png\" class=\"icon\"/ alt=\"".gettext("generate")."\" title=\"".gettext("generate")."\"></a>";
 		}
 		else
 		{

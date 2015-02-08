@@ -37,7 +37,7 @@
 	{
 		printErrorMessage(gettext("Sorry, wrong username or password. Please try again..."));
 	}
-	echo "<p><img src=\"img/logo.png\" /></p>";
+	echo "<p><img src=\"img/logo.png\" alt=\"".gettext("yourCMDB logo")."\" /></p>";
 
 	echo "<table>";
 	echo "<tr>";

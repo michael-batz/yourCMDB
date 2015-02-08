@@ -567,24 +567,7 @@ div.searchbar table
 	text-align:	left;
 }
 
-div.searchbarContainer
-{
-	display:	table;
-	table-layout:	fixed;
-	width:		100%;
-}
 
-div.searchbarLeft
-{
-	display:	table-cell;
-	width:		100%;
-}
-
-div.searchbarRight
-{
-	display:	table-cell;
-	width:		100%;
-}
 
 p#searchbarHeader
 {
