@@ -1,6 +1,6 @@
 <view-configuration>
-	<content-tables length="20" />
-	<url base="http://10.0.1.105/yourcmdb/web" />
+	<content-tables length="50" />
+	<url base="http://127.0.0.1" />
 	<qrcodes ecc-level="L" />
 	<i18n language="en_GB.utf8" />
 	<title name="yourCMDB" />
