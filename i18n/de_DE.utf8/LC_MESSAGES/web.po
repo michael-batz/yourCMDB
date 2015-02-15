@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yourCMDB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-11 15:42+0100\n"
+"POT-Creation-Date: 2015-02-15 10:53+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Michael Batz <michael@yourcmdb.org>\n"
 "Language-Team: Michael Batz <michael@yourcmdb.org>\n"
@@ -22,139 +22,180 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: /var/www/yourcmdb/web\n"
 
-#: /var/www/yourcmdb/web/object.php:67
+#: /var/www/yourcmdb/web/object.php:70
 #, php-format
 msgid "No object with AssetID %s found..."
 msgstr "Kein Objekt mit ID %s gefunden..."
 
-#: /var/www/yourcmdb/web/object.php:97
-#: /var/www/yourcmdb/web/object.php:143
+#: /var/www/yourcmdb/web/object.php:100
+#: /var/www/yourcmdb/web/object.php:146
 msgid "No data were set when saving an object."
 msgstr "Es wurde versucht ein leeres Objekt zu speichern."
 
-#: /var/www/yourcmdb/web/object.php:118
+#: /var/www/yourcmdb/web/object.php:121
 msgid "Error saving new object"
 msgstr "Fehler beim Speichern des neuen Objektes"
 
-#: /var/www/yourcmdb/web/object.php:123
+#: /var/www/yourcmdb/web/object.php:126
 msgid "New Object successfully created"
 msgstr "Neues Objekt wurde erfolgreich angelegt."
 
-#: /var/www/yourcmdb/web/object.php:153
+#: /var/www/yourcmdb/web/object.php:156
 msgid "Error saving object"
 msgstr "Fehler beim Speichern des Objekts"
 
-#: /var/www/yourcmdb/web/object.php:158
+#: /var/www/yourcmdb/web/object.php:161
 msgid "Object successfully changed"
 msgstr "Objekt wurde erfolgreich geändert"
 
-#: /var/www/yourcmdb/web/object.php:171
+#: /var/www/yourcmdb/web/object.php:174
 msgid "Error deleting object: Object not found"
 msgstr "Fehler beim Löschen des Objektes: Das Objekt wurde nicht gefunden"
 
-#: /var/www/yourcmdb/web/object.php:176
+#: /var/www/yourcmdb/web/object.php:179
 msgid "Object deleted"
 msgstr "Objekt gelöscht"
 
-#: /var/www/yourcmdb/web/object.php:188
+#: /var/www/yourcmdb/web/object.php:191
 msgid "Object for adding links not found."
 msgstr "Das Objekt für das Hinzufügen von Links konnte nicht gefunden werden."
 
-#: /var/www/yourcmdb/web/object.php:197
+#: /var/www/yourcmdb/web/object.php:200
 msgid "Object link successfully added"
 msgstr "Objekt Link wurde erfolgreich erstellt"
 
-#: /var/www/yourcmdb/web/object.php:201
+#: /var/www/yourcmdb/web/object.php:204
 msgid "Error adding object link: Object B not found"
 msgstr "Fehler beim Hinzufügen eines Objekt Links: Objekt B wurde nicht gefunden"
 
-#: /var/www/yourcmdb/web/object.php:205
+#: /var/www/yourcmdb/web/object.php:208
 #, php-format
 msgid "Link object %s with object %s is not allowed."
 msgstr "Verlinken von Objekt %s mit Objekt %s ist nicht möglich."
 
-#: /var/www/yourcmdb/web/object.php:208
+#: /var/www/yourcmdb/web/object.php:211
 msgid " The object link already exists."
 msgstr "Der Objekt Link besteht bereits."
 
-#: /var/www/yourcmdb/web/object.php:221
+#: /var/www/yourcmdb/web/object.php:224
 msgid "Object link was successfully deleted"
 msgstr "Objekt Link wurde erfolgreich gelöscht"
 
-#: /var/www/yourcmdb/web/object.php:225
+#: /var/www/yourcmdb/web/object.php:228
 msgid "Error deleting object link: object not found"
 msgstr "Fehler beim Löschen des Objekt Links: Objekt nicht gefunden"
 
-#: /var/www/yourcmdb/web/object.php:239
+#: /var/www/yourcmdb/web/object.php:242
 #, php-format
 msgid "Event %s was successfully sent"
 msgstr "Event %s erfolgreich gesendet"
 
-#: /var/www/yourcmdb/web/object.php:243
+#: /var/www/yourcmdb/web/object.php:246
 msgid "Error sending event: object not found"
 msgstr "Fehler beim Senden des Events: Objekt wurde nicht gefunden"
 
-#: /var/www/yourcmdb/web/index.php:39
+#: /var/www/yourcmdb/web/index.php:42
+#: /var/www/yourcmdb/web/login.php:35
 msgid "Welcome to yourCMDB!"
 msgstr "Willkommen bei yourCMDB!"
 
-#: /var/www/yourcmdb/web/index.php:46
+#: /var/www/yourcmdb/web/index.php:49
 #, php-format
 msgid "%s Newest Objects"
 msgstr "%s zuletzt erzeugte Objekte"
 
-#: /var/www/yourcmdb/web/index.php:59
-#: /var/www/yourcmdb/web/index.php:96
+#: /var/www/yourcmdb/web/index.php:62
+#: /var/www/yourcmdb/web/index.php:99
 #: /var/www/yourcmdb/web/object/ListObjects.php:125
-#: /var/www/yourcmdb/web/object/ShowObject.php:42
-#: /var/www/yourcmdb/web/search/SearchResult.php:120
 msgid "active"
 msgstr "aktiv"
 
-#: /var/www/yourcmdb/web/index.php:59
-#: /var/www/yourcmdb/web/index.php:96
+#: /var/www/yourcmdb/web/index.php:62
+#: /var/www/yourcmdb/web/index.php:99
 #: /var/www/yourcmdb/web/object/ListObjects.php:125
-#: /var/www/yourcmdb/web/object/ShowObject.php:42
-#: /var/www/yourcmdb/web/search/SearchResult.php:120
 msgid "active object"
 msgstr "aktives Objekt"
 
-#: /var/www/yourcmdb/web/index.php:62
-#: /var/www/yourcmdb/web/index.php:99
+#: /var/www/yourcmdb/web/index.php:65
+#: /var/www/yourcmdb/web/index.php:102
 #: /var/www/yourcmdb/web/object/ListObjects.php:128
-#: /var/www/yourcmdb/web/object/ShowObject.php:45
-#: /var/www/yourcmdb/web/search/SearchResult.php:123
 msgid "inactive"
 msgstr "inaktiv"
 
-#: /var/www/yourcmdb/web/index.php:62
-#: /var/www/yourcmdb/web/index.php:99
+#: /var/www/yourcmdb/web/index.php:65
+#: /var/www/yourcmdb/web/index.php:102
 #: /var/www/yourcmdb/web/object/ListObjects.php:128
-#: /var/www/yourcmdb/web/object/ShowObject.php:45
-#: /var/www/yourcmdb/web/search/SearchResult.php:123
 msgid "inactive object"
 msgstr "inaktives Objekt"
 
-#: /var/www/yourcmdb/web/index.php:69
-#: /var/www/yourcmdb/web/index.php:107
-#: /var/www/yourcmdb/web/object/ListObjects.php:140
-#: /var/www/yourcmdb/web/object/ShowObject.php:221
-#: /var/www/yourcmdb/web/object/ShowObject.php:246
-#: /var/www/yourcmdb/web/object/ObjectUiHelper.php:210
+#: /var/www/yourcmdb/web/index.php:72
+#: /var/www/yourcmdb/web/index.php:110
+#: /var/www/yourcmdb/web/object/ListObjects.php:144
 msgid "show"
 msgstr "anzeigen"
 
-#: /var/www/yourcmdb/web/index.php:70
-#: /var/www/yourcmdb/web/index.php:108
-#: /var/www/yourcmdb/web/object/ListObjects.php:141
-#: /var/www/yourcmdb/web/object/ShowObject.php:75
+#: /var/www/yourcmdb/web/index.php:73
+#: /var/www/yourcmdb/web/index.php:111
+#: /var/www/yourcmdb/web/object/ListObjects.php:145
 msgid "edit"
 msgstr "ändern"
 
-#: /var/www/yourcmdb/web/index.php:81
+#: /var/www/yourcmdb/web/index.php:84
 #, php-format
 msgid "%s Last Changed Objects"
 msgstr "%s zuletzt geänderte Objekte"
+
+#: /var/www/yourcmdb/web/login.php:38
+msgid "Sorry, wrong username or password. Please try again..."
+msgstr "Entschuldigung, Benutzername oder Passwort falsch..."
+
+#: /var/www/yourcmdb/web/login.php:40
+msgid "yourCMDB logo"
+msgstr "yourCMDB Logo"
+
+#: /var/www/yourcmdb/web/login.php:44
+msgid "user:"
+msgstr "Benutzername:"
+
+#: /var/www/yourcmdb/web/login.php:49
+msgid "password:"
+msgstr "Passwort:"
+
+#: /var/www/yourcmdb/web/login.php:54
+msgid "Go!"
+msgstr "Los!"
+
+#: /var/www/yourcmdb/web/admin.php:36
+msgid "Admin"
+msgstr "Admin"
+
+#: /var/www/yourcmdb/web/admin.php:42
+msgid "About"
+msgstr "Über"
+
+#: /var/www/yourcmdb/web/admin.php:48
+msgid "Authentication"
+msgstr "Authentifizierung"
+
+#: /var/www/yourcmdb/web/admin.php:56
+msgid "Authorisation"
+msgstr "Autorisierung"
+
+#: /var/www/yourcmdb/web/unauthorised.php:30
+msgid "Unauthorised!"
+msgstr "Keine Berechtigung!"
+
+#: /var/www/yourcmdb/web/unauthorised.php:31
+msgid "You don't have the permission to access this page. Sorry."
+msgstr "Sie haben keine Berechtigung auf die Seite zuzugreifen. Entschuldigung."
+
+#: /var/www/yourcmdb/web/settings.php:30
+msgid "User settings"
+msgstr "Benutzer Einstellungen"
+
+#: /var/www/yourcmdb/web/settings.php:36
+msgid "user details"
+msgstr "Benutzer Details"
 
 #: /var/www/yourcmdb/web/object/ListObjects.php:74
 msgid "Show also inactive objects"
@@ -165,48 +206,52 @@ msgid "Show only active objects"
 msgstr "nur aktive Objekte anzeigen"
 
 #: /var/www/yourcmdb/web/object/ListObjects.php:86
-#: /var/www/yourcmdb/web/object/ShowObject.php:57
 msgid "Are you sure?"
 msgstr "Sind Sie sicher?"
 
 #: /var/www/yourcmdb/web/object/ListObjects.php:88
-#: /var/www/yourcmdb/web/object/ShowObject.php:59
 msgid "Do you really want to delete this object?"
 msgstr "Möchten Sie wirklich dieses Objekt löschen?"
 
+#: /var/www/yourcmdb/web/object/ListObjects.php:94
+msgid "switch"
+msgstr "umschalten"
+
+#: /var/www/yourcmdb/web/object/ListObjects.php:95
+msgid "add"
+msgstr "hinzufügen"
+
+#: /var/www/yourcmdb/web/object/ListObjects.php:95
+msgid "add new object"
+msgstr "neues Objekt hinzufügen"
+
+#: /var/www/yourcmdb/web/object/ListObjects.php:96
+msgid "export"
+msgstr "exportieren"
+
 #: /var/www/yourcmdb/web/object/ListObjects.php:111
-#: /var/www/yourcmdb/web/object/ShowObject.php:208
-#: /var/www/yourcmdb/web/object/ShowObject.php:232
 msgid "AssetID"
 msgstr "AssetID"
 
 #: /var/www/yourcmdb/web/object/ListObjects.php:136
-#: /var/www/yourcmdb/web/object/ShowObject.php:40
 msgid "Yes"
 msgstr "Ja"
 
 #: /var/www/yourcmdb/web/object/ListObjects.php:136
-#: /var/www/yourcmdb/web/object/ShowObject.php:40
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: /var/www/yourcmdb/web/object/ListObjects.php:142
-#: /var/www/yourcmdb/web/object/ShowObject.php:76
-#: /var/www/yourcmdb/web/object/ShowObject.php:247
+#: /var/www/yourcmdb/web/object/ListObjects.php:146
 msgid "delete"
 msgstr "löschen"
 
-#: /var/www/yourcmdb/web/object/ListObjects.php:155
-#: /var/www/yourcmdb/web/object/ListObjects.php:161
-#: /var/www/yourcmdb/web/search/SearchResult.php:179
-#: /var/www/yourcmdb/web/search/SearchResult.php:185
+#: /var/www/yourcmdb/web/object/ListObjects.php:159
+#: /var/www/yourcmdb/web/object/ListObjects.php:165
 msgid "previous"
 msgstr "zurück"
 
-#: /var/www/yourcmdb/web/object/ListObjects.php:195
-#: /var/www/yourcmdb/web/object/ListObjects.php:201
-#: /var/www/yourcmdb/web/search/SearchResult.php:219
-#: /var/www/yourcmdb/web/search/SearchResult.php:225
+#: /var/www/yourcmdb/web/object/ListObjects.php:199
+#: /var/www/yourcmdb/web/object/ListObjects.php:205
 msgid "next"
 msgstr "vor"
 
@@ -225,8 +270,6 @@ msgid "Object Status"
 msgstr "Objektstatus"
 
 #: /var/www/yourcmdb/web/object/EditObject.php:105
-#: /var/www/yourcmdb/web/object/ShowObject.php:259
-#: /var/www/yourcmdb/web/object/NewObject.php:61
 msgid "Go"
 msgstr "Los!"
 
@@ -236,12 +279,12 @@ msgid "There are %s objects that reference to this object. If you delete this ob
 msgstr "Es gibt %s Objekte, die auf dieses Objekt referenzieren. Wenn Sie dieses Objekt löschen, werden alle Referenzen zurückgesetzt."
 
 #: /var/www/yourcmdb/web/object/ShowObject.php:72
+msgid "list"
+msgstr "Liste"
+
+#: /var/www/yourcmdb/web/object/ShowObject.php:72
 msgid "object list"
 msgstr "Objekt Liste"
-
-#: /var/www/yourcmdb/web/object/ShowObject.php:73
-msgid "add new object"
-msgstr "neues Objekt hinzufügen"
 
 #: /var/www/yourcmdb/web/object/ShowObject.php:74
 msgid "duplicate"
@@ -314,54 +357,108 @@ msgstr "Neuen Objekt Link hinzufügen zu Objekt mit ID:"
 msgid "Date"
 msgstr "Datum"
 
+#: /var/www/yourcmdb/web/object/ObjectUiHelper.php:107
+msgid "generate"
+msgstr "generieren"
+
 #: /var/www/yourcmdb/web/object/NewObject.php:34
 #: /var/www/yourcmdb/web/object/NewObject.php:40
 msgid "New Object"
 msgstr "Neues Objekt"
 
 #: /var/www/yourcmdb/web/object/NewObject.php:44
+#: /var/www/yourcmdb/web/search/SearchForm.php:75
 msgid "Type:"
 msgstr "Typ:"
 
-#: /var/www/yourcmdb/web/search/SearchResult.php:89
+#: /var/www/yourcmdb/web/settings/UserDetails.php:50
+msgid "Password changeing is not allowed."
+msgstr "Passwort ändern ist nicht erlaubt."
+
+#: /var/www/yourcmdb/web/settings/UserDetails.php:57
+msgid "Password not changed. Your old password was not correct."
+msgstr "Das Passwort wurde nicht geändert. Ihr altes Passwort war nicht richtig."
+
+#: /var/www/yourcmdb/web/settings/UserDetails.php:66
+msgid "Password successfully changed."
+msgstr "Das Passwort wurde erfolgreich geändert."
+
+#: /var/www/yourcmdb/web/settings/UserDetails.php:71
+msgid "Password not changed. Your new passwords did not match. Please try again..."
+msgstr "Das Passwort wurde nicht geändert. Die beiden Werte stimmten nicht überein."
+
+#: /var/www/yourcmdb/web/settings/UserDetails.php:82
+#, php-format
+msgid "User: %s"
+msgstr "Benutzer: %s"
+
+#: /var/www/yourcmdb/web/settings/UserDetails.php:89
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:127
+msgid "username"
+msgstr "Benutzername"
+
+#: /var/www/yourcmdb/web/settings/UserDetails.php:90
+#: /var/www/yourcmdb/web/admin/Authorisation.php:181
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:128
+msgid "access group"
+msgstr "Zugriffsgruppe"
+
+#: /var/www/yourcmdb/web/settings/UserDetails.php:93
+msgid "password"
+msgstr "Passwort"
+
+#: /var/www/yourcmdb/web/settings/UserDetails.php:94
+#: /var/www/yourcmdb/web/settings/UserDetails.php:99
+msgid "change password"
+msgstr "Passwort ändern"
+
+#: /var/www/yourcmdb/web/settings/UserDetails.php:103
+msgid "old password:"
+msgstr "altes Passwort:"
+
+#: /var/www/yourcmdb/web/settings/UserDetails.php:104
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:172
+msgid "new password:"
+msgstr "neues Passwort:"
+
+#: /var/www/yourcmdb/web/settings/UserDetails.php:105
+msgid "retype new password:"
+msgstr "neues Passwort wiederholen:"
+
+#: /var/www/yourcmdb/web/search/SearchResult.php:87
 #, php-format
 msgid "Search Results (%s)"
 msgstr "Suchergebnisse (%s)"
 
-#: /var/www/yourcmdb/web/search/SearchResult.php:132
+#: /var/www/yourcmdb/web/search/SearchResult.php:131
 msgid "Matches: "
 msgstr "Übereinstimmungen: "
 
-#: /var/www/yourcmdb/web/search/SearchResult.php:155
+#: /var/www/yourcmdb/web/search/SearchResult.php:154
 msgid "Summary: "
 msgstr "Zusammenfassung:"
 
-#: /var/www/yourcmdb/web/search/SearchResult.php:234
-msgid "No objects found for searchstrings "
-msgstr "Keine Objekte gefunden für die eingegebenen Suchstrings "
+#: /var/www/yourcmdb/web/search/SearchResult.php:233
+msgid "No objects found for searchstring "
+msgstr "Keine Objekte gefunden für den eingegebenen Suchstring "
 
 #: /var/www/yourcmdb/web/search/SearchForm.php:31
-#: /var/www/yourcmdb/web/include/quicksearch.inc.php:31
 msgid "Search"
 msgstr "Suche"
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:57
+#: /var/www/yourcmdb/web/search/SearchForm.php:39
 msgid "searchstring"
 msgstr "Suchstring"
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:58
-msgid "add searchstring"
-msgstr "Suchstring hinzufügen"
-
-#: /var/www/yourcmdb/web/search/SearchForm.php:66
+#: /var/www/yourcmdb/web/search/SearchForm.php:45
 msgid "show inactive objects"
 msgstr "inaktive Objekte anzeigen"
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:78
+#: /var/www/yourcmdb/web/search/SearchForm.php:57
 msgid "objecttype group"
 msgstr "Objekttyp Gruppe"
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:124
+#: /var/www/yourcmdb/web/search/SearchForm.php:101
 msgid "Clear Search"
 msgstr "Eingaben löschen"
 
@@ -432,6 +529,172 @@ msgstr "Der obenstehende Fehler sollte nicht auftreten. Vielleicht haben Sie ein
 msgid "Please check your setup or ask for help on the %s yourCMDB Website %s."
 msgstr "Bitte überprüfen Sie Ihre Installation oder fragen Sie nach Hilfe auf der %s yourCMDB Website %s."
 
+#: /var/www/yourcmdb/web/admin/Authorisation.php:52
+#, php-format
+msgid "Rights for group %s"
+msgstr "Rechte für Gruppe %s"
+
+#: /var/www/yourcmdb/web/admin/Authorisation.php:58
+msgid "Add new access group with name:"
+msgstr "Neue Zugriffsgruppe hinzufügen mit Name:"
+
+#: /var/www/yourcmdb/web/admin/Authorisation.php:91
+msgid "add access right"
+msgstr "Berechtigung hinzufügen"
+
+#: /var/www/yourcmdb/web/admin/Authorisation.php:131
+#, php-format
+msgid "access group %s successfully updated"
+msgstr "Zugriffsgruppe %s wurde erfolgreich geändert."
+
+#: /var/www/yourcmdb/web/admin/Authorisation.php:135
+#, php-format
+msgid "Error updating access rights for access group %s"
+msgstr "Fehler beim Aktualisieren der Rechte für Zugriffsgruppe %s"
+
+#: /var/www/yourcmdb/web/admin/Authorisation.php:140
+#, php-format
+msgid "Error updating access rights for access group %s. A group cannot have 0 access rights."
+msgstr "Fehler beim Aktualisieren der Rechte für Zugriffsgruppe %s. Eine Gruppe kann nicht 0 Zugriffsrechte haben."
+
+#: /var/www/yourcmdb/web/admin/Authorisation.php:145
+msgid "Error updating access rights. No group name defined."
+msgstr "Fehler beim Aktualisieren der Rechte. Keine Zugriffsgruppenname definiert."
+
+#: /var/www/yourcmdb/web/admin/Authorisation.php:153
+#, php-format
+msgid "access group %s successfully deleted"
+msgstr "Zugriffsgruppe %s wurde erfolgreich gelöscht"
+
+#: /var/www/yourcmdb/web/admin/Authorisation.php:157
+#, php-format
+msgid "Error deleting access group %s"
+msgstr "Fehler beim Löschen der Zugriffsgruppe %s"
+
+#: /var/www/yourcmdb/web/admin/Authorisation.php:170
+#: /var/www/yourcmdb/web/admin/Authorisation.php:171
+msgid "add new access group"
+msgstr "neue Zugriffsgruppe hinzufügen"
+
+#: /var/www/yourcmdb/web/admin/Authorisation.php:176
+msgid "access rights management"
+msgstr "Zugriffsberechtigungen"
+
+#: /var/www/yourcmdb/web/admin/Authorisation.php:200
+msgid "edit access group"
+msgstr "Zugriffsgruppe editieren"
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:51
+#, php-format
+msgid "user %s successfully created"
+msgstr "Benutzer %s wurde erfolgreich angelegt."
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:55
+#, php-format
+msgid "Error creating user  %s"
+msgstr "Fehler beim Erstellen des Benutzers %s"
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:60
+#, php-format
+msgid "Error creating user  %s. Empty username or password"
+msgstr "Fehler beim Erstellen des Benutzers %s. Leerer Benutzername oder Passwort."
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:71
+#, php-format
+msgid "user %s successfully deleted"
+msgstr "Benutzer %s wurde erfolgreich gelöscht"
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:75
+#, php-format
+msgid "Error deleting user  %s"
+msgstr "Fehler beim Löschen des Benutzers %s"
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:91
+msgid "Password successfully changed. "
+msgstr "Das Passwort wurde erfolgreich geändert."
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:100
+msgid "Accessgroup successfully changed. "
+msgstr "Zugriffsgruppe wurde erfolgreich geändert."
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:105
+#, php-format
+msgid "User %s successfully changed. "
+msgstr "Benutzer %s wurde erfolgreich geändert."
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:116
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:155
+msgid "add new user"
+msgstr "neuen Benutzer hinzufügen"
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:121
+msgid "local user management"
+msgstr "Lokale Benutzer"
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:139
+msgid "user"
+msgstr "Benutzer"
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:159
+msgid "username:"
+msgstr "Benutzername:"
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:161
+msgid "access group:"
+msgstr "Zugriffsgruppe:"
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:167
+msgid "edit user"
+msgstr "Benutzer editieren"
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:169
+msgid "Leave fields empty, that you do not wish to change."
+msgstr "Lassen Sie die Felder leer, die nicht geändert werden sollen."
+
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:173
+msgid "new access group:"
+msgstr "neue Zugriffsgruppe:"
+
+#: /var/www/yourcmdb/web/admin/About.php:44
+msgid "yourCMDB is published under GPLv3."
+msgstr "yourCMDB ist unter GPLv3 veröffentlicht."
+
+#: /var/www/yourcmdb/web/admin/About.php:54
+msgid "version information"
+msgstr "Software Versionen"
+
+#: /var/www/yourcmdb/web/admin/About.php:55
+msgid "yourCMDB:"
+msgstr "yourCMDB:"
+
+#: /var/www/yourcmdb/web/admin/About.php:56
+msgid "operating system:"
+msgstr "Betriebssystem:"
+
+#: /var/www/yourcmdb/web/admin/About.php:57
+msgid "PHP:"
+msgstr "PHP:"
+
+#: /var/www/yourcmdb/web/admin/About.php:58
+msgid "PHP server api:"
+msgstr "PHP Server API:"
+
+#: /var/www/yourcmdb/web/admin/About.php:59
+msgid "database server:"
+msgstr "Datenbank Server:"
+
+#: /var/www/yourcmdb/web/admin/About.php:62
+msgid "authentication methods"
+msgstr "Authentifizierungs Methoden"
+
+#: /var/www/yourcmdb/web/include/mainmenu.inc.php:31
+msgid "Home"
+msgstr "Home"
+
+#: /var/www/yourcmdb/web/include/mainmenu.inc.php:34
+msgid "Import-Export"
+msgstr "Import-Export"
+
 #: /var/www/yourcmdb/web/include/quicksearch.inc.php:37
 msgid "Asset ID:"
 msgstr "Asset ID:"
@@ -440,11 +703,19 @@ msgstr "Asset ID:"
 msgid "Searchstring:"
 msgstr "Suchstring"
 
-#: /var/www/yourcmdb/web/include/footer.inc.php:27
+#: /var/www/yourcmdb/web/include/yourcmdbheader.inc.php:32
+msgid "user settings"
+msgstr "Benutzer Einstellungen"
+
+#: /var/www/yourcmdb/web/include/yourcmdbheader.inc.php:34
+msgid "logout"
+msgstr "Logout"
+
+#: /var/www/yourcmdb/web/include/yourcmdbfooter.inc.php:27
 msgid "is published under GPLv3"
 msgstr "ist unter GPLv3 veröffentlicht"
 
-#: /var/www/yourcmdb/web/include/footer.inc.php:32
+#: /var/www/yourcmdb/web/include/yourcmdbfooter.inc.php:32
 msgid "to the top"
 msgstr "nach oben"
 
@@ -454,9 +725,6 @@ msgstr "Objekte"
 
 #~ msgid "search for %s in all objects"
 #~ msgstr "Suche nach %s in allen Objekten"
-
-#~ msgid "search for %s in group %s"
-#~ msgstr "Suche nach %s in Gruppe %s"
 
 #~ msgid "No objects with field value %s found. Please try again..."
 #~ msgstr "Kein Objekt mit Feldinhalt %s gefunden. Bitte nochmal versuchen..."

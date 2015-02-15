@@ -173,7 +173,7 @@
 	echo "</div>";
 
 	//output: header
-	echo "<h1>access rights management</h1>";
+	echo "<h1>".gettext("access rights management")."</h1>";
 
 	//output: user table
 	echo "<table class=\"list\">";

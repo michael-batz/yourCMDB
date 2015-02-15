@@ -118,7 +118,7 @@
 	echo "</div>";
 
 	//output: header
-	echo "<h1>local user management</h1>";
+	echo "<h1>".gettext("local user management")."</h1>";
 
 	//output: user table
 	echo "<table class=\"list\">";
