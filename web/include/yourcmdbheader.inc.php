@@ -23,7 +23,7 @@
 	<div class="pagecontainer">
 		<!-- header -->
 		<div class="header">
-			<h1 onclick="javascript:openUrl('index.php')">yourCMDB</h1>
+			<h1 onclick="javascript:openUrl('index.php')"><?php echo $installTitle; ?></h1>
 			<div id="userinfo">
 				<?php
 				if($authAuthenticated)

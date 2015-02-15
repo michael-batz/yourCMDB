@@ -3,5 +3,6 @@
 	<url base="http://10.0.1.105/yourcmdb/web" />
 	<qrcodes ecc-level="L" />
 	<i18n language="en_GB.utf8" />
+	<title name="yourCMDB" />
 	<menu-items />
 </view-configuration>

@@ -40,6 +40,9 @@ class ViewConfig
 	//i18n language
 	private $language;
 
+	//title of installation
+	private $installTitle;
+
 	//menu items
 	private $menuItems;
 
@@ -69,7 +72,14 @@ class ViewConfig
 		{
 			$this->language = (string) $xmlobject->{'i18n'}[0]['language'];
 		}
-	
+
+		//read title of installation
+		$this->installTitle = "yourCMDB";
+		if(isset($xmlobject->{'title'}[0]['name']))
+		{
+			$this->installTitle = (string) $xmlobject->{'title'}[0]['name'];
+		}
+
 		//read menu items
 		$this->menuItems = Array();
 		foreach($xmlobject->xpath('//menu-item') as $menuItem)
@@ -148,6 +158,14 @@ class ViewConfig
 	public function getLocale()
 	{
 		return $this->language;
+	}
+
+	/**
+	* Returns title for installation
+	*/
+	public function getInstallTitle()
+	{
+		return $this->installTitle;
 	}
 }
 

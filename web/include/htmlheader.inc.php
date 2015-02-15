@@ -36,7 +36,7 @@
 		<script src="js/admin.js" type="text/javascript"></script>
 		<script src="js/searchbar.js" type="text/javascript"></script>
 		<script src="js/functions.js" type="text/javascript"></script>
-		<title>yourCMDB</title>
+		<title><?php echo $installTitle; ?></title>
 	</head>
 	<body>
 		<noscript><p>You need to enable JavaScript for yourCMDB.</p></noscript>

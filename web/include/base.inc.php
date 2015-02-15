@@ -90,6 +90,7 @@ function printErrorMessage($message)
 $controller = new Controller();
 $config = $controller->getCmdbConfig();
 $datastore = $controller->getDatastore();
+$installTitle = $config->getViewConfig()->getInstallTitle();
 
 //setup i18n with gettext
 $i18nLocale = $config->getViewConfig()->getLocale();
