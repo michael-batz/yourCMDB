@@ -20,56 +20,17 @@
 *
 *********************************************************************/
 
-
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
-* An access group for yourCMDB
+* Exception, if a CmdbObject was not found in datastore
 * @author Michael Batz <michael@yourcmdb.org>
-* @Entity
 */
-class CmdbAccessGroup
+class CmdbObjectNotFoundException extends Exception
 {
 
-	/**
-	* name of the access group
-	* @Column(type="string", length=64)
-	* @Id
-	*/
-	private $name;
-
-	/**
-	* access rules
-	* @OneToMany(targetEntity="CmdbAccessRule", mappedBy="accessgroup", indexBy="applicationPart", cascade={"persist", "remove"})
-	*/
-	private $accessRules;
-
-	/**
-	* Creates a new access group
-	* @param string $name	name of the access group
-	*/
-	public function __construct($name)
+	public function __construct($message, $code = 0)
 	{
-		$this->name = $name;
-		$this->accessRules = new ArrayCollection();
+        	parent::__construct($message, $code);
 	}
 
-	/**
-	* Returns the name of the access group
-	* @return string	name of the access group
-	*/
-	public function getName()
-	{
-		return $this->name;
-	}
-
-	/**
-	* Returns the access rules
-	* @return ArrayCollection	access rules
-	*/
-	public function getAccessRules()
-	{
-		return $this->accessRules;
-	}
 }
 ?>

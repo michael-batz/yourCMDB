@@ -1,4 +1,25 @@
 <?php
+/********************************************************************
+* This file is part of yourCMDB.
+*
+* Copyright 2013-2015 Michael Batz
+*
+*
+* yourCMDB is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* yourCMDB is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
+*
+*********************************************************************/
+
 
 /**
 * A field of a CMDB object
@@ -19,25 +40,25 @@ class CmdbObjectField
 	* @Column(type="string", length=64)
 	* @Id
 	*/
-	private $key;
+	private $fieldkey;
 
 	/**
 	* value of the field
 	* @Column(type="text", nullable=true)
 	*/
-	private $value;
+	private $fieldvalue;
 
 	/**
 	* Creates a new field for a given object
 	* @param CmdbObject $object	object for the field
-	* @param string $key		name of the field
-	* @param string $value		value of the field
+	* @param string $fieldkey		name of the field
+	* @param string $fieldvalue		value of the field
 	*/
-	public function __construct($object, $key, $value)
+	public function __construct($object, $fieldkey, $fieldvalue)
 	{
 		$this->object = $object;
-		$this->key = $key;
-		$this->value = $value;
+		$this->fieldkey = $fieldkey;
+		$this->fieldvalue = $fieldvalue;
 	}
 
 	/**
@@ -53,27 +74,27 @@ class CmdbObjectField
 	* Returns the key of the field
 	* @return string	name of the field
 	*/
-	public function getKey()
+	public function getFieldkey()
 	{
-		return $this->key;
+		return $this->fieldkey;
 	}
 
 	/**
 	* Returns the value of the field
 	* @return string	value of the field
 	*/
-	public function getValue()
+	public function getFieldvalue()
 	{
-		return $this->value;
+		return $this->fieldvalue;
 	}
 
 	/**
 	* Sets a new value for the field
-	* @param string $value	the new value of the field
+	* @param string $fieldvalue	the new value of the field
 	*/
-	public function setValue($value)
+	public function setFieldvalue($fieldvalue)
 	{
-		$this->value = $value;
+		$this->fieldvalue = $fieldvalue;
 	}
 }
 ?>
