@@ -43,6 +43,23 @@ catch(Exception $e)
 	echo "Object not found";
 }*/
 
-$objectController->deleteObject(10, "michael");
+//delete object
+/*$objectController->deleteObject(10, "michael");*/
 
+
+//query objects
+$objects = $objectController->getObjects(null, null, array("router33", "192"));
+foreach($objects as $object)
+{
+	echo "ID  ";
+	echo $object->getId();
+	echo ";";
+	$fields = $object->getFields();
+	foreach($fields->getKeys() as $fieldkey)
+	{
+	        $fieldvalue = $object->getFields()->get($fieldkey)->getFieldvalue();
+       		echo "$fieldkey = $fieldvalue; ";
+	}
+	echo "\n";
+}
 ?>

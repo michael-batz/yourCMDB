@@ -20,6 +20,10 @@ $dbParams = array(
 );
 
 $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+
+//ToDo: debug off
+//$config->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
+
 $entityManager = EntityManager::create($dbParams, $config);
 
 ?>

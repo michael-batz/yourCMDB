@@ -205,5 +205,31 @@ class ObjectController
 		//flush
 		$this->entityManager->flush();
 	}
+
+	public function getObjects($types=null, $fieldname=null, $fieldvalues=null, $status=null, $sortfield=null, $sorttype="asc", $max=0, $start=0)
+	{
+		//create QueryBuilder
+		$queryBuilder = $this->entityManager->createQueryBuilder();
+
+		//create query
+		$queryBuilder->select("o");
+		$queryBuilder->from("CmdbObject", "o");
+		if($fieldvalues != null)
+		{
+			for($i = 0; $i < count($fieldvalues); $i++)
+			{
+				$fieldvalue = $fieldvalues[$i];
+				$queryBuilder->andWhere("o.id IN (SELECT o$i.id FROM CmdbObjectField f$i  LEFT JOIN f$i.object o$i WHERE f$i.fieldvalue LIKE ?$i )");
+				$queryBuilder->setParameter($i, "%$fieldvalue%");
+			}
+		}
+
+		//get results
+		$query = $queryBuilder->getQuery();
+		$objects = $query->getResult();
+
+		//return
+		return $objects;
+	}
 }
 ?>
