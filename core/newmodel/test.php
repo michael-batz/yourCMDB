@@ -48,7 +48,7 @@ catch(Exception $e)
 
 
 //query objects
-$objects = $objectController->getObjects(null, null, array("router33", "192"));
+$objects = $objectController->getObjectsByType(array("router", "switch"), "hostname", "ASC", "A", 6, 1);
 foreach($objects as $object)
 {
 	echo "ID  ";

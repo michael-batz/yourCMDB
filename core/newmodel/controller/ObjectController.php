@@ -206,9 +206,71 @@ class ObjectController
 		$this->entityManager->flush();
 	}
 
-	public function getObjects($types=null, $fieldname=null, $fieldvalues=null, $status=null, $sortfield=null, $sorttype="asc", $max=0, $start=0)
+	/**
+	* Returns all objects of a given type
+	* @param string[] $types	Array with object types
+	* @param string $sortfield	object field for sorting the results or null, if no sorting is needed
+	* @param string $sorttype	"ASC" or "DESC"
+	* @param string $status		status of the object or null, if no limit by status is needed
+	* @param int $max		max count of results
+	* @param int $start		offset for the first result
+	*/
+	public function getObjectsByType($types, $sortfield=null, $sorttype="ASC", $status=null, $max=0, $start=0)
 	{
+		if($sorttype != "DESC")
+		{
+			$sorttype = "ASC";
+		}
+
 		//create QueryBuilder
+		$queryBuilder = $this->entityManager->createQueryBuilder();
+
+		//create query
+		$queryBuilder->select("o");
+		$queryBuilder->from("CmdbObject", "o");
+		$queryBuilder->from("CmdbObjectField", "f");
+		$queryBuilder->andWhere("o.type IN (?1)");
+		if($status != null)
+		{
+			$queryBuilder->andWhere("o.status = ?3");
+			$queryBuilder->setParameter(3, $status);
+		}
+		if($sortfield != null)
+		{
+			$queryBuilder->andWhere("f.object = o.id");
+			$queryBuilder->andWhere("f.fieldkey = ?2");
+			$queryBuilder->orderBy("f.fieldvalue", $sorttype);
+			$queryBuilder->setParameter(2, $sortfield);
+		}
+		else
+		{
+			$queryBuilder->orderBy("o.id", $sorttype);
+		}
+		$queryBuilder->setParameter(1, $types);
+
+		//limit results
+		$queryBuilder->setFirstResult($start);
+		if($max != 0)
+		{
+			$queryBuilder->setMaxResults($max);
+		}
+
+		//get results
+		$query = $queryBuilder->getQuery();
+		$objects = $query->getResult();
+
+		//return
+		return $objects;
+	}
+
+	public function getObjectsByField($fieldname, $fieldvalue, $types=null, $activeOnly=true, $max=0, $start=0)
+	{
+		;
+	}
+
+	public function getObjectsByFieldvalue($searchstrings, $types=null, $activeOnly=true, $max=0, $start=0)
+	{
+/*		//create QueryBuilder
 		$queryBuilder = $this->entityManager->createQueryBuilder();
 
 		//create query
@@ -230,6 +292,8 @@ class ObjectController
 
 		//return
 		return $objects;
+*/
+		;
 	}
 }
 ?>
