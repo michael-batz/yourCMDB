@@ -214,8 +214,9 @@ class ObjectController
 	* @param string $status		status of the object or null, if no limit by status is needed
 	* @param int $max		max count of results
 	* @param int $start		offset for the first result
+	* @param string $user		name of the user that wants to get the objects
 	*/
-	public function getObjectsByType($types, $sortfield=null, $sorttype="ASC", $status=null, $max=0, $start=0)
+	public function getObjectsByType($types, $sortfield=null, $sorttype="ASC", $status=null, $max=0, $start=0, $user)
 	{
 		if($sorttype != "DESC")
 		{
@@ -263,27 +264,46 @@ class ObjectController
 		return $objects;
 	}
 
-	public function getObjectsByField($fieldname, $fieldvalue, $types=null, $activeOnly=true, $max=0, $start=0)
+	/**
+	* Returns all objects with a given pair of fieldkey and fieldvalue
+	* @param string $fieldkey	name of the field
+	* @param string $fieldvalue	value of the field
+	* @param string[] $types	Array with object types or null, if no limit by object type is needed
+	* @param string $status		status of the object or null, if no limit by status is needed
+	* @param int $max		max count of results
+	* @param int $start		offset for the first result
+	* @param string $user		name of the user that wants to get the objects
+	*/
+	public function getObjectsByField($fieldkey, $fieldvalue, $types=null, $status=null, $max=0, $start=0, $user)
 	{
-		;
-	}
-
-	public function getObjectsByFieldvalue($searchstrings, $types=null, $activeOnly=true, $max=0, $start=0)
-	{
-/*		//create QueryBuilder
+		//create QueryBuilder
 		$queryBuilder = $this->entityManager->createQueryBuilder();
 
 		//create query
 		$queryBuilder->select("o");
 		$queryBuilder->from("CmdbObject", "o");
-		if($fieldvalues != null)
+		$queryBuilder->from("CmdbObjectField", "f");
+		$queryBuilder->andWhere("f.object = o.id");
+		$queryBuilder->andWhere("f.fieldkey = ?1");
+		$queryBuilder->andWhere("f.fieldvalue = ?2");
+		$queryBuilder->setParameter(1, $fieldkey);
+		$queryBuilder->setParameter(2, $fieldvalue);
+		if($types != null)
 		{
-			for($i = 0; $i < count($fieldvalues); $i++)
-			{
-				$fieldvalue = $fieldvalues[$i];
-				$queryBuilder->andWhere("o.id IN (SELECT o$i.id FROM CmdbObjectField f$i  LEFT JOIN f$i.object o$i WHERE f$i.fieldvalue LIKE ?$i )");
-				$queryBuilder->setParameter($i, "%$fieldvalue%");
-			}
+			$queryBuilder->andWhere("o.type IN (?3)");
+			$queryBuilder->setParameter(3, $types);
+		}
+		if($status != null)
+		{
+			$queryBuilder->andWhere("o.status = ?4");
+			$queryBuilder->setParameter(4, $status);
+		}
+
+		//limit results
+		$queryBuilder->setFirstResult($start);
+		if($max != 0)
+		{
+			$queryBuilder->setMaxResults($max);
 		}
 
 		//get results
@@ -292,7 +312,151 @@ class ObjectController
 
 		//return
 		return $objects;
-*/
+	}
+
+	/**
+	* Returns all objects with a given fieldvalue
+	* @param string[] searchstrings	Array of searchstrings that must match part of fieldvalues of an objectal
+	* @param string[] $types	Array with object types or null, if no limit by object type is needed
+	* @param string $status		status of the object or null, if no limit by status is needed
+	* @param int $max		max count of results
+	* @param int $start		offset for the first result
+	* @param string $user		name of the user that wants to get the objects
+	*/
+	public function getObjectsByFieldvalue($searchstrings, $types=null, $status=null, $max=0, $start=0, $user)
+	{
+		//create QueryBuilder
+		$queryBuilder = $this->entityManager->createQueryBuilder();
+
+		//create query
+		$queryBuilder->select("o");
+		$queryBuilder->from("CmdbObject", "o");
+		if($searchstrings != null)
+		{
+			for($i = 0; $i < count($searchstrings); $i++)
+			{
+				$searchstring = $searchstrings[$i];
+				$queryBuilder->andWhere("o.id IN (SELECT IDENTITY(f$i.object) FROM CmdbObjectField f$i  WHERE f$i.fieldvalue LIKE ?$i )");
+				$queryBuilder->setParameter($i, "%$searchstring%");
+			}
+		}
+		if($types != null)
+		{
+			$i++;
+			$queryBuilder->andWhere("o.type IN (?$i)");
+			$queryBuilder->setParameter($i, $types);
+		}
+		if($status != null)
+		{
+			$i++;
+			$queryBuilder->andWhere("o.status = ?$i");
+			$queryBuilder->setParameter($i, $status);
+		}
+
+		//limit results
+		$queryBuilder->setFirstResult($start);
+		if($max != 0)
+		{
+			$queryBuilder->setMaxResults($max);
+		}
+
+		//get results
+		$query = $queryBuilder->getQuery();
+		$objects = $query->getResult();
+
+		//return
+		return $objects;
+	}
+
+	/**
+	* Returns all already stored fieldvalues filterd by parameters
+	* @param string[] $types	Array with object types or null, if no limit by object type is needed
+	* @param string $fieldkey	fieldname
+	* @param string $searchstring	fieldvalue starts with searchstring, or null if no filter is needed
+	* @param int $max		max count of results or 0, if no limit
+	* @param string $user		name of the user that wants to get the values
+	*/
+	public function getAllFieldValues($types=null, $fieldkey=null, $searchstring=null, $max=0, $user)
+	{
+		//create QueryBuilder
+		$queryBuilder = $this->entityManager->createQueryBuilder();
+
+		//create query
+		$queryBuilder->select("f.fieldvalue");
+		$queryBuilder->from("CmdbObjectField", "f");
+		if($types != null)
+		{
+			$queryBuilder->from("CmdbObject", "o");
+			$queryBuilder->andWhere("f.object = o.id");
+			$queryBuilder->andWhere("o.type IN (?1)");
+			$queryBuilder->setParameter(1, $types);
+		}
+		if($fieldkey != null)
+		{
+			$queryBuilder->andWhere("f.fieldkey = ?2");
+			$queryBuilder->setParameter(2, $fieldkey);
+		}
+		if($searchstring != null)
+		{
+			$queryBuilder->andWhere("f.fieldvalue LIKE ?3");
+			$queryBuilder->setParameter(3, "$searchstring%");
+		}
+		$queryBuilder->distinct();
+		$queryBuilder->orderBy("f.fieldvalue", "ASC");
+
+		//limit results
+		if($max != 0)
+		{
+			$queryBuilder->setMaxResults($max);
+		}
+
+		//get results
+		$query = $queryBuilder->getQuery();
+		$fieldvalues = $query->getResult();
+
+		//create output
+		$output = Array();
+		foreach($fieldvalues as $fieldvalue)
+		{
+			$output[] = $fieldvalue['fieldvalue'];
+		}
+
+		//return output
+		return $output;
+	}
+
+	/**
+	* Returns the number of objects
+	* @param string[] $types	Array with object types or null, if no limit by object type is needed
+	* @param string $user		name of the user that wants to get the values
+	*/
+	public function getObjectCounts($types=null, $user)
+	{
+		//create QueryBuilder
+		$queryBuilder = $this->entityManager->createQueryBuilder();
+
+		//create query
+		$queryBuilder->select("COUNT(o.id)");
+		$queryBuilder->from("CmdbObject", "o");
+
+		if($types != null)
+		{
+			$queryBuilder->andWhere("o.type IN (?1)");
+			$queryBuilder->setParameter(1, $types);
+		}
+
+		//get results
+		$query = $queryBuilder->getQuery();
+		$count = $query->getResult();
+		$output = $count[0][1];
+
+		//return output
+		return $output;
+	}
+
+	public function getObjectReferences($id)
+	{
+		//ToDo: get reference fields from config
 		;
 	}
 }

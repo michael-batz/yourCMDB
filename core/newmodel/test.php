@@ -3,13 +3,17 @@
 
 require "bootstrap.php";
 require "model/CmdbObject.php";
+require "model/CmdbObjectLink.php";
 require "model/CmdbObjectField.php";
 require "model/CmdbObjectLogEntry.php";
 require "controller/ObjectController.php";
+require "controller/ObjectLinkController.php";
 require "exceptions/CmdbObjectNotFoundException.php";
+require "exceptions/CmdbObjectLinkNotAllowedException.php";
 
 
 $objectController = ObjectController::create($entityManager);
+$objectLinkController = ObjectLinkController::create($entityManager);
 
 //addObject()
 /*$fields = Array();
@@ -48,7 +52,7 @@ catch(Exception $e)
 
 
 //query objects
-$objects = $objectController->getObjectsByType(array("router", "switch"), "hostname", "ASC", "A", 6, 1);
+$objects = $objectController->getObjectsByFieldvalue(array("router", "33"), array("router", "switch"), "A", 0, 0, "michael");
 foreach($objects as $object)
 {
 	echo "ID  ";
@@ -62,4 +66,9 @@ foreach($objects as $object)
 	}
 	echo "\n";
 }
+
+/*$objectA = $objectController->getObject(3, "michael");
+$objectB = $objectController->getObject(4, "michael");
+$strings = $objectLinkController->addObjectLink($objectA, $objectB, "michael");
+*/
 ?>
