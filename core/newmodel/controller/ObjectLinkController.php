@@ -65,9 +65,10 @@ class ObjectLinkController
 	* A link between A and B is identical with a link between B and A
 	* @param CmdbObject $objectA	first object
 	* @param CmdbObject $objectB	second object
-	* @return CmdbObjectLink[]	CmdbObjectLink or null, if nothing was found
+	* @param string $user	name of the user that wants to get the values
+	* @return CmdbObjectLink	CmdbObjectLink or null, if nothing was found
 	*/
-	public function getObjectLink($objectA, $objectB)
+	public function getObjectLink($objectA, $objectB, $user)
 	{
 		//create QueryBuilder
 		$queryBuilder = $this->entityManager->createQueryBuilder();
@@ -83,10 +84,15 @@ class ObjectLinkController
 		$query = $queryBuilder->getQuery();
 		$objectLinks = $query->getResult();
 
+		//generate output
+		$objectLink = null;
+		if($objectLinks != null)
+		{
+			$objectLink = $objectLinks[0];
+		}
+
 		//return result
-		return $objectLinks;
-
-
+		return $objectLink;
 	}
 
 	/**
@@ -119,6 +125,7 @@ class ObjectLinkController
 	* Creates a new CmdbObjectLink between two objects
 	* @param CmdbObject $objectA	first object
 	* @param CmdbObject $objectB	second object
+	* @param string $user		name of the user
 	* @throws CmdbObjectLinkNotAllowedException
 	* @returns CmdbObjectLink	the created CmdbObjectLink
 	*/
@@ -131,7 +138,7 @@ class ObjectLinkController
 		}
 
 		//check, if link already exists
-		if($this->getObjectLink($objectA, $objectB) != null)
+		if($this->getObjectLink($objectA, $objectB, $user) != null)
 		{
 			throw new CmdbObjectLinkNotAllowedException("Object Link already exists");
 		}
@@ -148,8 +155,72 @@ class ObjectLinkController
 			throw new CmdbObjectLinkNotAllowedException("One of the objects does not exists");
 		}
 
+		//create log entry
+		$logString = $objectA->getId() . " <-> " . $objectB->getId();
+		$objectLogController = ObjectLogController::create($this->entityManager);
+		$objectLogController->addLogEntry($objectA, "add link", $logString, $user);
+		$objectLogController->addLogEntry($objectB, "add link", $logString, $user);
+
 		//return link
 		return $link;
 	}
+
+	/**
+	* Deletes a CmdbObjectLink between two objects
+	* @param CmdbObject $objectA	first object
+	* @param CmdbObject $objectB	second object
+	* @param string $user		name of the user
+	* @throws CmdbObjectLinkNotFoundException
+	*/
+	public function deleteObjectLink($objectA, $objectB, $user)
+	{
+		//check, if link exists
+		$link = $this->getObjectLink($objectA, $objectB, $user);
+		if($link == null)
+		{
+			throw new CmdbObjectLinkNotFoundException("Object Link not found");
+		}
+
+		//remove the link
+		$this->entityManager->remove($link);
+		$this->entityManager->flush();
+
+		//create log entry
+		$logString = $objectA->getId() . " <-> " . $objectB->getId();
+		$objectLogController = ObjectLogController::create($this->entityManager);
+		$objectLogController->addLogEntry($objectA, "delete link", $logString, $user);
+		$objectLogController->addLogEntry($objectB, "delete link", $logString, $user);
+	}
+
+	/**
+	* Deletes all CmdbObjectLinks for a given CmdbObject
+	* @param CmdbObject $object	the CmdbObject
+	* @param string $user		name of the user
+	* @throws CmdbObjectLinkNotFoundException
+	*/
+	public function deleteObjectLinks($object, $user)
+	{
+		//get ObjectLogController
+		$objectLogController = ObjectLogController::create($this->entityManager);
+
+		//find the links
+		$links = $this->getObjectLinks($object, $user);
+		foreach($links as $link)
+		{
+			//remove the link
+			$this->entityManager->remove($link);
+
+			//create log entry
+			$objectA = $link->getObjectA();
+			$objectB = $link->getObjectB();
+			$logString = $objectA->getId() . " <-> " . $objectB->getId();
+			$objectLogController->addLogEntry($objectA, "delete link", $logString, $user);
+			$objectLogController->addLogEntry($objectB, "delete link", $logString, $user);
+		}
+
+		//flush output
+		$this->entityManager->flush();
+	}
+
 }
 ?>

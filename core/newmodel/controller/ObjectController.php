@@ -92,9 +92,8 @@ class ObjectController
 		$this->entityManager->flush();
 
 		//create log entry
-		$logEntry = new CmdbObjectLogEntry($object, "create", null, $user);
-		$this->entityManager->persist($logEntry);
-		$this->entityManager->flush();
+		$objectLogController = ObjectLogController::create($this->entityManager);
+		$objectLogController->addLogEntry($object, "create", null, $user);
 
 		//return created object
 		return $object;
@@ -134,17 +133,17 @@ class ObjectController
 			$status = "A";
 		}
 
-		//get object
+		//get object and objectLogController
 		$object = $this->getObject($id, $user);
+		$objectLogController = ObjectLogController::create($this->entityManager);
+
 
 		//update status if changed
 		$oldStatus = $object->getStatus();
 		if($oldStatus != $status)
 		{
 			$object->setStatus($status);
-			$logEntry = new CmdbObjectLogEntry($object, "change status", "$oldStatus -> $status", $user);
-			$this->entityManager->persist($logEntry);
-			$this->entityManager->flush();
+			$objectLogController->addLogEntry($object, "change status", "$oldStatus -> $status", $user);
 		}
 
 		//update fields if changed
@@ -171,9 +170,7 @@ class ObjectController
 		}
 		if($logString != "")
 		{
-			$logEntry = new CmdbObjectLogEntry($object, "change fields", $logString, $user);
-			$this->entityManager->persist($logEntry);
-			$this->entityManager->flush();
+			$objectLogController->addLogEntry($object, "change fields", $logString, $user);
 		}
 
 		//return the object
@@ -190,14 +187,13 @@ class ObjectController
 	{
 		$object = $this->getObject($id, $user);
 
-		//remove log entries
-		$logEntries = $this->entityManager->getRepository("CmdbObjectLogEntry")->findBy(array("object" => $id));
-		foreach($logEntries as $logEntry)
-		{
-			$this->entityManager->remove($logEntry);
-		}
+		//remove object links
+		$objectLinkController = ObjectLinkController::create($this->entityManager);
+		$objectLinkController->deleteObjectLinks($object, $user);
 
-		//ToDo: remove links
+		//remove log entries
+		$objectLogController = ObjectLogController::create($this->entityManager);
+		$objectLogController->deleteLogEntries($object, $user);
 
 		//remove the object
 		$this->entityManager->remove($object);
