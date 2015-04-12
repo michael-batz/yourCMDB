@@ -7,19 +7,24 @@ require "model/CmdbObjectLink.php";
 require "model/CmdbObjectField.php";
 require "model/CmdbObjectLogEntry.php";
 require "model/CmdbJob.php";
+require "model/CmdbLocalUser.php";
 require "controller/ObjectController.php";
 require "controller/ObjectLinkController.php";
 require "controller/ObjectLogController.php";
 require "controller/JobController.php";
+require "controller/LocalUserController.php";
 require "exceptions/CmdbObjectNotFoundException.php";
 require "exceptions/CmdbObjectLinkNotAllowedException.php";
 require "exceptions/CmdbObjectLinkNotFoundException.php";
+require "exceptions/CmdbLocalUserNotFoundException.php";
+require "exceptions/CmdbLocalUserAlreadyExistsException.php";
 
 
 $objectController = ObjectController::create($entityManager);
 $objectLinkController = ObjectLinkController::create($entityManager);
 $objectLogController = ObjectLogController::create($entityManager);
 $jobController = JobController::create($entityManager);
+$userController = LocalUserController::create($entityManager);
 
 //addObject()
 /*$fields = Array();
@@ -103,4 +108,18 @@ foreach($jobResults as $jobResult)
 {
 	echo "Job: " . $jobResult->getAction() . "; " .$jobResult->getTimestamp(). "\n";
 }*/
+
+//add user
+//$userController->addUser(new CmdbLocalUser("admin1", "admin", "test123"));
+
+//get user
+//$user = $userController->getUser("admin");
+
+//change user
+/*$user->setAccessGroup("user");
+$userController->changeUser($user);*/
+
+//delete user
+$userController->deleteUser("admin1");
+
 ?>
