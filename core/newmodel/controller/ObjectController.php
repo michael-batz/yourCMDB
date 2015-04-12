@@ -365,6 +365,88 @@ class ObjectController
 	}
 
 	/**
+	* Gets the last changed objects
+	* @param string $foruser		only show objects changed by this user
+	* @param int $max			show only max $max entries
+	* @param int $start			offset for the first result
+	* @param string $user			name of the user that wants to get the information
+	* @return CmdbObject[]			Array with CmdbObject
+	*/
+	public function getLastChangedObjects($foruser=null, $max=10, $start=0, $user)
+	{
+		//create QueryBuilder
+		$queryBuilder = $this->entityManager->createQueryBuilder();
+
+		//create query
+		$queryBuilder->select("o");
+		$queryBuilder->from("CmdbObject", "o");
+		$queryBuilder->from("CmdbObjectLogEntry", "l");
+		$queryBuilder->andWhere("l.object = o.id");
+		$queryBuilder->andWhere("l.action != 'create'");
+		if($foruser != null)
+		{
+			$queryBuilder->andWhere("l.user = ?1");
+			$queryBuilder->setParameter(1, $foruser);
+		}
+		$queryBuilder->orderBy("l.timestamp", "DESC");
+
+		//limit results
+		$queryBuilder->setFirstResult($start);
+		if($max != 0)
+		{
+			$queryBuilder->setMaxResults($max);
+		}
+
+		//get results
+		$query = $queryBuilder->getQuery();
+		$objects = $query->getResult();
+
+		//return
+		return $objects;
+	}
+
+	/**
+	* Gets the last created objects
+	* @param string $foruser		only show objects changed by this user
+	* @param int $max			show only max $max entries
+	* @param int $start			offset for the first result
+	* @param string $user			name of the user that wants to get the information
+	* @return CmdbObject[]			Array with CmdbObject
+	*/
+	public function getLastCreatedObjects($foruser=null, $max=10, $start=0, $user)
+	{
+		//create QueryBuilder
+		$queryBuilder = $this->entityManager->createQueryBuilder();
+
+		//create query
+		$queryBuilder->select("o");
+		$queryBuilder->from("CmdbObject", "o");
+		$queryBuilder->from("CmdbObjectLogEntry", "l");
+		$queryBuilder->andWhere("l.object = o.id");
+		$queryBuilder->andWhere("l.action = 'create'");
+		if($foruser != null)
+		{
+			$queryBuilder->andWhere("l.user = ?1");
+			$queryBuilder->setParameter(1, $foruser);
+		}
+		$queryBuilder->orderBy("l.timestamp", "DESC");
+
+		//limit results
+		$queryBuilder->setFirstResult($start);
+		if($max != 0)
+		{
+			$queryBuilder->setMaxResults($max);
+		}
+
+		//get results
+		$query = $queryBuilder->getQuery();
+		$objects = $query->getResult();
+
+		//return
+		return $objects;
+	}
+
+	/**
 	* Returns all already stored fieldvalues filterd by parameters
 	* @param string[] $types	Array with object types or null, if no limit by object type is needed
 	* @param string $fieldkey	fieldname
