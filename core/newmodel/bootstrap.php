@@ -3,7 +3,16 @@
 $scriptBaseDir = dirname(__FILE__);
 $coreBaseDir = realpath("$scriptBaseDir/..");
 
-require_once "$coreBaseDir/libs/composer/vendor/autoload.php";
+require_once "ClassLoader.php";
+new ClassLoader("Doctrine\Common", "$coreBaseDir/libs/composer/vendor/doctrine/common/lib");
+new ClassLoader("Doctrine\Common\Cache", "$coreBaseDir/libs/composer/vendor/doctrine/cache/lib");
+new ClassLoader("Doctrine\Common\Collections", "$coreBaseDir/libs/composer/vendor/doctrine/collections/lib");
+new ClassLoader("Doctrine\Common\Annotations", "$coreBaseDir/libs/composer/vendor/doctrine/annotations/lib");
+new ClassLoader("Doctrine\Common\Lexer", "$coreBaseDir/libs/composer/vendor/doctrine/lexer/lib");
+new ClassLoader("Doctrine\Common\Inflector", "$coreBaseDir/libs/composer/vendor/doctrine/inflector/lib");
+new ClassLoader("Doctrine\DBAL", "$coreBaseDir/libs/composer/vendor/doctrine/dbal/lib");
+new ClassLoader("Doctrine\ORM", "$coreBaseDir/libs/composer/vendor/doctrine/orm/lib");
+//require_once "$coreBaseDir/libs/composer/vendor/autoload.php";
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
