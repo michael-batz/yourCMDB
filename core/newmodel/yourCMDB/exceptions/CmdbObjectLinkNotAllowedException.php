@@ -19,6 +19,9 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\exceptions;
+
+use \Exception;
 
 /**
 * Exception, if the creation of a CmdbObjectLink is not allowed

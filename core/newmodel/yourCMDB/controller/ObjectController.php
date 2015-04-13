@@ -19,7 +19,12 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\controller;
 
+use yourCMDB\entities\CmdbObject;
+use yourCMDB\entities\CmdbObjectField;
+
+use yourCMDB\exceptions\CmdbObjectNotFoundException;
 
 /**
 * controller for accessing objects
@@ -108,7 +113,7 @@ class ObjectController
 	*/
 	public function getObject($id, $user)
 	{
-		$object = $this->entityManager->find("CmdbObject", $id);
+		$object = $this->entityManager->find("yourCMDB:CmdbObject", $id);
 		if($object == null)
 		{
 			throw new CmdbObjectNotFoundException("Object with ID $id was not found.");
@@ -224,8 +229,8 @@ class ObjectController
 
 		//create query
 		$queryBuilder->select("o");
-		$queryBuilder->from("CmdbObject", "o");
-		$queryBuilder->from("CmdbObjectField", "f");
+		$queryBuilder->from("yourCMDB:CmdbObject", "o");
+		$queryBuilder->from("yourCMDB:CmdbObjectField", "f");
 		$queryBuilder->andWhere("o.type IN (?1)");
 		if($status != null)
 		{
@@ -277,8 +282,8 @@ class ObjectController
 
 		//create query
 		$queryBuilder->select("o");
-		$queryBuilder->from("CmdbObject", "o");
-		$queryBuilder->from("CmdbObjectField", "f");
+		$queryBuilder->from("yourCMDB:CmdbObject", "o");
+		$queryBuilder->from("yourCMDB:CmdbObjectField", "f");
 		$queryBuilder->andWhere("f.object = o.id");
 		$queryBuilder->andWhere("f.fieldkey = ?1");
 		$queryBuilder->andWhere("f.fieldvalue = ?2");
@@ -326,13 +331,13 @@ class ObjectController
 
 		//create query
 		$queryBuilder->select("o");
-		$queryBuilder->from("CmdbObject", "o");
+		$queryBuilder->from("yourCMDB:CmdbObject", "o");
 		if($searchstrings != null)
 		{
 			for($i = 0; $i < count($searchstrings); $i++)
 			{
 				$searchstring = $searchstrings[$i];
-				$queryBuilder->andWhere("o.id IN (SELECT IDENTITY(f$i.object) FROM CmdbObjectField f$i  WHERE f$i.fieldvalue LIKE ?$i )");
+				$queryBuilder->andWhere("o.id IN (SELECT IDENTITY(f$i.object) FROM yourCMDB:CmdbObjectField f$i  WHERE f$i.fieldvalue LIKE ?$i )");
 				$queryBuilder->setParameter($i, "%$searchstring%");
 			}
 		}
@@ -379,8 +384,8 @@ class ObjectController
 
 		//create query
 		$queryBuilder->select("o");
-		$queryBuilder->from("CmdbObject", "o");
-		$queryBuilder->from("CmdbObjectLogEntry", "l");
+		$queryBuilder->from("yourCMDB:CmdbObject", "o");
+		$queryBuilder->from("yourCMDB:CmdbObjectLogEntry", "l");
 		$queryBuilder->andWhere("l.object = o.id");
 		$queryBuilder->andWhere("l.action != 'create'");
 		if($foruser != null)
@@ -420,8 +425,8 @@ class ObjectController
 
 		//create query
 		$queryBuilder->select("o");
-		$queryBuilder->from("CmdbObject", "o");
-		$queryBuilder->from("CmdbObjectLogEntry", "l");
+		$queryBuilder->from("yourCMDB:CmdbObject", "o");
+		$queryBuilder->from("yourCMDB:CmdbObjectLogEntry", "l");
 		$queryBuilder->andWhere("l.object = o.id");
 		$queryBuilder->andWhere("l.action = 'create'");
 		if($foruser != null)
@@ -461,10 +466,10 @@ class ObjectController
 
 		//create query
 		$queryBuilder->select("f.fieldvalue");
-		$queryBuilder->from("CmdbObjectField", "f");
+		$queryBuilder->from("yourCMDB:CmdbObjectField", "f");
 		if($types != null)
 		{
-			$queryBuilder->from("CmdbObject", "o");
+			$queryBuilder->from("yourCMDB:CmdbObject", "o");
 			$queryBuilder->andWhere("f.object = o.id");
 			$queryBuilder->andWhere("o.type IN (?1)");
 			$queryBuilder->setParameter(1, $types);
@@ -515,7 +520,7 @@ class ObjectController
 
 		//create query
 		$queryBuilder->select("COUNT(o.id)");
-		$queryBuilder->from("CmdbObject", "o");
+		$queryBuilder->from("yourCMDB:CmdbObject", "o");
 
 		if($types != null)
 		{

@@ -19,7 +19,13 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\controller;
 
+use yourCMDB\entities\CmdbObjectLink;
+use yourCMDB\entities\CmdbObject;
+
+use yourCMDB\exceptions\CmdbObjectLinkNotAllowedException;
+use yourCMDB\exceptions\CmdbObjectLinkNotFoundException;
 
 /**
 * controller for accessing objects links
@@ -75,7 +81,7 @@ class ObjectLinkController
 
 		//create query
 		$queryBuilder->select("l");
-		$queryBuilder->from("CmdbObjectLink", "l");
+		$queryBuilder->from("yourCMDB:CmdbObjectLink", "l");
 		$queryBuilder->andWhere("(IDENTITY(l.objectA) = ?1 AND IDENTITY(l.objectB) = ?2) OR (IDENTITY(l.objectA) = ?2 AND IDENTITY(l.objectB) = ?1)");
 		$queryBuilder->setParameter(1, $objectA->getId());
 		$queryBuilder->setParameter(2, $objectB->getId());
@@ -108,7 +114,7 @@ class ObjectLinkController
 
 		//create query
 		$queryBuilder->select("l");
-		$queryBuilder->from("CmdbObjectLink", "l");
+		$queryBuilder->from("yourCMDB:CmdbObjectLink", "l");
 		$queryBuilder->andWhere("(IDENTITY(l.objectA) = ?1 OR IDENTITY(l.objectB) = ?1)");
 		$queryBuilder->setParameter(1, $object->getId());
 

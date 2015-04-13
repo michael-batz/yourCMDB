@@ -19,7 +19,12 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\controller;
 
+use yourCMDB\entities\CmdbLocalUser;
+
+use yourCMDB\exceptions\CmdbLocalUserAlreadyExistsException;
+use yourCMDB\exceptions\CmdbLocalUserNotFoundException;
 
 /**
 * controller for accessing local users
@@ -67,7 +72,7 @@ class LocalUserController
 	*/
 	public function addUser($userObject)
 	{
-		if($this->entityManager->find("CmdbLocalUser", $userObject->getUsername()) != null)
+		if($this->entityManager->find("yourCMDB:CmdbLocalUser", $userObject->getUsername()) != null)
 		{
 			throw new CmdbLocalUserAlreadyExistsException("A local user with that username already exists.");
 		}
@@ -104,7 +109,7 @@ class LocalUserController
 	*/
 	public function getUser($username)
 	{
-		$user = $this->entityManager->find("CmdbLocalUser", $username);
+		$user = $this->entityManager->find("yourCMDB:CmdbLocalUser", $username);
 		if($user == null)
 		{
 			throw new CmdbLocalUserNotFoundException("no user with $username found");
@@ -124,7 +129,7 @@ class LocalUserController
 
 		//create query
 		$queryBuilder->select("u");
-		$queryBuilder->from("CmdbLocalUser", "u");
+		$queryBuilder->from("yourCMDB:CmdbLocalUser", "u");
 
 		//get results
 		$query = $queryBuilder->getQuery();

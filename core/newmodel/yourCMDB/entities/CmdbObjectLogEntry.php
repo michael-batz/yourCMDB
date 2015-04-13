@@ -19,7 +19,9 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\entities;
 
+use \DateTime;
 
 /**
 * a log entry for a change of a specific CMDB object

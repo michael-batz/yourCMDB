@@ -19,7 +19,9 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\controller;
 
+use yourCMDB\entities\CmdbJob;
 
 /**
 * controller for accessing jobs
@@ -81,7 +83,7 @@ class JobController
 
 		//create query
 		$queryBuilder->select("j");
-		$queryBuilder->from("CmdbJob", "j");
+		$queryBuilder->from("yourCMDB:CmdbJob", "j");
 		$queryBuilder->andWhere("j.timestamp is null OR j.timestamp <= CURRENT_TIMESTAMP()");
 
 		//get results

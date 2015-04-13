@@ -19,12 +19,15 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\exceptions;
+
+use \Exception;
 
 /**
-* Exception, if a CmdbObjectLink was not found
+* Exception, if a CmdbLocalUser already exists in datastore
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class CmdbObjectLinkNotFoundException extends Exception
+class CmdbLocalUserAlreadyExistsException extends Exception
 {
 
 	public function __construct($message, $code = 0)

@@ -19,7 +19,10 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\controller;
 
+use yourCMDB\entities\CmdbObject;
+use yourCMDB\entities\CmdbObjectLogEntry;
 
 /**
 * controller for accessing object log entries
@@ -76,7 +79,7 @@ class ObjectLogController
 
 		//create query
 		$queryBuilder->select("l");
-		$queryBuilder->from("CmdbObjectLogEntry", "l");
+		$queryBuilder->from("yourCMDB:CmdbObjectLogEntry", "l");
 		$queryBuilder->andWhere("IDENTITY(l.object) = ?1");
 		$queryBuilder->setParameter(1, $object->getId());
 		$queryBuilder->orderBy("l.timestamp", "DESC");

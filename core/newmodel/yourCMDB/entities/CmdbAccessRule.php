@@ -19,7 +19,7 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-
+namespace yourCMDB\entities;
 
 /**
 * A rule for an access group
