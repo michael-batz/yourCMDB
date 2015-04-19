@@ -28,7 +28,7 @@
 
 //define base directories
 $scriptBaseDir = dirname(__FILE__);
-$coreBaseDir = realpath("$scriptBaseDir/..");
+$coreBaseDir = realpath("$scriptBaseDir");
 
 //configure class loading
 require_once "ClassLoader.php";
@@ -42,14 +42,14 @@ new ClassLoader("Doctrine\Common\Inflector", "$coreBaseDir/libs/composer/vendor/
 new ClassLoader("Doctrine\DBAL", "$coreBaseDir/libs/composer/vendor/doctrine/dbal/lib");
 new ClassLoader("Doctrine\ORM", "$coreBaseDir/libs/composer/vendor/doctrine/orm/lib");
 //class loading: yourCMDB
-new ClassLoader("yourCMDB", "$coreBaseDir/newmodel");
+new ClassLoader("yourCMDB", "$coreBaseDir");
 
 //require_once "$coreBaseDir/libs/composer/vendor/autoload.php";
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
-$paths = array("$coreBaseDir/newmodel/yourCMDB/entities");
+$paths = array("$coreBaseDir/yourCMDB/entities");
 //ToDo: devMode off
 $isDevMode = true;
 

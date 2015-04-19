@@ -121,7 +121,7 @@ $userController->changeUser($user);*/
 //accessGroupController->addAccessGroup("user");
 
 //add access rights
-$accessGroupController->addAccessRule("admin", "*", 2);
+//$accessGroupController->addAccessRule("admin", "test2", 2);
 //$accessGroupController->addAccessRule("user", "test", 2);
 //$accessGroupController->addAccessRule("user", "admin", 2);
 
