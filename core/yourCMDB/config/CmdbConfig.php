@@ -19,6 +19,7 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\config;
 
 /**
 * Main class for getting the configuration
@@ -55,7 +56,7 @@ class CmdbConfig
 	*/
 	public function __construct()
 	{
-		$configurationBase = realpath(dirname(__FILE__)."/../../etc");
+		$configurationBase = realpath(dirname(__FILE__)."/../../../etc");
 		$this->configDatastore = new DatastoreConfig("$configurationBase/datastore-configuration.xml");
 		$this->configObjectType = new ObjectTypeConfig("$configurationBase/objecttype-configuration.xml");
 		$this->configView = new ViewConfig("$configurationBase/view-configuration.xml");

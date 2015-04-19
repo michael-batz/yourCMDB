@@ -19,7 +19,7 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-
+namespace yourCMDB\config;
 
 /**
 * Class for access to data exchange configuration

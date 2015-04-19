@@ -20,11 +20,11 @@ $userController = LocalUserController::create($entityManager);
 $accessGroupController = AccessGroupController::create($entityManager);
 
 //addObject()
-/*$fields = Array();
+$fields = Array();
 $fields['ip'] = "192.168.0.1";
 $fields['hostname'] = "router1";
 $objectController->addObject("router", "A", $fields, "michael");
-*/
+
 
 //getObject()
 //try
