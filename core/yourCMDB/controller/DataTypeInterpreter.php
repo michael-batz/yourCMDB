@@ -19,7 +19,9 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\controller;
 
+use yourCMDB\exceptions\CmdbObjectNotFoundException;
 
 /**
 * Class to define available data types and data interpretation
@@ -32,14 +34,17 @@ class DataTypeInterpreter
 
 	//datatypes
 	private static $types = Array("text", "textarea", "boolean","date", "objectref", "password");
+
+	//object controller
+	private $objectController;
 	
 	/**
 	* Creates a new data type interpreter
-	*
+	* @param ObjectController $objectController	ObjectController instance
 	*/
-	public function __construct()
+	public function __construct($objectController)
 	{
-		;
+		$this->objectController = $objectController;
 	}
 
 
@@ -105,15 +110,20 @@ class DataTypeInterpreter
 	*/
 	private function interpretObjectref($value, $objecttype)
 	{
-		$controller = new Controller();
-		$datastore = $controller->getDatastore();
-
 		//check if referenced object exists
-		if($datastore->isObject($value, $objecttype))
+		try
 		{
-			return $value;
+			$referencedObject = $this->objectController->getObject($value, "yourCMDB backend");
+			if($referencedObject->getType() == $objecttype)
+			{
+				return $value;
+			}
+			else
+			{
+				return "";
+			}
 		}
-		else
+		catch(CmdbObjectNotFoundException $e)
 		{
 			return "";
 		}

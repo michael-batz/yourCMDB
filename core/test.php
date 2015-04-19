@@ -20,10 +20,19 @@ $userController = LocalUserController::create($entityManager);
 $accessGroupController = AccessGroupController::create($entityManager);
 
 //addObject()
-$fields = Array();
+/*$fields = Array();
 $fields['ip'] = "192.168.0.1";
 $fields['hostname'] = "router1";
+$fields['location'] = "1111";
+$fields['monitoring'] = "1";
 $objectController->addObject("router", "A", $fields, "michael");
+*/
+
+/*$fields = Array();
+$fields['zip'] = "36041";
+$fields['city'] = "Fulda";
+$objectController->addObject("datacenter", "A", $fields, "michael");
+*/
 
 
 //getObject()
@@ -72,6 +81,14 @@ foreach($objects as $object)
 	}
 	echo "\n";
 }*/
+
+
+//get object references
+$refs = $objectController->getObjectReferences(11, "michael");
+foreach($refs as $ref)
+{
+	echo "Reference for 11: ".$ref->getId(). "\n";
+}
 
 
 /*$objectA = $objectController->getObject(4, "michael");

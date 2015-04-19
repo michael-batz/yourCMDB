@@ -24,6 +24,8 @@ namespace yourCMDB\controller;
 use yourCMDB\entities\CmdbObject;
 use yourCMDB\entities\CmdbObjectField;
 
+use yourCMDB\config\CmdbConfig;
+
 use yourCMDB\exceptions\CmdbObjectNotFoundException;
 
 /**
@@ -86,13 +88,22 @@ class ObjectController
 		$this->entityManager->persist($object);
 		$this->entityManager->flush();
 
-		//create fields and add to object
+		//get object type configuration
+		$config = new CmdbConfig();
+		$configObjectTypes = $config->getObjectTypeConfig();
+
+		//create fields and add to object - only if they are configured
+		$configuredFields = $configObjectTypes->getFields($type);
+		$interpreter = new DataTypeInterpreter($this);
 		foreach(array_keys($fields) as $key)
 		{
-			$value = $fields[$key];
-			$objectField = new CmdbObjectField($object, $key, $value);
-			$object->getFields()->add($objectField);
-			$this->entityManager->persist($objectField);
+			if(isset($configuredFields[$key]))
+			{
+				$value = $interpreter->interpret($fields[$key], $configuredFields[$key]);
+				$objectField = new CmdbObjectField($object, $key, $value);
+				$object->getFields()->add($objectField);
+				$this->entityManager->persist($objectField);
+			}
 		}
 		$this->entityManager->flush();
 
@@ -199,6 +210,9 @@ class ObjectController
 		//remove log entries
 		$objectLogController = ObjectLogController::create($this->entityManager);
 		$objectLogController->deleteLogEntries($object, $user);
+
+		//ToDo:delete references to object
+		$references = $this->getObjectReferences($id, $user);
 
 		//remove the object
 		$this->entityManager->remove($object);
@@ -537,10 +551,65 @@ class ObjectController
 		return $output;
 	}
 
-	public function getObjectReferences($id)
+	/**
+	* Returns all objects that have a reference to the given object
+	* @param integer $objectId	ID of the object
+	* @param string $user		name of the user that wants to execute the operation
+	* @throws CmdbObjectNotFoundException
+	* @return CmdbObject[]		Array with CmdbObject objects that have a reference to the given object
+	*/
+	public function getObjectReferences($objectId, $user)
 	{
-		//ToDo: get reference fields from config
-		;
+		//get object and config object
+		$object = $this->getObject($objectId, $user);
+		$config = new CmdbConfig();
+		$configObjectTypes = $config->getObjectTypeConfig();
+
+		//get reference fields
+		$dataType = "objectref-".$object->getType();
+                $referenceFields = $configObjectTypes->getFieldsByType($dataType);
+
+		//if there are reference fields, get objects
+		$objects = Array();
+		if(count($referenceFields) > 0)
+		{
+			//create QueryBuilder
+			$queryBuilder = $this->entityManager->createQueryBuilder();
+
+			//create query
+			$queryBuilder->select("o");
+			$queryBuilder->from("yourCMDB:CmdbObjectField", "f");
+			$queryBuilder->from("yourCMDB:CmdbObject", "o");
+			$queryBuilder->andWhere("f.object = o.id");
+			$queryBuilder->andWhere("f.fieldvalue = ?1");
+			$queryBuilder->setParameter(1, $objectId);
+		
+			$j = 2;
+			$k = 3;	
+			$querySubString = "";
+			for($i = 0; $i < count($referenceFields); $i++)
+			{
+				$objectType = $referenceFields[$i][0];
+				$fieldkey = $referenceFields[$i][1];
+				$querySubString .= "(f.fieldkey = ?$j AND o.type = ?$k)";
+				$queryBuilder->setParameter($j, $fieldkey);
+				$queryBuilder->setParameter($k, $objectType);
+				$j = $j + 2;
+				$k = $k + 2;
+				if($i != count($referenceFields) - 1)
+				{
+					$querySubString .= " OR ";
+				}
+			}
+			$queryBuilder->andWhere("($querySubString)");
+
+			//get results
+			$query = $queryBuilder->getQuery();
+			$objects = $query->getResult();
+		}
+
+		//return
+		return $objects;
 	}
 }
 ?>
