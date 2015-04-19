@@ -50,7 +50,8 @@ use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
 $paths = array("$coreBaseDir/newmodel/yourCMDB/entities");
-$isDevMode = false;
+//ToDo: devMode off
+$isDevMode = true;
 
 // the connection configuration
 $dbParams = array(

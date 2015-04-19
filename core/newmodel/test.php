@@ -8,6 +8,7 @@ use yourCMDB\controller\ObjectLinkController;
 use yourCMDB\controller\ObjectLogController;
 use yourCMDB\controller\JobController;
 use yourCMDB\controller\LocalUserController;
+use yourCMDB\controller\AccessGroupController;
 
 require "bootstrap.php";
 
@@ -16,6 +17,7 @@ $objectLinkController = ObjectLinkController::create($entityManager);
 $objectLogController = ObjectLogController::create($entityManager);
 $jobController = JobController::create($entityManager);
 $userController = LocalUserController::create($entityManager);
+$accessGroupController = AccessGroupController::create($entityManager);
 
 //addObject()
 /*$fields = Array();
@@ -112,6 +114,35 @@ foreach($jobResults as $jobResult)
 $userController->changeUser($user);*/
 
 //delete user
-$userController->deleteUser("admin1");
+//$userController->deleteUser("admin1");
 
+//add access group
+//$accessGroupController->addAccessGroup("admin");
+//accessGroupController->addAccessGroup("user");
+
+//add access rights
+$accessGroupController->addAccessRule("admin", "*", 2);
+//$accessGroupController->addAccessRule("user", "test", 2);
+//$accessGroupController->addAccessRule("user", "admin", 2);
+
+//get access group
+/*$group = $accessGroupController->getAccessGroup("admin");
+foreach($group->getAccessRules() as $accessRule)
+{
+	echo "AccessRule: ". $accessRule->getApplicationPart() . " " . $accessRule->getAccess() . "\n";
+}*/
+
+
+//get access groups
+/*$groups = $accessGroupController->getAccessGroups();
+foreach($groups as $accessGroup)
+{
+	echo "group: " . $accessGroup->getName() . "\n";
+}*/
+
+//delete access rule
+//$accessGroupController->deleteAccessRule("user", "admin");
+
+//delete access group
+//$accessGroupController->deleteAccessGroup("user");
 ?>
