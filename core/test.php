@@ -50,10 +50,12 @@ catch(Exception $e)
 /*try
 {
 	$fields = Array();
-	$fields['ip'] = "192.168.0.33";
-	$fields['hostname'] = "router34";
-	$fields['admin'] = "Michael";
-	$objectController->updateObject(6, "A", $fields, "michael");
+	//$fields['management-ip'] = "192.168.0.122";
+	//$fields['hostname'] = "router122";
+	//$fields['admin'] = "Michael";
+	//$fields['monitoring'] = "true";
+	//$fields['location'] = "11";
+	$objectController->updateObject(20, "A", $fields, "michael");
 }
 catch(Exception $e)
 {
@@ -61,7 +63,7 @@ catch(Exception $e)
 }*/
 
 //delete object
-//$objectController->deleteObject(3, "michael");
+$objectController->deleteObject(13, "michael");
 
 
 //query objects
@@ -84,11 +86,11 @@ foreach($objects as $object)
 
 
 //get object references
-$refs = $objectController->getObjectReferences(11, "michael");
+/*$refs = $objectController->getObjectReferences(12, "michael");
 foreach($refs as $ref)
 {
-	echo "Reference for 11: ".$ref->getId(). "\n";
-}
+	echo "Reference for 12: ".$ref->getId(). "\n";
+}*/
 
 
 /*$objectA = $objectController->getObject(4, "michael");

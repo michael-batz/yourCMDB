@@ -153,6 +153,9 @@ class ObjectController
 		$object = $this->getObject($id, $user);
 		$objectLogController = ObjectLogController::create($this->entityManager);
 
+		//get object type configuration
+		$config = new CmdbConfig();
+		$configObjectTypes = $config->getObjectTypeConfig();
 
 		//update status if changed
 		$oldStatus = $object->getStatus();
@@ -164,26 +167,43 @@ class ObjectController
 
 		//update fields if changed
 		$logString = "";
+		$objectFields = $object->getFields();
+		$interpreter = new DataTypeInterpreter($this);
+		$configuredFields = $configObjectTypes->getFields($object->getType());
+		//walk over all fields of the object
+		foreach($objectFields->getKeys() as $objectFieldkey)
+		{
+			$oldValue = $object->getFields()->get($objectFieldkey)->getFieldvalue();
+			$newValue = $oldValue;
+			//if there was a changed field, set new value and remove from array
+			if(isset($fields[$objectFieldkey]))
+			{
+				$newValue = $fields[$objectFieldkey];
+				unset($fields[$objectFieldkey]);
+			}
+			//interpret value
+			$newValue = $interpreter->interpret($newValue, $configuredFields[$objectFieldkey]);
+
+			if($newValue != $oldValue)
+			{
+				$objectFields->get($objectFieldkey)->setFieldvalue($newValue);
+				$logString.= "$objectFieldkey: $oldValue -> $newValue; ";
+			}
+        	}
+		//walk over all remaining entries of $fields to add new fields
 		foreach(array_keys($fields) as $key)
 		{
-			$value = $fields[$key];
-			$objectField = $object->getFields()->get($key);
-			//if field not exists, create it
-			if($objectField == null)
+			//only add them, if they are configured
+			if(isset($configuredFields[$key]))
 			{
+				$value = $interpreter->interpret($fields[$key], $configuredFields[$key]);
 				$objectField = new CmdbObjectField($object, $key, $value);
 				$object->getFields()->add($objectField);
 				$this->entityManager->persist($objectField);
 				$logString.= "$key: null -> $value; ";
 			}
-			//if field exists, but has a different value
-			elseif($objectField->getFieldvalue() != $value)
-			{
-				$oldValue = $objectField->getFieldvalue();
-				$objectField->setFieldvalue($value);
-				$logString.= "$key: $oldValue -> $value; ";
-			}
 		}
+		//write log entry
 		if($logString != "")
 		{
 			$objectLogController->addLogEntry($object, "change fields", $logString, $user);
@@ -201,7 +221,9 @@ class ObjectController
 	*/
 	public function deleteObject($id, $user)
 	{
+		//get object and references
 		$object = $this->getObject($id, $user);
+		$references = $this->getObjectReferences($id, $user);
 
 		//remove object links
 		$objectLinkController = ObjectLinkController::create($this->entityManager);
@@ -211,14 +233,17 @@ class ObjectController
 		$objectLogController = ObjectLogController::create($this->entityManager);
 		$objectLogController->deleteLogEntries($object, $user);
 
-		//ToDo:delete references to object
-		$references = $this->getObjectReferences($id, $user);
-
 		//remove the object
 		$this->entityManager->remove($object);
 
 		//flush
 		$this->entityManager->flush();
+
+		//delete references to object
+		foreach($references as $reference)
+		{
+			$this->updateObject($reference->getId(), $reference->getStatus(), Array(), $user);
+		}
 	}
 
 	/**
