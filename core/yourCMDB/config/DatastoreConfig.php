@@ -28,49 +28,121 @@ namespace yourCMDB\config;
 
 class DatastoreConfig
 {
+	//datastore driver
+	private $driver;
 
-	//datastore class
-	private $datastoreClass;
+	//datastore server
+	private $server;
 
-	//datastore parameters
-	private $datastoreParameters;
+	//datastore port
+	private $port;
+
+	//datastore database
+	private $db;
+
+	//datastore username
+	private $user;
+
+	//datastore password
+	private $password;
 
 	/**
 	* creates a DatastoreConfig object from xml file datastore-configuration.xml
 	*/
 	public function __construct($xmlfile)
 	{
+		//init parameters with default values
+		$this->driver = "pdo_mysql";
+		$this->server = "localhost";
+		$this->port = "3306";
+		$this->db = "cmdb";
+		$this->user = "cmdb";
+		$this->password = "cmdb";
+
+		//load XML configuration file
 		$xmlobject = simplexml_load_file($xmlfile);
 
-		//read class
-		$this->datastoreClass = (string) $xmlobject->datastore[0]['class'];
-		
 		//get parameters for datastore
-		$this->datastoreParameters = Array();
 		foreach($xmlobject->datastore->parameter as $parameter)
 		{
 			$parameterKey = (string) $parameter['key'];
 			$parameterValue = (string) $parameter['value'];
-			$this->datastoreParameters[$parameterKey] = $parameterValue;
+			switch($parameterKey)
+			{
+				case "driver":
+					$this->driver = $parameterValue;
+					break;
+
+				case "server":
+					$this->server = $parameterValue;
+					break;
+
+				case "port":
+					$this->port = $parameterValue;
+					break;
+
+				case "db":
+					$this->db = $parameterValue;
+					break;
+
+				case "user":
+					$this->user = $parameterValue;
+					break;
+
+				case "password":
+					$this->password = $parameterValue;
+			}
 		}
 	}
 
 	/**
-	* Returns class of datastore
+	* Returns datastore driver
 	*/
-	public function getClass()
+	public function getDriver()
 	{
-		return $this->datastoreClass;
+		return $this->driver;
 	}
 
 	/**
-	* Returns parameters of datastore as array
+	* Returns datastore server
 	*/
-	public function getParameters()
+	public function getServer()
 	{
-		return $this->datastoreParameters;
+		return $this->server;
 	}
-	
+
+	/**
+	* Returns datastore port
+	*/
+	public function getPort()
+	{
+		return $this->port;
+	}
+
+	/**
+	* Returns datastore database name
+	*/
+	public function getDatabaseName()
+	{
+		return $this->db;
+	}
+
+	/**
+	* Returns datastore user
+	*/
+	public function getUser()
+	{
+		return $this->user;
+	}
+
+	/**
+	* Returns datastore password
+	*/
+	public function getPassword()
+	{
+		return $this->password;
+	}
+
 }
 
 ?>

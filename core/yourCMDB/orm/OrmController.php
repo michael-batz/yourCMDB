@@ -35,34 +35,37 @@ class OrmController
 	//Doctrine entityManager
 	private $entityManager;
 
+	const ENTITY_PATH = "yourCMDB/entities";
+	const ENTITY_NAMESPACE = "yourCMDB\entities";
+	const ENTITY_NAMESPACE_ALIAS = "yourCMDB";
+	const DEVELOPMENT_MODE = true;
+
 	/**
 	* creates a new ORM Controller
 	*/
 	public function __construct()
 	{
-		//ToDo: get values from configuration
-		$scriptBaseDir = dirname(__FILE__);
-		$coreBaseDir = realpath("$scriptBaseDir");
-		$paths = array("$coreBaseDir/yourCMDB/entities");
-
-		//ToDo: devMode off
-		$isDevMode = true;
-
-		// the connection configuration
-		$dbParams = array(
-		'driver'   => 'pdo_mysql',
-		'user'     => 'cmdb',
-		'password' => 'cmdb',
-		'dbname'   => 'yourcmdb2',
+		//get configuration for connection
+		$config = new CmdbConfig();
+		$configDatastore = $config->getDatastoreConfig();
+		$connectionParameters = array(
+			'driver'   => $configDatastore->getDriver(),
+			'host'     => $configDatastore->getServer(),
+			'port'     => $configDatastore->getPort(),
+			'dbname'   => $configDatastore->getDatabaseName(),
+			'user'     => $configDatastore->getUser(),
+			'password' => $configDatastore->getPassword()
 		);
 
-		$config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
-		$config->addEntityNamespace("yourCMDB", "yourCMDB\entities");
+		//configuration of Doctrine EntityManager
+		$scriptBaseDir = dirname(__FILE__);
+		$coreBaseDir = realpath("$scriptBaseDir/../../");
+		$paths = array("$coreBaseDir/".self::ENTITY_PATH);
+		$config = Setup::createAnnotationMetadataConfiguration($paths, self::DEVELOPMENT_MODE);
+		$config->addEntityNamespace(self::ENTITY_NAMESPACE_ALIAS, self::ENTITY_NAMESPACE);
 
-		//ToDo: debug off
-		//$config->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
-
-		$this->entityManager = EntityManager::create($dbParams, $config);
+		//create entity manager
+		$this->entityManager = EntityManager::create($connectionParameters, $config);
 	}
 
 	public function getEntityManager()
