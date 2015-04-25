@@ -21,6 +21,8 @@
 *********************************************************************/
 namespace yourCMDB\controller;
 
+use yourCMDB\orm\OrmController;
+
 use yourCMDB\entities\CmdbObjectLink;
 use yourCMDB\entities\CmdbObject;
 
@@ -43,24 +45,23 @@ class ObjectLinkController
 
 	/**
 	* private constructor
-	* @param EnitityManager	entityManager	doctrine entityManager
 	*/
-	private function __construct($entityManager)
+	private function __construct()
 	{
-		$this->entityManager = $entityManager;
+		$ormController = OrmController::create();
+		$this->entityManager = $ormController->getEntityManager();
 	}
 
 	/**
 	* creates a new object link controller
-	* @param EnitityManager	$entityManager	doctrine entityManager
 	* @return ObjectLinkController	ObjectController instance
 	*/
-	public static function create($entityManager)
+	public static function create()
 	{
-		//check, if an ObjectLinkController instance exists with the correct entityManager
-		if(ObjectLinkController::$objectLinkController == null || ObjectLinkController::$objectLinkController->entityManager !== $entityManager)
+		//check, if an ObjectLinkController instance already exists
+		if(ObjectLinkController::$objectLinkController == null)
 		{
-			ObjectLinkController::$objectLinkController = new ObjectLinkController($entityManager);
+			ObjectLinkController::$objectLinkController = new ObjectLinkController();
 		}
 
 		return ObjectLinkController::$objectLinkController;
@@ -163,7 +164,7 @@ class ObjectLinkController
 
 		//create log entry
 		$logString = $objectA->getId() . " <-> " . $objectB->getId();
-		$objectLogController = ObjectLogController::create($this->entityManager);
+		$objectLogController = ObjectLogController::create();
 		$objectLogController->addLogEntry($objectA, "add link", $logString, $user);
 		$objectLogController->addLogEntry($objectB, "add link", $logString, $user);
 
@@ -193,7 +194,7 @@ class ObjectLinkController
 
 		//create log entry
 		$logString = $objectA->getId() . " <-> " . $objectB->getId();
-		$objectLogController = ObjectLogController::create($this->entityManager);
+		$objectLogController = ObjectLogController::create();
 		$objectLogController->addLogEntry($objectA, "delete link", $logString, $user);
 		$objectLogController->addLogEntry($objectB, "delete link", $logString, $user);
 	}
@@ -207,7 +208,7 @@ class ObjectLinkController
 	public function deleteObjectLinks($object, $user)
 	{
 		//get ObjectLogController
-		$objectLogController = ObjectLogController::create($this->entityManager);
+		$objectLogController = ObjectLogController::create();
 
 		//find the links
 		$links = $this->getObjectLinks($object, $user);

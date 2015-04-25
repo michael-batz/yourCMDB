@@ -21,6 +21,7 @@
 *********************************************************************/
 namespace yourCMDB\controller;
 
+use yourCMDB\orm\OrmController;
 use yourCMDB\entities\CmdbJob;
 
 /**
@@ -39,24 +40,23 @@ class JobController
 
 	/**
 	* private constructor
-	* @param EnitityManager	entityManager	doctrine entityManager
 	*/
-	private function __construct($entityManager)
+	private function __construct()
 	{
-		$this->entityManager = $entityManager;
+		$ormController = OrmController::create();
+		$this->entityManager = $ormController->getEntityManager();
 	}
 
 	/**
 	* creates a new job controller
-	* @param EnitityManager	$entityManager	doctrine entityManager
 	* @return JobController	JobController instance
 	*/
-	public static function create($entityManager)
+	public static function create()
 	{
-		//check, if a JobController instance exists with the correct entityManager
-		if(JobController::$jobController == null || JobController::$jobController->entityManager !== $entityManager)
+		//check, if a JobController instance already exists
+		if(JobController::$jobController == null)
 		{
-			JobController::$jobController = new JobController($entityManager);
+			JobController::$jobController = new JobController();
 		}
 
 		return JobController::$jobController;

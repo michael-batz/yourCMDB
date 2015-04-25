@@ -12,12 +12,12 @@ use yourCMDB\controller\AccessGroupController;
 
 require "bootstrap.php";
 
-$objectController = ObjectController::create($entityManager);
-$objectLinkController = ObjectLinkController::create($entityManager);
-$objectLogController = ObjectLogController::create($entityManager);
-$jobController = JobController::create($entityManager);
-$userController = LocalUserController::create($entityManager);
-$accessGroupController = AccessGroupController::create($entityManager);
+$objectController = ObjectController::create();
+$objectLinkController = ObjectLinkController::create();
+$objectLogController = ObjectLogController::create();
+$jobController = JobController::create();
+$userController = LocalUserController::create();
+$accessGroupController = AccessGroupController::create();
 
 //addObject()
 $fields = Array();

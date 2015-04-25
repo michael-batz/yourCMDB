@@ -43,10 +43,4 @@ new ClassLoader("Doctrine\DBAL", "$coreBaseDir/libs/composer/vendor/doctrine/dba
 new ClassLoader("Doctrine\ORM", "$coreBaseDir/libs/composer/vendor/doctrine/orm/lib");
 //class loading: yourCMDB
 new ClassLoader("yourCMDB", "$coreBaseDir");
-
-use yourCMDB\orm\OrmController;
-
-$ormController = new OrmController();
-$entityManager = $ormController->getEntityManager();
-
 ?>

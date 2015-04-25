@@ -21,6 +21,7 @@
 *********************************************************************/
 namespace yourCMDB\controller;
 
+use yourCMDB\orm\OrmController;
 use yourCMDB\entities\CmdbAccessGroup;
 use yourCMDB\entities\CmdbAccessRule;
 use yourCMDB\exceptions\CmdbAccessGroupNotFoundException;
@@ -45,24 +46,23 @@ class AccessGroupController
 
 	/**
 	* private constructor
-	* @param EnitityManager	entityManager	doctrine entityManager
 	*/
-	private function __construct($entityManager)
+	private function __construct()
 	{
-		$this->entityManager = $entityManager;
+		$ormController = OrmController::create();
+		$this->entityManager = $ormController->getEntityManager();
 	}
 
 	/**
 	* creates a new access group controller
-	* @param EnitityManager	$entityManager	doctrine entityManager
 	* @return AccessGroupController	AccessGroupController instance
 	*/
-	public static function create($entityManager)
+	public static function create()
 	{
-		//check, if an AccessGroupController instance exists with the correct entityManager
-		if(AccessGroupController::$accessGroupController == null || AccessGroupController::$accessGroupController->entityManager !== $entityManager)
+		//check, if an AccessGroupController instance already exists
+		if(AccessGroupController::$accessGroupController == null)
 		{
-			AccessGroupController::$accessGroupController = new AccessGroupController($entityManager);
+			AccessGroupController::$accessGroupController = new AccessGroupController();
 		}
 
 		return AccessGroupController::$accessGroupController;

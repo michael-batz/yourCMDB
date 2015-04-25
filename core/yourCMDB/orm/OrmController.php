@@ -28,10 +28,14 @@ use yourCMDB\config\CmdbConfig;
 
 /**
 * controller for accessing Doctrine ORM
+* singleton: use OrmController::create() for getting an instance
 * @author Michael Batz <michael@yourcmdb.org>
 */
 class OrmController
 {
+	//OrmController instance for singleton
+	private static $ormController;
+
 	//Doctrine entityManager
 	private $entityManager;
 
@@ -41,9 +45,10 @@ class OrmController
 	const DEVELOPMENT_MODE = true;
 
 	/**
+	* private constructor
 	* creates a new ORM Controller
 	*/
-	public function __construct()
+	private function __construct()
 	{
 		//get configuration for connection
 		$config = new CmdbConfig();
@@ -68,6 +73,26 @@ class OrmController
 		$this->entityManager = EntityManager::create($connectionParameters, $config);
 	}
 
+	/**
+	* Creates an OrmController
+	* @return OrmController	an OrmController instance
+	*/
+	public static function create()
+	{
+		//check, if an instance of OrmController already exists
+		if(OrmController::$ormController == null)
+		{
+			OrmController::$ormController = new OrmController();
+		}
+
+		//return instance
+		return OrmController::$ormController;
+	}
+
+	/**
+	* Returns the Doctrine EntityManager
+	* @return EntityManager	Doctrine EntityManager
+	*/
 	public function getEntityManager()
 	{
 		return $this->entityManager;

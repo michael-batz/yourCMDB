@@ -21,6 +21,8 @@
 *********************************************************************/
 namespace yourCMDB\controller;
 
+use yourCMDB\orm\OrmController;
+
 use yourCMDB\entities\CmdbLocalUser;
 
 use yourCMDB\exceptions\CmdbLocalUserAlreadyExistsException;
@@ -42,24 +44,23 @@ class LocalUserController
 
 	/**
 	* private constructor
-	* @param EnitityManager	entityManager	doctrine entityManager
 	*/
-	private function __construct($entityManager)
+	private function __construct()
 	{
-		$this->entityManager = $entityManager;
+		$ormController = OrmController::create();
+		$this->entityManager = $ormController->getEntityManager();
 	}
 
 	/**
 	* creates a new local user controller
-	* @param EnitityManager	$entityManager	doctrine entityManager
 	* @return LocalUserController	LocalUserController instance
 	*/
-	public static function create($entityManager)
+	public static function create()
 	{
-		//check, if a LocalUserController instance exists with the correct entityManager
-		if(LocalUserController::$localUserController == null || LocalUserController::$localUserController->entityManager !== $entityManager)
+		//check, if a LocalUserController instance already exists
+		if(LocalUserController::$localUserController == null)
 		{
-			LocalUserController::$localUserController = new LocalUserController($entityManager);
+			LocalUserController::$localUserController = new LocalUserController();
 		}
 
 		return LocalUserController::$localUserController;

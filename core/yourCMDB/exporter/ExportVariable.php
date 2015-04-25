@@ -66,8 +66,7 @@ class ExportVariable
 	public function getValue(\yourCMDB\entities\CmdbObject $object)
 	{
 		//get ObjectController
-		$ormController = new OrmController();
-		$objectController = ObjectController::create($ormController->getEntityManager());
+		$objectController = ObjectController::create();
 
 		//get object type config
 		$config = new CmdbConfig();

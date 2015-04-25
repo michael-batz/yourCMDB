@@ -67,8 +67,7 @@ class Exporter
 	private function runExport()
 	{
 		//get ObjectController
-		$ormController = new OrmController();
-		$objectController = ObjectController::create($ormController->getEntityManager());
+		$objectController = ObjectController::create();
 
 		//set up exportDestination
 		$exportDestinationClass = __NAMESPACE__."\\".$this->exportDestination->getClass();

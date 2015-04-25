@@ -21,6 +21,8 @@
 *********************************************************************/
 namespace yourCMDB\controller;
 
+use yourCMDB\orm\OrmController;
+
 use yourCMDB\entities\CmdbObject;
 use yourCMDB\entities\CmdbObjectField;
 
@@ -44,24 +46,23 @@ class ObjectController
 
 	/**
 	* private constructor
-	* @param EnitityManager	entityManager	doctrine entityManager
 	*/
-	private function __construct($entityManager)
+	private function __construct()
 	{
-		$this->entityManager = $entityManager;
+		$ormController = OrmController::create();
+		$this->entityManager = $ormController->getEntityManager();
 	}
 
 	/**
 	* creates a new object controller
-	* @param EnitityManager	$entityManager	doctrine entityManager
 	* @return ObjectController	ObjectController instance
 	*/
-	public static function create($entityManager)
+	public static function create()
 	{
-		//check, if an ObjectController instance exists with the correct entityManager
-		if(ObjectController::$objectController == null || ObjectController::$objectController->entityManager !== $entityManager)
+		//check, if an ObjectController instance already exists
+		if(ObjectController::$objectController == null)
 		{
-			ObjectController::$objectController = new ObjectController($entityManager);
+			ObjectController::$objectController = new ObjectController();
 		}
 
 		return ObjectController::$objectController;
@@ -108,7 +109,7 @@ class ObjectController
 		$this->entityManager->flush();
 
 		//create log entry
-		$objectLogController = ObjectLogController::create($this->entityManager);
+		$objectLogController = ObjectLogController::create();
 		$objectLogController->addLogEntry($object, "create", null, $user);
 
 		//return created object
@@ -151,7 +152,7 @@ class ObjectController
 
 		//get object and objectLogController
 		$object = $this->getObject($id, $user);
-		$objectLogController = ObjectLogController::create($this->entityManager);
+		$objectLogController = ObjectLogController::create();
 
 		//get object type configuration
 		$config = new CmdbConfig();
@@ -226,11 +227,11 @@ class ObjectController
 		$references = $this->getObjectReferences($id, $user);
 
 		//remove object links
-		$objectLinkController = ObjectLinkController::create($this->entityManager);
+		$objectLinkController = ObjectLinkController::create();
 		$objectLinkController->deleteObjectLinks($object, $user);
 
 		//remove log entries
-		$objectLogController = ObjectLogController::create($this->entityManager);
+		$objectLogController = ObjectLogController::create();
 		$objectLogController->deleteLogEntries($object, $user);
 
 		//remove the object

@@ -21,6 +21,8 @@
 *********************************************************************/
 namespace yourCMDB\controller;
 
+use yourCMDB\orm\OrmController;
+
 use yourCMDB\entities\CmdbObject;
 use yourCMDB\entities\CmdbObjectLogEntry;
 
@@ -40,24 +42,23 @@ class ObjectLogController
 
 	/**
 	* private constructor
-	* @param EnitityManager	entityManager	doctrine entityManager
 	*/
-	private function __construct($entityManager)
+	private function __construct()
 	{
-		$this->entityManager = $entityManager;
+		$ormController = OrmController::create();
+		$this->entityManager = $ormController->getEntityManager();
 	}
 
 	/**
 	* creates a new object log controller
-	* @param EnitityManager	$entityManager	doctrine entityManager
 	* @return ObjectLogController	ObjectLogController instance
 	*/
-	public static function create($entityManager)
+	public static function create()
 	{
-		//check, if an ObjectLogController instance exists with the correct entityManager
-		if(ObjectLogController::$objectLogController == null || ObjectLogController::$objectLogController->entityManager !== $entityManager)
+		//check, if an ObjectLogController instance already exists
+		if(ObjectLogController::$objectLogController == null)
 		{
-			ObjectLogController::$objectLogController = new ObjectLogController($entityManager);
+			ObjectLogController::$objectLogController = new ObjectLogController();
 		}
 
 		return ObjectLogController::$objectLogController;
