@@ -60,7 +60,7 @@ class AccessGroupController
 	public static function create($entityManager)
 	{
 		//check, if an AccessGroupController instance exists with the correct entityManager
-		if(AccessGroupController::$accessGroupController == null || AccessGroupController::$accessGroupController->entityManager != $entityManager)
+		if(AccessGroupController::$accessGroupController == null || AccessGroupController::$accessGroupController->entityManager !== $entityManager)
 		{
 			AccessGroupController::$accessGroupController = new AccessGroupController($entityManager);
 		}

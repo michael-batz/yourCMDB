@@ -19,6 +19,11 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\exporter;
+
+use yourCMDB\config\CmdbConfig;
+use yourCMDB\controller\ObjectController;
+use yourCMDB\orm\OrmController;
 
 /**
 * Exporter for yourCMDB
@@ -27,12 +32,6 @@
 
 class Exporter
 {
-	//datastore
-	private $datastore;
-
-	//configuration
-	private $config;
-
 	//exporter task
 	private $task;
 
@@ -48,19 +47,14 @@ class Exporter
 
 	function __construct($taskname)
 	{
-
 		//create configuration object
-		$this->config = new CmdbConfig();
-
-		//create datastore object
-		$datastoreClass = $this->config->getDatastoreConfig()->getClass();
-		$this->datastore = new $datastoreClass;
+		$config = new CmdbConfig();
 
 		//get configuration for exporter task
 		$this->task = $taskname;
-		$this->exportSources = $this->config->getExporterConfig()->getSourcesForTask($taskname);
-		$this->exportDestination = $this->config->getExporterConfig()->getDestinationForTask($taskname);
-		$this->exportVariables = $this->config->getExporterConfig()->getVariablesForTask($taskname);
+		$this->exportSources = $config->getExporterConfig()->getSourcesForTask($taskname);
+		$this->exportDestination = $config->getExporterConfig()->getDestinationForTask($taskname);
+		$this->exportVariables = $config->getExporterConfig()->getVariablesForTask($taskname);
 
 		//run export
 		$this->runExport();
@@ -72,8 +66,12 @@ class Exporter
 	*/
 	private function runExport()
 	{
+		//get ObjectController
+		$ormController = new OrmController();
+		$objectController = ObjectController::create($ormController->getEntityManager());
+
 		//set up exportDestination
-		$exportDestinationClass = $this->exportDestination->getClass();
+		$exportDestinationClass = __NAMESPACE__."\\".$this->exportDestination->getClass();
 		$exportDestination = new $exportDestinationClass();
 		$exportDestination->setUp($this->exportDestination, $this->exportVariables);
 		
@@ -86,18 +84,18 @@ class Exporter
 			$exportSourceFieldname = $exportSource->getFieldname();
 			$exportSourceFieldvalue = $exportSource->getFieldvalue();
 			$exportSourceObjectTypes = array($exportSource->getObjectType());
-			$exportSourceStatusActive = true;
-			if($exportSource->getStatus() == "N")
-			{
-				$exportSourceStatusActive = false;
-			}
+			$exportSourceStatusActive = $exportSource->getStatus();
 			if($exportSourceFieldname == null || $exportSourceFieldvalue == null )
 			{
-				$objects = $this->datastore->getObjectsByType($exportSourceObjectTypes[0], "", "asc", $exportSourceStatusActive);
+				$objects = $objectController->getObjectsByType($exportSourceObjectTypes[0], "", "ASC", $exportSourceStatusActive, 0, 0, "yourCMDB-exporter");
 			}
 			else
 			{
-				$objects = $this->datastore->getObjectsByField($exportSourceFieldname, $exportSourceFieldvalue, $exportSourceObjectTypes, $exportSourceStatusActive);
+				$objects = $objectController->getObjectsByField($exportSourceFieldname, 
+										$exportSourceFieldvalue, 
+										$exportSourceObjectTypes, 
+										$exportSourceStatusActive,
+										0,0, "yourCMDB-exporter");
 			}
 
 			//export objects

@@ -19,38 +19,50 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\exporter;
 
 /**
-* Export API - destination for an export task
+* Export API - source for an export task
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class ExportDestination
+class ExportSource
 {
-	//class for export destination
-	private $class;
+	//type of objects for export
+	private $objecttype;
 
-	//parameter array
-	private $parameter;
+	//status of objects
+	private $status;
 
-	function __construct($class, $parameter)
+	private $fieldname;
+
+	private $fieldvalue;
+
+	function __construct($objecttype, $status, $fieldname=null, $fieldvalue=null)
 	{
-		$this->class = $class;
-		$this->parameter = $parameter;
+		$this->objecttype = $objecttype;
+		$this->status = $status;
+		$this->fieldname = $fieldname;
+		$this->fieldvalue = $fieldvalue;
 	}
 
-	public function getClass()
+	public function getObjectType()
 	{
-		return $this->class;
+		return $this->objecttype;
 	}
 
-	public function getParameterKeys()
+	public function getStatus()
 	{
-		return array_keys($this->parameter);
+		return $this->status;
 	}
 
-	public function getParameterValue($key)
+	public function getFieldname()
 	{
-		return $this->parameter[$key];
+		return $this->fieldname;
+	}
+
+	public function getFieldvalue()
+	{
+		return $this->fieldvalue;
 	}
 }
 ?>

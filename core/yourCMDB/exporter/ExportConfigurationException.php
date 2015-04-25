@@ -19,55 +19,21 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\exporter;
+
+use \Exception;
 
 /**
-* Export API - variables for an export task
+* Exception, if there is a problem in configuration of ExportAPI
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class ExportVariables
+class ExportConfigurationException extends Exception
 {
 
-	//all defined variables
-	private $variables;
-
-	/**
-	* create a new instance
-	* @param $exportVariables  	Array of ExportVariable
-	*/
-	function __construct($exportVariables)
+	public function __construct($message, $code = 0)
 	{
-		$this->variables = $exportVariables;
+        	parent::__construct($message, $code);
 	}
 
-	/**
-	* Returns the variable of the given name
-	* @param $name			variable name
-	* @return ExportVariable	ExportVariable or null, if not found
-	*/
-	public function getVariable($name)
-	{
-		foreach($this->variables as $variable)
-		{
-			if($variable->getName() == $name)
-			{
-				return $variable;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	* Returns an array with all variable names
-	*/
-	public function getVariableNames()
-	{
-		$names = Array();
-		foreach($this->variables as $variable)
-		{
-			$names[] = $variable->getName();
-		}
-		return $names;
-	}	
 }
 ?>

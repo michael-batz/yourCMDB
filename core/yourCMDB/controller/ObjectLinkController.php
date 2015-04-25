@@ -58,7 +58,7 @@ class ObjectLinkController
 	public static function create($entityManager)
 	{
 		//check, if an ObjectLinkController instance exists with the correct entityManager
-		if(ObjectLinkController::$objectLinkController == null || ObjectLinkController::$objectLinkController->entityManager != $entityManager)
+		if(ObjectLinkController::$objectLinkController == null || ObjectLinkController::$objectLinkController->entityManager !== $entityManager)
 		{
 			ObjectLinkController::$objectLinkController = new ObjectLinkController($entityManager);
 		}

@@ -57,7 +57,7 @@ class LocalUserController
 	public static function create($entityManager)
 	{
 		//check, if a LocalUserController instance exists with the correct entityManager
-		if(LocalUserController::$localUserController == null || LocalUserController::$localUserController->entityManager != $entityManager)
+		if(LocalUserController::$localUserController == null || LocalUserController::$localUserController->entityManager !== $entityManager)
 		{
 			LocalUserController::$localUserController = new LocalUserController($entityManager);
 		}

@@ -61,7 +61,7 @@ class CmdbConfig
 		$this->configObjectType = new ObjectTypeConfig("$configurationBase/objecttype-configuration.xml");
 		$this->configView = new ViewConfig("$configurationBase/view-configuration.xml");
 		$this->configDataExchange = new DataExchangeConfig("$configurationBase/dataexchange-configuration.xml");
-		//ToDo:$this->configExporter = new ExporterConfig("$configurationBase/exporter-configuration.xml");
+		$this->configExporter = new ExporterConfig("$configurationBase/exporter-configuration.xml");
 		$this->configTaskScheduler = new TaskSchedulerConfig("$configurationBase/taskscheduler-configuration.xml");
 		$this->configSecurity = new SecurityConfig("$configurationBase/security-configuration.xml");
 	}

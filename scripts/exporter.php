@@ -26,65 +26,56 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-	/**
-        * autoloading of classes
-        */
-        function __autoload($className)
-        {
-		$scriptBaseDir = dirname(__FILE__);
-                $coreBaseDir = realpath("$scriptBaseDir/../core");
-                $paths = array('', 'model', 'config', 'controller', 'libs', 'rest', 'exporter', 'taskscheduler');
-                $filename = $className.'.php';
-                foreach($paths as $path)
-                {
-                        if(file_exists("$coreBaseDir/$path/$filename"))
-                        {
-                                include "$coreBaseDir/$path/$filename";
-                        }
-                }
-        }
+use yourCMDB\exporter\Exporter;
+use yourCMDB\exporter\ExportConfigurationException;
+use yourCMDB\exporter\ExportExternalSystemException;
 
-	/**
-	* print usage of exporter script
-	*/
-	function printUsage()
-	{
-		echo "yourCMDB Exporter\n";
-		echo "Usage: exporter.php <export taskname>\n";
-		echo "<export taskname> is the name of the export task to execute defined in exporter-configuration.xml\n\n";
-	}
+//load bootstrap
+$scriptBaseDir = dirname(__FILE__);
+$coreBaseDir = realpath("$scriptBaseDir/../core");
+include "$coreBaseDir/bootstrap.php";
 
-	//get taskname from script parameter
-	$taskname = "";
-	if($_SERVER['argc'] >= 2)
-	{
-		$taskname = $_SERVER['argv'][1];
-	}
-	else
-	{
-		printUsage();
-		exit();
-	}
+/**
+* print usage of exporter script
+*/
+function printUsage()
+{
+	echo "yourCMDB Exporter\n";
+	echo "Usage: exporter.php <export taskname>\n";
+	echo "<export taskname> is the name of the export task to execute defined in exporter-configuration.xml\n\n";
+}
 
-	//check if taskname is valid
-	try
-	{
-		new Exporter($taskname);
-	}
-	catch(ExportConfigurationException $e)
-	{
-		echo "yourCMDB Exporter\n";
-		echo "Error in Exporter configuration\n";
-		echo $e->getMessage()."\n";
-		echo "Please check exporter-configuration.xml\n";
-	}
-	catch(ExportExternalSystemException $e)
-	{
-		echo "yourCMDB Exporter\n";
-		echo "Error in communication with external system\n";
-		echo $e->getMessage()."\n";
-		echo "Please check the configuration or the external system\n";
-	}
+//get taskname from script parameter
+$taskname = "";
+if($_SERVER['argc'] >= 2)
+{
+	$taskname = $_SERVER['argv'][1];
+}
+else
+{
+	printUsage();
+	exit();
+}
+
+//check if taskname is valid
+try
+{
+	new Exporter($taskname);
+}
+catch(ExportConfigurationException $e)
+{
+	echo "yourCMDB Exporter\n";
+	echo "Error in Exporter configuration\n";
+	echo $e->getMessage()."\n";
+	echo "Please check exporter-configuration.xml\n";
+}
+catch(ExportExternalSystemException $e)
+{
+	echo "yourCMDB Exporter\n";
+	echo "Error in communication with external system\n";
+	echo $e->getMessage()."\n";
+	echo "Please check the configuration or the external system\n";
+}
 
 ?>
 

@@ -19,6 +19,9 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\exporter;
+
+use \Exception;
 
 /**
 * Exception, if there is a problem with the connection to external system

@@ -19,6 +19,9 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\exporter;
+
+use yourCMDB\entities\CmdbObject;
 
 /**
 * Export API - External System
@@ -64,7 +67,7 @@ class ExternalSystemDummy implements ExternalSystem
 		echo "Start of dummy export\n";
 	}
 
-	public function addObject(CmdbObject $object)
+	public function addObject(\yourCMDB\entities\CmdbObject $object)
 	{
 		//get object information
 		$objectType = $object->getType();

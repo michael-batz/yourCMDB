@@ -19,17 +19,39 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\exporter;
 
 /**
-* Export API - Interface for an external system
+* Export API - destination for an export task
 * @author Michael Batz <michael@yourcmdb.org>
 */
-interface ExternalSystem
+class ExportDestination
 {
-	public function setUp(ExportDestination $destination, ExportVariables $variables);
+	//class for export destination
+	private $class;
 
-	public function addObject(CmdbObject $object);
+	//parameter array
+	private $parameter;
 
-	public function finishExport();
+	function __construct($class, $parameter)
+	{
+		$this->class = $class;
+		$this->parameter = $parameter;
+	}
+
+	public function getClass()
+	{
+		return $this->class;
+	}
+
+	public function getParameterKeys()
+	{
+		return array_keys($this->parameter);
+	}
+
+	public function getParameterValue($key)
+	{
+		return $this->parameter[$key];
+	}
 }
 ?>

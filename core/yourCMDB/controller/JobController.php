@@ -54,7 +54,7 @@ class JobController
 	public static function create($entityManager)
 	{
 		//check, if a JobController instance exists with the correct entityManager
-		if(JobController::$jobController == null || JobController::$jobController->entityManager != $entityManager)
+		if(JobController::$jobController == null || JobController::$jobController->entityManager !== $entityManager)
 		{
 			JobController::$jobController = new JobController($entityManager);
 		}

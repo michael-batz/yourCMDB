@@ -44,28 +44,9 @@ new ClassLoader("Doctrine\ORM", "$coreBaseDir/libs/composer/vendor/doctrine/orm/
 //class loading: yourCMDB
 new ClassLoader("yourCMDB", "$coreBaseDir");
 
-//require_once "$coreBaseDir/libs/composer/vendor/autoload.php";
+use yourCMDB\orm\OrmController;
 
-use Doctrine\ORM\Tools\Setup;
-use Doctrine\ORM\EntityManager;
-
-$paths = array("$coreBaseDir/yourCMDB/entities");
-//ToDo: devMode off
-$isDevMode = true;
-
-// the connection configuration
-$dbParams = array(
-    'driver'   => 'pdo_mysql',
-    'user'     => 'cmdb',
-    'password' => 'cmdb',
-    'dbname'   => 'yourcmdb2',
-);
-
-$config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
-$config->addEntityNamespace("yourCMDB", "yourCMDB\entities");
-//ToDo: debug off
-//$config->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
-
-$entityManager = EntityManager::create($dbParams, $config);
+$ormController = new OrmController();
+$entityManager = $ormController->getEntityManager();
 
 ?>

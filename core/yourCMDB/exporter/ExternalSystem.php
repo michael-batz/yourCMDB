@@ -19,49 +19,20 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\exporter;
+
+use yourCMDB\entities\CmdbObject;
 
 /**
-* Export API - source for an export task
+* Export API - Interface for an external system
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class ExportSource
+interface ExternalSystem
 {
-	//type of objects for export
-	private $objecttype;
+	public function setUp(ExportDestination $destination, ExportVariables $variables);
 
-	//status of objects
-	private $status;
+	public function addObject(\yourCMDB\entities\CmdbObject $object);
 
-	private $fieldname;
-
-	private $fieldvalue;
-
-	function __construct($objecttype, $status, $fieldname=null, $fieldvalue=null)
-	{
-		$this->objecttype = $objecttype;
-		$this->status = $status;
-		$this->fieldname = $fieldname;
-		$this->fieldvalue = $fieldvalue;
-	}
-
-	public function getObjectType()
-	{
-		return $this->objecttype;
-	}
-
-	public function getStatus()
-	{
-		return $this->status;
-	}
-
-	public function getFieldname()
-	{
-		return $this->fieldname;
-	}
-
-	public function getFieldvalue()
-	{
-		return $this->fieldvalue;
-	}
+	public function finishExport();
 }
 ?>

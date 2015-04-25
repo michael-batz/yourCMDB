@@ -20,13 +20,14 @@ $userController = LocalUserController::create($entityManager);
 $accessGroupController = AccessGroupController::create($entityManager);
 
 //addObject()
-/*$fields = Array();
+$fields = Array();
 $fields['ip'] = "192.168.0.1";
 $fields['hostname'] = "router1";
-$fields['location'] = "1111";
+$fields['location'] = "14";
 $fields['monitoring'] = "1";
+$fields['manufacturer'] = "Cisco";
 $objectController->addObject("router", "A", $fields, "michael");
-*/
+
 
 /*$fields = Array();
 $fields['zip'] = "36041";
@@ -63,7 +64,7 @@ catch(Exception $e)
 }*/
 
 //delete object
-$objectController->deleteObject(13, "michael");
+//$objectController->deleteObject(13, "michael");
 
 
 //query objects

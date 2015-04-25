@@ -19,6 +19,12 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\exporter;
+
+use yourCMDB\orm\OrmController;
+use yourCMDB\controller\ObjectController;
+use yourCMDB\config\CmdbConfig;
+use \Exception;
 
 /**
 * Export API - a variable for an export task
@@ -57,11 +63,15 @@ class ExportVariable
 	* Returns the value of variable for the given CmdbObject
 	* @param CmdbObject $object	the object to get the value
 	*/
-	public function getValue(CmdbObject $object)
+	public function getValue(\yourCMDB\entities\CmdbObject $object)
 	{
-		$controller = new Controller();
-		$datastore = $controller->getDatastore();
-		$configObjecttype = $controller->getCmdbConfig()->getObjectTypeConfig();
+		//get ObjectController
+		$ormController = new OrmController();
+		$objectController = ObjectController::create($ormController->getEntityManager());
+
+		//get object type config
+		$config = new CmdbConfig();
+		$configObjecttype = $config->getObjectTypeConfig();
 		$value = $this->defaultValue;
 
 		//if there is a configuration for that object type
@@ -70,7 +80,7 @@ class ExportVariable
 		if(isset($this->fieldValue[$objectType]['name']))
 		{
 			$fieldname = $this->fieldValue[$objectType]['name'];
-			$value = $object->getFieldValue($fieldname);
+			$value = $object->getFieldvalue($fieldname);
 
 			//check if field is an object reference (type objectref)
 			if(preg_match('/objectref-.*/', $configObjecttype->getFieldType($objectType, $fieldname)) == 1)
@@ -78,13 +88,13 @@ class ExportVariable
 				try
 				{
 					//get referenced object
-					$refObject = $datastore->getObject($value);
+					$refObject = $objectController->getObject($value, "yourCMDB-exporter");
 
 					//get value of referenced field if configured
 					if($this->fieldValue[$objectType]['refobjectfield'] != "")
 					{
 						$refFieldname = $this->fieldValue[$objectType]['refobjectfield'];
-						$value = $refObject->getFieldValue($refFieldname);
+						$value = $refObject->getFieldvalue($refFieldname);
 					}
 					
 				}

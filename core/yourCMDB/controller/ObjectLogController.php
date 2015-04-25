@@ -55,7 +55,7 @@ class ObjectLogController
 	public static function create($entityManager)
 	{
 		//check, if an ObjectLogController instance exists with the correct entityManager
-		if(ObjectLogController::$objectLogController == null || ObjectLogController::$objectLogController->entityManager != $entityManager)
+		if(ObjectLogController::$objectLogController == null || ObjectLogController::$objectLogController->entityManager !== $entityManager)
 		{
 			ObjectLogController::$objectLogController = new ObjectLogController($entityManager);
 		}

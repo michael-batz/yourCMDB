@@ -21,6 +21,11 @@
 *********************************************************************/
 namespace yourCMDB\config;
 
+use yourCMDB\exporter\ExportSource;
+use yourCMDB\exporter\ExportDestination;
+use yourCMDB\exporter\ExportVariable;
+use yourCMDB\exporter\ExportVariables;
+use yourCMDB\exporter\ExportConfigurationException;
 
 /**
 * Class for access to exporter configuration

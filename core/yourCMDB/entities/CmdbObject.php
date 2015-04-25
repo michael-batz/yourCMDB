@@ -106,6 +106,22 @@ class CmdbObject
 	}
 
 	/**
+	* Returns the value of a specific field
+	* @param string $fieldname 	name of the field
+	* @return string		value of the field or
+	*				an empty string, if the field does not exist
+	*/
+	public function getFieldvalue($fieldname)
+	{
+		$field = $this->fields->get($fieldname);
+		if($field == null)
+		{
+			return "";
+		}
+		return $field->getFieldvalue();
+	}
+
+	/**
 	* Sets the state of the object
 	* @param string $state	the new state of the object
 	*/

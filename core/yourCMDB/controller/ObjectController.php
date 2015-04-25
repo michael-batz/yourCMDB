@@ -59,7 +59,7 @@ class ObjectController
 	public static function create($entityManager)
 	{
 		//check, if an ObjectController instance exists with the correct entityManager
-		if(ObjectController::$objectController == null || ObjectController::$objectController->entityManager != $entityManager)
+		if(ObjectController::$objectController == null || ObjectController::$objectController->entityManager !== $entityManager)
 		{
 			ObjectController::$objectController = new ObjectController($entityManager);
 		}
