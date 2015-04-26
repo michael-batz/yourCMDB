@@ -88,7 +88,7 @@ class CmdbJob
 
 	/**
 	* Returns the action parameter
-	* @return strinf	action parameter
+	* @return string	action parameter
 	*/
 	public function getActionParameter()
 	{

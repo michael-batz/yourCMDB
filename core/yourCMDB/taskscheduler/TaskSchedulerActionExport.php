@@ -19,37 +19,37 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\taskscheduler;
 
+use yourCMDB\entities\CmdbJob;
+use yourCMDB\exporter\Exporter;
+use \Exception;
 
 /**
-* Log of a CMDB object.
+* TaskSchedulerAction - export
+* executes an export defined in exportAPI
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class CmdbObjectLog
+class TaskSchedulerActionExport implements TaskSchedulerAction
 {
+	//job
+	private $job;
 
-	//Object ID
-	private $objectId;
-
-	//log entries
-	private $logEntries;
-	
-	/**
-	* Creates a new CMDB object log object
-	*
-	*/
-	public function __construct($objectId, $logEntries)
+	function __construct(\yourCMDB\entities\CmdbJob $job)
 	{
-		$this->objectId = $objectId;
-		$this->logEntries = $logEntries;
+		$this->job = $job;
 	}
 
-	/**
-	* Returns the log entries of this object
-	*/
-	public function getLogEntries()
+	public function execute()
 	{
-		return $this->logEntries;
+		try
+		{
+			new Exporter($this->job->getActionParameter());
+		}
+		catch(Exception $e)
+		{
+			error_log("Error executing export task $this->job->getActionParameter ");
+		}
 	}
 }
 ?>

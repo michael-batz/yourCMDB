@@ -19,42 +19,38 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\taskscheduler;
+
+use yourCMDB\entities\CmdbJob;
 
 /**
-* local user
+* TaskSchedulerAction - exec
+* executes a script in background
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class CmdbLocalUser
+class TaskSchedulerActionExec implements TaskSchedulerAction
 {
-	//username
-	private $username;
+	//job
+	private $job;
 
-	//passwordHash
-	private $passwordHash;
-
-	//access group
-	private $accessGroup;
-
-	function __construct($username, $passwordHash, $accessGroup)
+	function __construct(\yourCMDB\entities\CmdbJob $job)
 	{
-		$this->username = $username;
-		$this->passwordHash = $passwordHash;
-		$this->accessGroup = $accessGroup;
+		$this->job = $job;
 	}
 
-	public function getUsername()
+	public function execute()
 	{
-		return $this->username;
-	}
-
-	public function getPasswordHash()
-	{
-		return $this->passwordHash;
-	}
-
-	public function getAccessGroup()
-	{
-		return $this->accessGroup;
+		//check OS
+		if (substr(php_uname(), 0, 7) == "Windows")
+		{
+			//Windows: use process handles
+        		pclose(popen("start /B ". $this->job->getActionParameter(), "r")); 
+    		}
+		else
+		{
+			//UNIX: use &-sign to execute in background
+			exec($this->job->getActionParameter() . " > /dev/null 2>&1 &");
+		}
 	}
 }
 ?>

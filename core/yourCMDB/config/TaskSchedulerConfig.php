@@ -21,6 +21,7 @@
 *********************************************************************/
 namespace yourCMDB\config;
 
+use yourCMDB\taskscheduler\Task;
 
 /**
 * Class for access to task scheduler configuration

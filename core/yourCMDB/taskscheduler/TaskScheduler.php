@@ -19,6 +19,12 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\taskscheduler;
+
+use yourCMDB\config\CmdbConfig;
+use yourCMDB\controller\JobController;
+use yourCMDB\entities\CmdbJob;
+use \DateTime;
 
 /**
 * TaskScheduler
@@ -29,26 +35,20 @@ class TaskScheduler
 	//task scheduler config
 	private $configTaskScheduler;
 
-	//datastore
-	private $datastore;
-
 	function __construct()
 	{
+		//get configuration
 		$config = new CmdbConfig();
 		$this->configTaskScheduler = $config->getTaskSchedulerConfig();
-
-		//create datastore object
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$this->datastore = new $datastoreClass;
 	}
 
 	/**
 	* Executes the given job
 	*/
-	private function executeJob(CmdbJob $job)
+	private function executeJob(\yourCMDB\entities\CmdbJob $job)
 	{
 		//check, if job action exists
-		$actionClassName = $job->getAction();
+		$actionClassName = __NAMESPACE__ ."\\". $job->getAction();
 		if(class_exists($actionClassName))
 		{
 			$action = new $actionClassName($job);
@@ -89,13 +89,16 @@ class TaskScheduler
 		//check, if there are tasks for the given event
 		$tasks = $this->configTaskScheduler->getTasksForEvent($event->getEventType(), $event->getObjectType());
 
+		//get JobController
+		$jobController = JobController::create();
+
 		//create jobs
 		foreach($tasks as $task)
 		{
 			$jobAction = $task->getAction();
 			$jobActionParm = $this->replaceActionParameter($task->getActionParameter(), $event);
-			$job = new CmdbJob($jobAction, $jobActionParm);
-			$this->datastore->addJob($job);
+			$job = new CmdbJob($jobAction, $jobActionParm, new DateTime());
+			$jobController->addJob($job);
 		}
 	}
 
@@ -105,7 +108,8 @@ class TaskScheduler
 	public function executeJobs()
 	{
 		//get jobs to execute
-		$jobs = $this->datastore->getAndRemoveJobs();
+		$jobController = JobController::create();
+		$jobs = $jobController->getAndRemoveJobs();
 
 		foreach($jobs as $job)
 		{

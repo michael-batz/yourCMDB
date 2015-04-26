@@ -19,33 +19,58 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\taskscheduler;
+
 
 /**
-* job
+* A CMDB event
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class CmdbJob
+class CmdbEvent
 {
-	//job action (for example 'exec')
-	private $action;
+	//type of the CMDB event
+	private $eventType;
+	
+	//id of a linked object
+	private $objectId;
 
-	//parameter for action
-	private $actionParameter;
+	//type of a linked object
+	private $objectType;
 
-	function __construct($action, $actionParameter=null)
+	/**
+	* Creates a new CMDB object
+	*
+	*/
+	public function __construct($eventType, $objectId=null, $objectType=null)
 	{
-		$this->action = $action;
-		$this->actionParameter = $actionParameter;
+		$this->eventType = $eventType;
+		$this->objectId = $objectId;
+		$this->objectType = $objectType;
 	}
 
-	public function getAction()
+	/**
+	* Get event type
+	*/
+	public function getEventType()
 	{
-		return $this->action;
+		return $this->eventType;
 	}
 
-	public function getActionParameter()
+	/**
+	* Get ID of linked object
+	*/
+	public function getObjectId()
 	{
-		return $this->actionParameter;
+		return $this->objectId;
 	}
+
+	/**
+	* Get type of linked object
+	*/
+	public function getObjectType()
+	{
+		return $this->objectType;
+	}
+
 }
 ?>

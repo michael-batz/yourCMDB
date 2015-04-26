@@ -23,40 +23,21 @@
 
 /**
 * yourCMDB TaskScheduler - runs created jobs from database
+* Usage: taskscheduler.php
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-	/**
-        * autoloading of classes
-        */
-        function __autoload($className)
-        {
-		$scriptBaseDir = dirname(__FILE__);
-                $coreBaseDir = realpath("$scriptBaseDir/../core");
-                $paths = array('', 'model', 'config', 'controller', 'libs', 'rest', 'exporter', 'taskscheduler');
-                $filename = $className.'.php';
-                foreach($paths as $path)
-                {
-                        if(file_exists("$coreBaseDir/$path/$filename"))
-                        {
-                                include "$coreBaseDir/$path/$filename";
-                        }
-                }
-        }
+use yourCMDB\taskscheduler\TaskScheduler;
 
-	/**
-	* print usage of TaskScheduler script
-	*/
-	function printUsage()
-	{
-		echo "yourCMDB TaskScheduler\n";
-		echo "Usage: taskscheduler.php\n";
-	}
+//load bootstrap
+$scriptBaseDir = dirname(__FILE__);
+$coreBaseDir = realpath("$scriptBaseDir/../core");
+include "$coreBaseDir/bootstrap.php";
 
 
-	//run jobs
-	$taskScheduler = new TaskScheduler();
-	$taskScheduler->executeJobs();
+//run jobs
+$taskScheduler = new TaskScheduler();
+$taskScheduler->executeJobs();
 	
 ?>
 

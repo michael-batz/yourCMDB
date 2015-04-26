@@ -28,6 +28,8 @@ use yourCMDB\entities\CmdbObjectField;
 
 use yourCMDB\config\CmdbConfig;
 
+use yourCMDB\taskscheduler\EventProcessor;
+
 use yourCMDB\exceptions\CmdbObjectNotFoundException;
 
 /**
@@ -111,6 +113,10 @@ class ObjectController
 		//create log entry
 		$objectLogController = ObjectLogController::create();
 		$objectLogController->addLogEntry($object, "create", null, $user);
+
+		//process event
+		$eventProcessor = new EventProcessor();
+		$eventProcessor->generateEvent("objectAdded", $object->getId(), $object->getType());
 
 		//return created object
 		return $object;
@@ -208,6 +214,10 @@ class ObjectController
 		if($logString != "")
 		{
 			$objectLogController->addLogEntry($object, "change fields", $logString, $user);
+
+			//process event
+			$eventProcessor = new EventProcessor();
+			$eventProcessor->generateEvent("objectChanged", $object->getId(), $object->getType());
 		}
 
 		//return the object
@@ -233,6 +243,10 @@ class ObjectController
 		//remove log entries
 		$objectLogController = ObjectLogController::create();
 		$objectLogController->deleteLogEntries($object, $user);
+
+		//process event
+		$eventProcessor = new EventProcessor();
+		$eventProcessor->generateEvent("objectDeleted", $object->getId(), $object->getType());
 
 		//remove the object
 		$this->entityManager->remove($object);

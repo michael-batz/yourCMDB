@@ -19,18 +19,16 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\taskscheduler;
 
 /**
-* Exception, if object was not found in datastore
+* TaskScheduler - interface for action
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class NoSuchObjectException extends Exception
+interface TaskSchedulerAction
 {
+	function __construct(\yourCMDB\entities\CmdbJob $job);
 
-	public function __construct($message, $code = 0)
-	{
-        	parent::__construct($message, $code);
-	}
-
+	public function execute();
 }
 ?>

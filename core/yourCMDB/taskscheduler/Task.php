@@ -19,35 +19,34 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\taskscheduler;
 
 /**
-* TaskSchedulerAction - exec
-* executes a script in background
+* TaskScheduler - task
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class TaskSchedulerActionExec implements TaskSchedulerAction
+class Task
 {
-	//job
-	private $job;
+	//task action (for example 'exec')
+	private $action;
 
-	function __construct(CmdbJob $job)
+	//parameter for action
+	private $actionParameter;
+
+	function __construct($action, $actionParameter=null)
 	{
-		$this->job = $job;
+		$this->action = $action;
+		$this->actionParameter = $actionParameter;
 	}
 
-	public function execute()
+	public function getAction()
 	{
-		//check OS
-		if (substr(php_uname(), 0, 7) == "Windows")
-		{
-			//Windows: use process handles
-        		pclose(popen("start /B ". $this->job->getActionParameter(), "r")); 
-    		}
-		else
-		{
-			//UNIX: use &-sign to execute in background
-			exec($this->job->getActionParameter() . " > /dev/null 2>&1 &");
-		}
+		return $this->action;
+	}
+
+	public function getActionParameter()
+	{
+		return $this->actionParameter;
 	}
 }
 ?>
