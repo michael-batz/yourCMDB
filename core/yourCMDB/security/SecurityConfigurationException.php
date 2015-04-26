@@ -19,12 +19,15 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\security;
+
+use \Exception;
 
 /**
-* Exception, if a username or password for a changed user is invalid
+* Exception, if there is a problem in security configuration
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class SecurityChangeUserException extends Exception
+class SecurityConfigurationException extends Exception
 {
 
 	public function __construct($message, $code = 0)

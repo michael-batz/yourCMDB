@@ -21,6 +21,7 @@
 *********************************************************************/
 namespace yourCMDB\config;
 
+use yourCMDB\security\SecurityConfigurationException;
 
 /**
 * Class for access to security configuration
@@ -48,6 +49,7 @@ class SecurityConfig
 		{
 			$authproviderName = (string) $authprovider['name'];
 			$authproviderClass = (string) $authprovider['class'];
+			$authproviderClass = "\yourCMDB\security\\".$authproviderClass;
 			//read parameters of authprovider
 			$authproviderParams = array();
 			foreach($authprovider[0]->parameter as $param)

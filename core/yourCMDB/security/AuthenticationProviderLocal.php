@@ -19,6 +19,10 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\security;
+
+use yourCMDB\controller\LocalUserController;
+use yourCMDB\entities\CmdbLocalUser;
 
 /**
 * Authentication provider for local user management
@@ -36,11 +40,9 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 
 	public function authenticate($username, $password)
 	{
-		$config = new CmdbConfig();
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$datastore = new $datastoreClass;
+		$localUserController = LocalUserController::create();
 
-		$userobject = $datastore->getUser($username);
+		$userobject = $localUserController->getUser($username);
 		$passwordHash = $this->createHash($username, $password);
 		if($userobject != null && $userobject->getPasswordHash() == $passwordHash)
 		{
@@ -51,11 +53,9 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 
 	public function getAccessGroup($username)
 	{
-		$config = new CmdbConfig();
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$datastore = new $datastoreClass;
+		$localUserController = LocalUserController::create();
 
-		$userobject = $datastore->getUser($username);
+		$userobject = $localUserController->getUser($username);
 		if($userobject == null)
 		{
 			return null;
@@ -70,39 +70,28 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 		{
 			throw new SecurityChangeUserException("Inavlid username or password");
 		}
-		$config = new CmdbConfig();
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$datastore = new $datastoreClass;
 
 		$passwordHash = $this->createHash($username, $password);
-		return $datastore->addUser(new CmdbLocalUser($username, $passwordHash, $accessgroup));
+		$localUserController = LocalUserController::create();
+		return $localUserController->addUser(new CmdbLocalUser($username, $passwordHash, $accessgroup));
 	}
 
 	public function getUser($username)
 	{
-		$config = new CmdbConfig();
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$datastore = new $datastoreClass;
-
-		return $datastore->getUser($username);
+		$localUserController = LocalUserController::create();
+		return $localUserController->getUser($username);
 	}
 
 	public function getUsers()
 	{
-		$config = new CmdbConfig();
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$datastore = new $datastoreClass;
-
-		return $datastore->getUsers();
+		$localUserController = LocalUserController::create();
+		return $localUserController->getUsers();
 	}
 
 	public function deleteUser($username)
 	{
-		$config = new CmdbConfig();
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$datastore = new $datastoreClass;
-
-		return $datastore->deleteUser($username);
+		$localUserController = LocalUserController::create();
+		return $localUserController->deleteUser($username);
 	}
 
 	public function resetPassword($username, $newPassword)
@@ -113,36 +102,25 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 			throw new SecurityChangeUserException("Inavlid username or password");
 		}
 
-		$config = new CmdbConfig();
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$datastore = new $datastoreClass;
-
-		//create new user object
-		$newAccessGroup = $this->getAccessGroup($username);
+		//update user object
 		$newPasswordHash = $this->createHash($username, $newPassword);
-		$newUserObject = new CmdbLocalUser($username, $newPasswordHash, $newAccessGroup);
+		$userobject = $this->getUser($username);
+		$userobject->setPasswordHash($newPasswordHash);
 
 		//change user in datastore
-		return $datastore->changeUser($username, $newUserObject);
+		$localUserController = LocalUserController::create();
+		return $localUserController->changeUser($userobject);
 	}
 
 	public function setAccessGroup($username, $newAccessGroup)
 	{
-		$config = new CmdbConfig();
-		$datastoreClass = $config->getDatastoreConfig()->getClass();
-		$datastore = new $datastoreClass;
-
-		//create new user object
-		$user = $datastore->getUser($username);
-		if($user == null)
-		{
-			return false;
-		}
-		$newPasswordHash = $user->getPasswordHash();
-		$newUserObject = new CmdbLocalUser($username, $newPasswordHash, $newAccessGroup);
+		//update user object
+		$userobject = $this->getUser($username);
+		$userobject->setAccessGroup($newAccessGroup);
 
 		//change user in datastore
-		return $datastore->changeUser($username, $newUserObject);
+		$localUserController = LocalUserController::create();
+		return $localUserController->changeUser($username, $newUserObject);
 	}
 
 

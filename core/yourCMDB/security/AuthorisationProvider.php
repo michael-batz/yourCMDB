@@ -19,18 +19,21 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\security;
 
 /**
-* Interface for user authentication
+* Interface for user authorisation
 * @author Michael Batz <michael@yourcmdb.org>
 */
-interface AuthenticationProvider
+interface AuthorisationProvider
 {
-	public function __construct($parameters);
-
-	public function authenticate($username, $password);
-
-	public function getAccessgroup($username);
-
+	/**
+	* Ask for authorisation
+	* @param string $accessgroup		accessgroup of the user
+	* @param string $applicationpart	part of the application the user wants access
+	* @return int				access permissions for the application part
+	*					0 = no access, 1 = readonly, 2 = read/write
+	*/
+	public function authorise($accessgroup, $applicationpart);
 }
 ?>

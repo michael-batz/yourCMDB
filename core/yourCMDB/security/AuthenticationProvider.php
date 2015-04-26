@@ -19,18 +19,19 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\security;
 
 /**
-* Exception, if there is a problem in security configuration
+* Interface for user authentication
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class SecurityConfigurationException extends Exception
+interface AuthenticationProvider
 {
+	public function __construct($parameters);
 
-	public function __construct($message, $code = 0)
-	{
-        	parent::__construct($message, $code);
-	}
+	public function authenticate($username, $password);
+
+	public function getAccessgroup($username);
 
 }
 ?>

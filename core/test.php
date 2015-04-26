@@ -19,15 +19,16 @@ $jobController = JobController::create();
 $userController = LocalUserController::create();
 $accessGroupController = AccessGroupController::create();
 
+
 //addObject()
-$fields = Array();
+/*$fields = Array();
 $fields['ip'] = "192.168.0.1";
 $fields['hostname'] = "router1";
 $fields['location'] = "14";
 $fields['monitoring'] = "1";
 $fields['manufacturer'] = "Cisco";
 $objectController->addObject("router", "A", $fields, "michael");
-
+*/
 
 /*$fields = Array();
 $fields['zip'] = "36041";
