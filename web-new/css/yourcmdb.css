@@ -25,6 +25,17 @@
 */
 
 /**
+* default values
+*/
+html,body
+{
+	height:		100%;
+
+	margin:		0px;
+	padding:	0px;
+}
+
+/**
 * header  
 */
 div.cmdb-header
@@ -84,3 +95,29 @@ div.cmdb-header h1
 	color:			#FF0022;
 	background-color:	#222222;
 }
+
+/**
+* login window
+*/
+div#cmdb-loginpanel
+{
+	margin-top:		50px;
+	border-color:		#000000;
+}
+
+#cmdb-loginpanel .panel-heading
+{
+	background-color:	#000000;
+	color:			#FFFFFF;
+}
+
+div#cmdb-logincontainer
+{
+	min-height:	100%;
+	min-width:	100%;
+	overflow:	auto;
+	background:	url('../img/login-background.jpg') no-repeat;
+	background-size:cover;	
+}
+
+

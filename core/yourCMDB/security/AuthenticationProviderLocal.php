@@ -23,6 +23,7 @@ namespace yourCMDB\security;
 
 use yourCMDB\controller\LocalUserController;
 use yourCMDB\entities\CmdbLocalUser;
+use \Exception;
 
 /**
 * Authentication provider for local user management
@@ -42,11 +43,18 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 	{
 		$localUserController = LocalUserController::create();
 
-		$userobject = $localUserController->getUser($username);
-		$passwordHash = $this->createHash($username, $password);
-		if($userobject != null && $userobject->getPasswordHash() == $passwordHash)
+		try
 		{
-			return true;
+			$userobject = $localUserController->getUser($username);
+			$passwordHash = $this->createHash($username, $password);
+			if($userobject != null && $userobject->getPasswordHash() == $passwordHash)
+			{
+				return true;
+			}
+		}
+		catch(Exception $e)
+		{
+			//doing nothing
 		}
 		return false;
 	}

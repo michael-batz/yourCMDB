@@ -21,22 +21,20 @@
 *********************************************************************/
 
 /**
-* yourCMDB WebUI: home page
-* @author: Michael Batz <michael@yourcmdb.org>
+* WebUI element: check authorisation for given application part
+* The following variables need to be set:
+* - $authAccessgroup
+* - $authorisationAppPart
+* - $authorisationProvider
 */
 
-	//include base
-	include "include/bootstrap-web.php";
-	include "include/auth.inc.php";
+	//check authorisation
+	$authorisationResult = $authorisationProvider->authorise($authAccessgroup, $authorisationAppPart);
 
-	//include header
-	include "include/htmlheader.inc.php";
-	include "include/cmdbheader.inc.php";
-
-	//ToDo: content
-	echo "<h1>Content</h1>";
-
-	//include footer
-	include "include/cmdbfooter.inc.php";
-	include "include/htmlfooter.inc.php";
+	if($authorisationResult != 2)
+	{
+		//unauthorised
+		header("Location: $baseUrl/unauthorised.php");
+		exit();
+	}
 ?>

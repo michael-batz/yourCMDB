@@ -1,5 +1,6 @@
 #! /usr/bin/php
 <?php
+use yourCMDB\config\CmdbConfig;
 use yourCMDB\entities\CmdbObject;
 use yourCMDB\entities\CmdbJob;
 use yourCMDB\entities\CmdbLocalUser;
@@ -19,6 +20,9 @@ $jobController = JobController::create();
 $userController = LocalUserController::create();
 $accessGroupController = AccessGroupController::create();
 
+$config = new CmdbConfig();
+$authProvider = $config->getSecurityConfig()->getAuthProvider("web");
+//$authProvider->addUser("admin", "yourcmdb", "admin");
 
 //addObject()
 /*$fields = Array();
@@ -125,7 +129,7 @@ foreach($jobResults as $jobResult)
 }*/
 
 //add user
-//$userController->addUser(new CmdbLocalUser("admin1", "admin", "test123"));
+//$userController->addUser(new CmdbLocalUser("admin", "admin", "yourcmdb"));
 
 //get user
 //$user = $userController->getUser("admin1");

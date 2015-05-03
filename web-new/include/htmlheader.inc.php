@@ -28,9 +28,13 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<!-- bootstrap setup -->
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- favicon -->
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 
 		<!-- CSS: bootstrap, smartmenues and yourCMDB custom -->
 		<link href="css/bootstrap.min.css" rel="stylesheet" />
@@ -43,7 +47,7 @@
 		<script src="js/jquery.smartmenus.min.js"></script>
 		<script src="js/jquery.smartmenus.bootstrap.min.js"></script>
 
-		<title>yourCMDB</title>
+		<title><?php echo $installTitle; ?></title>
 	</head>
 	<body>
 		<noscript><p>You need to enable JavaScript for yourCMDB.</p></noscript>

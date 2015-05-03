@@ -29,6 +29,7 @@
 //imports
 use yourCMDB\config\CmdbConfig;
 use yourCMDB\controller\ObjectController;
+use yourCMDB\security\AuthorisationProviderLocal;
 
 //define base directories
 $scriptBaseDir = dirname(__FILE__);
@@ -37,8 +38,30 @@ $coreBaseDir = realpath("$scriptBaseDir/../../core");
 //include yourCMDB bootstrap
 include "$coreBaseDir/bootstrap.php";
 
+//include function definitions
+include "functions.inc.php";
+
 //ToDo: define variables
 $config = new CmdbConfig();
 $objectController = ObjectController::create();
-$username = "michael";
+$authorisationProvider = new AuthorisationProviderLocal();
+
+//set default values of some variables
+$authUser = "";
+
+//get configuration
+$installTitle = $config->getViewConfig()->getInstallTitle();
+
+//setup i18n with gettext
+$i18nLocale = $config->getViewConfig()->getLocale();
+$i18nDomain = "web";
+$i18nCodeset = "utf-8";
+$i18nBaseDir = realpath("$scriptBaseDir/../../i18n");
+
+setlocale(LC_ALL, $i18nLocale);
+bindtextdomain($i18nDomain, $i18nBaseDir);
+bind_textdomain_codeset($i18nDomain, $i18nCodeset);
+textdomain($i18nDomain);
+
+
 ?>

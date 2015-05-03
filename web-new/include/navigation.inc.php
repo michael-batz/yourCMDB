@@ -27,22 +27,20 @@
 	//get data
 	$menuitems = $config->getViewConfig()->getMenuItems();
 	$objectGroups = $config->getObjectTypeConfig()->getObjectTypeGroups();
-	//ToDo: enable admin
-	//$authorisationProvider = $controller->getAuthorisationProvider("web");
 
 	//navbar header
 	echo "<nav class=\"navbar cmdb-navigation\">";
 	//mobile view
 	echo "<div class=\"navbar-header\">";
-	echo "<button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\">";
+	echo "<button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#cmdb-navigation-collapse\">";
         echo "<span class=\"sr-only\">Toggle navigation</span>";
         echo "<span class=\"icon-bar\"></span>";
         echo "<span class=\"icon-bar\"></span>";
         echo "<span class=\"icon-bar\"></span>";
 	echo "</button>";
-	echo "<h1>yourCMDB</h1>";
+	echo "<h1>$installTitle</h1>";
 	echo "</div>";
-	echo "<div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">";
+	echo "<div class=\"collapse navbar-collapse\" id=\"cmdb-navigation-collapse\">";
 	echo "<ul class=\"nav navbar-nav\">";
 
 	//menu entries
@@ -61,7 +59,7 @@
 		{
 			echo "<li>";
 			echo "<a  href=\"object.php?action=list&amp;type=$objectType\">";
-			echo "$objectType (".$objectController->getObjectCounts($objectType, $username).")";
+			echo "$objectType (".$objectController->getObjectCounts($objectType, $authUser).")";
 			echo "</a>";
 			echo "</li>";
 		}
@@ -70,10 +68,10 @@
 	echo "</ul>";
 	echo "</li>";
 	//optional: admin menu
-	//if(isset($authAccessgroup) && $authorisationProvider->authorise($authAccessgroup, "admin") != 0)
-	//{
-	//	echo "<li><a href=\"admin.php\">".gettext("Admin")."</a></li>";
-	//}
+	if(isset($authAccessgroup) && $authorisationProvider->authorise($authAccessgroup, "admin") != 0)
+	{
+		echo "<li><a href=\"admin.php\">".gettext("Admin")."</a></li>";
+	}
 	//add additional menu items from configuration
 	foreach(array_keys($menuitems) as $itemName)
 	{
@@ -83,6 +81,8 @@
 		echo "</a>";
 		echo "</li>";
 	}
+	//logout button
+	echo "<li><a href=\"logout.php\">".gettext("Logout")."</a></li>";
 
 	//footer
 	echo "</ul>";

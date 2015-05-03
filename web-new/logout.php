@@ -21,22 +21,22 @@
 *********************************************************************/
 
 /**
-* yourCMDB WebUI: home page
+* yourCMDB WebUI: logout script
 * @author: Michael Batz <michael@yourcmdb.org>
 */
-
-	//include base
+	//get header
 	include "include/bootstrap-web.php";
 	include "include/auth.inc.php";
 
-	//include header
-	include "include/htmlheader.inc.php";
-	include "include/cmdbheader.inc.php";
+	//destroy session vars
+	unset($_SESSION['authAuthenticated']);
+	unset($_SESSION['authUser']);
+	unset($_SESSION['authAccessgroup']);
+	$authAuthenticated = false;
 
-	//ToDo: content
-	echo "<h1>Content</h1>";
+	//redirect to login page
+	$baseUrl = $config->getViewConfig()->getBaseUrl();
+	header("Location: $baseUrl/login.php");
+	exit();
 
-	//include footer
-	include "include/cmdbfooter.inc.php";
-	include "include/htmlfooter.inc.php";
 ?>
