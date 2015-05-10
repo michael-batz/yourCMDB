@@ -43,4 +43,6 @@ new ClassLoader("Doctrine\DBAL", "$coreBaseDir/libs/composer/vendor/doctrine/dba
 new ClassLoader("Doctrine\ORM", "$coreBaseDir/libs/composer/vendor/doctrine/orm/lib");
 //class loading: yourCMDB
 new ClassLoader("yourCMDB", "$coreBaseDir");
+//class loading: QR code helper class
+new ClassLoader("qrcode", "$coreBaseDir/libs");
 ?>

@@ -29,6 +29,8 @@
 //imports
 use yourCMDB\config\CmdbConfig;
 use yourCMDB\controller\ObjectController;
+use yourCMDB\controller\ObjectLinkController;
+use yourCMDB\controller\ObjectLogController;
 use yourCMDB\security\AuthorisationProviderLocal;
 
 //define base directories
@@ -44,6 +46,8 @@ include "functions.inc.php";
 //ToDo: define variables
 $config = new CmdbConfig();
 $objectController = ObjectController::create();
+$objectLinkController = ObjectLinkController::create();
+$objectLogController = ObjectLogController::create();
 $authorisationProvider = new AuthorisationProviderLocal();
 
 //set default values of some variables

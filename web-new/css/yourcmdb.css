@@ -29,30 +29,88 @@
 */
 html,body
 {
-	height:		100%;
+	height:			100%;
 
-	margin:		0px;
-	padding:	0px;
+	margin:			0px;
+	padding:		0px;
 }
+
+h1
+{
+	font-size:		16pt;
+}
+
+h2
+{
+	font-size:		14pt;
+}
+
+a
+{
+	color:          	#FF0022;
+	text-decoration:	none;
+}
+
+a span.glyphicon
+{
+	color:			#000000;
+	padding-right:		5px;
+}
+
+a:hover, a:active
+{
+	color:			#FF0022:
+	text-decoration:	underline;
+}
+
+/**
+* link lists
+*/
+ul.cmdb-linklist
+{
+	list-style-type:	none;
+}
+
+/**
+* clean table
+*/
+table.cmdb-cleantable
+{
+	width:			95%;
+	margin-left:		auto;
+	margin-right:		auto;
+}
+
+table.cmdb-cleantable table.cmdb-cleantable tr, table.cmdb-cleantable tr td, table.cmdb-cleantable tr th
+{
+	border:			none;
+}
+
+table.cmdb-cleantable tr th
+{
+	border-bottom:		#000000 1px solid;
+	padding-top:		50px;
+}
+
 
 /**
 * header  
 */
 div.cmdb-header
 {
-	margin:		0px;
-	background:	#000000;
-	color:		#FFFFFF;
+	margin:			0px;
+	background:		#000000;
+	color:			#FFFFFF;
 }
 
 div.cmdb-header h1
 {
-	background:     url('../img/logo.png') no-repeat;
-	margin:		0px;
-	padding-top:    45px;
-	padding-bottom: 20px;
-	padding-left:   95px;
-	font-size:	16pt;
+	background:     	url('../img/logo.png') no-repeat;
+	margin:			0px;
+	padding-top:   		 45px;
+	padding-bottom: 	20px;
+	padding-left:   	95px;
+	font-size:		16pt;
 }
 
 
@@ -61,9 +119,9 @@ div.cmdb-header h1
 */
 .cmdb-navigation
 {
-	background:	#000000;
-	color:		#FFFFFF;
-	border-radius:	0;
+	background:		#000000;
+	color:			#FFFFFF;
+	border-radius:		0;
 }
 
 .cmdb-navigation ul.dropdown-menu
@@ -75,13 +133,13 @@ div.cmdb-header h1
 /* toggle button  */
 .cmdb-navigation .navbar-toggle
 {
-	border-color:	#FFFFFF;
+	border-color:		#FFFFFF;
 }
 
 /* toggle button icon  */
 .cmdb-navigation .icon-bar
 {
-	background:	#FFFFFF;
+	background:		#FFFFFF;
 }
 
 /* links  */
@@ -113,11 +171,33 @@ div#cmdb-loginpanel
 
 div#cmdb-logincontainer
 {
-	min-height:	100%;
-	min-width:	100%;
-	overflow:	auto;
-	background:	url('../img/login-background.jpg') no-repeat;
+	min-height:		100%;
+	min-width:		100%;
+	overflow:		auto;
+	background:		url('../img/login-background.jpg') no-repeat;
 	background-size:cover;	
 }
 
+/*
+* object table
+*/
+div#cmdb-objecttable
+{
+	border-color:		#000000;
+	border:			1px solid;
+	border-radius:		10px;
+}
 
+div#cmdb-objecttable h2
+{
+	border-color:		#000000;
+	border-bottom:		1px solid;
+}
+
+div#cmdb-objecttable-head h1
+{
+	color:			#FFFFFF;
+	background-color:	#000000;
+	margin-top:		0px;
+	padding:		10px;
+}

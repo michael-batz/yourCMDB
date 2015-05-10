@@ -1,4 +1,5 @@
 <?php
+namespace qrcode;
 class QR {//Licensed under GPLv3, full text at http://www.gnu.org/licenses/gpl-3.0.txt
 	const ECC_L = 1;
 	const ECC_M = 0;
