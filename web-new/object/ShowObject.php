@@ -117,7 +117,7 @@
 	echo "<h2>";
 	echo gettext("Summary");
 	echo "</h2>";
-	echo "<table class=\"table table-condensed cmdb-cleantable\">";
+	echo "<table class=\"table table-condensed cmdb-cleantable cmdb-table2cols\">";
 	foreach(array_keys($config->getObjectTypeConfig()->getSummaryFields($object->getType())) as $summaryfield)
 	{
 		$fieldLabel = $config->getObjectTypeConfig()->getFieldLabel($object->getType(), $summaryfield);
@@ -200,7 +200,7 @@
 
 	//Tab: object fields
 	echo "<div role=\"tabpanel\" class=\"tab-pane fade in active\" id=\"tabs-1\">";
-	echo "<table class=\"table table-hover cmdb-cleantable\">";
+	echo "<table class=\"table table-hover cmdb-cleantable cmdb-table2cols\">";
 	foreach($config->getObjectTypeConfig()->getFieldGroups($object->getType()) as $groupname)
 	{
 		echo "<tr>";

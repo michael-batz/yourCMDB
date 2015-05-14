@@ -92,6 +92,14 @@ table.cmdb-cleantable tr th
 	padding-top:		50px;
 }
 
+/**
+* table with two cols and same width
+*/
+table.cmdb-table2cols tr td
+{
+	width:		50%;
+}
+
 
 /**
 * header  

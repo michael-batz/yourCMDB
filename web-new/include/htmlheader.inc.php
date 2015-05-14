@@ -36,16 +36,19 @@
 		<!-- favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 
-		<!-- CSS: bootstrap, smartmenues and yourCMDB custom -->
+		<!-- CSS: bootstrap, typeahead, smartmenues and yourCMDB custom -->
 		<link href="css/bootstrap.min.css" rel="stylesheet" />
 		<link href="css/jquery.smartmenus.bootstrap.css" rel="stylesheet" />
+		<link href="css/typeahead.css" rel="stylesheet" />
 		<link href="css/yourcmdb.css" rel="stylesheet" />
 
-		<!-- JS: jQuery, bootstrap, smartmenues and yourCMDB custom -->
+		<!-- JS: jQuery, bootstrap, typeahead smartmenues and yourCMDB custom -->
 		<script src="js/jquery-1.11.2.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		<script src="js/typeahead.bundle.min.js"></script>
 		<script src="js/jquery.smartmenus.min.js"></script>
 		<script src="js/jquery.smartmenus.bootstrap.min.js"></script>
+		<script src="js/yourcmdb.js"></script>
 
 		<title><?php echo $installTitle; ?></title>
 	</head>

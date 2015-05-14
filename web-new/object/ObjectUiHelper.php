@@ -82,9 +82,10 @@
 			?>
 				<input id="<?php echo $name; ?>" 
 					type="text" 
+					class="form-control typeahead-object"
 					name="<?php echo $name; ?>" 
-					value="<?php echo htmlspecialchars($value); ?>" 
-					onfocus="javascript:showAutocompleter('#<?php echo $name; ?>', 'autocomplete.php?object=object&amp;var1=<?php echo $objectType;?>&amp;var2=<?php echo $name?>')" />
+					value="<?php echo htmlspecialchars($value); ?>"
+				/> 
 			<?php
 		}
 		else
@@ -99,17 +100,18 @@
 		{
 			?>
 				<input id="<?php echo $name; ?>" 
-					type="text" 
+					type="text"
+					class="form-control typeahead-object" 
 					name="<?php echo $name; ?>" 
-					value="<?php echo htmlspecialchars($value); ?>" 
-					onfocus="javascript:showAutocompleter('#<?php echo $name; ?>', 'autocomplete.php?object=object&amp;var1=<?php echo $objectType;?>&amp;var2=<?php echo $name?>')" />
+					value="<?php echo htmlspecialchars($value); ?>"
+				/> 
 			<?php
-				echo "<a href=\"javascript:createPassword('#$name')\"><span class=\"glyphicon glyphicon-refresh\" title=\"".gettext("generate")."\"></span></a>";
+				echo "<a href=\"javascript:cmdbCreatePassword('#$name')\"><span class=\"glyphicon glyphicon-refresh\" title=\"".gettext("generate")."\"></span></a>";
 		}
 		else
 		{
 			echo "<input id=\"$name\" type=\"hidden\" name=\"$name\" value=\"".htmlspecialchars($value)."\" />";
-			echo "<a href=\"javascript:showPassword('#$name')\"><span class=\"gylphicon glyphicon-eye-open\" title=\"".gettext("show")."\"></span></a>";
+			echo "<a href=\"javascript:cmdbShowPassword('#$name')\"><span class=\"gylphicon glyphicon-eye-open\" title=\"".gettext("show")."\"></span></a>";
 		}
 	}
 
@@ -120,6 +122,7 @@
 			?>
 				<input id="<?php echo $name; ?>" 
 					type="text" 
+					class="form-control"
 					name="<?php echo $name; ?>" 
 					value="<?php echo $value; ?>" 
 					onfocus="javascript:showDatepicker('#<?php echo $name; ?>')" />
@@ -136,7 +139,7 @@
 		if($writable)
 		{
 			?>
-				<textarea id="<?php echo $name; ?>" name="<?php echo $name; ?>" ><?php echo htmlspecialchars($value); ?></textarea>
+				<textarea class="form-control" id="<?php echo $name; ?>" name="<?php echo $name; ?>" ><?php echo htmlspecialchars($value); ?></textarea>
 			<?php
 		}
 		else
@@ -147,7 +150,7 @@
 
 	function showFieldForBoolean($name, $value, $writable)
 	{
-		$checkboxString = "<input type=\"checkbox\" id=\"$name\" name=\"$name\" value=\"true\" ";
+		$checkboxString = "<input type=\"checkbox\" class=\"form-control\" id=\"$name\" name=\"$name\" value=\"true\" ";
 		if($value == "TRUE" || $value == "true" || $value == "1")
 		{
 			$checkboxString.= "checked=\"checked\" ";
@@ -192,11 +195,11 @@
 		//print header, null value and current value
 		if($writable)
 		{
-			echo "<select name=\"$name\" size=\"1\">";
+			echo "<select name=\"$name\" size=\"1\" class=\"form-control\">";
 		}
 		else
 		{
-			echo "<select name=\"$name\" size=\"1\" disabled=\"disabled\">";
+			echo "<select name=\"$name\" size=\"1\" class=\"form-control\" disabled=\"disabled\">";
 		}
 		echo "<option value=\"\"></option>";
 		if($refObjectSummary != "")
