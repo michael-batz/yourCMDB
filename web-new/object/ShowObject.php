@@ -44,7 +44,7 @@
 	$statusImage = "<span class=\"label label-success\" title=\"".gettext("active object")."\">A</span>";
 	if($object->getStatus() == 'N')
 	{
-		$statusImage = "<span class=\"label label-success\" title=\"".gettext("active object")."\">A</span>";
+		$statusImage = "<span class=\"label label-danger\" title=\"".gettext("inactive object")."\">N</span>";
 	}
 	$textTitle = "$statusImage ". $object->getType() ." #". $object->getId();
 
@@ -96,8 +96,8 @@
 	echo "<a href=\"#\" data-toggle=\"modal\" data-target=\"#confirmDelete\"><span class=\"glyphicon glyphicon-trash\"></span>".gettext("delete")."</a>";
 	echo "</div>";
 
-	//ToDo:print messagebar
-	//include "include/messagebar.inc.php";
+	//print messagebar
+	include "include/messagebar.inc.php";
 
 	echo "<div class=\"container\" id=\"cmdb-objecttable\">";
 	echo "<div class=\"row\" id=\"cmdb-objecttable-head\">";

@@ -96,6 +96,30 @@ function cmdbJsStart()
 			);
 		});
 	});
+
+	//start bootstap-datepicker
+	$(function()
+	{
+		$( "input.datepicker-object"  ).each(function()
+		{
+			$(this).datepicker
+			({
+				format:		'dd.mm.yyyy'
+			});
+		});
+	});
+
+	//start event handler for modal delete confirmation
+	$(function()
+	{
+		$( "#confirmDeleteList" ).on('show.bs.modal', function (event)
+		{
+			var source = $(event.relatedTarget);
+			var linkDelete = source.data('linkdelete');
+			$( "#modalButtonGo" ).attr("href", linkDelete);
+		});
+	});
+
 }
 
 

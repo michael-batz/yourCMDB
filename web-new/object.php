@@ -33,6 +33,7 @@
 
 	//class loading
 	use yourCMDB\exceptions\CmdbObjectNotFoundException;
+	use \Exception;
 
 	//get UI Helper
 	include "object/ObjectUiHelper.php";
@@ -73,10 +74,10 @@
 			}
 			catch(CmdbObjectNotFoundException $e)
 			{
-				//ToDo:show error message and search form
+				//show error message and search form
 				$paramError = sprintf(gettext("No object with AssetID %s found..."), $paramId);
-				//include "include/messagebar.inc.php";
-				//search functions
+				include "include/messagebar.inc.php";
+				//ToDo: search functions
 				//include "search/SearchFunctions.php";
 				//show search form
 				//include "search/SearchForm.php";
@@ -120,10 +121,10 @@
 			//create new object and return assetId
 			try
 			{
-				$paramId = $datastore->addObject(new CmdbObject($paramType, $objectFields, 0, $status));
-				$object = $datastore->getObject($paramId);
+				$object = $objectController->addObject($paramType, $status, $objectFields, $authUser);
+				$paramId = $object->getId();
 			}
-			catch(NoSuchObjectException $e)
+			catch(Exception $e)
 			{
 				$paramError = gettext("Error saving new object");
 				include "error/Error.php";
@@ -146,19 +147,17 @@
 			//change object and return the ShowObject page
 			try
 			{
-				$object = $datastore->getObject($paramId);
+				$object = $objectController->getObject($paramId, $authUser);
 				//check, if HTTP POST variables are set
 				if(count($_POST) <= 0)
 				{
 					$paramError = gettext("No data were set when saving an object.");
 					include "object/ShowObject.php";
 					break;
-				}	
-				$datastore->changeObjectStatus($paramId, $status);
-				$datastore->changeObjectFields($paramId, $objectFields);
-				$object = $datastore->getObject($paramId);
+				}
+				$object = $objectController->updateObject($paramId, $status, $objectFields, $authUser);
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Error saving object");
 				include "error/Error.php";
@@ -173,10 +172,10 @@
 			//delete object
 			try
 			{
-				$paramType = $datastore->getObject($paramId)->getType();
-				$datastore->deleteObject($paramId);
+				$paramType = $objectController->getObject($paramId, $authUser)->getType();
+				$objectController->deleteObject($paramId, $authUser);
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Error deleting object: Object not found");
 				include "error/Error.php";
@@ -187,6 +186,7 @@
 			include "object/ListObjects.php";
 			break;
 
+		//ToDo
 		case "addLink":
 			//get first object
 			try
@@ -222,6 +222,7 @@
 			include "object/ShowObject.php";
 			break;
 
+		//ToDo
 		case "deleteLink":
 			try
 			{
@@ -241,6 +242,7 @@
 			include "object/ShowObject.php";
 			break;
 
+		//ToDo
 		case "sendEvent":
 			try
 			{

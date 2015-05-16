@@ -104,7 +104,7 @@ class ObjectController
 			{
 				$value = $interpreter->interpret($fields[$key], $configuredFields[$key]);
 				$objectField = new CmdbObjectField($object, $key, $value);
-				$object->getFields()->add($objectField);
+				$object->getFields()->set($key, $objectField);
 				$this->entityManager->persist($objectField);
 			}
 		}
@@ -205,7 +205,7 @@ class ObjectController
 			{
 				$value = $interpreter->interpret($fields[$key], $configuredFields[$key]);
 				$objectField = new CmdbObjectField($object, $key, $value);
-				$object->getFields()->add($objectField);
+				$object->getFields()->set($key, $objectField);
 				$this->entityManager->persist($objectField);
 				$logString.= "$key: null -> $value; ";
 			}

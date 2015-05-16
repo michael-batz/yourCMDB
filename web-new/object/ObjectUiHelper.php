@@ -122,10 +122,10 @@
 			?>
 				<input id="<?php echo $name; ?>" 
 					type="text" 
-					class="form-control"
+					class="form-control datepicker-object"
 					name="<?php echo $name; ?>" 
 					value="<?php echo $value; ?>" 
-					onfocus="javascript:showDatepicker('#<?php echo $name; ?>')" />
+					/>
 			<?php
 		}
 		else

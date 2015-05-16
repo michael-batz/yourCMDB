@@ -87,11 +87,28 @@
 
 
 
-	//ToDo:<!-- confirmation for deleting objects  -->
-	echo "<div class=\"blind\" id=\"jsConfirm\" title=\"".gettext("Are you sure?")."\">";
-	echo "<p>";
+	//<!-- confirmation for deleting this object  -->
+	echo "<div class=\"modal fade\" id=\"confirmDeleteList\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"confirmDeleteListLabel\" aria-hidden=\"true\">";
+	echo "<div class=\"modal-dialog\">";
+	echo "<div class=\"modal-content\">";
+	//confirmation: header
+	echo "<div class=\"modal-header\">";
+	echo "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>";
+	echo "<h4 class=\"modal-title\" id=\"confirmDeleteListLabel\">".gettext("Are you sure...?")."</h4>";
+	echo "</div>";
+	//confirmation: body
+	echo "<div class=\"modal-body\">";
+        echo "<p>";
 	echo gettext("Do you really want to delete this object?");
 	echo "</p>";
+	echo "</div>";
+	//confirmation: footer
+	echo "<div class=\"modal-footer\">";
+	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
+	echo "<a href=\"\" class=\"btn btn-danger\" id=\"modalButtonGo\">".gettext("delete")."</a>";
+	echo "</div>";
+	echo "</div>";
+	echo "</div>";
 	echo "</div>";
 
 	//<!-- submenu -->
@@ -101,8 +118,8 @@
 	echo "<a href=\"$urlCsvExport\"><span class=\"glyphicon glyphicon-share-alt\" title=\"".gettext("export")."\"></span>CSV export</a>";
 	echo "</div>";
 
-	//ToDo:print messagebar
-	//include "include/messagebar.inc.php";
+	//print messagebar
+	include "include/messagebar.inc.php";
 
 	//<!-- headline -->
 	echo "<h1 class=\"text-center\">$paramType ($objectCount)</h1>";
@@ -138,7 +155,7 @@
 		{ 
 			$urlObjectShow = "object.php?action=show&amp;id=". $objects[$i]->getId();
 			$urlObjectEdit = "object.php?action=edit&amp;id=". $objects[$i]->getId()."&amp;type=".$objects[$i]->getType();
-			$urlObjectDelete = "javascript:showConfirmation('object.php?action=delete&amp;id=". $objects[$i]->getId()."', '".gettext("Yes")."', '".gettext("Cancel")."')";
+			$urlObjectDelete = "object.php?action=delete&amp;id=". $objects[$i]->getId();
 			$fieldValue = $objects[$i]->getFieldValue($fieldname);
 			$fieldType = $summaryFields[$fieldname];
 			echo "<td>";
@@ -148,7 +165,8 @@
 		echo "<td>";
 		echo "<a href=\"$urlObjectShow\"><span class=\"glyphicon glyphicon-eye-open\" title=\"".gettext("show")."\"></span></a>&nbsp;&nbsp;&nbsp;";
 		echo "<a href=\"$urlObjectEdit\"><span class=\"glyphicon glyphicon-pencil\" title=\"".gettext("edit")."\"></span></a>&nbsp;&nbsp;&nbsp;";
-		echo "<a href=\"$urlObjectDelete\"><span class=\"glyphicon glyphicon-trash\" title=\"".gettext("delete")."\"></span></a>";
+		echo "<a href=\"#\" data-toggle=\"modal\" data-target=\"#confirmDeleteList\" data-linkdelete=\"$urlObjectDelete\">";
+		echo "<span class=\"glyphicon glyphicon-trash\" title=\"".gettext("delete")."\"></span></a>";
 		echo "</td>";
 		echo "</tr>";
 	}

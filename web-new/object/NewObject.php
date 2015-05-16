@@ -29,13 +29,19 @@
 	//get data
 	$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
 
+	//container
+	echo "<div class=\"container\" id=\"cmdb-objecttable\">";
+
 	//<!-- headline -->
-	echo "<h1>";
+	echo "<div class=\"row\" id=\"cmdb-objecttable-head\">";
+	echo "<h1 class=\"text-center\">";
 	echo gettext("New Object");
 	echo "</h1>";
+	echo "</div>";
 
+	echo "<div class=\"row\">";
 	echo "<form action=\"object.php\" method=\"get\" accept-charset=\"UTF-8\">";
-	echo "<table class=\"cols2\">";
+	echo "<table class=\"table cmdb-cleantable cmdb-table2cols\">";
 	echo "<tr><th colspan=\"2\">";
 	echo gettext("New Object");
 	echo "</th></tr>";
@@ -43,7 +49,7 @@
 	echo "<td>";
 	echo gettext("Type:");
 	echo "</td>";
-	echo "<td><select name=\"type\">";
+	echo "<td><select name=\"type\" class=\"form-control\">";
 	foreach(array_keys($objectTypes) as $group)
 	{
 		echo "<optgroup label=\"$group\">";
@@ -62,4 +68,8 @@
 	echo "</td></tr>";
 	echo "</table>";
 	echo "</form>";
+
+	//end container
+	echo "</div>";
+	echo "</div>";
 ?>

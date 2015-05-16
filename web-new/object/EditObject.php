@@ -57,7 +57,7 @@
 	
 
 	//<!-- title -->
-	echo "<div class=\"container\" id=\"objecttable\">";
+	echo "<div class=\"container\" id=\"cmdb-objecttable\">";
 	echo "<div class=\"row\" id=\"cmdb-objecttable-head\">";
 	echo "<h1 class=\"text-center\">$textTitle</h1>";
 	echo "</div>";
