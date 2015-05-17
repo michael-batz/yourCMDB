@@ -33,6 +33,8 @@
 
 	//class loading
 	use yourCMDB\exceptions\CmdbObjectNotFoundException;
+	use yourCMDB\exceptions\CmdbObjectLinkNotAllowedException;
+	use yourCMDB\exceptions\CmdbObjectLinkNotFoundException;
 	use \Exception;
 
 	//get UI Helper
@@ -186,14 +188,13 @@
 			include "object/ListObjects.php";
 			break;
 
-		//ToDo
 		case "addLink":
 			//get first object
 			try
 			{
-				$object = $datastore->getObject($paramId);
+				$object = $objectController->getObject($paramId, $authUser);
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Object for adding links not found.");
 				include "error/Error.php";
@@ -203,14 +204,15 @@
 			//tryp to add a link
 			try
 			{
-				$result = $datastore->addObjectLink($paramId, $paramIdB);
+				$objectB = $objectController->getObject($paramIdB, $authUser);
+				$objectLinkController->addObjectLink($object, $objectB, $authUser);
 				$paramMessage = gettext("Object link successfully added");
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Error adding object link: Object B not found");
 			}
-			catch(ObjectActionNotAllowed $e)
+			catch(CmdbObjectLinkNotAllowedException $e)
 			{
 				$paramError = sprintf(gettext("Link object %s with object %s is not allowed."), $paramId, $paramIdB);
 				if($paramId != $paramIdB)
@@ -222,35 +224,38 @@
 			include "object/ShowObject.php";
 			break;
 
-		//ToDo
 		case "deleteLink":
 			try
 			{
 				//delete link
-				$object = $datastore->getObject($paramId);
-				$result = $datastore->deleteObjectLink($paramId, $paramIdB);
+				$object = $objectController->getObject($paramId, $authUser);
+				$objectB = $objectController->getObject($paramIdB, $authUser);
+				$objectLinkController->deleteObjectLink($object, $objectB, $authUser);
 				$paramMessage = gettext("Object link was successfully deleted");
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Error deleting object link: object not found");
 				include "error/Error.php";
 				break;
+			}
+			catch(CmdbObjectLinkNotFoundException $e)
+			{
+				$paramError = gettext("Error deleting object link: Link not found");
 			}
 
 			//open object page
 			include "object/ShowObject.php";
 			break;
 
-		//ToDo
 		case "sendEvent":
 			try
 			{
-				$object = $datastore->getObject($paramId);
-				$controller->getEventProcessor()->generateEvent($paramEvent, $object->getId(), $object->getType());
+				$object = $objectController->getObject($paramId, $authUser);
+				$eventProcessor->generateEvent($paramEvent, $object->getId(), $object->getType());
 				$paramMessage = sprintf(gettext("Event %s was successfully sent"), $paramEvent);
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Error sending event: object not found");
 				include "error/Error.php";

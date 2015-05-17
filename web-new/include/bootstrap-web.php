@@ -32,6 +32,7 @@ use yourCMDB\controller\ObjectController;
 use yourCMDB\controller\ObjectLinkController;
 use yourCMDB\controller\ObjectLogController;
 use yourCMDB\security\AuthorisationProviderLocal;
+use yourCMDB\taskscheduler\EventProcessor;
 
 //define base directories
 $scriptBaseDir = dirname(__FILE__);
@@ -49,6 +50,7 @@ $objectController = ObjectController::create();
 $objectLinkController = ObjectLinkController::create();
 $objectLogController = ObjectLogController::create();
 $authorisationProvider = new AuthorisationProviderLocal();
+$eventProcessor = new EventProcessor();
 
 //set default values of some variables
 $authUser = "";
