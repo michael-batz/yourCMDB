@@ -25,6 +25,30 @@
 */
 
 /**
+* AJAX loader
+*/
+function cmdbOpenUrlAjax(url, selector, scrollTo, showWaitingAnimation)
+{
+	if(showWaitingAnimation)
+	{
+		$( selector ).html('<p class="waiting"><img src="img/waiting.gif" /></p>');
+	}
+	$( selector ).load(url);
+	if(scrollTo)
+	{
+		cmdbScrollToElement(selector);
+	}
+};
+
+/**
+* Scroll to specific element
+*/
+function cmdbScrollToElement(selector)
+{
+	$( 'html, body' ).animate({scrollTop: $( selector ).offset().top}, 'slow');
+};
+
+/**
 * show password in a password field
 */
 function cmdbShowPassword(id)
@@ -56,7 +80,25 @@ function cmdbCreatePassword(id)
 function cmdbRandomBetweenInt(min, max)
 {
 	return Math.floor(Math.random() * (max - min + 1)) - min;
-}
+};
+
+/**
+* clear search form
+*/
+function cmdbSearchbarClear()
+{
+	//clear other input fields
+	$( "#searchbarForm input[name='searchstring']" ).val('');
+	$( "#searchbarForm input[name='activeonly']" ).prop('checked', false);
+	$( "#searchbarForm select[name='typegroup']" ).val('');
+	$( "#searchbarForm select[name='type']" ).val('');
+};
+
+function cmdbSearchbarSubmit(selectorForm, selectorResult)
+{
+	var url = 'search/SearchResult.php?' + $( selectorForm ).serialize();
+	cmdbOpenUrlAjax(url, selectorResult, true, true);
+};
 
 
 /**
@@ -68,6 +110,7 @@ function cmdbJsStart()
 	//start typeahead.js autocomplete
 	$(function()
 	{
+		//autocomplete for object fields
 		$( "input.typeahead-object"  ).each(function()
 		{
 			var cmdbSuggestionsFieldvalues = new Bloodhound(
@@ -95,6 +138,37 @@ function cmdbJsStart()
 				}
 			);
 		});
+
+		//autocomplete for searchbar
+		$( "input.typeahead-searchbar"  ).each(function()
+		{
+			var cmdbSuggestionsFieldvalues = new Bloodhound(
+			{
+				queryTokenizer:	Bloodhound.tokenizers.whitespace,
+				datumTokenizer: Bloodhound.tokenizers.whitespace,
+				remote: 
+				{
+					url: 		'autocomplete.php?object=quicksearch&var1=&term=%QUERY%',
+					wildcard:	'%QUERY%'
+				}
+			});
+
+
+			$(this).typeahead
+			(
+				{
+					hint:		true,
+					minLength:	1,
+					highlight:	true
+				},
+				{
+					source:		cmdbSuggestionsFieldvalues,
+					limit:		10
+				}
+			);
+		});
+
+
 	});
 
 	//start bootstap-datepicker
@@ -136,62 +210,6 @@ cmdbJsStart();
 function openUrl(url)
 {
 	location.href=url;
-};
-
-/**
-* AJAX loader
-*/
-function openUrlAjax(url, selector, scrollTo, showWaitingAnimation)
-{
-	if(showWaitingAnimation)
-	{
-		$( selector ).html('<p class="waiting"><img src="img/waiting.gif" /></p>');
-	}
-	$( selector ).load(url);
-	if(scrollTo)
-	{
-		scrollToElement(selector);
-	}
-};
-
-/**
-* Scroll to specific element
-*/
-function scrollToElement(selector)
-{
-	$( 'html, body' ).animate({scrollTop: $( selector ).offset().top}, 'slow');
-};
-
-
-
-/**
-* Ask for confirmation for an action
-*/
-function showConfirmation(urlAction, button1Label, button2Label)
-{
-	var buttonDefs = {};
-	buttonDefs[button1Label] = function(){openUrl(urlAction);};
-	buttonDefs[button2Label] = function(){$( this ).dialog("close");};
-	$( "#jsConfirm" ).dialog({
-			modal: true,
-			buttons:buttonDefs,
-		});
-};
-
-
-
-/**
-* Show Datepicker on input fields (use with JS event handler onfocus)
-*/
-function showDatepicker(id)
-{
-	$( id  ).datepicker
-	({
-		changeMonth:	true,
-		changeYear:	true,
-		dateFormat:	"dd.mm.yy"
-	});
-	$( id ).datepicker('show');
 };
 
 

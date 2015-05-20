@@ -38,11 +38,21 @@
         echo "<span class=\"icon-bar\"></span>";
         echo "<span class=\"icon-bar\"></span>";
 	echo "</button>";
+
+	//title
 	echo "<h1>$installTitle</h1>";
 	echo "</div>";
+
+	//quicksearch
+	echo "<form class=\"navbar-form navbar-left\" role=\"search\" action=\"search.php\" method=\"get\">";
+	echo "<div class=\"form-group\">";
+	echo "<input type=\"text\" name=\"searchstring\" class=\"form-control typeahead-searchbar\" placeholder=\"".gettext("Search...")."\">";
+	echo "</div>";
+	echo "</form>";
+
+	//menu
 	echo "<div class=\"collapse navbar-collapse\" id=\"cmdb-navigation-collapse\">";
 	echo "<ul class=\"nav navbar-nav\">";
-
 	//menu entries
 	echo "<li><a href=\"index.php\">".gettext("Home")."</a></li>";
 	echo "<li><a href=\"search.php\">".gettext("Search")."</a></li>";

@@ -49,8 +49,7 @@
 			}
 		break;
 
-		//ToDo
-		/*case "quicksearch":
+		case "quicksearch":
 			//check, if searchstring consists of multiple words
 			$searchstring = $paramSearchstring;
 			$searchstringFirstPart = "";
@@ -59,14 +58,14 @@
 				$searchstring = $matches[2];
 				$searchstringFirstPart = $matches[1];
 			}
-			$values = $datastore->getAllFieldValues(null, null, $searchstring, 10);
+			$values = $objectController->getAllFieldValues(null, null, $searchstring, 10, $authUser);
 			foreach($values as $value)
 			{
 				if($paramSearchstring != $searchstring)
 				{
 					$value = "$searchstringFirstPart $value";
 				}
-				$output[] = array("id" => $value, "label" => $value, "value" => $value);
+				$output[] = $value;
 			}
 		break;
 
@@ -83,7 +82,7 @@
 				$searchstring = $matches[2];
 				$searchstringFirstPart = $matches[1];
 			}
-			$values = $datastore->getAllFieldValues(null, null, $searchstring, 10);
+			$values = $objectController->getAllFieldValues(null, null, $searchstring, 10, $authUser);
 			$editedValues = Array();
 			foreach($values as $value)
 			{
@@ -94,7 +93,7 @@
 				$editedValues[] = $value;
 			}
 			$output[] = $editedValues;
-		break;*/
+		break;
 	}
 
 	//JSON output

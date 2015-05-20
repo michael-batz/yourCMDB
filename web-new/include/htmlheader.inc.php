@@ -36,6 +36,9 @@
 		<!-- favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 
+		<!-- OpenSearch plugin -->
+		<link rel="search" type="application/opensearchdescription+xml" title="yourCMDB QuickSearch" href="opensearch-plugin.php" />
+
 		<!-- CSS: bootstrap, typeahead, smartmenues, bootstrap-datepicker and yourCMDB custom -->
 		<link href="css/bootstrap.min.css" rel="stylesheet" />
 		<link href="css/jquery.smartmenus.bootstrap.css" rel="stylesheet" />
