@@ -24,6 +24,9 @@ $config = new CmdbConfig();
 $authProvider = $config->getSecurityConfig()->getAuthProvider("web");
 //$authProvider->addUser("admin", "yourcmdb", "admin");
 
+$objectIds = $objectController->getAllObjectIds("2", 10, "test");
+print_r($objectIds);
+
 //addObject()
 /*$fields = Array();
 $fields['ip'] = "192.168.0.1";

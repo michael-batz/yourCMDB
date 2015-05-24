@@ -47,6 +47,7 @@
 	echo "<form class=\"navbar-form navbar-left\" role=\"search\" action=\"search.php\" method=\"get\">";
 	echo "<div class=\"form-group\">";
 	echo "<input type=\"text\" name=\"searchstring\" class=\"form-control typeahead-searchbar\" placeholder=\"".gettext("Search...")."\">";
+	echo "<input type=\"submit\" class=\"cmdb-blind\">";
 	echo "</div>";
 	echo "</form>";
 

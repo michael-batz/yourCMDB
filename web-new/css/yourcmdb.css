@@ -64,6 +64,14 @@ a:hover, a:active
 }
 
 /**
+* class for invisible objects
+*/
+.cmdb-blind
+{
+	display:		none;
+}
+
+/**
 * link lists
 */
 ul.cmdb-linklist

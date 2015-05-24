@@ -24,6 +24,8 @@
 * WebUI element: search
 * @author Michael Batz <michael@yourcmdb.org>
 */
+	use yourCMDB\exceptions\CmdbObjectNotFoundException;
+
 	//include base
 	include "include/bootstrap-web.php";
 	include "include/auth.inc.php";
@@ -34,6 +36,29 @@
 
 	//search functions
 	include "search/SearchFunctions.php";
+
+	//searchbar function: assetId
+	if(preg_match("/^assetid:([0-9]+)$/", $paramSearchString, $matches) === 1)
+	{
+		$paramId = $matches[1];
+		try
+		{
+			$object= $objectController->getObject($paramId, $authUser);
+
+			//show object page
+			include "object/ObjectUiHelper.php";
+			include "object/ShowObject.php";
+			include "include/cmdbfooter.inc.php";
+			include "include/htmlfooter.inc.php";
+			exit();
+		}
+		catch(CmdbObjectNotFoundException $e)
+		{
+			//show error message and search form
+			$paramError = sprintf(gettext("No object with AssetID %s found..."), $paramId);
+			include "include/messagebar.inc.php";
+		}
+	}
 
 	//show search form
 	include "search/SearchForm.php";

@@ -49,6 +49,14 @@
 			}
 		break;
 
+		case "assetids":
+			$values = $objectController->getAllObjectIds($paramSearchstring ,10, "yourCMDB-API");
+			foreach($values as $value)
+			{
+				$output[] = Array("data" => "assetid:".$value, "value" => $value);
+			}
+		break;
+
 		case "quicksearch":
 			//check, if searchstring consists of multiple words
 			$searchstring = $paramSearchstring;

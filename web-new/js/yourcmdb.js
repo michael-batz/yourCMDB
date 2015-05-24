@@ -120,7 +120,8 @@ function cmdbJsStart()
 				remote: 
 				{
 					url: 		'autocomplete.php?object=object&var1=' + this.id + '&term=%QUERY%',
-					wildcard:	'%QUERY%'
+					wildcard:	'%QUERY%',
+					cache:		false
 				}
 			});
 
@@ -134,7 +135,6 @@ function cmdbJsStart()
 				},
 				{
 					source:		cmdbSuggestionsFieldvalues,
-					limit:		10
 				}
 			);
 		});
@@ -142,6 +142,18 @@ function cmdbJsStart()
 		//autocomplete for searchbar
 		$( "input.typeahead-searchbar"  ).each(function()
 		{
+			var cmdbSuggestionsAssetids = new Bloodhound(
+			{
+				queryTokenizer:	Bloodhound.tokenizers.whitespace,
+				datumTokenizer: Bloodhound.tokenizers.whitespace,
+				remote: 
+				{
+					url: 		'autocomplete.php?object=assetids&term=%QUERY%',
+					wildcard:	'%QUERY%',
+					cache:		false
+				}
+			});
+
 			var cmdbSuggestionsFieldvalues = new Bloodhound(
 			{
 				queryTokenizer:	Bloodhound.tokenizers.whitespace,
@@ -149,11 +161,11 @@ function cmdbJsStart()
 				remote: 
 				{
 					url: 		'autocomplete.php?object=quicksearch&var1=&term=%QUERY%',
-					wildcard:	'%QUERY%'
+					wildcard:	'%QUERY%',
+					cache:		false
 				}
 			});
-
-
+			
 			$(this).typeahead
 			(
 				{
@@ -162,8 +174,21 @@ function cmdbJsStart()
 					highlight:	true
 				},
 				{
+					source:		cmdbSuggestionsAssetids,
+					display:	'data',
+					templates:
+							{
+								header:		'<h3>Objects</h3>',
+								suggestion:	function(data){return '<div>' + data.value + '</div>';}
+							}
+				},
+				{
 					source:		cmdbSuggestionsFieldvalues,
-					limit:		10
+					templates:
+							{
+								header:		'<h3>Fieldvalues</h3>',
+								suggestion:	function(data){return '<div>' + data + '</div>';}
+							}
 				}
 			);
 		});

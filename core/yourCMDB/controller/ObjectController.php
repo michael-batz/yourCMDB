@@ -563,6 +563,49 @@ class ObjectController
 	}
 
 	/**
+	* Returns all Ids of stored objects
+	* @param string $searchstring	id starts with searchstring, or null if no filter is needed
+	* @param int $max		max count of results or 0, if no limit
+	* @param string $user		name of the user that wants to get the values
+	*/
+	public function getAllObjectIds($searchstring, $max=0, $user)
+	{
+		//create QueryBuilder
+		$queryBuilder = $this->entityManager->createQueryBuilder();
+
+		//create query
+		$queryBuilder->select("o.id");
+		$queryBuilder->from("yourCMDB:CmdbObject", "o");
+		$queryBuilder->distinct();
+		$queryBuilder->orderBy("o.id", "ASC");
+		if($searchstring != null)
+		{
+			$queryBuilder->andWhere("o.id LIKE ?1");
+			$queryBuilder->setParameter(1, "$searchstring%");
+		}
+
+		//limit results
+		if($max != 0)
+		{
+			$queryBuilder->setMaxResults($max);
+		}
+
+		//get results
+		$query = $queryBuilder->getQuery();
+		$objectIds = $query->getResult();
+
+		//create output
+		$output = Array();
+		foreach($objectIds as $objectId)
+		{
+			$output[] = $objectId['id'];
+		}
+
+		//return output
+		return $output;
+	}
+
+	/**
 	* Returns the number of objects
 	* @param string[] $types	Array with object types or null, if no limit by object type is needed
 	* @param string $user		name of the user that wants to get the values
