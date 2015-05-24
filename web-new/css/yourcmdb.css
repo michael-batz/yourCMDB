@@ -170,6 +170,12 @@ div.cmdb-header h1
 	background-color:	#222222;
 }
 
+/* gylphicons  */
+.cmdb-navigation .glyphicon
+{
+	color:			#FF0022;
+}
+
 /**
 * login window
 */

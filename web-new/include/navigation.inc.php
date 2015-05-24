@@ -55,12 +55,14 @@
 	echo "<div class=\"collapse navbar-collapse\" id=\"cmdb-navigation-collapse\">";
 	echo "<ul class=\"nav navbar-nav\">";
 	//menu entries
-	echo "<li><a href=\"index.php\">".gettext("Home")."</a></li>";
-	echo "<li><a href=\"search.php\">".gettext("Search")."</a></li>";
-	echo "<li><a href=\"object.php?action=new\">".gettext("New Object")."</a></li>";
-	echo "<li><a href=\"import.php\">".gettext("Import-Export")."</a></li>";
+	echo "<li><a href=\"index.php\"><span class=\"glyphicon glyphicon-home\"></span>".gettext("Home")."</a></li>";
+	echo "<li><a href=\"search.php\"><span class=\"glyphicon glyphicon-search\"></span>".gettext("Search")."</a></li>";
+	echo "<li><a href=\"object.php?action=new\"><span class=\"glyphicon glyphicon-plus\"></span>".gettext("New Object")."</a></li>";
+	echo "<li><a href=\"import.php\"><span class=\"glyphicon glyphicon-share-alt\"></span>".gettext("Import-Export")."</a></li>";
+
 	//object dropdown
-	echo "<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">".gettext("Objects")."</a>";
+	echo "<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">";
+	echo "<span class=\"glyphicon glyphicon-barcode\"></span>".gettext("Objects")."</a>";
 	echo "<ul class=\"dropdown-menu\">";
 	//walk through all object type groups
 	foreach(array_keys($objectGroups) as $groupname)
@@ -78,11 +80,7 @@
 	}
 	echo "</ul>";
 	echo "</li>";
-	//optional: admin menu
-	if(isset($authAccessgroup) && $authorisationProvider->authorise($authAccessgroup, "admin") != 0)
-	{
-		echo "<li><a href=\"admin.php\">".gettext("Admin")."</a></li>";
-	}
+
 	//add additional menu items from configuration
 	foreach(array_keys($menuitems) as $itemName)
 	{
@@ -92,8 +90,18 @@
 		echo "</a>";
 		echo "</li>";
 	}
+
+	//user dropdown
+	echo "<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">";
+	echo "<span class=\"glyphicon glyphicon-user\"></span>$authUser</a>";
+	echo "<ul class=\"dropdown-menu\">";
+	//optional: admin menu
+	if(isset($authAccessgroup) && $authorisationProvider->authorise($authAccessgroup, "admin") != 0)
+	{
+		echo "<li><a href=\"admin.php\"><span class=\"glyphicon glyphicon-wrench\"></span>".gettext("Admin")."</a></li>";
+	}
 	//logout button
-	echo "<li><a href=\"logout.php\">".gettext("Logout")."</a></li>";
+	echo "<li><a href=\"logout.php\"><span class=\"glyphicon glyphicon-off\"></span>".gettext("Logout")."</a></li>";
 
 	//footer
 	echo "</ul>";
