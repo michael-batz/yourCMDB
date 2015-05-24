@@ -35,8 +35,8 @@ use yourCMDB\security\AuthorisationProviderLocal;
 use yourCMDB\taskscheduler\EventProcessor;
 
 //define base directories
-$scriptBaseDir = dirname(__FILE__);
-$coreBaseDir = realpath("$scriptBaseDir/../../core");
+$webScriptBaseDir = dirname(__FILE__);
+$coreBaseDir = realpath("$webScriptBaseDir/../../core");
 
 //include yourCMDB bootstrap
 include "$coreBaseDir/bootstrap.php";
@@ -62,7 +62,7 @@ $installTitle = $config->getViewConfig()->getInstallTitle();
 $i18nLocale = $config->getViewConfig()->getLocale();
 $i18nDomain = "web";
 $i18nCodeset = "utf-8";
-$i18nBaseDir = realpath("$scriptBaseDir/../../i18n");
+$i18nBaseDir = realpath("$webScriptBaseDir/../../i18n");
 
 setlocale(LC_ALL, $i18nLocale);
 bindtextdomain($i18nDomain, $i18nBaseDir);
