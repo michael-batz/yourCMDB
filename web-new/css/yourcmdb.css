@@ -115,18 +115,31 @@ table.cmdb-table2cols tr td
 div.cmdb-header
 {
 	margin:			0px;
+	padding:		0px;
 	background:		#000000;
 	color:			#FFFFFF;
 }
 
+div.cmdb-header a
+{
+	color:			#FFFFFF;
+	text-decoration:	none;
+}
+
 div.cmdb-header h1
 {
-	background:     	url('../img/logo.png') no-repeat;
-	margin:			0px;
-	padding-top:   		 45px;
-	padding-bottom: 	20px;
-	padding-left:   	95px;
 	font-size:		16pt;
+	color:			#FFFFFF;
+	margin:			0px;
+	margin-top:		10px;
+	margin-bottom:		5px;
+	padding:		0px;
+	padding-left:		10px;
+}
+
+div.cmdb-header h1 img
+{
+	padding-right:		10px;
 }
 
 
@@ -138,6 +151,7 @@ div.cmdb-header h1
 	background:		#000000;
 	color:			#FFFFFF;
 	border-radius:		0;
+	margin:			0px;
 }
 
 .cmdb-navigation ul.dropdown-menu
@@ -161,19 +175,19 @@ div.cmdb-header h1
 /* links  */
 .cmdb-navigation ul.nav a
 {
-	color:			#FF0022;
+	color:			#FFFFFF;
 	background-color:	#000000;
 }
 .cmdb-navigation ul.nav a:hover
 {
-	color:			#FF0022;
+	color:			#FFFFFF;
 	background-color:	#222222;
 }
 
 /* gylphicons  */
 .cmdb-navigation .glyphicon
 {
-	color:			#FF0022;
+	color:			#FFFFFF;
 }
 
 /**
@@ -223,4 +237,14 @@ div#cmdb-objecttable-head h1
 	background-color:	#000000;
 	margin-top:		0px;
 	padding:		10px;
+}
+
+/*
+* typeahead style
+*/
+.tt-menu .glyphicon
+{
+	color:			#000000;
+	padding-left:		10px;
+	padding-right:		5px;
 }

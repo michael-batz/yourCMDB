@@ -40,7 +40,8 @@
 	echo "</button>";
 
 	//title
-	echo "<h1>$installTitle</h1>";
+	echo "<h1><a href=\"index.php\"><img src=\"img/logo_small.png\" alt=\"yourCMDB\" />";
+	echo "$installTitle</a></h1>";
 	echo "</div>";
 
 	//quicksearch
@@ -104,6 +105,7 @@
 	echo "<li><a href=\"logout.php\"><span class=\"glyphicon glyphicon-off\"></span>".gettext("Logout")."</a></li>";
 
 	//footer
+	echo "</ul>";
 	echo "</ul>";
 	echo "</div>";
 	echo "</nav>";

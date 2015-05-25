@@ -83,7 +83,7 @@
 
 
 	//<!-- title -->
-	echo "<h1>";
+	echo "<h1 class=\"text-center\">";
 	echo sprintf(gettext("Search Results (%s)"), $objectCount);
 	echo "</h1>";
 	

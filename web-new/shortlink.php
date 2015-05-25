@@ -19,19 +19,21 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-
 /**
-* WebUI element: search result frame
+* WebUI helper: short links
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-	echo "<div id=\"searchbarResult\">";
-	echo "<script type=\"text/javascript\">";
-	echo "cmdbOpenUrlAjax('search/SearchResult.php?$paramString', '#searchbarResult', false, true);";
-	echo "</script>";
-	echo "</div>";
+	//load WebUI base
+	require "include/bootstrap-web.php";
 
-	//searchbar footer
-	echo "</div>";
-	echo "</div>";
+	//get parameters
+	$paramId = getHttpGetVar("id", "");
+
+	//get baseUrl from config
+        $baseUrl = $config->getViewConfig()->getBaseUrl();
+
+
+	//redirect to show object page
+	header("Location: $baseUrl/object.php?action=show&id=$paramId");
 ?>

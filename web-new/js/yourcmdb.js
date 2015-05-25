@@ -178,16 +178,28 @@ function cmdbJsStart()
 					display:	'data',
 					templates:
 							{
-								header:		'<h3>Objects</h3>',
-								suggestion:	function(data){return '<div>' + data.value + '</div>';}
+								suggestion:	function(data)
+										{
+											var output;
+											output = '<div><span class="glyphicon glyphicon-barcode"></span>';
+											output += data.value;
+											output += '</div>';
+											return output;
+										}
 							}
 				},
 				{
 					source:		cmdbSuggestionsFieldvalues,
 					templates:
 							{
-								header:		'<h3>Fieldvalues</h3>',
-								suggestion:	function(data){return '<div>' + data + '</div>';}
+								suggestion:	function(data)
+										{
+											var output;
+											output = '<div><span class="glyphicon glyphicon-search"></span>';
+											output += data;
+											output += '</div>';
+											return output;
+										}
 							}
 				}
 			);

@@ -1,16 +1,23 @@
 .tt-menu {
-    color: #000000;
-    width: 422px;
-    margin-top: 12px;
-    padding: 8px 0;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+	color:			#000000;
+	width:			422px;
+	margin-top:		12px;
+	padding:		8px 0;
+	background-color:	#fff;
+	border:			1px solid #ccc;
+	border:			1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 		8px;
+	box-shadow:		0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-cursor
+{
+	background-color:	#CCCCCC;
 }
 
 .twitter-typeahead
 {
-	width:		100%;
+	width:			100%;
 }
+
+
