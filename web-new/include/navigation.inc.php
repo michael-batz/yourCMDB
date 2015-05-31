@@ -96,6 +96,7 @@
 	echo "<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">";
 	echo "<span class=\"glyphicon glyphicon-user\"></span>$authUser</a>";
 	echo "<ul class=\"dropdown-menu\">";
+	echo "<li><a href=\"settings.php\"><span class=\"glyphicon glyphicon-cog\"></span>".gettext("Settings")."</a></li>";
 	//optional: admin menu
 	if(isset($authAccessgroup) && $authorisationProvider->authorise($authAccessgroup, "admin") != 0)
 	{
