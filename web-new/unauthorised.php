@@ -20,21 +20,17 @@
 *
 *********************************************************************/
 
-/**
-* WebUI element: error page
-* @author Michael Batz <michael@yourcmdb.org>
-*/
+	//get header
+	include "include/bootstrap-web.php";
+	include "include/auth.inc.php";
+	include "include/htmlheader.inc.php";
+	include "include/cmdbheader.inc.php";
 
-	//print messagebar
-	include "include/messagebar.inc.php";
+	//error message
+	echo "<h1 class=\"text-center\">".gettext("Unauthorised!")."</h1>";
+	echo "<p class=\"text-center\">".gettext("You don't have the permission to access this page. Sorry.")."</p>";
 
-	echo "<h1 class=\"text-center\">";
-	echo gettext("yourCMDB Error");
-	echo "</h1>";
-
-	echo "<p class=\"text-center\">";
-	echo gettext("The error above should not be happened. Maybe you use a wrong URL or you found a bug.");
-	echo "<br />";
-	echo sprintf(gettext("Please check your setup or ask for help on the %s yourCMDB Website %s."), "<a href=\"http://www.yourcmdb.org\">", "</a>");
-	echo "</p>";
+	//include footer
+	include "include/cmdbfooter.inc.php";
+	include "include/htmlfooter.inc.php";
 ?>

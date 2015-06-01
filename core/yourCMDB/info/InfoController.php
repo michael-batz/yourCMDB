@@ -19,22 +19,34 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\info;
+
 
 /**
-* WebUI element: error page
+* controller for accessing informations about yourCMDB
+* singleton: use OrmController::create() for getting an instance
 * @author Michael Batz <michael@yourcmdb.org>
 */
+class InfoController
+{
+	//constant: yourCMDB version
+	const CMDB_VERSION = "0.9-dev";
 
-	//print messagebar
-	include "include/messagebar.inc.php";
+	/**
+	* creates a new Info Controller
+	*/
+	public function __construct()
+	{
+		;
+	}
 
-	echo "<h1 class=\"text-center\">";
-	echo gettext("yourCMDB Error");
-	echo "</h1>";
-
-	echo "<p class=\"text-center\">";
-	echo gettext("The error above should not be happened. Maybe you use a wrong URL or you found a bug.");
-	echo "<br />";
-	echo sprintf(gettext("Please check your setup or ask for help on the %s yourCMDB Website %s."), "<a href=\"http://www.yourcmdb.org\">", "</a>");
-	echo "</p>";
+	/**
+	* Returns the version string
+	* @return string	version string
+	*/
+	public function getVersion()
+	{
+		return self::CMDB_VERSION;
+	}
+}
 ?>
