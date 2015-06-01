@@ -76,7 +76,8 @@
 	//get user data
 	$userName = $authUser;
 	$userAccessgroup = $authAccessgroup;
-	$urlChangePassword = "javascript:cmdbOpenUrlAjax('settings/UserDetails.php?' + $( '#settingsUserDetailsChangePasswordForm' ).serialize(), '#settingsTabUserDetails', false, true);";
+	$urlChangePassword = "cmdbSubmitModal('#changeSettings', 'settings/UserDetails.php?' + $( '#settingsUserDetailsChangePasswordForm' ).serialize(), '#settingsTabUserDetails', false, true);";
+	//$urlChangePassword = "javascript:cmdbHideModal('#changeSettings');";
 
 	//output: header
 	echo "<h1 class=\"text-center\">".sprintf(gettext("User: %s"), $userName)."</h1>";
@@ -115,7 +116,7 @@
 	//confirmation: footer
 	echo "<div class=\"modal-footer\">";
 	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
-	echo "<a href=\"$urlChangePassword\" class=\"btn btn-danger\">".gettext("Go!")."</a>";
+	echo "<a href=\"#\" onClick=\"$urlChangePassword\" class=\"btn btn-danger\">".gettext("Go!")."</a>";
 	echo "</div>";
 	echo "</div>";
 	echo "</div>";

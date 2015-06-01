@@ -88,6 +88,7 @@ class LocalUserController
 	public function changeUser($userObject)
 	{
 		$this->entityManager->flush();
+		return true;
 	}
 
 	/**

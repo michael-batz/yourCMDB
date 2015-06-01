@@ -100,6 +100,17 @@ function cmdbSearchbarSubmit(selectorForm, selectorResult)
 	cmdbOpenUrlAjax(url, selectorResult, true, true);
 };
 
+/**
+* Hide modal form and open URL by ajax
+*/
+function cmdbSubmitModal(selectorModal, url, selectorTarget, scrollTo, showWaitingAnimation)
+{
+	$(selectorModal).modal('hide');
+	$(selectorModal).on('hidden.bs.modal', function()
+	{
+		cmdbOpenUrlAjax(url, selectorTarget, scrollTo, showWaitingAnimation);
+	});
+}
 
 /**
 * start some JavaScript functionality on startup
