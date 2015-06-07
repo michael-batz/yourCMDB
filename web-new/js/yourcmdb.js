@@ -113,6 +113,35 @@ function cmdbSubmitModal(selectorModal, url, selectorTarget, scrollTo, showWaiti
 }
 
 /**
+* remove an element
+*/
+function cmdbRemoveElement(id)
+{
+	$( id  ).remove();
+};
+
+/**
+* add access right entry
+*/
+function cmdbAdminAuthorisationEditGroupAddEntry(id)
+{
+	var htmlstring;
+	var fieldid;
+	fieldid = $( 'tr' ).length;
+	htmlstring = '<tr id="adminAuthorisationEditGroupFieldnewAccess_' + fieldid + '">';
+	htmlstring += '<td><input type="text" name="newAccess_' + fieldid + '" /></td>';
+	htmlstring += '<td><select name="newAccessSelect_' + fieldid + '">';
+	htmlstring += '<option value="0">no access</option>';
+	htmlstring += '<option value="1">read only</option>';
+	htmlstring += '<option value="2">read-write</option>';
+	htmlstring += '</select></td>';
+	htmlstring += '<td><a href="javascript:removeElement(\'#adminAuthorisationEditGroupFieldnewAccess_' + fieldid + '\')">';
+	htmlstring += '<span class="glyphicon glyphicon-tresh" title="delete"></span></a></td>';
+	htmlstring += '</tr>';
+	$( id  ).add(htmlstring).appendTo( id );
+};
+
+/**
 * start some JavaScript functionality on startup
 */
 function cmdbJsStart()
@@ -233,6 +262,7 @@ function cmdbJsStart()
 
 	//start event handler for modal forms
 	//adds addtional form elements for HTML data attributes started with 'form-'
+	//loads dynamic form content if HTML data attribute 'dynform-url' is set
 	$(document).bind('ready ajaxComplete', function()
 	{
 		$( ".modal" ).on('show.bs.modal', function (event)
@@ -240,6 +270,13 @@ function cmdbJsStart()
 			var source = $(event.relatedTarget);
 			//get all HTML 5 data attributes
 			var data = source.data();
+			//check for dynamic from content
+			if('dynform' in data)
+			{
+				$(this).find("form").load(data['dynform']);
+			}
+
+			//check for additional form elements
 			for(var i in data)
 			{
 				var regex = /form(.*)/;
@@ -286,13 +323,6 @@ function hideElement(id)
 	$( id ).hide('slide', {}, 1000);
 };
 
-/**
-* remove an element
-*/
-function removeElement(id)
-{
-	$( id  ).remove();
-};
 
 
 /*function cmdbJsStart()

@@ -28,6 +28,7 @@
 
 //imports
 use yourCMDB\config\CmdbConfig;
+use yourCMDB\controller\AccessGroupController;
 use yourCMDB\controller\ObjectController;
 use yourCMDB\controller\ObjectLinkController;
 use yourCMDB\controller\ObjectLogController;
@@ -47,6 +48,7 @@ include "functions.inc.php";
 
 //ToDo: define variables
 $config = new CmdbConfig();
+$accessGroupController = AccessGroupController::create();
 $objectController = ObjectController::create();
 $objectLinkController = ObjectLinkController::create();
 $objectLogController = ObjectLogController::create();
