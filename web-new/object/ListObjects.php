@@ -91,6 +91,8 @@
 	echo "<div class=\"modal fade\" id=\"confirmDeleteList\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"confirmDeleteListLabel\" aria-hidden=\"true\">";
 	echo "<div class=\"modal-dialog\">";
 	echo "<div class=\"modal-content\">";
+	echo "<form action=\"object.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<input type=\"hidden\" name=\"action\" value=\"delete\">";
 	//confirmation: header
 	echo "<div class=\"modal-header\">";
 	echo "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>";
@@ -105,8 +107,9 @@
 	//confirmation: footer
 	echo "<div class=\"modal-footer\">";
 	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
-	echo "<a href=\"\" class=\"btn btn-danger\" id=\"modalButtonGo\">".gettext("delete")."</a>";
+	echo "<button type=\"submit\" class=\"btn btn-danger\">".gettext("delete")."</button>";
 	echo "</div>";
+	echo "</form>";
 	echo "</div>";
 	echo "</div>";
 	echo "</div>";
@@ -155,7 +158,6 @@
 		{ 
 			$urlObjectShow = "object.php?action=show&amp;id=". $objects[$i]->getId();
 			$urlObjectEdit = "object.php?action=edit&amp;id=". $objects[$i]->getId()."&amp;type=".$objects[$i]->getType();
-			$urlObjectDelete = "object.php?action=delete&amp;id=". $objects[$i]->getId();
 			$fieldValue = $objects[$i]->getFieldValue($fieldname);
 			$fieldType = $summaryFields[$fieldname];
 			echo "<td>";
@@ -165,7 +167,7 @@
 		echo "<td>";
 		echo "<a href=\"$urlObjectShow\"><span class=\"glyphicon glyphicon-eye-open\" title=\"".gettext("show")."\"></span></a>&nbsp;&nbsp;&nbsp;";
 		echo "<a href=\"$urlObjectEdit\"><span class=\"glyphicon glyphicon-pencil\" title=\"".gettext("edit")."\"></span></a>&nbsp;&nbsp;&nbsp;";
-		echo "<a href=\"#\" data-toggle=\"modal\" data-target=\"#confirmDeleteList\" data-linkdelete=\"$urlObjectDelete\">";
+		echo "<a href=\"#\" data-toggle=\"modal\" data-target=\"#confirmDeleteList\" data-form-id=\"".$objects[$i]->getId()."\">";
 		echo "<span class=\"glyphicon glyphicon-trash\" title=\"".gettext("delete")."\"></span></a>";
 		echo "</td>";
 		echo "</tr>";

@@ -231,14 +231,31 @@ function cmdbJsStart()
 		});
 	});
 
-	//start event handler for modal delete confirmation
-	$(function()
+	//start event handler for modal forms
+	//adds addtional form elements for HTML data attributes started with 'form-'
+	$(document).bind('ready ajaxComplete', function()
 	{
-		$( "#confirmDeleteList" ).on('show.bs.modal', function (event)
+		$( ".modal" ).on('show.bs.modal', function (event)
 		{
 			var source = $(event.relatedTarget);
-			var linkDelete = source.data('linkdelete');
-			$( "#modalButtonGo" ).attr("href", linkDelete);
+			//get all HTML 5 data attributes
+			var data = source.data();
+			for(var i in data)
+			{
+				var regex = /form(.*)/;
+				var matches = regex.exec(i);
+				//only add form elements if the attribute starts with 'form-'
+				if(matches != null)
+				{
+					var name = matches[1].toLowerCase();
+					var value = data[i];
+					var output = '<input type="hidden" name="' + name + '" value="' + value  + '">';
+					//remove old element
+					$(this).find("form :input[name='" + name  +"']").remove();
+					//add new element
+					$(this).find("form").append(output);
+				}
+			}
 		});
 	});
 

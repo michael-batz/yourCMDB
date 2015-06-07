@@ -79,6 +79,7 @@ class LocalUserController
 		}
 		$this->entityManager->persist($userObject);
 		$this->entityManager->flush();
+		return true;
 	}
 
 	/**
@@ -101,6 +102,7 @@ class LocalUserController
 		$user = $this->getUser($username);
 		$this->entityManager->remove($user);
 		$this->entityManager->flush();
+		return true;
 	}
 
 	/**

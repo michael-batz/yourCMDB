@@ -24,9 +24,11 @@
 * WebUI element: manage access rights
 * @author Michael Batz <michael@yourcmdb.org>
 */
+	//import
+	use yourCMDB\security\AuthorisationProviderLocal;
 
 	//include base
-	include "../include/base.inc.php";
+	include "../include/bootstrap-web.php";
 
 	//authentication and authorisation
 	$authorisationAppPart = "admin";

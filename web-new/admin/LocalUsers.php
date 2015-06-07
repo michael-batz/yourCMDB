@@ -24,9 +24,14 @@
 * WebUI element: manage local users
 * @author Michael Batz <michael@yourcmdb.org>
 */
+	//imports
+	use yourCMDB\security\AuthenticationProviderLocal;
+	use yourCMDB\security\SecurityChangeUserException;
+	use yourCMDB\exceptions\CmdbLocalUserAlreadyExistsException;
+	use yourCMDB\exceptions\CmdbLocalUserNotFoundException;
 
 	//include base
-	include "../include/base.inc.php";
+	include "../include/bootstrap-web.php";
 
 	//authentication and authorisation
 	$authorisationAppPart = "admin";
@@ -57,7 +62,11 @@
 			}
 			catch(SecurityChangeUserException $e)
 			{
-					printErrorMessage(sprintf(gettext("Error creating user  %s. Empty username or password"), $username));
+				printErrorMessage(sprintf(gettext("Error creating user  %s. Empty username or password"), $username));
+			}
+			catch(CmdbLocalUserAlreadyExistsException $e)
+			{
+				printErrorMessage(sprintf(gettext("Error creating user  %s. User already exists"), $username));
 			}
 			break;
 
@@ -65,14 +74,14 @@
 			$username = getHttpGetVar("username", "");
 			if($username != $authUser)
 			{
-				$result = $authProviderLocal->deleteUser($username);
-				if($result)
+				try
 				{
+					$result = $authProviderLocal->deleteUser($username);
 					printInfoMessage(sprintf(gettext("user %s successfully deleted"), $username));
 				}
-				else
+				catch(CmdbLocalUserNotFoundException $e)
 				{
-					printErrorMessage(sprintf(gettext("Error deleting user  %s"), $username));
+					printErrorMessage(sprintf(gettext("Error deleting user %s. User not found."), $username));
 				}
 			}
 			break;
@@ -83,26 +92,33 @@
 			$accessgroup = getHttpGetVar("accessgroup", "");
 			$message = "";
 			//only change password if field is not empty
-			if($password != "")
+			try
 			{
-				$result = $authProviderLocal->resetPassword($username, $password);
-				if($result)
+				if($password != "")
 				{
-					$message .= gettext("Password successfully changed. ");
+					$result = $authProviderLocal->resetPassword($username, $password);
+					if($result)
+					{
+						$message .= gettext("Password successfully changed. ");
+					}
+				}
+				//only change accessgroup if field is not empty
+				if($accessgroup != "")
+				{
+					$result = $authProviderLocal->setAccessGroup($username, $accessgroup);
+					if($result)
+					{
+						$message .= gettext("Accessgroup successfully changed. ");
+					}
+				}
+				if($message != "")
+				{
+					printInfoMessage(sprintf(gettext("User %s successfully changed. "), $username) .$message);
 				}
 			}
-			//only change accessgroup if field is not empty
-			if($accessgroup != "")
+			catch(CmdbLocalUserNotFoundException $e)
 			{
-				$result = $authProviderLocal->setAccessGroup($username, $accessgroup);
-				if($result)
-				{
-					$message .= gettext("Accessgroup successfully changed. ");
-				}
-			}
-			if($message != "")
-			{
-				printInfoMessage(sprintf(gettext("User %s successfully changed. "), $username) .$message);
+				printErrorMessage(sprintf(gettext("Error editing user %s. User not found."), $username));
 			}
 			break;
 	}
@@ -111,17 +127,18 @@
 	$users = $authProviderLocal->getUsers();
 
 	//output: navigation
-	echo "<div class=\"submenu\">";
+	echo "<div>";
 	echo "<p>";
-	echo "<a href=\"javascript:adminAuthAddUser('".gettext("Go!")."', '".gettext("Cancel")."')\"><img src=\"img/icon_add.png\" class=\"icon\" alt=\"".gettext("add new user")."\"/>".gettext("add new user")."</a>";
+	echo "<a href=\"#\" data-toggle=\"modal\" data-target=\"#addUser\">";
+	echo "<span class=\"glyphicon glyphicon-plus\"></span>".gettext("add new user")."</a>";
 	echo "</p>";
 	echo "</div>";
 
 	//output: header
-	echo "<h1>".gettext("local user management")."</h1>";
+	echo "<h1 class=\"text-center\">".gettext("local user management")."</h1>";
 
 	//output: user table
-	echo "<table class=\"list\">";
+	echo "<table class=\"table cmdb-cleantable\">";
 	echo "<tr>";
 	echo "<th>&nbsp;</th>";
 	echo "<th>".gettext("username")."</th>";
@@ -132,19 +149,21 @@
 	{
 		$userName = $user->getUsername();
 		$userAccessgroup = $user->getAccessgroup();
-		$urlUserDelete = "javascript:openUrlAjax('admin/LocalUsers.php?action=deleteUser&amp;username=$userName', '#adminTabAuthentication', false, true)";
-		$urlUserEdit = "javascript:adminAuthEditUser('$userName', '".gettext("Go!")."', '".gettext("Cancel")."')";
+		$urlUserDelete = "javascript:cmdbOpenUrlAjax('admin/LocalUsers.php?action=deleteUser&amp;username=$userName', '#adminAuthentication', false, true)";
 
 		echo "<tr>";
-		echo "<td><img src=\"img/icon_user.png\" alt=\"".gettext("user")."\" /></td>";
+		echo "<td><span class=\"glyphicon glyphicon-user\"></td>";
 		echo "<td>$userName</td>";
 		echo "<td>$userAccessgroup</td>";
 		echo "<td>";
 		//prevent a user from deleting and changing its own user account
 		if($userName != $authUser)
 		{
-			echo "<a href=\"$urlUserEdit\"><img src=\"img/icon_edit.png\" title=\"".gettext("edit")."\" alt=\"".gettext("edit")."\" /></a>&nbsp;&nbsp;&nbsp;";
-			echo "<a href=\"$urlUserDelete\"><img src=\"img/icon_delete.png\" title=\"".gettext("delete")."\" alt=\"".gettext("delete")."\" /></a>";
+			//edit button
+			echo "<a href=\"#\" data-toggle=\"modal\" data-target=\"#editUser\" data-form-username=\"$userName\">";
+			echo "<span class=\"glyphicon glyphicon-pencil\" title=\"".gettext("edit")."\"></span></a>&nbsp;&nbsp;&nbsp;";
+			//delete button
+			echo "<a href=\"$urlUserDelete\"><span class=\"glyphicon glyphicon-trash\" title=\"".gettext("delete")."\"></span></a>";
 		}
 		echo "</td>";
 		echo "</tr>";
@@ -152,7 +171,17 @@
 	echo "</table>";
 
 	//output: add user form
-	echo "<div class=\"blind\" id=\"adminAuthAddUser\" title=\"".gettext("add new user")."\">";
+	$urlFormAddUser = "cmdbSubmitModal('#addUser', 'admin/LocalUsers.php?' + $( '#adminAuthAddUserForm' ).serialize(), '#adminAuthentication', false, true);";
+	echo "<div class=\"modal fade\" id=\"addUser\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addUserLabel\" aria-hidden=\"true\">";
+	echo "<div class=\"modal-dialog\">";
+	echo "<div class=\"modal-content\">";
+	//form: header
+	echo "<div class=\"modal-header\">";
+	echo "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>";
+	echo "<h4 class=\"modal-title\" id=\"addUserLabel\">".gettext("add new user")."</h4>";
+	echo "</div>";
+	//form: body
+	echo "<div class=\"modal-body\">";
 	echo "<form id=\"adminAuthAddUserForm\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\">";
 	echo "<table>";
 	echo "<input type=\"hidden\" name=\"action\" value=\"addUser\">";
@@ -162,9 +191,27 @@
 	echo "</table>";
 	echo "</form>";
 	echo "</div>";
+	//form: footer
+	echo "<div class=\"modal-footer\">";
+	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
+	echo "<a href=\"#\" onClick=\"$urlFormAddUser\" class=\"btn btn-danger\">".gettext("Go!")."</a>";
+	echo "</div>";
+	echo "</div>";
+	echo "</div>";
+	echo "</div>";
 
 	//output: edit user form
-	echo "<div class=\"blind\" id=\"adminAuthEditUser\" title=\"".gettext("edit user")."\">";
+	$urlFormEditUser = "cmdbSubmitModal('#editUser', 'admin/LocalUsers.php?' + $( '#adminAuthEditUserForm' ).serialize(), '#adminAuthentication', false, true);";
+	echo "<div class=\"modal fade\" id=\"editUser\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"editUserLabel\" aria-hidden=\"true\">";
+	echo "<div class=\"modal-dialog\">";
+	echo "<div class=\"modal-content\">";
+	//form: header
+	echo "<div class=\"modal-header\">";
+	echo "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>";
+	echo "<h4 class=\"modal-title\" id=\"editUserLabel\">".gettext("edit user")."</h4>";
+	echo "</div>";
+	//form: body
+	echo "<div class=\"modal-body\">";
 	echo "<form id=\"adminAuthEditUserForm\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\">";
 	echo "<p>".gettext("Leave fields empty, that you do not wish to change.")."</p>";
 	echo "<table>";
@@ -174,4 +221,13 @@
 	echo "</table>";
 	echo "</form>";
 	echo "</div>";
+	//form: footer
+	echo "<div class=\"modal-footer\">";
+	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
+	echo "<a href=\"#\" onClick=\"$urlFormEditUser\" class=\"btn btn-danger\">".gettext("Go!")."</a>";
+	echo "</div>";
+	echo "</div>";
+	echo "</div>";
+	echo "</div>";
+
 ?>

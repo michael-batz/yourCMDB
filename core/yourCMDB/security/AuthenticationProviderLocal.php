@@ -128,7 +128,7 @@ class AuthenticationProviderLocal implements AuthenticationProvider
 
 		//change user in datastore
 		$localUserController = LocalUserController::create();
-		return $localUserController->changeUser($username, $newUserObject);
+		return $localUserController->changeUser($userobject);
 	}
 
 
