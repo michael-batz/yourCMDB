@@ -102,7 +102,7 @@ class RestResourceObjectLinks extends RestResource
 			$objectIdA = $this->uri[1];
 			$objectA = $objectController->getObject($objectIdA, $this->user);
 			$objectB = $objectController->getObject($objectIdB, $this->user);
-			$objectLinkController->addObjectLink($objectIdA, $objectIdB, $this->user);
+			$objectLinkController->addObjectLink($objectA, $objectB, $this->user);
 		}
 		catch(Exception $e)
 		{
