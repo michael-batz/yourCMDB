@@ -19,48 +19,47 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\rest;
+
+use yourCMDB\controller\ObjectLogController;
+use yourCMDB\controller\ObjectController;
+use \Exception;
 
 /**
-* REST resource for a list of CMDB objects
+* REST resource for a CMDB object log
 *
 * usage:
-* /rest/objectlist/by-fieldvalue/<value>
-* - GET 		/rest/objectlist/by-fieldvalue/<value>
-* /rest/objectlist/by-objecttype/<type>
-* - GET		/rest/objectlist/by-objecttype/<type>
+* /rest.php/objectlogs/<assetId>
+* - GET 	/rest.php/objectlogs/<assetId>
 *
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class RestResourceObjectlist extends RestResource
+class RestResourceObjectLog extends RestResource
 {
 
 	public function getResource()
 	{
-		//try to get a list of objects
+		$objectController = ObjectController::create();
+		$objectLogController = ObjectLogController::create();
+		//try to get object log
 		try
 		{
-			$listtype = $this->uri[1];
-			$searchvalue = $this->uri[2];
-			switch($listtype)
-			{
-				case "by-fieldvalue":
-					$objects = $this->datastore->getObjectsByFieldvalue(array($searchvalue), null, false, 0, 0); 
-					break;
-
-				case "by-objecttype":
-					$objects = $this->datastore->getObjectsByType($searchvalue, "", "asc", false, 0, 0);
-					break;
-
-				default:
-					return new RestResponse(400);
-					break;
-			}
+			$objectId = $this->uri[1];
+			$object = $objectController->getObject($objectId, $this->user);
+			$objectLogEntries = $objectLogController->getLogEntries($object, 0, 0, $this->user);
 
 			//generate output
 			$output = Array();
-			foreach($objects as $object)
+			$output['objectId'] = $objectId;
+			$output['logEntries'] = Array();
+			foreach($objectLogEntries as $logEntry)
 			{
-				$output[] = $object->getId();
+				$output['logEntries'][] = Array(
+								'date'	 	=> $logEntry->getTimestamp(),
+								'action' 	=> $logEntry->getAction(),
+								'description' 	=> $logEntry->getDescription(),
+								'user'		=> $logEntry->getUser(),
+								);
 			}
 		}
 		catch(Exception $e)

@@ -24,8 +24,6 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-	//ToDo: bootstrap migration
-
 	//save uploaded file in temp directory
 	$paramFilename = "../tmp/".time().".import";
 	move_uploaded_file($_FILES['file']['tmp_name'], $paramFilename);

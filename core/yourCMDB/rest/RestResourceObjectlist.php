@@ -19,37 +19,54 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\rest;
+
+use yourCMDB\controller\ObjectController;
+use \Exception;
 
 /**
-* REST resource for a CMDB object log
+* REST resource for a list of CMDB objects
 *
 * usage:
-* /rest.php/objectlogs/<assetId>
-* - GET 	/rest.php/objectlogs/<assetId>
+* /rest/objectlist/by-fieldvalue/<value>
+* - GET 		/rest/objectlist/by-fieldvalue/<value>
+* /rest/objectlist/by-objecttype/<type>
+* - GET		/rest/objectlist/by-objecttype/<type>
 *
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class RestResourceObjectLog extends RestResource
+class RestResourceObjectlist extends RestResource
 {
 
 	public function getResource()
 	{
-		//try to get object log
+		$objectController = ObjectController::create();
+
+		//try to get a list of objects
 		try
 		{
-			$objectId = $this->uri[1];
-			$objectlog = $this->datastore->getObjectLog($objectId);
+			$listtype = $this->uri[1];
+			$searchvalue = $this->uri[2];
+			switch($listtype)
+			{
+				case "by-fieldvalue":
+					$objects = $objectController->getObjectsByFieldvalue(array($searchvalue), null, null, 0, 0, $this->user); 
+					break;
+
+				case "by-objecttype":
+					$objects = $objectController->getObjectsByType(array($searchvalue), null, "ASC", null, 0, 0, $this->user);
+					break;
+
+				default:
+					return new RestResponse(400);
+					break;
+			}
 
 			//generate output
 			$output = Array();
-			$output['objectId'] = $objectId;
-			$output['logEntries'] = Array();
-			foreach($objectlog->getLogEntries() as $logEntry)
+			foreach($objects as $object)
 			{
-				$output['logEntries'][] = Array(
-								'date'	 => $logEntry->getDate(),
-								'action' => $logEntry->getAction()
-								);
+				$output[] = $object->getId();
 			}
 		}
 		catch(Exception $e)

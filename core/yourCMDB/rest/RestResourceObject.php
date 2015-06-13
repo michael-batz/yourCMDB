@@ -19,6 +19,12 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\rest;
+
+use yourCMDB\config\CmdbConfig;
+use yourCMDB\controller\ObjectController;
+use yourCMDB\exceptions\CmdbObjectNotFoundException;
+use \Exception;
 
 /**
 * REST resource for a CMDB object
@@ -37,11 +43,14 @@ class RestResourceObject extends RestResource
 
 	public function getResource()
 	{
+		$objectController = ObjectController::create();
+		$config = new CmdbConfig();
+
 		//try to get object and generate output
 		try
 		{
 			$objectId = $this->uri[1];
-			$object = $this->datastore->getObject($objectId);
+			$object = $objectController->getObject($objectId, $this->user);
 
 			//generate json output
 			$output = Array();
@@ -49,22 +58,22 @@ class RestResourceObject extends RestResource
 			$output['objectId'] = $object->getId();
 			$output['status'] = $object->getStatus();
 			$output['objectFields'] = Array();
-			foreach($this->config->getObjectTypeConfig()->getFieldGroups($object->getType()) as $groupname)
+			foreach($config->getObjectTypeConfig()->getFieldGroups($object->getType()) as $groupname)
 			{
 				$output['objectFields']["$groupname"] = Array();
-				foreach(array_keys($this->config->getObjectTypeConfig()->getFieldGroupFields($object->getType(), $groupname)) as $field)
+				foreach(array_keys($config->getObjectTypeConfig()->getFieldGroupFields($object->getType(), $groupname)) as $field)
 				{
 					$output['objectFields']["$groupname"][] = Array(
 											"name" => $field,
-											"label"=> $this->config->getObjectTypeConfig()->getFieldLabel($object->getType(), $field),
-											"type" => $this->config->getObjectTypeConfig()->getFieldType($object->getType(), $field),
-											"value"=> $object->getFieldValue($field)
+											"label"=> $config->getObjectTypeConfig()->getFieldLabel($object->getType(), $field),
+											"type" => $config->getObjectTypeConfig()->getFieldType($object->getType(), $field),
+											"value"=> $object->getFieldvalue($field)
 											);
 				}
 			}
 
 		}
-		catch(Exception $e)
+		catch(CmdbObjectNotFoundException $e)
 		{
 			return new RestResponse(404);
 		}
@@ -73,12 +82,14 @@ class RestResourceObject extends RestResource
 
 	public function deleteResource()
 	{
+		$objectController = ObjectController::create();
+
 		try
 		{
 			$objectId = $this->uri[1];
-			$this->datastore->deleteObject($objectId);
+			$objectController->deleteObject($objectId, $this->user);
 		}
-		catch(Exception $e)
+		catch(CmdbObjectNotFoundException $e)
 		{
 			return new RestResponse(404);
 		}
@@ -87,6 +98,9 @@ class RestResourceObject extends RestResource
 
 	public function postResource($data)
 	{
+		$objectController = ObjectController::create();
+		$config = new CmdbConfig();
+
 		try
 		{
 			//decode json data
@@ -110,8 +124,8 @@ class RestResourceObject extends RestResource
 			}
 			
 			//generate object
-			$object = new CmdbObject($objectType, $objectFields, 0, $objectStatus);
-			$objectId = $this->datastore->addObject($object);
+			$object = $objectController->addObject($objectType, $objectStatus, $objectFields, $this->user);
+			$objectId = $object->getId();
 			$url = "rest.php/objects/$objectId";
 		}
 		catch(Exception $e)
@@ -123,6 +137,8 @@ class RestResourceObject extends RestResource
 
 	public function putResource($data)
 	{
+		$objectController = ObjectController::create();
+
 		try
 		{
 			//decode json data
@@ -147,8 +163,7 @@ class RestResourceObject extends RestResource
 			}
 
 			//change object fields and status
-			$this->datastore->changeObjectFields($objectId, $objectFields);
-			$this->datastore->changeObjectStatus($objectId, $objectStatus);
+			$objectController->updateObject($objectId, $objectStatus, $objectFields, $this->user);
 			$url = "rest.php/objects/$objectId";
 		}
 		catch(Exception $e)

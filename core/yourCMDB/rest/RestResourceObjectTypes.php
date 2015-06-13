@@ -19,6 +19,10 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\rest;
+
+use yourCMDB\config\CmdbConfig;
+use \Exception;
 
 /**
 * REST resource for a list of CMDB object types
@@ -36,6 +40,8 @@ class RestResourceObjectTypes extends RestResource
 
 	public function getResource()
 	{
+		$config = new CmdbConfig();
+
 		//try to get a list of objects
 		try
 		{
@@ -52,7 +58,7 @@ class RestResourceObjectTypes extends RestResource
 			switch($resource)
 			{
 				case "groups":
-					$groups = $this->config->getObjectTypeConfig()->getObjectTypeGroups();
+					$groups = $config->getObjectTypeConfig()->getObjectTypeGroups();
 					if($param1 == "")
 					{
 						foreach(array_keys($groups) as $group)

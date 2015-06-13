@@ -19,6 +19,7 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\rest;
 
 /**
 * a REST resource
@@ -30,17 +31,13 @@ class RestResource
 	//uri of REST resource
 	protected $uri;
 
-	protected $datastore;
-
-	protected $config;
+	protected $user;
 
 	//creates a new REST resource
-	public function __construct($uri)
+	public function __construct($uri, $user)
 	{
 		$this->uri = $uri;
-		$controller = new Controller();
-		$this->datastore = $controller->getDatastore();
-		$this->config = $controller->getCmdbConfig();
+		$this->user = $user;
 	}
 
 	public function getResource()

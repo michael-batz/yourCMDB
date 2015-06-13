@@ -19,6 +19,11 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\rest;
+
+use yourCMDB\controller\ObjectController;
+use yourCMDB\controller\ObjectLinkController;
+use \Exception;
 
 /**
 * REST resource for CMDB objects links
@@ -37,17 +42,24 @@ class RestResourceObjectLinks extends RestResource
 
 	public function getResource()
 	{
+		$objectController = ObjectController::create();
+		$objectLinkController = ObjectLinkController::create();
+
 		//try to get a list of objects
 		try
 		{
 			$objectId = $this->uri[1];
-			$objectLinks = array_merge($this->datastore->getObjectLinks($objectId), $this->datastore->getLinkedObjects($objectId));
+			$object = $objectController->getObject($objectId, $this->user);
+			$objectLinks = $objectLinkController->getObjectLinks($object, $this->user);
 
 			//generate output
 			$output = Array();
-			foreach($objectLinks as $object)
+			foreach($objectLinks as $objectLink)
 			{
-				$output[] = $object;
+				$output[] = Array(
+							'objectIdA' => $objectLink->getObjectA()->getId(),
+							'objectIdB' => $objectLink->getObjectB()->getId()
+						);
 			}
 		}
 		catch(Exception $e)
@@ -59,15 +71,16 @@ class RestResourceObjectLinks extends RestResource
 
 	public function deleteResource()
 	{
+		$objectController = ObjectController::create();
+		$objectLinkController = ObjectLinkController::create();
+
 		try
 		{
 			$objectIdA = $this->uri[1];
 			$objectIdB = $this->uri[2];
-			$return = $this->datastore->deleteObjectLink($objectIdA, $objectIdB);
-			if(!$return)
-			{
-				return new RestResponse(404);
-			}
+			$objectA = $objectController->getObject($objectIdA, $this->user);
+			$objectB = $objectController->getObject($objectIdB, $this->user);
+			$objectLinkController->deleteObjectLink($objectA, $objectB, $this->user);
 
 		}
 		catch(Exception $e)
@@ -79,16 +92,17 @@ class RestResourceObjectLinks extends RestResource
 
 	public function postResource($data)
 	{
+		$objectController = ObjectController::create();
+		$objectLinkController = ObjectLinkController::create();
+
 		try
 		{
 			$decodedData = json_decode($data);
 			$objectIdB = $decodedData->objectIdB;
 			$objectIdA = $this->uri[1];
-			if(!isset($decodedData->objectIdB))
-			{
-				return new RestResponse(400);
-			}
-			$this->datastore->addObjectLink($objectIdA, $objectIdB);
+			$objectA = $objectController->getObject($objectIdA, $this->user);
+			$objectB = $objectController->getObject($objectIdB, $this->user);
+			$objectLinkController->addObjectLink($objectIdA, $objectIdB, $this->user);
 		}
 		catch(Exception $e)
 		{
