@@ -27,26 +27,26 @@
 */
 
 	//include base functions
-	include "../include/base.inc.php";
+	include "../include/bootstrap-web.php";
 	include "../include/auth.inc.php";
 	include "SearchFunctions.php";
 
 	//get all searched objects
-	$objects = null;
+	$objects = Array();
 	if(count($searchstrings) > 0)
 	{
 		if($paramTypeGroup != "")
 		{
 			$searchTypes = $objectTypes[$paramTypeGroup];
-			$objects = $datastore->getObjectsByFieldvalue($searchstrings, $searchTypes, $paramActiveOnly);
+			$objects = $objectController->getObjectsByFieldvalue($searchstrings, $searchTypes, $paramStatus, 0, 0, $authUser);
 		}
 		else if($paramType != "")
 		{
-			$objects = $datastore->getObjectsByFieldvalue($searchstrings, array($paramType), $paramActiveOnly);
+			$objects = $objectController->getObjectsByFieldvalue($searchstrings, array($paramType), $paramStatus, 0, 0, $authUser);
 		}
 		else
 		{
-			$objects = $datastore->getObjectsByFieldvalue($searchstrings, null, $paramActiveOnly);
+			$objects = $objectController->getObjectsByFieldvalue($searchstrings, null, $paramStatus, 0, 0, $authUser);
 		}
 	}
 
@@ -83,14 +83,14 @@
 
 
 	//<!-- title -->
-	echo "<h1>";
+	echo "<h1 class=\"text-center\">";
 	echo sprintf(gettext("Search Results (%s)"), $objectCount);
 	echo "</h1>";
 	
 
-	echo "<table class=\"list\">";
+	echo "<table class=\"table cmdb-cleantable\">";
 	//print found objects
-	if($objects != null)
+	if(count($objects) > 0)
 	{
 		//print object summary
 		for($i = $listStart; $i <= $listEnd; $i++)
@@ -99,11 +99,11 @@
 			$objectType = $objects[$i]->getType();
 			$objectId = $objects[$i]->getId();
 			$objectStatus = $objects[$i]->getStatus();
-			$objectFields = $objects[$i]->getFieldNames();
+			$objectFields = $objects[$i]->getFields();
 			$objectSummaryFields = $config->getObjectTypeConfig()->getSummaryFields($objectType);
 			//get fields that matched to search string
 			$objectMatchFields = Array();
-			foreach($objectFields as $fieldname)
+			foreach($objectFields->getKeys() as $fieldname)
 			{
 				foreach($searchstrings as $searchstring)
 				{
@@ -116,10 +116,10 @@
 			}
 		
 			//get status image
-			$statusIcon = "<img src=\"img/icon_active.png\" alt=\"".gettext("active")."\" title=\"".gettext("active object")."\" />";
+			$statusIcon = "<span class=\"label label-success\" title=\"".gettext("active object")."\">A</span>";
 			if($objectStatus != 'A')
 			{
-				$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"".gettext("inactive")."\" title=\"".gettext("inactive object")."\" />";
+				$statusIcon = "<span class=\"label label-danger\" title=\"".gettext("inactive object")."\">N</span>";
 			}
 
 			//print headline
@@ -139,7 +139,7 @@
 				{
 					if(preg_match("/.*?((?i:$searchstring)).*?/", $fieldvalue, $matchSearchString) == 1)
 					{
-						$fieldvalue = str_replace($matchSearchString[1], "<em>$matchSearchString[1]</em>", $fieldvalue);
+						$fieldvalue = str_replace($matchSearchString[1], "<mark>$matchSearchString[1]</mark>", $fieldvalue);
 					}
 				}
 				echo "$fieldlabel: $fieldvalue";
@@ -169,20 +169,21 @@
 		echo "</table>";
 
 		//<!-- list navigation  -->
-		echo "<p class=\"listnav\">";
+		echo "<nav>";
+		echo "<ul class=\"pagination\">";
 		//print prev button
 		if($listPage != 1)
 		{
 			$listnavUrl = $listnavUrlBase .($listPage - 1);
-			echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult', true, true)\">&lt; ";
+			echo "<li><a href=\"javascript:cmdbOpenUrlAjax('$listnavUrl', '#searchbarResult', true, true)\">&lt; ";
 			echo gettext("previous");
-			echo "</a>";
+			echo "</a></li>";
 		}
 		else
 		{
-			echo "<a href=\"#\" class=\"disabled\">&lt; ";
+			echo "<li class=\"disabled\"><a href=\"#\">&lt; ";
 			echo gettext("previous");
-			echo "</a>";
+			echo "</a></li>";
 		}
 		//print page numbers
 		for($i = 1; $i <= $listPages; $i++)
@@ -190,41 +191,42 @@
 			$listnavUrl = $listnavUrlBase .$i;
 			if($i == $listPage)
 			{
-				echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult', true, true)\" class=\"active\">$i</a>";
+				echo "<li class=\"active\"><a href=\"javascript:cmdbOpenUrlAjax('$listnavUrl', '#searchbarResult', true, true)\">$i</a></li>";
 			}
 			else
 			{
-				echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult', true, true)\">$i</a>";
+				echo "<li><a href=\"javascript:cmdbOpenUrlAjax('$listnavUrl', '#searchbarResult', true, true)\">$i</a></li>";
 			}
 
 			//jump to current page
 			if($i == 3 && $listPage > 5)
 			{
 				$i = $listPage - 2;
-				echo "...";
+				echo "<li>...</li>";
 			}
 			//jump to last page
 			if($i > 3 && $i > $listPage && $i < ($listPages - 2))
 			{
 				$i = $listPages - 2;
-				echo "...";
+				echo "<li>...</li>";
 			}
 		}
 		//print next button
 		if($listPage != $listPages)
 		{
 			$listnavUrl = $listnavUrlBase .($listPage + 1);
-			echo "<a href=\"javascript:openUrlAjax('$listnavUrl', '#searchbarResult', true, true)\">";
+			echo "<li><a href=\"javascript:cmdbOpenUrlAjax('$listnavUrl', '#searchbarResult', true, true)\">";
 			echo gettext("next");
-			echo " &gt;</a>";
+			echo " &gt;</a></li>";
 		}
 		else
 		{
-			echo "<a href=\"#\" class=\"disabled\">";
+			echo "<li class=\"disabled\"><a href=\"#\">";
 			echo gettext("next");
-			echo " &gt;</a>";
+			echo " &gt;</a></li>";
 		}
-		echo "</p>";
+		echo "</ul>";
+		echo "</nav>";
 
 	}
 	else

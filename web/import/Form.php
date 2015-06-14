@@ -34,18 +34,24 @@
 	//print messagebar
 	include "include/messagebar.inc.php";
 
-	//<!-- headline  -->
-	echo "<h1>";
+	//container
+	echo "<div class=\"container\" id=\"cmdb-objecttable\">";
+
+	//headline
+	echo "<div class=\"row\" id=\"cmdb-objecttable-head\">";
+	echo "<h1 class=\"text-center\">";
 	echo gettext("Import and Export");
 	echo "</h1>";
+	echo "</div>";
 
 	//<!-- import box  -->
-	echo "<form action=\"import.php\" enctype=\"multipart/form-data\" method=\"post\">";
-	echo "<table class=\"cols2\">";
-	echo "<tr><th colspan=\"2\">".gettext("Import Objects")."</th></tr>";
-	echo "<tr>";
-	echo "<td>".gettext("Object Type:")."</td>";
-	echo "<td><select name=\"type\">";
+	echo "<div class=\"row\">";
+	echo "<form action=\"import.php\" enctype=\"multipart/form-data\" method=\"post\" class=\"form-horizontal\">";
+	echo "<h2>".gettext("Import Objects")."</h2>";
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 control-label\">".gettext("Object Type:")."</label>";
+	echo "<div class=\"col-md-3\">";
+	echo "<select name=\"type\" class=\"form-control\">";
 	foreach(array_keys($objectTypes) as $group)
 	{
 		echo "<optgroup label=\"$group\">";
@@ -55,37 +61,42 @@
 		}
 		echo "</optgroup>";
 	}
-	echo "</select></td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td>".gettext("Import Format:")."</td>";
-	echo "<td><select name=\"format\">";
+	echo "</select>";
+	echo "</div>";
+	echo "</div>";
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 control-label\">".gettext("Import Format:")."</label>";
+	echo "<div class=\"col-md-3\">";
+	echo "<select name=\"format\" class=\"form-control\">";
 	foreach($importFormats as $importFormat)
 	{
 		echo "<option>$importFormat</option>";
 	}
-	echo "</select></td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td>".gettext("Import File:")."</td>";
-	echo "<td>";
+	echo "</select>";
+	echo "</div>";
+	echo "</div>";
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 control-label\">".gettext("Import File:")."</label>";
+	echo "<div class=\"col-md-3\">";
 	echo "<input type=\"hidden\" name=\"action\" value=\"preview\" />";
-	echo "<input type=\"file\" name=\"file\" /></td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td colspan=\"2\"><input type=\"submit\" value=\"".gettext("Go")."\" /></td>";
-	echo "</tr>";
- 	echo "</table>";
+	echo "<input type=\"file\" name=\"file\" />";
+	echo "</div>";
+	echo "</div>";
+	echo "<div class=\"form-group\">";
+	echo "<div class=\"col-md-3 col-md-offset-2\">";
+	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "</div>";
+	echo "</div>";
 	echo "</form>";
 
 
 	//<!-- export box  -->
-	echo "<form action=\"export.php\" method=\"get\">";
-	echo "<table class=\"cols2\">";
-	echo "<tr><th colspan=\"2\">".gettext("Export Objects")."</th></tr>";
-	echo "<tr>";
-	echo "<td>".gettext("Object Type:")."</td>";
-	echo "<td><select name=\"type\">";
+	echo "<form action=\"export.php\" method=\"get\" class=\"form-horizontal\">";
+	echo "<h2>".gettext("Export Objects")."</h2>";
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 control-label\">".gettext("Object Type:")."</label>";
+	echo "<div class=\"col-md-3\">";
+	echo "<select name=\"type\" class=\"form-control\">";
 	foreach(array_keys($objectTypes) as $group)
 	{
 		echo "<optgroup label=\"$group\">";
@@ -95,23 +106,28 @@
 		}
 		echo "</optgroup>";
 	}
-	echo "</select></td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td>".gettext("Output Format:")."</td>";
-	echo "<td><select name=\"format\">";
+	echo "</select>";
+	echo "</div>";
+	echo "</div>";
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 control-label\">".gettext("Output Format:")."</label>";
+	echo "<div class=\"col-md-3\">";
+	echo "<select name=\"format\" class=\"form-control\">";
 	foreach($exportFormats as $exportFormat)
 	{
 		echo "<option>$exportFormat</option>";
 	}
-	echo "</select></td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td colspan=\"2\">";
+	echo "</select>";
+	echo "</div>";
+	echo "</div>";
+	echo "<div class=\"form-group\">";
+	echo "<div class=\"col-md-3 col-md-offset-2\">";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
-	echo "</td>";
-	echo "</tr>";
-	echo "</table>";
+	echo "</div>";
+	echo "</div>";
 	echo "</form>";
+
+	echo "</div>";
+	echo "</div>";
 
 ?>

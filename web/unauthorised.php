@@ -21,16 +21,16 @@
 *********************************************************************/
 
 	//get header
-	include "include/base.inc.php";
+	include "include/bootstrap-web.php";
 	include "include/auth.inc.php";
 	include "include/htmlheader.inc.php";
-	include "include/yourcmdbheader.inc.php";
+	include "include/cmdbheader.inc.php";
 
 	//error message
-	echo "<h1>".gettext("Unauthorised!")."</h1>";
-	echo "<p>".gettext("You don't have the permission to access this page. Sorry.")."</p>";
+	echo "<h1 class=\"text-center\">".gettext("Unauthorised!")."</h1>";
+	echo "<p class=\"text-center\">".gettext("You don't have the permission to access this page. Sorry.")."</p>";
 
 	//include footer
-	include "include/yourcmdbfooter.inc.php";
+	include "include/cmdbfooter.inc.php";
 	include "include/htmlfooter.inc.php";
 ?>

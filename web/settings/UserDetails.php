@@ -26,7 +26,7 @@
 */
 
 	//include base functions
-	include "../include/base.inc.php";
+	include "../include/bootstrap-web.php";
 	include "../include/auth.inc.php";
 
 	//central objects: $authProvider
@@ -76,27 +76,34 @@
 	//get user data
 	$userName = $authUser;
 	$userAccessgroup = $authAccessgroup;
-	$urlChangePassword = "javascript:settingsUserDetailsChangePassword('".gettext("Go!")."', '".gettext("Cancel")."')";
+	$urlChangePassword = "cmdbSubmitModal('#changeSettings', 'settings/UserDetails.php?' + $( '#settingsUserDetailsChangePasswordForm' ).serialize(), '#settingsTabUserDetails', false, true);";
+	//$urlChangePassword = "javascript:cmdbHideModal('#changeSettings');";
 
 	//output: header
-	echo "<h1>".sprintf(gettext("User: %s"), $userName)."</h1>";
+	echo "<h1 class=\"text-center\">".sprintf(gettext("User: %s"), $userName)."</h1>";
 
 	//output: user table
-	echo "<table class=\"list\">";
-	echo "<tr>";
-	echo "<th colspan=\"2\">&nbsp;</th>";
-	echo "</tr>";
+	echo "<table class=\"table\">";
 	echo "<tr><td>".gettext("username")."</td><td>$userName</td></tr>";
 	echo "<tr><td>".gettext("access group")."</td><td>$userAccessgroup</td></tr>";
 	if($functionalityPasswordChange)
 	{
 		echo "<tr><td>".gettext("password")."</td>";
-		echo "<td><a href=\"$urlChangePassword\"><img src=\"img/icon_edit.png\" title=\"".gettext("change password")."\" alt=\"".gettext("change password")."\" /></a></td></tr>";
+		echo "<td><a href=\"#\" data-toggle=\"modal\" data-target=\"#changeSettings\"><span class=\"glyphicon glyphicon-pencil\" title=\"".gettext("change password")."\"></span></a></td></tr>";
 	}
 	echo "</table>";
 
 	//output: edit user form
-	echo "<div class=\"blind\" id=\"settingsUserDetailsChangePassword\" title=\"".gettext("change password")."\">";
+	echo "<div class=\"modal fade\" id=\"changeSettings\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"changeSettingsLabel\" aria-hidden=\"true\">";
+	echo "<div class=\"modal-dialog\">";
+	echo "<div class=\"modal-content\">";
+	//confirmation: header
+	echo "<div class=\"modal-header\">";
+	echo "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>";
+	echo "<h4 class=\"modal-title\" id=\"changeSettingsLabel\">".gettext("Change password")."</h4>";
+	echo "</div>";
+	//confirmation: body
+	echo "<div class=\"modal-body\">";
 	echo "<form id=\"settingsUserDetailsChangePasswordForm\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\">";
 	echo "<table>";
 	echo "<input type=\"hidden\" name=\"action\" value=\"changePassword\">";
@@ -106,4 +113,13 @@
 	echo "</table>";
 	echo "</form>";
 	echo "</div>";
+	//confirmation: footer
+	echo "<div class=\"modal-footer\">";
+	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
+	echo "<a href=\"#\" onClick=\"$urlChangePassword\" class=\"btn btn-danger\">".gettext("Go!")."</a>";
+	echo "</div>";
+	echo "</div>";
+	echo "</div>";
+	echo "</div>";
+
 ?>

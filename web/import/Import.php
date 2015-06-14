@@ -72,8 +72,7 @@
 						}
 
 						//generate object and save to datastore
-						$cmdbObject = new CmdbObject($paramType, $objectFields);
-						$assetId = $datastore->addObject($cmdbObject);
+						$objectController->addObject($paramType, 'A', $objectFields, $authUser);
 						$j++;
 					}
 

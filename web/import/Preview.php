@@ -97,16 +97,16 @@
 			fclose($file);
 
         		//generate output
-			echo "<h1>";
+			echo "<h1 class=\"text-center\">";
 			echo gettext("CSV Import - Preview (first lines of csv file)");
 			echo "</h1>";
-			echo "<table>";
+			echo "<table class=\"table\">";
 			echo "<form action=\"import.php\" method=\"post\">";
 			echo "<tr>";
 			//output field mapping
 			for($i = 0; $i < $cols; $i++)
 			{
-				echo "<td><select name=\"column$i\">";
+				echo "<td><select name=\"column$i\" class=\"form-control\">";
 				echo "<option></option>";
 				foreach(array_keys($config->getObjectTypeConfig()->getFields($paramType)) as $objectFieldName)
 				{

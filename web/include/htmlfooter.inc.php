@@ -19,7 +19,11 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-?>
 
+/**
+* HTML footer for yourCMDB WebUI
+* @author Michael Batz <michael@yourcmdb.org>
+*/
+?>
 	</body>
 </html>

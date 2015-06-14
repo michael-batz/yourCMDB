@@ -20,101 +20,51 @@
 *
 *********************************************************************/
 
-	//get header
-	include "include/base.inc.php";
+/**
+* yourCMDB WebUI: home page
+* @author: Michael Batz <michael@yourcmdb.org>
+*/
+
+	//include base
+	include "include/bootstrap-web.php";
 	include "include/auth.inc.php";
+
+	//include header
 	include "include/htmlheader.inc.php";
-	include "include/yourcmdbheader.inc.php";
+	include "include/cmdbheader.inc.php";
 
-	//max rows per box
-	$rowCount = 5;
+	//title
+	echo "<h1 class=\"text-center\">".gettext("Welcome to yourCMDB!")."</h1>";
 
-	//get data
-	$newestObjects = $datastore->getNNewestObjects($rowCount);
-	$lastChangedObjects = $datastore->getNLastChangedObjects($rowCount);
+	//1st row
+	echo "<div class=\"row\">";
 
-	//urls
-	$urlShowObject = "object.php?action=show&amp;id=";
-	$urlEditObject = "object.php?action=edit&amp;id=";
+	//dashlet: object count
+	echo "<div class=\"col-md-2 col-md-offset-1 cmdb-dashlet\">";
+	include "dashboard/DashletCount.php";
+	echo "</div>";
 
+	//dashlet: newest objects
+	echo "<div class=\"col-md-6 col-md-offset-1 cmdb-dashlet\">";
+	include "dashboard/DashletNewestObjects.php";
+	echo "</div>";
 
-	//<!-- title -->
-	echo "<h1>".gettext("Welcome to yourCMDB!")."</h1>";
-
-
-	//<!-- newest objects -->
-	echo "<table class=\"list\">";
-	echo "<tr>";
-	echo "<th class=\"center\" colspan=\"4\">";
-	printf(gettext("%s Newest Objects"), $rowCount);
-	echo "</th>";
-	echo "</tr>";
-	//get objecttypes and objectcount
-	foreach($newestObjects as $objectEntry)
-	{
-		$object = $objectEntry[0];
-		$objectDate = $objectEntry[1];
-		$objectId = $object->getId();
-		$objectType = $object->getType();
-		$urlShowObjectId = "$urlShowObject$objectId";			
-		$urlEditObjectId = "$urlEditObject$objectId&amp;type=$objectType";
-		//get object status icon
-		$statusIcon = "<img src=\"img/icon_active.png\" alt=\"".gettext("active")."\" title=\"".gettext("active object")."\" />";	
-		if($object->getStatus() != 'A')
-		{
-			$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"".gettext("inactive")."\" title=\"".gettext("inactive object")."\" />";
-		}
-		echo "<tr>";
-		echo "<td>$statusIcon $objectId</td>";
-		echo "<td>$objectType</td>";
-		echo "<td>$objectDate</td>";
-		echo "<td class=\"right\">";
-		echo "<a href=\"$urlShowObjectId\"><img src=\"img/icon_show.png\" title=\"".gettext("show")."\" alt=\"".gettext("show")."\" /></a>&nbsp;&nbsp;&nbsp;";
-		echo "<a href=\"$urlEditObjectId\"><img src=\"img/icon_edit.png\" title=\"".gettext("edit")."\" alt=\"".gettext("edit")."\" /></a>";
-		echo "</td>";
-		echo "</tr>";
-	}
-	echo "</table>";
+	//1st row end
+	echo "</div>";
 
 
-	//<!-- last changed objects -->
-	echo "<table class=\"list\">";
-	echo "<tr>";
-	echo "<th class=\"center\" colspan=\"4\">";
-	printf(gettext("%s Last Changed Objects"), $rowCount);
-	echo "</th>";
-	echo "</tr>";
-	//get objecttypes and objectcount
-	foreach($lastChangedObjects as $objectEntry)
-	{
-		$object = $objectEntry[0];
-		$objectDate = $objectEntry[1];
-		$objectId = $object->getId();
-		$objectType = $object->getType();
+	//2nd row
+	echo "<div class=\"row\">";
 
-		$urlShowObjectId = "$urlShowObject$objectId";
-		$urlEditObjectId = "$urlEditObject$objectId&amp;type=$objectType";
+	//dashlet: last changed objects
+	echo "<div class=\"col-md-6 col-md-offset-4 cmdb-dashlet\">";
+	include "dashboard/DashletLastChangedObjects.php";
+	echo "</div>";
 
-		//get object status icon
-		$statusIcon = "<img src=\"img/icon_active.png\" alt=\"".gettext("active")."\" title=\"".gettext("active object")."\" />";
-		if($object->getStatus() != 'A')
-		{
-			$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"".gettext("inactive")."\" title=\"".gettext("inactive object")."\" />";
-		}
+	//2nd row end
+	echo "</div>";
 
-		echo "<tr>";
-		echo "<td>$statusIcon $objectId</td>";
-		echo "<td>$objectType</td>";
-		echo "<td>$objectDate</td>";
-		echo "<td class=\"right\">";
-		echo "<a href=\"$urlShowObjectId\"><img src=\"img/icon_show.png\" title=\"".gettext("show")."\" alt=\"".gettext("show")."\" /></a>&nbsp;&nbsp;&nbsp;";
-		echo "<a href=\"$urlEditObjectId\"><img src=\"img/icon_edit.png\" title=\"".gettext("edit")."\" alt=\"".gettext("edit")."\" /></a>";
-		echo "</td>";
-		echo "</tr>";
-	}
-	echo "</table>";
-
-//include footer
-include "include/yourcmdbfooter.inc.php";
-include "include/htmlfooter.inc.php";
+	//include footer
+	include "include/cmdbfooter.inc.php";
+	include "include/htmlfooter.inc.php";
 ?>

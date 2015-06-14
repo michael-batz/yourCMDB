@@ -28,11 +28,11 @@
 	//print messagebar
 	include "include/messagebar.inc.php";
 
-	echo "<h1>";
+	echo "<h1 class=\"text-center\">";
 	echo gettext("yourCMDB Error");
 	echo "</h1>";
 
-	echo "<p>";
+	echo "<p class=\"text-center\">";
 	echo gettext("The error above should not be happened. Maybe you use a wrong URL or you found a bug.");
 	echo "<br />";
 	echo sprintf(gettext("Please check your setup or ask for help on the %s yourCMDB Website %s."), "<a href=\"http://www.yourcmdb.org\">", "</a>");

@@ -27,10 +27,11 @@
 
 	echo "<div id=\"searchbarResult\">";
 	echo "<script type=\"text/javascript\">";
-	echo "openUrlAjax('search/SearchResult.php?$paramString', '#searchbarResult', false, true);";
+	echo "cmdbOpenUrlAjax('search/SearchResult.php?$paramString', '#searchbarResult', false, true);";
 	echo "</script>";
 	echo "</div>";
 
 	//searchbar footer
+	echo "</div>";
 	echo "</div>";
 ?>

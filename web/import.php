@@ -26,10 +26,10 @@
 
 
 	//get header
-	include "include/base.inc.php";
+	include "include/bootstrap-web.php";
 	include "include/auth.inc.php";
 	include "include/htmlheader.inc.php";
-	include "include/yourcmdbheader.inc.php";
+	include "include/cmdbheader.inc.php";
 
 	//get parameters
 	$paramAction = getHttpPostVar("action", "form");
@@ -56,6 +56,6 @@
 	}
 
 	//include footer
-	include "include/yourcmdbfooter.inc.php";
+	include "include/cmdbfooter.inc.php";
 	include "include/htmlfooter.inc.php";
 ?>

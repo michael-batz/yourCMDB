@@ -21,23 +21,29 @@
 *********************************************************************/
 
 	//get header
-	include "include/base.inc.php";
+	include "include/bootstrap-web.php";
 	include "include/auth.inc.php";
 	include "include/htmlheader.inc.php";
-	include "include/yourcmdbheader.inc.php";
+	include "include/cmdbheader.inc.php";
 
 	//<!-- title -->
-	echo "<h1>".gettext("User settings")."</h1>";
+	echo "<h1 class=\"text-center\">".gettext("User settings")."</h1>";
 
 	//<!-- start tabs -->
-	echo "<div id=\"jsAccordion\">";
+	echo "<div class=\"panel-group\" id=\"accordion\" role=\"tablist\" aria-multiselectable=\"true\">";
 
 	//tab: change password
-	echo "<h3>".gettext("user details")."</h3>";
-	echo "<div id=\"settingsTabUserDetails\">";
+	echo "<div class=\"panel panel-default\">";
+	echo "<div class=\"panel-heading\" role=\"tab\" id=\"tab-1-head\">";
+	echo "<h3 class=\"panel-title\"><a href=\"#tab-1-body\" data-toggle=\"collapse\" data-parent=\"#accordion\">".gettext("user details")."</a></h3>";
+	echo "</div>";
+	echo "<div id=\"tab-1-body\" class=\"panel-collapse collapse in\" role=\"tabpanel\" aria-labledby=\"tab-1-head\">";
+	echo "<div class=\"panel-body\" id=\"settingsTabUserDetails\">";
 	echo "<script language=\"JavaScript\">";
-	echo "openUrlAjax('settings/UserDetails.php?', '#settingsTabUserDetails', false, true);";
+	echo "cmdbOpenUrlAjax('settings/UserDetails.php?', '#settingsTabUserDetails', false, true);";
 	echo "</script>";
+	echo "</div>";
+	echo "</div>";
 	echo "</div>";
 
 	//<!-- end tabs -->
@@ -45,6 +51,6 @@
 
 
 	//include footer
-	include "include/yourcmdbfooter.inc.php";
+	include "include/cmdbfooter.inc.php";
 	include "include/htmlfooter.inc.php";
 ?>

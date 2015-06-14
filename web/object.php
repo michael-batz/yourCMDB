@@ -26,10 +26,16 @@
 
 
 	//get header
-	include "include/base.inc.php";
+	include "include/bootstrap-web.php";
 	include "include/auth.inc.php";
 	include "include/htmlheader.inc.php";
-	include "include/yourcmdbheader.inc.php";
+	include "include/cmdbheader.inc.php";
+
+	//class loading
+	use yourCMDB\exceptions\CmdbObjectNotFoundException;
+	use yourCMDB\exceptions\CmdbObjectLinkNotAllowedException;
+	use yourCMDB\exceptions\CmdbObjectLinkNotFoundException;
+	use \Exception;
 
 	//get UI Helper
 	include "object/ObjectUiHelper.php";
@@ -44,11 +50,15 @@
 	$paramMax = getHttpGetVar("max", $config->getViewConfig()->getContentTableLength());
 	$paramPage = getHttpGetVar("page", "1");
 	$paramSort = getHttpGetVar("sort", "");
-	$paramSortType = getHttpGetVar("sorttype", "asc");
-	$paramActiveOnly = getHttpGetVar("activeonly", "1");
-	if($paramSortType != "asc")
+	$paramSortType = getHttpGetVar("sorttype", "ASC");
+	$paramStatus = getHttpGetVar("status", "A");
+	if($paramStatus != "A")
 	{
-		$paramSortType = "desc";
+		$paramStatus = "0";
+	}
+	if($paramSortType != "ASC")
+	{
+		$paramSortType = "DESC";
 	}
 
 
@@ -62,9 +72,9 @@
 			//get object and object links
 			try
 			{
-				$object= $datastore->getObject($paramId);
+				$object= $objectController->getObject($paramId, $authUser);
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				//show error message and search form
 				$paramError = sprintf(gettext("No object with AssetID %s found..."), $paramId);
@@ -113,10 +123,10 @@
 			//create new object and return assetId
 			try
 			{
-				$paramId = $datastore->addObject(new CmdbObject($paramType, $objectFields, 0, $status));
-				$object = $datastore->getObject($paramId);
+				$object = $objectController->addObject($paramType, $status, $objectFields, $authUser);
+				$paramId = $object->getId();
 			}
-			catch(NoSuchObjectException $e)
+			catch(Exception $e)
 			{
 				$paramError = gettext("Error saving new object");
 				include "error/Error.php";
@@ -139,19 +149,17 @@
 			//change object and return the ShowObject page
 			try
 			{
-				$object = $datastore->getObject($paramId);
+				$object = $objectController->getObject($paramId, $authUser);
 				//check, if HTTP POST variables are set
 				if(count($_POST) <= 0)
 				{
 					$paramError = gettext("No data were set when saving an object.");
 					include "object/ShowObject.php";
 					break;
-				}	
-				$datastore->changeObjectStatus($paramId, $status);
-				$datastore->changeObjectFields($paramId, $objectFields);
-				$object = $datastore->getObject($paramId);
+				}
+				$object = $objectController->updateObject($paramId, $status, $objectFields, $authUser);
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Error saving object");
 				include "error/Error.php";
@@ -166,10 +174,10 @@
 			//delete object
 			try
 			{
-				$paramType = $datastore->getObject($paramId)->getType();
-				$datastore->deleteObject($paramId);
+				$paramType = $objectController->getObject($paramId, $authUser)->getType();
+				$objectController->deleteObject($paramId, $authUser);
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Error deleting object: Object not found");
 				include "error/Error.php";
@@ -184,9 +192,9 @@
 			//get first object
 			try
 			{
-				$object = $datastore->getObject($paramId);
+				$object = $objectController->getObject($paramId, $authUser);
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Object for adding links not found.");
 				include "error/Error.php";
@@ -196,14 +204,15 @@
 			//tryp to add a link
 			try
 			{
-				$result = $datastore->addObjectLink($paramId, $paramIdB);
+				$objectB = $objectController->getObject($paramIdB, $authUser);
+				$objectLinkController->addObjectLink($object, $objectB, $authUser);
 				$paramMessage = gettext("Object link successfully added");
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Error adding object link: Object B not found");
 			}
-			catch(ObjectActionNotAllowed $e)
+			catch(CmdbObjectLinkNotAllowedException $e)
 			{
 				$paramError = sprintf(gettext("Link object %s with object %s is not allowed."), $paramId, $paramIdB);
 				if($paramId != $paramIdB)
@@ -219,15 +228,20 @@
 			try
 			{
 				//delete link
-				$object = $datastore->getObject($paramId);
-				$result = $datastore->deleteObjectLink($paramId, $paramIdB);
+				$object = $objectController->getObject($paramId, $authUser);
+				$objectB = $objectController->getObject($paramIdB, $authUser);
+				$objectLinkController->deleteObjectLink($object, $objectB, $authUser);
 				$paramMessage = gettext("Object link was successfully deleted");
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Error deleting object link: object not found");
 				include "error/Error.php";
 				break;
+			}
+			catch(CmdbObjectLinkNotFoundException $e)
+			{
+				$paramError = gettext("Error deleting object link: Link not found");
 			}
 
 			//open object page
@@ -237,11 +251,11 @@
 		case "sendEvent":
 			try
 			{
-				$object = $datastore->getObject($paramId);
-				$controller->getEventProcessor()->generateEvent($paramEvent, $object->getId(), $object->getType());
+				$object = $objectController->getObject($paramId, $authUser);
+				$eventProcessor->generateEvent($paramEvent, $object->getId(), $object->getType());
 				$paramMessage = sprintf(gettext("Event %s was successfully sent"), $paramEvent);
 			}
-			catch(NoSuchObjectException $e)
+			catch(CmdbObjectNotFoundException $e)
 			{
 				$paramError = gettext("Error sending event: object not found");
 				include "error/Error.php";
@@ -254,6 +268,6 @@
 	}
 
 	//include footer
-	include "include/yourcmdbfooter.inc.php";
+	include "include/cmdbfooter.inc.php";
 	include "include/htmlfooter.inc.php";
 ?>

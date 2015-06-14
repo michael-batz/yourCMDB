@@ -25,7 +25,7 @@
 */
 
 	//load WebUI base
-	require "include/base.inc.php";
+	require "include/bootstrap-web.php";
 	require "include/auth.inc.php";
 
 	//get parameter
@@ -33,7 +33,7 @@
 	$paramFormat = getHttpGetVar("format", "csv");
 
 	//get data
-	$objects = $datastore->getObjectsByType($paramType);
+	$objects = $objectController->getObjectsByType(Array($paramType), null, "ASC", null, 0, 0, $authUser);
 
 	switch($paramFormat)
 	{

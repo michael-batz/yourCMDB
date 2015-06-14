@@ -26,7 +26,12 @@
 */
 
 	//get data
-	$objects = $datastore->getObjectsByType($paramType, $paramSort, $paramSortType, $paramActiveOnly);
+	$paramStatusVar = $paramStatus;
+	if($paramStatus == "0")
+	{
+		$paramStatusVar = null;
+	}
+	$objects = $objectController->getObjectsByType(Array($paramType), $paramSort, $paramSortType, $paramStatusVar, 0, 0, $authUser);
 	$summaryFields = $config->getObjectTypeConfig()->getSummaryFields($paramType);
 
 	//calculate list view
@@ -55,21 +60,21 @@
 	}
 
 	//sort options
-	$urlSortType = "desc";
-	if($paramSortType == "desc")
+	$urlSortType = "DESC";
+	if($paramSortType == "DESC")
 	{
-		$urlSortType = "asc";
+		$urlSortType = "ASC";
 	}
 
 	//generate output strings
-	$urlShowActiveBase = "object.php?action=list&amp;type=$paramType&amp;activeonly=";
+	$urlShowActiveBase = "object.php?action=list&amp;type=$paramType&amp;status=";
 	$urlAdd = "object.php?action=add&amp;type=$paramType";
 	$urlCsvExport = "export.php?format=csv&amp;type=$paramType";
-	$listnavUrlBase= "object.php?action=list&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=$paramActiveOnly&amp;sorttype=$paramSortType&amp;sort=$paramSort&amp;page=";
-	$urlSortBase= "object.php?action=list&amp;type=$paramType&amp;max=$paramMax&amp;activeonly=$paramActiveOnly&amp;sorttype=$urlSortType&amp;sort=";
+	$listnavUrlBase= "object.php?action=list&amp;type=$paramType&amp;max=$paramMax&amp;status=$paramStatus&amp;sorttype=$paramSortType&amp;sort=$paramSort&amp;page=";
+	$urlSortBase= "object.php?action=list&amp;type=$paramType&amp;max=$paramMax&amp;status=$paramStatus&amp;sorttype=$urlSortType&amp;sort=";
 
 	//generate link for show active/inactive objects
-	if($paramActiveOnly)
+	if($paramStatus == "A")
 	{
 		$textShowActive = gettext("Show also inactive objects");
 		$urlShowActive = $urlShowActiveBase."0";		
@@ -77,33 +82,53 @@
 	else
 	{
 		$textShowActive = gettext("Show only active objects");
-		$urlShowActive = $urlShowActiveBase."1";		
+		$urlShowActive = $urlShowActiveBase."A";		
 	}
 
 
 
-	//<!-- confirmation for deleting objects  -->
-	echo "<div class=\"blind\" id=\"jsConfirm\" title=\"".gettext("Are you sure?")."\">";
-	echo "<p>";
+	//<!-- confirmation for deleting this object  -->
+	echo "<div class=\"modal fade\" id=\"confirmDeleteList\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"confirmDeleteListLabel\" aria-hidden=\"true\">";
+	echo "<div class=\"modal-dialog\">";
+	echo "<div class=\"modal-content\">";
+	echo "<form action=\"object.php\" method=\"get\" accept-charset=\"UTF-8\">";
+	echo "<input type=\"hidden\" name=\"action\" value=\"delete\">";
+	//confirmation: header
+	echo "<div class=\"modal-header\">";
+	echo "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>";
+	echo "<h4 class=\"modal-title\" id=\"confirmDeleteListLabel\">".gettext("Are you sure...?")."</h4>";
+	echo "</div>";
+	//confirmation: body
+	echo "<div class=\"modal-body\">";
+        echo "<p>";
 	echo gettext("Do you really want to delete this object?");
 	echo "</p>";
 	echo "</div>";
+	//confirmation: footer
+	echo "<div class=\"modal-footer\">";
+	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
+	echo "<button type=\"submit\" class=\"btn btn-danger\">".gettext("delete")."</button>";
+	echo "</div>";
+	echo "</form>";
+	echo "</div>";
+	echo "</div>";
+	echo "</div>";
 
 	//<!-- submenu -->
-	echo "<div class=\"submenu\">";
-	echo "<a href=\"$urlShowActive\"><img src=\"img/icon_tags.png\" class=\"icon\" alt=\"".gettext("switch")."\" title=\"".gettext("switch")."\" />$textShowActive</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlAdd\"><img src=\"img/icon_add.png\" class=\"icon\" alt=\"".gettext("add")."\" title=\"".gettext("add")."\" />".gettext("add new object")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlCsvExport\"><img src=\"img/icon_export.png\" class=\"icon\" alt=\"".gettext("export")."\" title=\"".gettext("export")."\" />CSV export</a>";
+	echo "<div>";
+	echo "<a href=\"$urlShowActive\"><span class=\"glyphicon glyphicon-tags\" title=\"".gettext("switch")."\"></span>$textShowActive</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlAdd\"><span class=\"glyphicon glyphicon-plus\" title=\"".gettext("add")."\"></span>".gettext("add new object")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
+	echo "<a href=\"$urlCsvExport\"><span class=\"glyphicon glyphicon-share-alt\" title=\"".gettext("export")."\"></span>CSV export</a>";
 	echo "</div>";
 
 	//print messagebar
 	include "include/messagebar.inc.php";
 
 	//<!-- headline -->
-	echo "<h1>$paramType ($objectCount)</h1>";
+	echo "<h1 class=\"text-center\">$paramType ($objectCount)</h1>";
 
 	//<!-- list objects -->
-	echo "<table class=\"list\">";
+	echo "<table class=\"table table-hover\">";
 
 	//<!-- table header -->
 	echo "<tr>";
@@ -122,10 +147,10 @@
 	for($i = $listStart; $i <= $listEnd; $i++)
 	{ 
 		//get object status icon
-		$statusIcon = "<img src=\"img/icon_active.png\" alt=\"".gettext("active")."\" title=\"".gettext("active object")."\" />";
+		$statusIcon = "<span class=\"label label-success\" title=\"".gettext("active object")."\">A</span>";
 		if($objects[$i]->getStatus() != 'A')
 		{
-			$statusIcon = "<img src=\"img/icon_inactive.png\" alt=\"".gettext("inactive")."\" title=\"".gettext("inactive object")."\" />";
+			$statusIcon = "<span class=\"label label-danger\" title=\"".gettext("inactive object")."\">N</span>";
 		}
 		echo "<tr>";
 		echo "<td>$statusIcon ".$objects[$i]->getId()."</td>";
@@ -133,37 +158,38 @@
 		{ 
 			$urlObjectShow = "object.php?action=show&amp;id=". $objects[$i]->getId();
 			$urlObjectEdit = "object.php?action=edit&amp;id=". $objects[$i]->getId()."&amp;type=".$objects[$i]->getType();
-			$urlObjectDelete = "javascript:showConfirmation('object.php?action=delete&amp;id=". $objects[$i]->getId()."', '".gettext("Yes")."', '".gettext("Cancel")."')";
 			$fieldValue = $objects[$i]->getFieldValue($fieldname);
 			$fieldType = $summaryFields[$fieldname];
 			echo "<td>";
 			showFieldForDataType($paramType, "$fieldname-$i", $fieldValue, $fieldType, false);
 			echo "</td>";
 		}
-		echo "<td class=\"right\">";
-		echo "<a href=\"$urlObjectShow\"><img src=\"img/icon_show.png\" title=\"".gettext("show")."\" alt=\"".gettext("show")."\" /></a>&nbsp;&nbsp;&nbsp;";
-		echo "<a href=\"$urlObjectEdit\"><img src=\"img/icon_edit.png\" title=\"".gettext("edit")."\" alt=\"".gettext("edit")."\" /></a>&nbsp;&nbsp;&nbsp;";
-		echo "<a href=\"$urlObjectDelete\"><img src=\"img/icon_delete.png\" title=\"".gettext("delete")."\" alt=\"".gettext("delete")."\" /></a>";
+		echo "<td>";
+		echo "<a href=\"$urlObjectShow\"><span class=\"glyphicon glyphicon-eye-open\" title=\"".gettext("show")."\"></span></a>&nbsp;&nbsp;&nbsp;";
+		echo "<a href=\"$urlObjectEdit\"><span class=\"glyphicon glyphicon-pencil\" title=\"".gettext("edit")."\"></span></a>&nbsp;&nbsp;&nbsp;";
+		echo "<a href=\"#\" data-toggle=\"modal\" data-target=\"#confirmDeleteList\" data-form-id=\"".$objects[$i]->getId()."\">";
+		echo "<span class=\"glyphicon glyphicon-trash\" title=\"".gettext("delete")."\"></span></a>";
 		echo "</td>";
 		echo "</tr>";
 	}
 	echo "</table>";
 
 	//<!-- list navigation  -->
-	echo "<p class=\"listnav\">";
+	echo "<nav>";
+	echo "<ul class=\"pagination\">";
 	//print prev button
 	if($listPage != 1)
 	{
 		$listnavUrl = $listnavUrlBase .($listPage - 1);
-		echo "<a href=\"$listnavUrl\">&lt; ";
+		echo "<li><a href=\"$listnavUrl\">&lt; ";
 		echo gettext("previous");
-		echo "</a>";
+		echo "</a></li>";
 	}
 	else
 	{
-		echo "<a href=\"#\" class=\"disabled\">&lt; ";
+		echo "<li class=\"disabled\"><a href=\"#\">&lt; ";
 		echo gettext("previous");
-		echo "</a>";
+		echo "</a></li>";
 	}
 	//print page numbers
 	for($i = 1; $i <= $listPages; $i++)
@@ -171,39 +197,40 @@
 		$listnavUrl = $listnavUrlBase .$i;
 		if($i == $listPage)
 		{
-			echo "<a href=\"$listnavUrl\" class=\"active\">$i</a>";
+			echo "<li class=\"active\"><a href=\"$listnavUrl\">$i</a></li>";
 		}
 		else
 		{
-			echo "<a href=\"$listnavUrl\">$i</a>";
+			echo "<li><a href=\"$listnavUrl\">$i</a></li>";
 		}
 
 		//jump to current page
 		if($i == 3 && $listPage > 5)
 		{
 			$i = $listPage - 2;
-			echo "...";
+			echo "<li>...</li>";
 		}
 		//jump to last page
 		if($i > 3 && $i > $listPage && $i < ($listPages - 2))
 		{
 			$i = $listPages - 2;
-			echo "...";
+			echo "<li>...</li>";
 		}
 	}
 	//print next button
 	if($listPage != $listPages)
 	{
 		$listnavUrl = $listnavUrlBase .($listPage + 1);
-		echo "<a href=\"$listnavUrl\">";
+		echo "<li><a href=\"$listnavUrl\">";
 		echo gettext("next");
-		echo " &gt;</a>";
+		echo " &gt;</a></li>";
 	}
 	else
 	{
-		echo "<a href=\"#\" class=\"disabled\">";
+		echo "<li class=\"disabled\"><a href=\"#\">";
 		echo gettext("next"); 
-		echo " &gt;</a>";
+		echo " &gt;</a></li>";
 	}
-	echo "</p>";
+	echo "</ul>";
+	echo "</nav>";
 ?>

@@ -19,23 +19,43 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+/**
+* HTML header for yourCMDB WebUI
+* @author Michael Batz <michael@yourcmdb.org>
+*/
+?>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
+		<!-- bootstrap setup -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<link rel="search" type="application/opensearchdescription+xml" title="yourCMDB QuickSearch" href="opensearch-plugin.php" />
+
+		<!-- favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.10.3.custom.min.css" />
-		<link rel="stylesheet" type="text/css" href="css/default.css" />
-		<script src="js/jquery-1.9.1.js" type="text/javascript"></script>
-		<script src="js/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-		<script src="js/settings.js" type="text/javascript"></script>
-		<script src="js/admin.js" type="text/javascript"></script>
-		<script src="js/searchbar.js" type="text/javascript"></script>
-		<script src="js/functions.js" type="text/javascript"></script>
+
+		<!-- OpenSearch plugin -->
+		<link rel="search" type="application/opensearchdescription+xml" title="yourCMDB QuickSearch" href="opensearch-plugin.php" />
+
+		<!-- CSS: bootstrap, typeahead, smartmenues, bootstrap-datepicker and yourCMDB custom -->
+		<link href="css/bootstrap.min.css" rel="stylesheet" />
+		<link href="css/jquery.smartmenus.bootstrap.css" rel="stylesheet" />
+		<link href="css/typeahead.css" rel="stylesheet" />
+		<link href="css/bootstrap-datepicker.css" rel="stylesheet" />
+		<link href="css/yourcmdb.css" rel="stylesheet" />
+
+		<!-- JS: jQuery, bootstrap, typeahead, smartmenues, bootstrap-datepicker and yourCMDB custom -->
+		<script src="js/jquery-1.11.2.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/typeahead.bundle.min.js"></script>
+		<script src="js/jquery.smartmenus.min.js"></script>
+		<script src="js/jquery.smartmenus.bootstrap.min.js"></script>
+		<script src="js/bootstrap-datepicker.min.js"></script>
+		<script src="js/yourcmdb.js"></script>
+
 		<title><?php echo $installTitle; ?></title>
 	</head>
 	<body>

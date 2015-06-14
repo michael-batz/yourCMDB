@@ -20,45 +20,72 @@
 *
 *********************************************************************/
 
+/**
+* yourCMDB WebUI: login page
+* @author: Michael Batz <michael@yourcmdb.org>
+* ToDo: Design
+*/
+
 	//get header
-	include "include/base.inc.php";
+	include "include/bootstrap-web.php";
 	include "include/htmlheader.inc.php";
 
 	$loginError = getHttpGetVar("error", "false");
 
-	//login container
-	echo "<div class=\"logincontainer\">";
+	//container
+	echo "<div id=\"cmdb-logincontainer\">";
+	echo "<div class=\"container\">";
+	echo "<div class=\"row\">";
+	echo "<div class=\"col-md-6 col-md-offset-3\">";
 
+	//login panel
+	echo "<div class=\"panel\" id=\"cmdb-loginpanel\">";
+	//login panel headline
+	echo "<div class=\"panel-heading\">".gettext("Welcome to yourCMDB!")."</div>";
+	//login panel body
+	echo "<div class=\"panel-body\">";
+	echo "<form method=\"post\" action=\"index.php\" class=\"form-horizontal\">";
 	//login form
-	echo "<div class=\"box\" id=\"loginBox\">";
-	echo "<form method=\"post\" action=\"index.php\">";
-	echo "<h1>".gettext("Welcome to yourCMDB!")."</h1>";
 	if($loginError != "false")
 	{
 		printErrorMessage(gettext("Sorry, wrong username or password. Please try again..."));
 	}
-	echo "<p><img src=\"img/logo.png\" alt=\"".gettext("yourCMDB logo")."\" /></p>";
+	echo "<img src=\"img/logo.png\" alt=\"".gettext("yourCMDB logo")."\" class=\"center-block\" />";
 
-	echo "<table>";
-	echo "<tr>";
-	echo "<td>".gettext("user:")."</td>";
-	echo "<td><input type=\"text\" id=\"loginUsername\" name=\"authUser\"/></td>";
-	echo "</tr>";
-
-	echo "<tr>";
-	echo "<td>".gettext("password:")."</td>";
-	echo "<td><input type=\"password\" name=\"authPassword\"/></td>";
-	echo "</tr>";
-
-	echo "<tr>";
-	echo "<td colspan=\"2\"><input type=\"submit\" value=\"".gettext("Go!")."\"/></td>";
-	echo "</tr>";
-
-	echo "</table>";
-	echo "</form>";
+	//login form field: username
+	echo "<div class=\"form-group\">";
+	echo "<label for=\"loginUsername\" class=\"col-md-2 control-label\">".gettext("user:")."</label>";
+	echo "<div class=\"col-md-9 input-group\">";
+	echo "<div class=\"input-group-addon\"><span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span></div>";
+	echo "<input type=\"text\" class=\"form-control\" id=\"cmdbLoginUsername\" name=\"authUser\"/>";
+	echo "</div>";
 	echo "</div>";
 
-	//end login container
+	//login form field: password
+	echo "<div class=\"form-group\">";
+	echo "<label for=\"loginPassword\" class=\"col-md-2 control-label\">".gettext("password:")."</label>";
+	echo "<div class=\"col-md-9 input-group\">";
+	echo "<div class=\"input-group-addon\"><span class=\"glyphicon glyphicon-option-horizontal\" aria-hidden=\"true\"></span></div>";
+	echo "<input type=\"password\" class=\"form-control\" id=\"loginPassword\" name=\"authPassword\"/>";
+	echo "</div>";
+	echo "</div>";
+
+	//login form: login button
+	echo "<div class=\"form-group\">";
+	echo "<div class=\"col-md-offset-2\">";
+	echo "<button type=\"submit\" class=\"btn btn-default\">".gettext("Go!")."</button>";
+	echo "</div>";
+	echo "</div>";
+
+	echo "</form>";
+	//end login panel
+	echo "</div>";
+	echo "</div>";
+
+	//end container
+	echo "</div>";
+	echo "</div>";
+	echo "</div>";
 	echo "</div>";
 
 	//include footer

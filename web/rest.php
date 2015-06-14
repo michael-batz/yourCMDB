@@ -24,13 +24,18 @@
 * REST request dispatcher
 * @author: Michael Batz <michael@yourcmdb.org>
 */
+	use yourCMDB\rest\RestResponse;
+	use yourCMDB\rest\RestResourceObject;
+	use yourCMDB\rest\RestResourceObjectLog;
+	use yourCMDB\rest\RestResourceObjectLinks;
+	use yourCMDB\rest\RestResourceObjectlist;
+	use yourCMDB\rest\RestResourceObjectTypes;
 
 	//get WebUI base
-	include "include/base.inc.php";
+	include "include/bootstrap-web.php";
 
 	//check authentication (HTTP Basic AUTH)
-	$authProvider = $controller->getAuthProvider("rest");
-	$authorisationProvider = $controller->getAuthorisationProvider("rest");
+	$authProvider = $config->getSecurityConfig()->getAuthProvider("rest");
 	$authUser = "";
 	$authAccessgroup = "";
 	$authAuthenticated = false;
@@ -68,23 +73,23 @@
 	switch($requestPath[0])
 	{
 		case "objects":
-			$restResource = new RestResourceObject($requestPath);
+			$restResource = new RestResourceObject($requestPath, $authUser);
 			break;
 
 		case "objectlogs":
-			$restResource = new RestResourceObjectLog($requestPath);
+			$restResource = new RestResourceObjectLog($requestPath, $authUser);
 			break;
 
 		case "objectlinks":
-			$restResource = new RestResourceObjectLinks($requestPath);
+			$restResource = new RestResourceObjectLinks($requestPath, $authUser);
 			break;
 
 		case "objectlist":
-			$restResource = new RestResourceObjectlist($requestPath);
+			$restResource = new RestResourceObjectlist($requestPath, $authUser);
 			break;
 
 		case "objecttypes":
-			$restResource = new RestResourceObjectTypes($requestPath);
+			$restResource = new RestResourceObjectTypes($requestPath, $authUser);
 			break;
 	}
 

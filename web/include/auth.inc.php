@@ -26,7 +26,7 @@
 
 	session_start();
 	$baseUrl = $config->getViewConfig()->getBaseUrl();
-	$authProvider = $controller->getAuthProvider("web");
+	$authProvider = $config->getSecurityConfig()->getAuthProvider("web");
 	//set defaults
 	$authAuthenticated = false;
 	$authUser = "";

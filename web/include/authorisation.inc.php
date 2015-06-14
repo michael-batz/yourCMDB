@@ -25,11 +25,8 @@
 * The following variables need to be set:
 * - $authAccessgroup
 * - $authorisationAppPart
-* - $controller
+* - $authorisationProvider
 */
-
-	//get AuthorisationProvider
-	$authorisationProvider = $controller->getAuthorisationProvider("web");
 
 	//check authorisation
 	$authorisationResult = $authorisationProvider->authorise($authAccessgroup, $authorisationAppPart);

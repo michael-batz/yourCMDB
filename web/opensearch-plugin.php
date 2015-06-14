@@ -25,7 +25,7 @@
 */
 
         //load WebUI base
-        require "include/base.inc.php";
+        require "include/bootstrap-web.php";
 
 	//get baseUrl from config
 	$baseUrl = $config->getViewConfig()->getBaseUrl();

@@ -24,16 +24,18 @@
 * Shows a form to add or edit an object of a specific type
 * @author Michael Batz <michael@yourcmdb.org>
 */
-	
+	//class loading
+	use yourCMDB\exceptions\CmdbObjectNotFoundException;
+
 	//get source object
 	$sourceObject = null;
 	if($paramId != 0)
 	{
 		try
 		{
-			$sourceObject = $datastore->getObject($paramId);
+			$sourceObject= $objectController->getObject($paramId, $authUser);
 		}
-		catch(NoSuchObjectException $e)
+		catch(CmdbObjectNotFoundException $e)
 		{
 			;
 		}
@@ -47,21 +49,24 @@
 		$textTitle = sprintf(gettext("Add %s Object"), $paramType);
 		$formAction = "object.php?action=saveNew&amp;type=$paramType";
 	}
-	$checkboxString = "<input type=\"checkbox\" name=\"yourCMDB_active\" value=\"A\" checked=\"checked\" />";
+	$checkboxString = "<input type=\"checkbox\" name=\"yourCMDB_active\" value=\"A\" checked=\"checked\" class=\"form-control\" />";
 	if($sourceObject != null && $sourceObject->getStatus() != 'A')
 	{
-		$checkboxString = "<input type=\"checkbox\" name=\"yourCMDB_active\" value=\"A\" />";
+		$checkboxString = "<input type=\"checkbox\" name=\"yourCMDB_active\" value=\"A\" class=\"form-control\"/>";
 	}
 	
 
 	//<!-- title -->
-	echo "<div class=\"objectbox\">";
-	echo "<h1>$textTitle</h1>";
+	echo "<div class=\"container\" id=\"cmdb-objecttable\">";
+	echo "<div class=\"row\" id=\"cmdb-objecttable-head\">";
+	echo "<h1 class=\"text-center\">$textTitle</h1>";
+	echo "</div>";
+	echo "<div class=\"row\">";
 	echo "<form method=\"post\" action=\"$formAction\" accept-charset=\"UTF-8\">";
+	echo "<table class=\"table table-hover cmdb-cleantable cmdb-table2cols\">";
 
 
 	//<!-- set object active/inactive -->
-	echo "<table class=\"cols2\">";
 	echo "<tr>";
 	echo "<th colspan=\"2\">";
 	echo gettext("Object Status");
@@ -71,12 +76,10 @@
 	echo "<td>active</td>";
 	echo "<td>$checkboxString</td>";
 	echo "</tr>";
-	echo "</table>";
 
 	//<!-- object fields -->
 	foreach($config->getObjectTypeConfig()->getFieldGroups($paramType) as $groupname)
 	{
-		echo "<table class=\"cols2\">";
 		echo "<tr>";
 		echo "<th colspan=\"2\">$groupname</th>";
 		echo "</tr>";
@@ -97,13 +100,16 @@
 			echo "</td>";
 			echo "</tr>";
 		}
-                echo "</table>";
 	}
 
 	
-	echo "<p>";
+	echo "<tr>";
+	echo "<td colspan=\"2\">";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
-	echo "</p>";
+	echo "</td>";
+	echo "</tr>";
+	echo "</table>";
 	echo "</form>";
+	echo "</div>";
 	echo "</div>";
 ?>

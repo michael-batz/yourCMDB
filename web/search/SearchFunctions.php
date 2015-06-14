@@ -32,6 +32,11 @@
 	$paramMax = getHttpGetVar("max", $config->getViewConfig()->getContentTableLength());
         $paramPage = getHttpGetVar("page", "1");
         $paramActiveOnly = getHttpGetVar("activeonly", "1");
+	$paramStatus = null;
+	if($paramActiveOnly == "1")
+	{
+		$paramStatus = "A";
+	}
         $paramSearchString = getHttpGetVar("searchstring", "");
 
 	//get data

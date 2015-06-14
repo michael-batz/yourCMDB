@@ -25,8 +25,8 @@
 */
 
 	//include functions
-	require "include/base.inc.php";
-	require "include/auth.inc.php";
+	include "include/bootstrap-web.php";
+	include "include/auth.inc.php";
 
 	//get parameters
 	$paramSearchstring = getHttpGetVar("term", "");
@@ -40,11 +40,20 @@
 	$output = array();
 	switch($paramObject)
 	{
+		//var1 : fieldkey
 		case "object":
-			$values = $datastore->getAllFieldValues($paramVar1, $paramVar2, $paramSearchstring, 10);
+			$values = $objectController->getAllFieldValues(null, $paramVar1, $paramSearchstring, 10, "yourCMDB-API");
 			foreach($values as $value)
 			{
-				$output[] = array("id" => $value, "label" => $value, "value" => $value);
+				$output[] = $value;
+			}
+		break;
+
+		case "assetids":
+			$values = $objectController->getAllObjectIds($paramSearchstring ,10, "yourCMDB-API");
+			foreach($values as $value)
+			{
+				$output[] = Array("data" => "assetid:".$value, "value" => $value);
 			}
 		break;
 
@@ -57,14 +66,14 @@
 				$searchstring = $matches[2];
 				$searchstringFirstPart = $matches[1];
 			}
-			$values = $datastore->getAllFieldValues(null, null, $searchstring, 10);
+			$values = $objectController->getAllFieldValues(null, null, $searchstring, 10, $authUser);
 			foreach($values as $value)
 			{
 				if($paramSearchstring != $searchstring)
 				{
 					$value = "$searchstringFirstPart $value";
 				}
-				$output[] = array("id" => $value, "label" => $value, "value" => $value);
+				$output[] = $value;
 			}
 		break;
 
@@ -81,7 +90,7 @@
 				$searchstring = $matches[2];
 				$searchstringFirstPart = $matches[1];
 			}
-			$values = $datastore->getAllFieldValues(null, null, $searchstring, 10);
+			$values = $objectController->getAllFieldValues(null, null, $searchstring, 10, $authUser);
 			$editedValues = Array();
 			foreach($values as $value)
 			{

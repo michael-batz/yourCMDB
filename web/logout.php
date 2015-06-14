@@ -20,8 +20,12 @@
 *
 *********************************************************************/
 
+/**
+* yourCMDB WebUI: logout script
+* @author: Michael Batz <michael@yourcmdb.org>
+*/
 	//get header
-	include "include/base.inc.php";
+	include "include/bootstrap-web.php";
 	include "include/auth.inc.php";
 
 	//destroy session vars

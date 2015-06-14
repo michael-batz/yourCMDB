@@ -26,36 +26,42 @@
 */
 
 	//HTML output
-	echo "<div class=\"searchbar\">";
-	echo "<h1>";
+	echo "<div class=\"container\" id=\"cmdb-objecttable\">";
+	echo "<div class=\"row\" id=\"cmdb-objecttable-head\">";
+	echo "<h1 class=\"text-center\">";
 	echo gettext("Search");
 	echo "</h1>";
-	echo "<form id=\"searchbarForm\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\" onsubmit=\"javascript:searchbarSubmit('#searchbarForm','#searchbarResult')\">";
+	echo "<form id=\"searchbarForm\" class=\"form-horizontal\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\" onsubmit=\"javascript:cmdbSearchbarSubmit('#searchbarForm','#searchbarResult')\">";
 
 
 	//default  search field
-	echo "<table id=\"searchbarOptions\">";
-	echo "<tr>";
-	echo "<td>".gettext("searchstring")."</td>";
-	echo "<td><input type=\"text\" value=\"$paramSearchString\" name=\"searchstring\" id=\"searchbarSearchstring\" ";
-	echo "			onfocus=\"javascript:showAutocompleter('#searchbarSearchstring', 'autocomplete.php?object=quicksearch')\"/></td>";
-	echo "</tr>";
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 control-label\">".gettext("searchstring")."</label>";
+	echo "<div class=\"col-md-3\">";
+	echo "<input class=\"form-control\" type=\"text\" value=\"$paramSearchString\" name=\"searchstring\" id=\"searchbarSearchstring\" ";
+	echo "			onfocus=\"javascript:showAutocompleter('#searchbarSearchstring', 'autocomplete.php?object=quicksearch')\"/>";
+	echo "</div>";
+	echo "</div>";
 	//active objects
-	echo "<tr>";
-	echo "<td>".gettext("show inactive objects")."</td>";
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 control-label\">".gettext("show inactive objects")."</label>";
+	echo "<div class=\"col-md-3\">";
 	if($paramActiveOnly == "1")
 	{
-		echo "<td><input type=\"checkbox\" name=\"activeonly\" value=\"0\"/></td>";
+		echo "<input class=\"form-control\" type=\"checkbox\" name=\"activeonly\" value=\"0\"/>";
 	}
 	else
 	{
-		echo "<td><input type=\"checkbox\" name=\"activeonly\" value=\"0\" checked=\"checked\" /></td>";
+		echo "<input class=\"form-control\" type=\"checkbox\" name=\"activeonly\" value=\"0\" checked=\"checked\" />";
 	}
-	echo "</tr>";
+	echo "</div>";
+	echo "</div>";
 	//objecttype group
-	echo "<tr>";
-	echo "<td>".gettext("objecttype group")."</td>";
-	echo "<td><select name=\"typegroup\">";
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 control-label\">".gettext("objecttype group")."</label>";
+	echo "<div class=\"col-md-3\">";
+	if($paramActiveOnly == "1")
+	echo "<select name=\"typegroup\" class=\"form-control\">";
 	echo "<option></option>";
         foreach(array_keys($objectTypes) as $group)
         {
@@ -68,12 +74,14 @@
                 	echo "<option>$group</option>";
 		}
         }
-        echo "</select></td>";
-	echo "</tr>";
+        echo "</select>";
+	echo "</div>";
+	echo "</div>";
 	//objecttype
-	echo "<tr>";
-	echo "<td>".gettext("Type:")."</td>";
-	echo "<td><select name=\"type\">";
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 control-label\">".gettext("Type:")."</label>";
+	echo "<div class=\"col-md-3\">";
+	echo "<select name=\"type\" class=\"form-control\">";
 	echo "<option></option>";
 	foreach(array_keys($objectTypes) as $group)
 	{
@@ -91,14 +99,16 @@
 		}
 		echo "</optgroup>";
 	}
-	echo "</select></td>";
-	echo "</tr>";
-	echo "</table>";
+	echo "</select>";
+	echo "</div>";
+	echo "</div>";
 
 	//searchform footer
-	echo "<p id=\"searchbarFooter\">";
-	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
-	echo "<input type=\"button\" value=\"".gettext("Clear Search")."\" onclick=\"javascript:searchbarClear()\" />";
-	echo "</p>";
+	echo "<div class=\"form-group\">";
+	echo "<div class=\"col-md-3 col-md-offset-2\">";
+	echo "<input type=\"submit\" class=\"btn btn-default\" value=\"".gettext("Go")."\" />";
+	echo "<input type=\"button\" class=\"btn btn-danger\" value=\"".gettext("Clear Search")."\" onclick=\"javascript:cmdbSearchbarClear()\" />";
+	echo "</div>";
+	echo "</div>";
 	echo "</form>";
 ?>

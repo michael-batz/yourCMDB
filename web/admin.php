@@ -21,7 +21,7 @@
 *********************************************************************/
 
 	//base
-	include "include/base.inc.php";
+	include "include/bootstrap-web.php";
 
 	//authentication and authorisation
 	$authorisationAppPart = "admin";
@@ -30,41 +30,61 @@
 
 	//header
 	include "include/htmlheader.inc.php";
-	include "include/yourcmdbheader.inc.php";
+	include "include/cmdbheader.inc.php";
 
 	//<!-- title -->
-	echo "<h1>".gettext("Admin")."</h1>";
+	echo "<h1 class=\"text-center\">".gettext("Admin")."</h1>";
 
-	//<!-- start admin tabs -->
-	echo "<div id=\"jsAccordion\">";
+	//<!-- start tabs -->
+	echo "<div class=\"panel-group\" id=\"accordion\" role=\"tablist\" aria-multiselectable=\"true\">";
 
 	//tab: about
-	echo "<h3>".gettext("About")."</h3>";
-	echo "<div>";
-	include "admin/About.php";
+	echo "<div class=\"panel panel-default\">";
+	echo "<div class=\"panel-heading\" role=\"tab\" id=\"tab-1-head\">";
+	echo "<h3 class=\"panel-title\"><a href=\"#tab-1-body\" data-toggle=\"collapse\" data-parent=\"#accordion\">".gettext("About")."</a></h3>";
+	echo "</div>";
+	echo "<div id=\"tab-1-body\" class=\"panel-collapse collapse in\" role=\"tabpanel\" aria-labledby=\"tab-1-head\">";
+	echo "<div class=\"panel-body\" id=\"adminAbout\">";
+	echo "<script language=\"JavaScript\">";
+	echo "cmdbOpenUrlAjax('admin/About.php', '#adminAbout', false, true);";
+	echo "</script>";
+	echo "</div>";
+	echo "</div>";
 	echo "</div>";
 
 	//tab: user manager
-	echo "<h3>".gettext("Authentication")."</h3>";
-	echo "<div id=\"adminTabAuthentication\">";
+	echo "<div class=\"panel panel-default\">";
+	echo "<div class=\"panel-heading\" role=\"tab\" id=\"tab-2-head\">";
+	echo "<h3 class=\"panel-title\"><a href=\"#tab-2-body\" data-toggle=\"collapse\" data-parent=\"#accordion\">".gettext("Authentication")."</a></h3>";
+	echo "</div>";
+	echo "<div id=\"tab-2-body\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labledby=\"tab-2-head\">";
+	echo "<div class=\"panel-body\" id=\"adminAuthentication\">";
 	echo "<script language=\"JavaScript\">";
-	echo "openUrlAjax('admin/LocalUsers.php?', '#adminTabAuthentication', false, true);";
+	echo "cmdbOpenUrlAjax('admin/LocalUsers.php?', '#adminAuthentication', false, true);";
 	echo "</script>";
+	echo "</div>";
+	echo "</div>";
 	echo "</div>";
 
 	//tab: authorisation
-	echo "<h3>".gettext("Authorisation")."</h3>";
-	echo "<div id=\"adminTabAuthorisation\">";
+	echo "<div class=\"panel panel-default\">";
+	echo "<div class=\"panel-heading\" role=\"tab\" id=\"tab-3-head\">";
+	echo "<h3 class=\"panel-title\"><a href=\"#tab-3-body\" data-toggle=\"collapse\" data-parent=\"#accordion\">".gettext("Authorisation")."</a></h3>";
+	echo "</div>";
+	echo "<div id=\"tab-3-body\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labledby=\"tab-3-head\">";
+	echo "<div class=\"panel-body\" id=\"adminAuthorisation\">";
 	echo "<script language=\"JavaScript\">";
-	echo "openUrlAjax('admin/Authorisation.php?', '#adminTabAuthorisation', false, true);";
+	echo "cmdbOpenUrlAjax('admin/Authorisation.php?', '#adminAuthorisation', false, true);";
 	echo "</script>";
 	echo "</div>";
+	echo "</div>";
+	echo "</div>";
 
-	//<!-- end admin tabs -->
+	//<!-- end tabs -->
 	echo "</div>";
 
 
 	//include footer
-	include "include/yourcmdbfooter.inc.php";
+	include "include/cmdbfooter.inc.php";
 	include "include/htmlfooter.inc.php";
 ?>
