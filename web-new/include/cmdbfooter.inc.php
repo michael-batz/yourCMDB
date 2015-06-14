@@ -24,6 +24,12 @@
 * yourCMDB HTML footer for yourCMDB WebUI
 * @author Michael Batz <michael@yourcmdb.org>
 */
-?>
-		</div>
 
+	//close content container
+	echo "</div>";
+
+	//<!-- scroller  -->
+	echo "<div class=\"cmdbScroller\" id=\"cmdbScroller\">";
+	echo "<a href=\"javascript:cmdbScrollToElement('body')\"><span class=\"glyphicon glyphicon-triangle-top\"></span></a>";
+	echo "</div>"
+?>

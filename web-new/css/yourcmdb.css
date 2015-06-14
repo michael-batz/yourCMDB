@@ -90,6 +90,37 @@ ul.cmdb-linklist
 }
 
 /**
+* Scroller 
+*
+**/
+div.cmdbScroller
+{
+	display:	none;
+
+	position:	fixed;
+	bottom:		30px;
+	right:		5px;
+
+	padding-left:	10px;
+	padding-right:	10px;
+	padding-top:	5px;
+	padding-bottom:	5px;
+
+	border:		1pt solid;
+	border-radius:	5px;
+	
+	background:	#212121;
+	text-align:	center;
+	font-size:	10pt;
+	
+}
+
+div.cmdbScroller span.glyphicon
+{
+	color:		#FFFFFF;
+}
+
+/**
 * clean table
 */
 table.cmdb-cleantable

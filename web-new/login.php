@@ -57,7 +57,7 @@
 	echo "<label for=\"loginUsername\" class=\"col-md-2 control-label\">".gettext("user:")."</label>";
 	echo "<div class=\"col-md-9 input-group\">";
 	echo "<div class=\"input-group-addon\"><span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span></div>";
-	echo "<input type=\"text\" class=\"form-control\" id=\"loginUsername\" name=\"authUser\"/>";
+	echo "<input type=\"text\" class=\"form-control\" id=\"cmdbLoginUsername\" name=\"authUser\"/>";
 	echo "</div>";
 	echo "</div>";
 

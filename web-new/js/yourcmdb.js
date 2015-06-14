@@ -296,56 +296,27 @@ function cmdbJsStart()
 		});
 	});
 
-}
-
-
-//startup
-cmdbJsStart();
-
-/*****************************************************************************
-* ToDo: old javascript
-*****************************************************************************/
-
-/**
-* Loads an url
-*/
-function openUrl(url)
-{
-	location.href=url;
-};
-
-
-/**
-* Hides an element
-*/
-function hideElement(id)
-{
-	$( id ).hide('slide', {}, 1000);
-};
-
-
-
-/*function cmdbJsStart()
-{
-
-	//autofocus for login page
-	$(function()
-	{
-		$( "#loginUsername" ).focus();
-	});
-
 	//setup event handler scroller
 	$(window).scroll(function()
 	{
 		if($(window).scrollTop() > 100)
 		{
-			$( "#jsScroller" ).show('fade', 1000);
+			$( "#cmdbScroller" ).show('slow');
 		}
 		else
 		{
-			$( "#jsScroller" ).hide('fade', 1000);
+			$( "#cmdbScroller" ).hide('slow');
 		}
 	});
 
-};*/
+	//autofocus for login page
+	$(function()
+	{
+		$( "#cmdbLoginUsername" ).focus();
+	});
 
+}
+
+
+//startup
+cmdbJsStart();
