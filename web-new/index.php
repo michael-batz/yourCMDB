@@ -33,8 +33,36 @@
 	include "include/htmlheader.inc.php";
 	include "include/cmdbheader.inc.php";
 
-	//ToDo: content
-	echo "<h1>Content</h1>";
+	//title
+	echo "<h1 class=\"text-center\">".gettext("Welcome to yourCMDB!")."</h1>";
+
+	//1st row
+	echo "<div class=\"row\">";
+
+	//dashlet: object count
+	echo "<div class=\"col-md-2 col-md-offset-1 cmdb-dashlet\">";
+	include "dashboard/DashletCount.php";
+	echo "</div>";
+
+	//dashlet: newest objects
+	echo "<div class=\"col-md-6 col-md-offset-1 cmdb-dashlet\">";
+	include "dashboard/DashletNewestObjects.php";
+	echo "</div>";
+
+	//1st row end
+	echo "</div>";
+
+
+	//2nd row
+	echo "<div class=\"row\">";
+
+	//dashlet: last changed objects
+	echo "<div class=\"col-md-6 col-md-offset-4 cmdb-dashlet\">";
+	include "dashboard/DashletLastChangedObjects.php";
+	echo "</div>";
+
+	//2nd row end
+	echo "</div>";
 
 	//include footer
 	include "include/cmdbfooter.inc.php";

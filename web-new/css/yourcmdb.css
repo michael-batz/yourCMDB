@@ -80,6 +80,16 @@ ul.cmdb-linklist
 }
 
 /**
+* cmdb dashlets
+*/
+.cmdb-dashlet
+{
+	background-color:	#EEEEEE;
+	border:			#DDDDDD 1px solid;
+	border-radius:		10px;
+}
+
+/**
 * clean table
 */
 table.cmdb-cleantable

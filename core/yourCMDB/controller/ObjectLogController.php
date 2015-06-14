@@ -101,6 +101,75 @@ class ObjectLogController
 	}
 
 	/**
+	* Returns the CmdbLogEntry for the creation of the given object
+	* @param CmdbObject $object	CmdbObject for getting the log entries
+	* @param string $user		name of the user that wants to get the objects
+	* @return CmdbObjectLogEntry	CmdbObjectLogEntry object or null if nothing was found
+	*/
+	public function getCreatedLogEntry($object, $user)
+	{
+		//create QueryBuilder
+		$queryBuilder = $this->entityManager->createQueryBuilder();
+
+		//create query
+		$queryBuilder->select("l");
+		$queryBuilder->from("yourCMDB:CmdbObjectLogEntry", "l");
+		$queryBuilder->andWhere("IDENTITY(l.object) = ?1");
+		$queryBuilder->setParameter(1, $object->getId());
+		$queryBuilder->andWhere("l.action = ?2");
+		$queryBuilder->setParameter(2, "create");
+
+		//get results
+		$query = $queryBuilder->getQuery();
+		$logEntries = $query->getResult();
+
+		//generate output
+		$logEntry = null;
+		if($logEntries != null)
+		{
+			$logEntry = $logEntries[0];
+		}
+
+		//return
+		return $logEntry;
+	}
+
+	/**
+	* Returns the CmdbLogEntry for the last change of the given object
+	* @param CmdbObject $object	CmdbObject for getting the log entries
+	* @param string $user		name of the user that wants to get the objects
+	* @return CmdbObjectLogEntry	CmdbObjectLogEntry object or null if nothing was found
+	*/
+	public function getChangedLogEntry($object, $user)
+	{
+		//create QueryBuilder
+		$queryBuilder = $this->entityManager->createQueryBuilder();
+
+		//create query
+		$queryBuilder->select("l");
+		$queryBuilder->from("yourCMDB:CmdbObjectLogEntry", "l");
+		$queryBuilder->andWhere("IDENTITY(l.object) = ?1");
+		$queryBuilder->setParameter(1, $object->getId());
+		$queryBuilder->andWhere("l.action != ?2");
+		$queryBuilder->setParameter(2, "create");
+		$queryBuilder->orderBy("l.timestamp", "DESC");
+
+		//get results
+		$query = $queryBuilder->getQuery();
+		$logEntries = $query->getResult();
+
+		//generate output
+		$logEntry = null;
+		if($logEntries != null)
+		{
+			$logEntry = $logEntries[0];
+		}
+
+		//return
+		return $logEntry;
+	}
+
+	/**
 	* Deletes all CmdbLogEntries for a given object
 	* @param CmdbObject $object		CmdbObject
 	* @param string $user			name of the user

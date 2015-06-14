@@ -46,7 +46,7 @@ include "$coreBaseDir/bootstrap.php";
 //include function definitions
 include "functions.inc.php";
 
-//ToDo: define variables
+//define variables
 $config = new CmdbConfig();
 $accessGroupController = AccessGroupController::create();
 $objectController = ObjectController::create();
