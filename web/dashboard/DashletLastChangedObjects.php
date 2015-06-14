@@ -25,7 +25,7 @@
 * @author: Michael Batz <michael@yourcmdb.org>
 */
 
-	$objects = $objectController->getLastChangedObjects("michael", 10, 0, $authUser);
+	$objects = $objectController->getLastChangedObjects(null, 10, 0, $authUser);
 	
 	echo "<h1 class=\"text-center\">".gettext("last changed objects")."</h1>";
 	echo "<table class=\"table cmdb-cleantable\">";
