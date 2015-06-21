@@ -1,5 +1,8 @@
 {
-    "require": {
-        "doctrine/orm": "*"
-    }
+
+	"require":
+	{
+        	"doctrine/orm": 	"*",
+		"doctrine/migrations":	"@dev"
+	}
 }

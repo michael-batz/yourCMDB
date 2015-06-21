@@ -10,6 +10,7 @@ use yourCMDB\controller\ObjectLogController;
 use yourCMDB\controller\JobController;
 use yourCMDB\controller\LocalUserController;
 use yourCMDB\controller\AccessGroupController;
+use yourCMDB\setup\DatastoreSetupHelper;
 
 require "bootstrap.php";
 
@@ -20,12 +21,19 @@ $jobController = JobController::create();
 $userController = LocalUserController::create();
 $accessGroupController = AccessGroupController::create();
 
-$config = new CmdbConfig();
-$authProvider = $config->getSecurityConfig()->getAuthProvider("web");
+//setup test
+$datastoreSetup = new DatastoreSetupHelper();
+$datastoreSetup->repairSchema();
+//echo "Schema valid? ".$datastoreSetup->checkSchema();
+//echo "\n";
+
+
+//$config = new CmdbConfig();
+//$authProvider = $config->getSecurityConfig()->getAuthProvider("web");
 //$authProvider->addUser("admin", "yourcmdb", "admin");
 
-$objectIds = $objectController->getAllObjectIds("2", 10, "test");
-print_r($objectIds);
+//$objectIds = $objectController->getAllObjectIds("2", 10, "test");
+//print_r($objectIds);
 
 //addObject()
 /*$fields = Array();
