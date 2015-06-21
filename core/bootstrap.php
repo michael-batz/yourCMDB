@@ -41,6 +41,8 @@ new ClassLoader("Doctrine\Common\Lexer", "$coreBaseDir/libs/composer/vendor/doct
 new ClassLoader("Doctrine\Common\Inflector", "$coreBaseDir/libs/composer/vendor/doctrine/inflector/lib");
 new ClassLoader("Doctrine\DBAL", "$coreBaseDir/libs/composer/vendor/doctrine/dbal/lib");
 new ClassLoader("Doctrine\ORM", "$coreBaseDir/libs/composer/vendor/doctrine/orm/lib");
+//class loading: Doctrine Migrations
+new ClassLoader("Doctrine\DBAL\Migrations", "$coreBaseDir/libs/composer/vendor/doctrine/migrations/lib");
 //class loading: yourCMDB
 new ClassLoader("yourCMDB", "$coreBaseDir");
 //class loading: QR code helper class

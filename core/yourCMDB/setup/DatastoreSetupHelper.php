@@ -23,6 +23,8 @@ namespace yourCMDB\setup;
 
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\SchemaValidator;
+use Doctrine\DBAL\Migrations\Migration;
+use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use yourCMDB\orm\OrmController;
 use yourCMDB\config\CmdbConfig;
 
@@ -53,6 +55,8 @@ class DatastoreSetupHelper
 
 		//create schema
 		$schemaTool->createSchema($classes);
+
+		//ToDo: set version for doctrine migrations
 	}
 
 	/**
@@ -71,7 +75,7 @@ class DatastoreSetupHelper
 	}
 
 	/**
-	* checks if the schema in configured datastore is correct
+	* checks if the schema in configured datastore is in sync with doctrine entities
 	* @return boolean	true, if the schema is coorect
 	*/
 	public function checkSchema()
@@ -81,7 +85,34 @@ class DatastoreSetupHelper
 		$entityManager = $ormController->getEntityManager();
 		$schemaValidator = new SchemaValidator($entityManager);
 
+		//check schema
 		return $schemaValidator->schemaInSyncWithMetadata();
+	}
+
+	/**
+	* migrates the schema in configured datastore to the newest version
+	*/
+	public function migrateSchema()
+	{
+		//get instances
+		$scriptBaseDir = realpath(dirname(__FILE__));
+		$ormController = OrmController::create();
+		$connection = $ormController->getEntityManager()->getConnection();
+
+		//fix to handle enum types for migrating old yourCMDB versions
+		$connection->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+
+		//migration configuration
+		$migrationConfig = new Configuration($connection);
+		$migrationConfig->setName("yourCMDB datastore migrations");
+		$migrationConfig->setMigrationsTableName("yourcmdb_migration_versions");
+		$migrationConfig->setMigrationsDirectory("$scriptBaseDir/DatastoreMigrations");
+		$migrationConfig->setMigrationsNamespace("yourCMDB\setup\DatastoreMigrations");
+		$migrationConfig->registerMigrationsFromDirectory("$scriptBaseDir/DatastoreMigrations");
+		$schemaMigration = new Migration($migrationConfig);
+
+		//run migration
+		$schemaMigration->migrate();
 	}
 }
 ?>
