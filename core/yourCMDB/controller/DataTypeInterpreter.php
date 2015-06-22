@@ -22,6 +22,7 @@
 namespace yourCMDB\controller;
 
 use yourCMDB\exceptions\CmdbObjectNotFoundException;
+use \Exception;
 
 /**
 * Class to define available data types and data interpretation
@@ -123,7 +124,7 @@ class DataTypeInterpreter
 				return "";
 			}
 		}
-		catch(CmdbObjectNotFoundException $e)
+		catch(Exception $e)
 		{
 			return "";
 		}
