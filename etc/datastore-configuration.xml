@@ -3,7 +3,7 @@
 		<parameter key="driver" value="pdo_mysql" />
 		<parameter key="host" value="localhost" />
 		<parameter key="port" value="3306" />
-		<parameter key="db" value="yourcmdb2" />
+		<parameter key="db" value="cmdb" />
 		<parameter key="user" value="cmdb" />
 		<parameter key="password" value="cmdb" />
 	</datastore>

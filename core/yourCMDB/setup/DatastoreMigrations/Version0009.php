@@ -42,14 +42,20 @@ class Version0009 extends AbstractMigration
 		$customSql = "DELETE FROM CmdbObject WHERE active='D'";
 		$this->addSql($customSql);
 
-		//remove foreign keys
+		//remove foreign keys, primary keys, indices
 		$customSql = "ALTER TABLE CmdbObjectField DROP FOREIGN KEY CmdbObjectField_ibfk_1";
 		$this->addSql($customSql);
 		$customSql = "ALTER TABLE CmdbObjectLog DROP FOREIGN KEY CmdbObjectLog_ibfk_1";
 		$this->addSql($customSql);
+		$customSql = "ALTER TABLE CmdbObjectLog DROP KEY assetid";
+		$this->addSql($customSql);
 		$customSql = "ALTER TABLE CmdbObjectLink DROP FOREIGN KEY CmdbObjectLink_ibfk_1";
 		$this->addSql($customSql);
 		$customSql = "ALTER TABLE CmdbObjectLink DROP FOREIGN KEY CmdbObjectLink_ibfk_2";
+		$this->addSql($customSql);
+		$customSql = "ALTER TABLE CmdbObjectLink DROP KEY assetidA";
+		$this->addSql($customSql);
+		$customSql = "ALTER TABLE CmdbObjectLink DROP KEY assetidB";
 		$this->addSql($customSql);
 
 		//CmdbObject

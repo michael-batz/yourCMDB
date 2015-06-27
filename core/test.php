@@ -23,7 +23,8 @@ $accessGroupController = AccessGroupController::create();
 
 //setup test
 $datastoreSetup = new DatastoreSetupHelper();
-$datastoreSetup->migrateSchema();
+//$datastoreSetup->migrateSchema();
+$datastoreSetup->repairSchema();
 //echo "Schema valid? ".$datastoreSetup->checkSchema();
 //echo "\n";
 
