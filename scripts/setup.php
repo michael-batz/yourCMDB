@@ -27,6 +27,7 @@
 */
 
 use yourCMDB\setup\DatastoreSetupHelper;
+use yourCMDB\setup\UserSetupHelper;
 use \Exception;
 
 //load bootstrap
@@ -37,6 +38,7 @@ include "$coreBaseDir/bootstrap.php";
 //setup execution
 intro();
 databaseSetup();
+userSetup();
 configHelp();
 
 function intro()
@@ -93,10 +95,51 @@ function databaseSetup()
 	echo "\n";
 }
 
+function userSetup()
+{
+	echo "UserSetup\n";
+	$userSetup = new UserSetupHelper();
+
+	//check, if access groups are empty
+	echo "- checking if access groups exist in datastore...";
+	if($userSetup->checkNoAccessGroups())
+	{
+		echo "NO\n";
+		
+		//create default access groups
+		echo "- create default access groups...";
+		if($userSetup->createDefaultAccessGroups())
+		{
+			echo "OK\n";
+		}
+		else
+		{
+			echo "ERROR\n";
+		}
+
+		//create default admin user
+		echo "- create default admin user (username: admin, password: yourcmdb)...";
+		if($userSetup->createDefaultUser())
+		{
+			echo "OK\n";
+		}
+		else
+		{
+			echo "ERROR\n";
+		}
+
+	}
+	else
+	{
+		echo "YES\n";
+	}
+	echo "\n";
+}
+
 function configHelp()
 {
 	echo "Configuration\n";
-	echo "- Please follow the yourCMDB wiki to start with a configuration\n";
+	echo "- Please go on following the instructions in yourCMDB wiki to finish the setup)\n";
 	echo "\n";
 }
 
