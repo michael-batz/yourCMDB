@@ -27,6 +27,7 @@
 */
 
 use yourCMDB\setup\DatastoreSetupHelper;
+use \Exception;
 
 //load bootstrap
 $scriptBaseDir = dirname(__FILE__);
@@ -42,24 +43,61 @@ function intro()
 {
 	echo "Welcome to yourCMDB\n";
 	echo "--------------------\n\n";
-	echo "This setup script will guide you through the setup process.\n\n";
+	echo "This setup script will guide you through the setup process.\n";
+	echo "\n";
 }
 
 function databaseSetup()
 {
+	echo "DatabaseSetup\n";
 	$datastoreSetup = new DatastoreSetupHelper();
 
-	//ToDo: check database connection
+	//check database connection
+	echo "- checking datastore connection...";
+	if($datastoreSetup->checkConnection() == FALSE)
+	{
+		echo "ERROR\n\n Error connecting to datastore. Please check datastore-configuration.xml. Exit\n";
+		exit(-1);
+	}
+	echo "OK\n";
 
-	//ToDo: check, if database if empty
-	//$datastoreSetup->migrateSchema();
-	//$datastoreSetup->repairSchema();
-	//$datastoreSetup->checkSchema();
+	//check, if database if empty
+	if($datastoreSetup->checkIsEmptyDatabase())
+	{
+		echo "- empty database: creating schema...";
+		$datastoreSetup->createSchema();
+		echo "OK\n";
+	}
+	else
+	{
+		echo "- nonempty database: trying to upgrade existing schema...";
+		try
+		{
+			$datastoreSetup->migrateSchema();
+			$datastoreSetup->repairSchema();
+			echo "OK\n";
+		}
+		catch(Exception $e)
+		{
+			echo "ERROR\n\n error migrating schema. Exit.\n";
+			exit(-1);
+		}
+	}
+	echo "- checking database schema...";
+	if($datastoreSetup->checkSchema() == FALSE)
+	{
+		echo "ERROR\n\nError checking database schema. Not in sync with enities. Exit\n";
+		exit(-1);
+	}
+	echo "OK\n";
+	echo "\n";
 }
 
 function configHelp()
 {
-	echo "Please follow the yourCMDB wiki to start with a configuration\n";
+	echo "Configuration\n";
+	echo "- Please follow the yourCMDB wiki to start with a configuration\n";
+	echo "\n";
 }
 
 ?>

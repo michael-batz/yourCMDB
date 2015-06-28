@@ -30,7 +30,9 @@ namespace yourCMDB\info;
 class InfoController
 {
 	//constant: yourCMDB version
-	const CMDB_VERSION = "0.9-dev";
+	const CMDB_VERSION_MAJOR = "0";
+	const CMDB_VERSION_MINOR = "9";
+	const CMDB_VERSION_FLAG = "dev";
 
 	/**
 	* creates a new Info Controller
@@ -46,7 +48,29 @@ class InfoController
 	*/
 	public function getVersion()
 	{
-		return self::CMDB_VERSION;
+		$versionString = self::CMDB_VERSION_MAJOR. ".";
+		$versionString.= self::CMDB_VERSION_MINOR. "-";
+		$versionString.= self::CMDB_VERSION_FLAG;
+		return $versionString;
 	}
+
+	/**
+	* Returns the major version number
+	* @return int
+	*/
+	public function getMajorVersionNumber()
+	{
+		return self::CMDB_VERSION_MAJOR;
+	}
+
+	/**
+	* Returns the minor version number
+	* @return int
+	*/
+	public function getMinorVersionNumber()
+	{
+		return self::CMDB_VERSION_MINOR;
+	}
+
 }
 ?>
