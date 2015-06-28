@@ -1,5 +1,8 @@
 <group name="locations">
 	<object-type name="datacenter">
+		<links>
+			<link name="Location on GoogleMaps" href="http://www.google.de/maps/place/%street%,%zip% %city%" />
+		</links>
 		<fields>
 			<fieldgroup name="location">
 				<field name="street" type="text" />

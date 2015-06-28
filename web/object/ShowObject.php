@@ -139,15 +139,28 @@
 		echo "<ul class=\"cmdb-linklist\">";
 		foreach($objectExternalLinks as $objectExternalLink)
 		{
+			$countVars = 0;
+			$countEmptyVars = 0 ;
 			$objectExternalLinkName = $objectExternalLink['name'];
 			$objectExternalLinkHref = preg_replace_callback("/%(.+?)%/", 
 									function ($pregResult)
 									{
-										global $object; 
-										return $object->getFieldValue($pregResult[1]);
+										global $object, $countVars, $countEmptyVars; 
+										$value = $object->getFieldValue($pregResult[1]);
+										$countVars++;
+										if($value == "")
+										{
+											$countEmptyVars++;
+										}
+										return $value;
 									}, 
 									$objectExternalLink['href']);
-			echo "<li><a href=\"$objectExternalLinkHref\"><span class=\"glyphicon glyphicon-new-window\"></span>$objectExternalLinkName</a></li>";
+
+			//only show link, if 1 var in link was not empty or the link has no vars
+			if((($countVars - $countEmptyVars) > 0 )|| ($countVars == 0))
+			{
+				echo "<li><a href=\"$objectExternalLinkHref\"><span class=\"glyphicon glyphicon-new-window\"></span>$objectExternalLinkName</a></li>";
+			}
 		}
 		echo "</ul>";
 		echo "</div>";
