@@ -1,7 +1,7 @@
 <view-configuration>
 	<content-tables length="20" />
 	<url base="http://10.0.1.105/yourcmdb/web" />
-	<qrcodes ecc-level="L" />
+	<qrcodes ecc-level="L" urlbase="" />
 	<i18n language="en_GB.utf8" />
 	<title name="yourCMDB" />
 	<menu-items />

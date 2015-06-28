@@ -40,7 +40,7 @@
 	$urlDuplicate = "object.php?action=add&amp;type=".$object->getType()."&amp;id=".$object->getId();
 	$urlEdit = "object.php?action=edit&amp;type=".$object->getType()."&amp;id=".$object->getId();
 	$urlDelete = "object.php?action=delete&amp;id=".$object->getId();
-	$urlQrCode = $config->getViewConfig()->getQrCodeUrlPrefix() ."/shortlink.php?id=". $object->getId();
+	$urlQrCode = $config->getViewConfig()->getQrCodeUrlPrefix() .$object->getId();
 	$statusImage = "<span class=\"label label-success\" title=\"".gettext("active object")."\">A</span>";
 	if($object->getStatus() == 'N')
 	{

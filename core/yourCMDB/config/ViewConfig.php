@@ -38,6 +38,9 @@ class ViewConfig
 	//qr codes ecclevel
 	private $qrCodeEccLevel;
 
+	//qr codes: url base (will be extended with the objectId)
+	private $qrCodeUrlBase;
+
 	//i18n language
 	private $language;
 
@@ -62,9 +65,14 @@ class ViewConfig
 
 		//read qr-code configuration
 		$this->qrCodeEccLevel= "M";
+		$this->qrCodeUrlBase = $this->baseUrl."/shortlink.php?id=";
 		if(isset($xmlobject->{'qrcodes'}[0]['ecc-level']))
 		{
 			$this->qrCodeEccLevel= (string) $xmlobject->{'qrcodes'}[0]['ecc-level'];
+		}
+		if(isset($xmlobject->{'qrcodes'}[0]['urlbase']) && $xmlobject->{'qrcodes'}[0]['urlbase'] != "")
+		{
+			$this->qrCodeUrlBase = $xmlobject->{'qrcodes'}[0]['urlbase'];
 		}
 
 		//read language for internationalization
@@ -118,7 +126,7 @@ class ViewConfig
 	*/
 	public function getQrCodeUrlPrefix()
 	{
-		return $this->getBaseUrl();
+		return $this->qrCodeUrlBase;
 	}
 
 	/**
