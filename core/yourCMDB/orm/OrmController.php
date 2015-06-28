@@ -59,7 +59,8 @@ class OrmController
 			'port'     => $configDatastore->getPort(),
 			'dbname'   => $configDatastore->getDatabaseName(),
 			'user'     => $configDatastore->getUser(),
-			'password' => $configDatastore->getPassword()
+			'password' => $configDatastore->getPassword(),
+			'charset'  => 'utf8'
 		);
 
 		//configuration of Doctrine EntityManager
