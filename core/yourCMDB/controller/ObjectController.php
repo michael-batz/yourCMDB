@@ -286,6 +286,7 @@ class ObjectController
 		$queryBuilder->from("yourCMDB:CmdbObject", "o");
 		$queryBuilder->from("yourCMDB:CmdbObjectField", "f");
 		$queryBuilder->andWhere("o.type IN (?1)");
+		$queryBuilder->andWhere("f.object = o.id");
 		if($status != null)
 		{
 			$queryBuilder->andWhere("o.status = ?3");
@@ -293,7 +294,6 @@ class ObjectController
 		}
 		if($sortfield != null)
 		{
-			$queryBuilder->andWhere("f.object = o.id");
 			$queryBuilder->andWhere("f.fieldkey = ?2");
 			$queryBuilder->orderBy("f.fieldvalue", $sorttype);
 			$queryBuilder->setParameter(2, $sortfield);
