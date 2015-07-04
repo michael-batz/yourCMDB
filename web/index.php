@@ -38,29 +38,19 @@
 
 	//1st row
 	echo "<div class=\"row\">";
-
-	//dashlet: object count
-	echo "<div class=\"col-md-2 col-md-offset-1 cmdb-dashlet\">";
-	include "dashboard/DashletCount.php";
-	echo "</div>";
-
 	//dashlet: newest objects
-	echo "<div class=\"col-md-6 col-md-offset-1 cmdb-dashlet\">";
+	echo "<div class=\"col-md-8 col-md-offset-2 cmdb-dashlet\">";
 	include "dashboard/DashletNewestObjects.php";
 	echo "</div>";
-
 	//1st row end
 	echo "</div>";
 
-
 	//2nd row
 	echo "<div class=\"row\">";
-
 	//dashlet: last changed objects
-	echo "<div class=\"col-md-6 col-md-offset-4 cmdb-dashlet\">";
+	echo "<div class=\"col-md-8 col-md-offset-2 cmdb-dashlet\">";
 	include "dashboard/DashletLastChangedObjects.php";
 	echo "</div>";
-
 	//2nd row end
 	echo "</div>";
 
