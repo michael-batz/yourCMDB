@@ -74,7 +74,7 @@ function cmdbCreatePassword(id)
 	{
 		password = password + alphabet.charAt(cmdbRandomBetweenInt(0, alphabet.length - 1));
 	}
-	$( id  ).attr('value', password);
+	$( id  ).val(password);
 };
 
 function cmdbRandomBetweenInt(min, max)

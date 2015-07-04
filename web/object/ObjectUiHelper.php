@@ -101,7 +101,7 @@
 			?>
 				<input id="<?php echo $name; ?>" 
 					type="text"
-					class="form-control typeahead-object" 
+					class="form-control" 
 					name="<?php echo $name; ?>" 
 					value="<?php echo htmlspecialchars($value); ?>"
 				/> 
