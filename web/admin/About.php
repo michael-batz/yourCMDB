@@ -56,7 +56,7 @@
 	echo "</p>";
 
 	//output: version information
-	echo "<table class=\"table cmdb-cleantable\">";
+	echo "<table class=\"table cmdb-cleantable cmdb-table2cols\">";
 	echo "<tr><th colspan=\"2\">".gettext("version information")."</th></tr>";
 	echo "<tr><td>".gettext("yourCMDB:")."</td><td>$aboutCmdbVersion</td></tr>";
 	echo "<tr><td>".gettext("operating system:")."</td><td>$aboutOs</td></tr>";
