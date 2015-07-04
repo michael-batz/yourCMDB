@@ -29,27 +29,25 @@
 	//get data
 	$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
 
-	//container
-	echo "<div class=\"container\" id=\"cmdb-objecttable\">";
+	//start: panel
+	echo "<div class=\"container\">";
+	echo "<div class=\"panel panel-default cmdb-contentpanel\">";
 
-	//<!-- headline -->
-	echo "<div class=\"row\" id=\"cmdb-objecttable-head\">";
-	echo "<h1 class=\"text-center\">";
+	//panel headline
+	echo "<div class=\"panel-heading\">";
+	echo "<h3 class=\"panel-title text-center\">";
 	echo gettext("New Object");
-	echo "</h1>";
+	echo "</h3>";
 	echo "</div>";
 
-	echo "<div class=\"row\">";
-	echo "<form action=\"object.php\" method=\"get\" accept-charset=\"UTF-8\">";
-	echo "<table class=\"table cmdb-cleantable cmdb-table2cols\">";
-	echo "<tr><th colspan=\"2\">";
-	echo gettext("New Object");
-	echo "</th></tr>";
-	echo "<tr>";
-	echo "<td>";
-	echo gettext("Type:");
-	echo "</td>";
-	echo "<td><select name=\"type\" class=\"form-control\">";
+	//panel content
+	echo "<div class=\"panel-body\">";
+	echo "<form action=\"object.php\" method=\"get\" accept-charset=\"UTF-8\" class=\"form-horizontal\">";
+	echo "<h2>".gettext("New Object")."</h2>";
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Object Type:")."</label>";
+	echo "<div class=\"col-md-4\">";
+	echo "<select name=\"type\" class=\"form-control\">";
 	foreach(array_keys($objectTypes) as $group)
 	{
 		echo "<optgroup label=\"$group\">";
@@ -59,17 +57,19 @@
 		}
 		echo "</optgroup>";
 	}
-	echo "</select></td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td colspan=\"2\">";
+	echo "</select>";
+	echo "</div>";
+	echo "</div>";
+	echo "<div class=\"form-group\">";
+	echo "<div class=\"col-md-4 col-md-offset-5\">";
 	echo "<input type=\"hidden\" name=\"action\" value=\"add\" />";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
-	echo "</td></tr>";
-	echo "</table>";
+	echo "</div>";
+	echo "</div>";
 	echo "</form>";
 
 	//end container
+	echo "</div>";
 	echo "</div>";
 	echo "</div>";
 ?>

@@ -34,23 +34,26 @@
 	//print messagebar
 	include "include/messagebar.inc.php";
 
-	//container
-	echo "<div class=\"container\" id=\"cmdb-objecttable\">";
+	//start: panel
+	echo "<div class=\"container\">";
+	echo "<div class=\"panel panel-default cmdb-contentpanel\">";
 
-	//headline
-	echo "<div class=\"row\" id=\"cmdb-objecttable-head\">";
-	echo "<h1 class=\"text-center\">";
+	//panel headline
+	echo "<div class=\"panel-heading\">";
+	echo "<h3 class=\"panel-title text-center\">";
 	echo gettext("Import and Export");
-	echo "</h1>";
+	echo "</h3>";
 	echo "</div>";
 
+	//start panel content
+	echo "<div class=\"panel-body\">";
+
 	//<!-- import box  -->
-	echo "<div class=\"row\">";
-	echo "<form action=\"import.php\" enctype=\"multipart/form-data\" method=\"post\" class=\"form-horizontal\">";
 	echo "<h2>".gettext("Import Objects")."</h2>";
+	echo "<form action=\"import.php\" enctype=\"multipart/form-data\" method=\"post\" class=\"form-horizontal\">";
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 control-label\">".gettext("Object Type:")."</label>";
-	echo "<div class=\"col-md-3\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Object Type:")."</label>";
+	echo "<div class=\"col-md-4\">";
 	echo "<select name=\"type\" class=\"form-control\">";
 	foreach(array_keys($objectTypes) as $group)
 	{
@@ -65,8 +68,8 @@
 	echo "</div>";
 	echo "</div>";
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 control-label\">".gettext("Import Format:")."</label>";
-	echo "<div class=\"col-md-3\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Import Format:")."</label>";
+	echo "<div class=\"col-md-4\">";
 	echo "<select name=\"format\" class=\"form-control\">";
 	foreach($importFormats as $importFormat)
 	{
@@ -76,14 +79,14 @@
 	echo "</div>";
 	echo "</div>";
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 control-label\">".gettext("Import File:")."</label>";
-	echo "<div class=\"col-md-3\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Import File:")."</label>";
+	echo "<div class=\"col-md-4\">";
 	echo "<input type=\"hidden\" name=\"action\" value=\"preview\" />";
 	echo "<input type=\"file\" name=\"file\" />";
 	echo "</div>";
 	echo "</div>";
 	echo "<div class=\"form-group\">";
-	echo "<div class=\"col-md-3 col-md-offset-2\">";
+	echo "<div class=\"col-md-4 col-md-offset-5\">";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
 	echo "</div>";
 	echo "</div>";
@@ -91,11 +94,11 @@
 
 
 	//<!-- export box  -->
-	echo "<form action=\"export.php\" method=\"get\" class=\"form-horizontal\">";
 	echo "<h2>".gettext("Export Objects")."</h2>";
+	echo "<form action=\"export.php\" method=\"get\" class=\"form-horizontal\">";
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 control-label\">".gettext("Object Type:")."</label>";
-	echo "<div class=\"col-md-3\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Object Type:")."</label>";
+	echo "<div class=\"col-md-4\">";
 	echo "<select name=\"type\" class=\"form-control\">";
 	foreach(array_keys($objectTypes) as $group)
 	{
@@ -110,8 +113,8 @@
 	echo "</div>";
 	echo "</div>";
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 control-label\">".gettext("Output Format:")."</label>";
-	echo "<div class=\"col-md-3\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Output Format:")."</label>";
+	echo "<div class=\"col-md-4\">";
 	echo "<select name=\"format\" class=\"form-control\">";
 	foreach($exportFormats as $exportFormat)
 	{
@@ -121,12 +124,14 @@
 	echo "</div>";
 	echo "</div>";
 	echo "<div class=\"form-group\">";
-	echo "<div class=\"col-md-3 col-md-offset-2\">";
+	echo "<div class=\"col-md-4 col-md-offset-5\">";
 	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
 	echo "</div>";
 	echo "</div>";
 	echo "</form>";
 
+	//close panel body and panel
+	echo "</div>";
 	echo "</div>";
 	echo "</div>";
 

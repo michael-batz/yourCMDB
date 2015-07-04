@@ -176,7 +176,7 @@
 
 	//<!-- list navigation  -->
 	echo "<nav>";
-	echo "<ul class=\"pagination\">";
+	echo "<ul class=\"pagination cmdb-pagination\">";
 	//print prev button
 	if($listPage != 1)
 	{
@@ -208,13 +208,13 @@
 		if($i == 3 && $listPage > 5)
 		{
 			$i = $listPage - 2;
-			echo "<li>...</li>";
+			echo "<li class=\"disabled\"><a href=\"#\">...</a></li>";
 		}
 		//jump to last page
 		if($i > 3 && $i > $listPage && $i < ($listPages - 2))
 		{
 			$i = $listPages - 2;
-			echo "<li>...</li>";
+			echo "<li class=\"disabled\"><a href=\"#\">...</a></li>";
 		}
 	}
 	//print next button

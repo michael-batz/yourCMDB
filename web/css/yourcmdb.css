@@ -278,7 +278,47 @@ div#cmdb-objecttable-head h1
 	background-color:	#000000;
 	margin-top:		0px;
 	padding:		10px;
+	border-radius:		10px 10px 0px 0px;
 }
+
+/**
+* content panel
+*/
+div.cmdb-contentpanel
+{
+	margin-top:		30px;
+}
+
+div.cmdb-contentpanel h2
+{
+	margin-top:		30px;
+	border-color:		#000000;
+	border-bottom:		1px solid;
+}
+
+
+/**
+* pagination
+*/
+.cmdb-pagination li a, .cmdb-pagination li a:active
+{
+	color:			#999999;
+}
+
+.cmdb-pagination li a:hover
+{
+	color:			#FFFFFF;
+	background:		#AAAAAA;
+}
+
+
+.cmdb-pagination li.active a, .cmdb-pagination li.active a:hover
+{
+	color:			#FFFFFF;
+	background:		#C9302C;
+	border-color:		#AC2925;
+}
+
 
 /*
 * typeahead style

@@ -34,4 +34,5 @@
 	//searchbar footer
 	echo "</div>";
 	echo "</div>";
+	echo "</div>";
 ?>

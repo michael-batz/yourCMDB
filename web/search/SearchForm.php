@@ -25,27 +25,33 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-	//HTML output
-	echo "<div class=\"container\" id=\"cmdb-objecttable\">";
-	echo "<div class=\"row\" id=\"cmdb-objecttable-head\">";
-	echo "<h1 class=\"text-center\">";
+	//panel headline
+	echo "<div class=\"container\">";
+	echo "<div class=\"panel panel-default cmdb-contentpanel\">";
+	echo "<div class=\"panel-heading\">";
+	echo "<h3 class=\"panel-title text-center\">";
 	echo gettext("Search");
-	echo "</h1>";
+	echo "</h3>";
+	echo "</div>";
+
+	//start panel content
+	echo "<div class=\"panel-body\">";
+
+
+	//HTML output
 	echo "<form id=\"searchbarForm\" class=\"form-horizontal\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\" onsubmit=\"javascript:cmdbSearchbarSubmit('#searchbarForm','#searchbarResult')\">";
-
-
 	//default  search field
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 control-label\">".gettext("searchstring")."</label>";
-	echo "<div class=\"col-md-3\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("searchstring")."</label>";
+	echo "<div class=\"col-md-4\">";
 	echo "<input class=\"form-control\" type=\"text\" value=\"$paramSearchString\" name=\"searchstring\" id=\"searchbarSearchstring\" ";
 	echo "			onfocus=\"javascript:showAutocompleter('#searchbarSearchstring', 'autocomplete.php?object=quicksearch')\"/>";
 	echo "</div>";
 	echo "</div>";
 	//active objects
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 control-label\">".gettext("show inactive objects")."</label>";
-	echo "<div class=\"col-md-3\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("show inactive objects")."</label>";
+	echo "<div class=\"col-md-4\">";
 	if($paramActiveOnly == "1")
 	{
 		echo "<input class=\"form-control\" type=\"checkbox\" name=\"activeonly\" value=\"0\"/>";
@@ -58,8 +64,8 @@
 	echo "</div>";
 	//objecttype group
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 control-label\">".gettext("objecttype group")."</label>";
-	echo "<div class=\"col-md-3\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("objecttype group")."</label>";
+	echo "<div class=\"col-md-4\">";
 	if($paramActiveOnly == "1")
 	echo "<select name=\"typegroup\" class=\"form-control\">";
 	echo "<option></option>";
@@ -79,8 +85,8 @@
 	echo "</div>";
 	//objecttype
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 control-label\">".gettext("Type:")."</label>";
-	echo "<div class=\"col-md-3\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Type:")."</label>";
+	echo "<div class=\"col-md-4\">";
 	echo "<select name=\"type\" class=\"form-control\">";
 	echo "<option></option>";
 	foreach(array_keys($objectTypes) as $group)
@@ -105,7 +111,7 @@
 
 	//searchform footer
 	echo "<div class=\"form-group\">";
-	echo "<div class=\"col-md-3 col-md-offset-2\">";
+	echo "<div class=\"col-md-4 col-md-offset-5\">";
 	echo "<input type=\"submit\" class=\"btn btn-default\" value=\"".gettext("Go")."\" />";
 	echo "<input type=\"button\" class=\"btn btn-danger\" value=\"".gettext("Clear Search")."\" onclick=\"javascript:cmdbSearchbarClear()\" />";
 	echo "</div>";
