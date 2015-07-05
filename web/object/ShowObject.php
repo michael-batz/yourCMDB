@@ -322,9 +322,9 @@
 	{
 		echo "<tr>";
 		echo "<td>".$logEntry->getTimestamp()->format("Y-m-d H:i")."</td>";
-		echo "<td>".$logEntry->getAction()."</td>";
-		echo "<td>".$logEntry->getDescription()."</td>";
-		echo "<td>".$logEntry->getUser()."</td>";
+		echo "<td>".htmlspecialchars($logEntry->getAction())."</td>";
+		echo "<td>".htmlspecialchars($logEntry->getDescription())."</td>";
+		echo "<td>".htmlspecialchars($logEntry->getUser())."</td>";
 		echo "</tr>";
 		$i++;
 		if($i >= 30)
