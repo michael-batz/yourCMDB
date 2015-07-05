@@ -57,9 +57,9 @@ a span.glyphicon
 	padding-right:		5px;
 }
 
-a:hover, a:active
+a:focus, a:hover, a:active
 {
-	color:			#FF0022:
+	color:			#FF0022;
 	text-decoration:	underline;
 }
 
