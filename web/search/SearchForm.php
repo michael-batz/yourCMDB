@@ -112,8 +112,8 @@
 	//searchform footer
 	echo "<div class=\"form-group\">";
 	echo "<div class=\"col-md-4 col-md-offset-5\">";
-	echo "<input type=\"submit\" class=\"btn btn-default\" value=\"".gettext("Go")."\" />";
-	echo "<input type=\"button\" class=\"btn btn-danger\" value=\"".gettext("Clear Search")."\" onclick=\"javascript:cmdbSearchbarClear()\" />";
+	echo "<input type=\"submit\" class=\"btn btn-danger\" value=\"".gettext("Go")."\" />";
+	echo "<input type=\"button\" class=\"btn btn-default\" value=\"".gettext("Clear Search")."\" onclick=\"javascript:cmdbSearchbarClear()\" />";
 	echo "</div>";
 	echo "</div>";
 	echo "</form>";

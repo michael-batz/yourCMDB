@@ -87,7 +87,7 @@
 	echo "</div>";
 	echo "<div class=\"form-group\">";
 	echo "<div class=\"col-md-4 col-md-offset-5\">";
-	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "<input type=\"submit\" class=\"btn btn-danger\" value=\"".gettext("Go")."\" />";
 	echo "</div>";
 	echo "</div>";
 	echo "</form>";
@@ -125,7 +125,7 @@
 	echo "</div>";
 	echo "<div class=\"form-group\">";
 	echo "<div class=\"col-md-4 col-md-offset-5\">";
-	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "<input type=\"submit\" class=\"btn btn-danger\" value=\"".gettext("Go")."\" />";
 	echo "</div>";
 	echo "</div>";
 	echo "</form>";

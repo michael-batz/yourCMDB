@@ -193,8 +193,8 @@
 	echo "</div>";
 	//form: footer
 	echo "<div class=\"modal-footer\">";
-	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
 	echo "<a href=\"#\" onClick=\"$urlFormAddUser\" class=\"btn btn-danger\">".gettext("Go!")."</a>";
+	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
 	echo "</div>";
 	echo "</div>";
 	echo "</div>";
@@ -223,8 +223,8 @@
 	echo "</div>";
 	//form: footer
 	echo "<div class=\"modal-footer\">";
-	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
 	echo "<a href=\"#\" onClick=\"$urlFormEditUser\" class=\"btn btn-danger\">".gettext("Go!")."</a>";
+	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
 	echo "</div>";
 	echo "</div>";
 	echo "</div>";

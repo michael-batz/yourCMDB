@@ -105,7 +105,7 @@
 	
 	echo "<tr>";
 	echo "<td colspan=\"2\">";
-	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
+	echo "<input type=\"submit\" class=\"btn btn-danger\" value=\"".gettext("Go")."\" />";
 	echo "</td>";
 	echo "</tr>";
 	echo "</table>";

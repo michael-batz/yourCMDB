@@ -106,8 +106,8 @@
 	echo "</div>";
 	//confirmation: footer
 	echo "<div class=\"modal-footer\">";
-	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
 	echo "<button type=\"submit\" class=\"btn btn-danger\">".gettext("delete")."</button>";
+	echo "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gettext("cancel")."</button>";
 	echo "</div>";
 	echo "</form>";
 	echo "</div>";
