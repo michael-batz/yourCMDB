@@ -33,8 +33,8 @@
 	echo "<th>".gettext("AssetID")."</th>";
 	echo "<th>".gettext("type")."</th>";
 	echo "<th>".gettext("date created")."</th>";
-	echo "<th>".gettext("user created")."</th>";
-	echo "<th>".gettext("actions")."</th>";
+	echo "<th>".gettext("user")."</th>";
+	echo "<th>".gettext("action")."</th>";
 	echo "</tr>";
 
 	//walk through all objects
