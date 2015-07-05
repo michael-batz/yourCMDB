@@ -122,7 +122,13 @@
 	{
 		$fieldLabel = $config->getObjectTypeConfig()->getFieldLabel($object->getType(), $summaryfield);
 		$fieldValue = $object->getFieldValue($summaryfield);
-		echo "<tr><td>$fieldLabel</td><td>$fieldValue</td></tr>";
+		$fieldType = $config->getObjectTypeConfig()->getFieldType($object->getType(), $summaryfield);
+		echo "<tr>";
+		echo "<td>$fieldLabel</td>";
+		echo "<td>";
+		echo showFieldForDataType($object->getType(), $summaryfield, $fieldValue, $fieldType, false);
+		echo "</td>";
+		echo "</tr>";
 	}
 	echo "</table>";
 	echo "</div>";
@@ -292,7 +298,7 @@
 	echo "</table>";
 	//<!-- form for adding new object links -->
 	echo "<form action=\"object.php\" method=\"get\" accept-charset=\"UTF-8\">";
-	echo "<p>";
+	echo "<p class=\"text-center\">";
 	echo gettext("Add new link to object with ID:");
 	echo "<input type=\"text\" name=\"idb\" />";
 	echo "<input type=\"hidden\" name=\"id\" value=\"$paramId\" />";
