@@ -23,7 +23,6 @@
 /**
 * yourCMDB WebUI: login page
 * @author: Michael Batz <michael@yourcmdb.org>
-* ToDo: Design
 */
 
 	//get header
@@ -54,27 +53,23 @@
 
 	//login form field: username
 	echo "<div class=\"form-group\">";
-	echo "<label for=\"loginUsername\" class=\"col-md-2 control-label\">".gettext("user:")."</label>";
-	echo "<div class=\"col-md-9 input-group\">";
+	echo "<div class=\"input-group col-xs-10 col-xs-offset-1\">";
 	echo "<div class=\"input-group-addon\"><span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span></div>";
-	echo "<input type=\"text\" class=\"form-control\" id=\"cmdbLoginUsername\" name=\"authUser\"/>";
+	echo "<input type=\"text\" class=\"form-control\" placeholder=\"".gettext("user")."\" id=\"cmdbLoginUsername\" name=\"authUser\"/>";
 	echo "</div>";
 	echo "</div>";
 
 	//login form field: password
 	echo "<div class=\"form-group\">";
-	echo "<label for=\"loginPassword\" class=\"col-md-2 control-label\">".gettext("password:")."</label>";
-	echo "<div class=\"col-md-9 input-group\">";
+	echo "<div class=\"input-group col-xs-10 col-xs-offset-1\">";
 	echo "<div class=\"input-group-addon\"><span class=\"glyphicon glyphicon-option-horizontal\" aria-hidden=\"true\"></span></div>";
-	echo "<input type=\"password\" class=\"form-control\" id=\"loginPassword\" name=\"authPassword\"/>";
+	echo "<input type=\"password\" class=\"form-control\" placeholder=\"".gettext("password")."\" id=\"loginPassword\" name=\"authPassword\"/>";
 	echo "</div>";
 	echo "</div>";
 
 	//login form: login button
 	echo "<div class=\"form-group\">";
-	echo "<div class=\"col-md-offset-2\">";
-	echo "<button type=\"submit\" class=\"btn btn-default\">".gettext("Go!")."</button>";
-	echo "</div>";
+	echo "<button type=\"submit\" class=\"btn btn-default col-xs-offset-1\">".gettext("Go!")."</button>";
 	echo "</div>";
 
 	echo "</form>";
