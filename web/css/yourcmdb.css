@@ -220,7 +220,7 @@ div.cmdb-header h1 img
 	color:			#FFFFFF;
 	background-color:	#000000;
 }
-.cmdb-navigation ul.nav a:hover
+.cmdb-navigation ul.nav a:hover, .cmdb-navigation ul.nav a:focus
 {
 	color:			#FFFFFF;
 	background-color:	#222222;
