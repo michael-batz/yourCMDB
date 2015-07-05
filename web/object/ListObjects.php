@@ -124,11 +124,22 @@
 	//print messagebar
 	include "include/messagebar.inc.php";
 
-	//<!-- headline -->
-	echo "<h1 class=\"text-center\">$paramType ($objectCount)</h1>";
+
+	//start: panel
+	echo "<div class=\"panel panel-default cmdb-contentpanel\">";
+
+	//panel headline
+	echo "<div class=\"panel-heading\">";
+	echo "<h3 class=\"panel-title text-center\">";
+	echo "$paramType ($objectCount)";
+	echo "</h3>";
+	echo "</div>";
+
+	//start panel content
+	echo "<div class=\"panel-body\">";
 
 	//<!-- list objects -->
-	echo "<table class=\"table table-hover\">";
+	echo "<table class=\"table table-hover cmdb-cleantable\">";
 
 	//<!-- table header -->
 	echo "<tr>";
@@ -164,7 +175,7 @@
 			showFieldForDataType($paramType, "$fieldname-$i", $fieldValue, $fieldType, false);
 			echo "</td>";
 		}
-		echo "<td>";
+		echo "<td class=\"text-center\">";
 		echo "<a href=\"$urlObjectShow\"><span class=\"glyphicon glyphicon-eye-open\" title=\"".gettext("show")."\"></span></a>&nbsp;&nbsp;&nbsp;";
 		echo "<a href=\"$urlObjectEdit\"><span class=\"glyphicon glyphicon-pencil\" title=\"".gettext("edit")."\"></span></a>&nbsp;&nbsp;&nbsp;";
 		echo "<a href=\"#\" data-toggle=\"modal\" data-target=\"#confirmDeleteList\" data-form-id=\"".$objects[$i]->getId()."\">";
@@ -233,4 +244,8 @@
 	}
 	echo "</ul>";
 	echo "</nav>";
+
+	//end panel
+	echo "</div>";
+	echo "</div>";
 ?>
