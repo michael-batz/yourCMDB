@@ -99,6 +99,7 @@
 		if($writable)
 		{
 			?>
+				<div class="input-group">
 				<input id="<?php echo $name; ?>" 
 					type="text"
 					class="form-control" 
@@ -106,12 +107,17 @@
 					value="<?php echo htmlspecialchars($value); ?>"
 				/> 
 			<?php
-				echo "<a href=\"javascript:cmdbCreatePassword('#$name')\"><span class=\"glyphicon glyphicon-refresh\" title=\"".gettext("generate")."\"></span></a>";
+				echo "<span class=\"input-group-addon\">";
+				echo "<a href=\"javascript:cmdbCreatePassword('#$name')\">";
+				echo "<span class=\"glyphicon glyphicon-refresh\" title=\"".gettext("generate")."\"></span>";
+				echo "</a>";
+				echo "</span>";
+				echo "</div>";
 		}
 		else
 		{
 			echo "<input id=\"$name\" type=\"hidden\" name=\"$name\" value=\"".htmlspecialchars($value)."\" />";
-			echo "<a href=\"javascript:cmdbShowPassword('#$name')\"><span class=\"gylphicon glyphicon-eye-open\" title=\"".gettext("show")."\"></span></a>";
+			echo "<a href=\"javascript:cmdbShowPassword('#$name')\"><span class=\"glyphicon glyphicon-eye-open\" title=\"".gettext("show")."\"></span></a>";
 		}
 	}
 
@@ -192,6 +198,12 @@
 			;
 		}
 
+		//start form group
+		if(!$writable && $value != "")
+		{
+			echo "<div class=\"input-group\">";
+		}
+
 		//print header, null value and current value
 		if($writable)
 		{
@@ -228,15 +240,18 @@
 		//print footer
 		echo "</select>";
 
-		if(!$writable)
+		//print link to referenced object
+		if(!$writable && $value != "")
 		{
-			//print link to referenced object
-			if($value != "")
-			{
-				echo "<a href=\"object.php?id=$value\">";
-				echo "<span class=\"glyphicon glyphicon-eye-open\" title=\"".gettext("show")."\"></span>";
-				echo "</a>";
-			}
+			echo "<span class=\"input-group-addon\">";
+			echo "<a href=\"object.php?id=$value\">";
+			echo "<span class=\"glyphicon glyphicon-eye-open\" title=\"".gettext("show")."\"></span>";
+			echo "</a>";
+			echo "</span>";
+
+			//end input group
+			echo "</div>";
 		}
+
 	}
 ?>
