@@ -156,7 +156,7 @@
 
 	function showFieldForBoolean($name, $value, $writable)
 	{
-		$checkboxString = "<input type=\"checkbox\" class=\"form-control\" id=\"$name\" name=\"$name\" value=\"true\" ";
+		$checkboxString = "<input type=\"checkbox\" class=\"checkbox\" id=\"$name\" name=\"$name\" value=\"true\" ";
 		if($value == "TRUE" || $value == "true" || $value == "1")
 		{
 			$checkboxString.= "checked=\"checked\" ";

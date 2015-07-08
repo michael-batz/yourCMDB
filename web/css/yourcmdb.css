@@ -148,6 +148,7 @@ table.cmdb-cleantable tr th
 table.cmdb-table2cols tr td
 {
 	width:		50%;
+	text-align:	left;
 }
 
 

@@ -49,10 +49,10 @@
 		$textTitle = sprintf(gettext("Add %s Object"), $paramType);
 		$formAction = "object.php?action=saveNew&amp;type=$paramType";
 	}
-	$checkboxString = "<input type=\"checkbox\" name=\"yourCMDB_active\" value=\"A\" checked=\"checked\" class=\"form-control\" />";
+	$checkboxString = "<input type=\"checkbox\" name=\"yourCMDB_active\" value=\"A\" checked=\"checked\" class=\"checkbox\" />";
 	if($sourceObject != null && $sourceObject->getStatus() != 'A')
 	{
-		$checkboxString = "<input type=\"checkbox\" name=\"yourCMDB_active\" value=\"A\" class=\"form-control\"/>";
+		$checkboxString = "<input type=\"checkbox\" name=\"yourCMDB_active\" value=\"A\" class=\"checkbox\"/>";
 	}
 	
 
