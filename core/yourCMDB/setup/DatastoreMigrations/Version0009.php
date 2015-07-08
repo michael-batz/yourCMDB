@@ -36,8 +36,6 @@ class Version0009 extends AbstractMigration
 {
 	public function up(Schema $schema)
 	{
-		//ToDo: remove comments
-
 		//remove deleted objects
 		$customSql = "DELETE FROM CmdbObject WHERE active='D'";
 		$this->addSql($customSql);
@@ -77,6 +75,14 @@ class Version0009 extends AbstractMigration
 		$customSql = "ALTER TABLE CmdbObjectLink CHANGE assetidA objectA_id INT NOT NULL";
 		$this->addSql($customSql);
 		$customSql = "ALTER TABLE CmdbObjectLink CHANGE assetidB objectB_id INT NOT NULL";
+		$this->addSql($customSql);
+		$customSql = "RENAME TABLE CmdbObjectLink TO CmdbObjectLinkTemp";
+		$this->addSql($customSql);
+		$customSql = "CREATE TABLE CmdbObjectLink LIKE CmdbObjectLinkTemp";
+		$this->addSql($customSql);
+		$customSql = "INSERT CmdbObjectLink SELECT distinct objectA_id, objectB_id FROM CmdbObjectLinkTemp";
+		$this->addSql($customSql);
+		$customSql = "DROP TABLE CmdbObjectLinkTemp";
 		$this->addSql($customSql);
 				
 		//CmdbObjectLogEntry
@@ -136,9 +142,6 @@ class Version0009 extends AbstractMigration
 		$this->addSql($customSql);
 		$customSql = "ALTER TABLE CmdbAccessGroup CHANGE accessgroup_id name varchar(64) COLLATE utf8_unicode_ci NOT NULL";
 		$this->addSql($customSql);
-
-
-		//ToDo: add primary key, foreign keys, index
 		
 	}
 
