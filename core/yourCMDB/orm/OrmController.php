@@ -40,7 +40,7 @@ class OrmController
 	private $entityManager;
 
 	const ENTITY_PATH = "yourCMDB/entities";
-	const ENTITY_NAMESPACE = "yourCMDB\entities";
+	const ENTITY_NAMESPACE = 'yourCMDB\entities';
 	const ENTITY_NAMESPACE_ALIAS = "yourCMDB";
 	const DEVELOPMENT_MODE = true;
 
