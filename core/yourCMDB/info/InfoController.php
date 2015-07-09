@@ -31,7 +31,7 @@ class InfoController
 {
 	//constant: yourCMDB version
 	const CMDB_VERSION_MAJOR = "0";
-	const CMDB_VERSION_MINOR = "9";
+	const CMDB_VERSION_MINOR = "10";
 	const CMDB_VERSION_FLAG = "dev";
 
 	/**
