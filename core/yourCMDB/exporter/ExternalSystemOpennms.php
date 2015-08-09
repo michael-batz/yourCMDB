@@ -178,11 +178,32 @@ class ExternalSystemOpennms implements ExternalSystem
 
 	public function addObject(\yourCMDB\entities\CmdbObject $object)
 	{
-		//define node parameters
-		$nodeLabel = $this->formatField($this->variables->getVariable("nodelabel")->getValue($object), self::$nodelabelLength);
+		//node foreign Id
 		$nodeForeignId = $object->getId();
-		$nodeInterfaces = array($this->variables->getVariable("ip")->getValue($object));
+
+		//node services
 		$nodeServices = $this->services;
+
+		//node label
+		$nodeLabel = "undefined";
+		if($this->variables->getVariable("nodelabel") != null)
+		{
+			$nodeLabel = $this->formatField($this->variables->getVariable("nodelabel")->getValue($object), self::$nodelabelLength);
+		}
+
+		//node interfaces
+		$nodeInterfaces = array();
+		if($this->variables->getVariable("ip") != null)
+		{
+			$nodeInterfaces = array($this->variables->getVariable("ip")->getValue($object));
+		}
+
+		//node monitoring of further IPs
+		if($this->variables->getVariable("furtherIps") != null)
+		{
+			$nodeFurtherInterfaces = explode(";", $this->variables->getVariable("furtherIps")->getValue($object));
+			$nodeInterfaces = array_merge($nodeInterfaces, $nodeFurtherInterfaces);
+		}
 
 		//remove invalid ip interfaces
 		for($i = 0; $i < count($nodeInterfaces); $i++)
@@ -192,7 +213,8 @@ class ExternalSystemOpennms implements ExternalSystem
 				unset($nodeInterfaces[$i]);
 			}
 		}
-		
+		//remove duplicates ips
+		$nodeInterfaces = array_unique($nodeInterfaces);
 
 		//define asset fields and categories for node
 		$nodeAssets = array();

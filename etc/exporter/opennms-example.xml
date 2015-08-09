@@ -4,7 +4,7 @@
 		<source objecttype="switch" status="A" />
 	</sources>
 	<destination class="ExternalSystemOpennms">
-		<parameter key="resturl" value="http://127.0.0.1:8980/opennms/rest" />
+		<parameter key="resturl" value="http://10.0.1.104:8980/opennms/rest" />
 		<parameter key="restuser" value="admin" />
 		<parameter key="restpassword" value="admin" />
 		<parameter key="requisition" value="yourcmdb" />
@@ -16,7 +16,7 @@
 			<value objecttype="router" fieldname="hostname" />
 			<value objecttype="switch" fieldname="management-ip" />
 		</variable>
-		<variable name="ip" default-value="0.0.0.0">
+		<variable name="ip">
 			<value objecttype="router" fieldname="management-ip" />
 			<value objecttype="switch" fieldname="management-ip" />
 		</variable>
