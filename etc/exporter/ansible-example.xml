@@ -3,7 +3,6 @@
 		<source objecttype="server" status="A" />
 	</sources>
 	<destination class="ExternalSystemAnsible">
-		<parameter key="output" value="stdout" />
 	</destination>
 	<variables>
 		<variable name="hostname">
