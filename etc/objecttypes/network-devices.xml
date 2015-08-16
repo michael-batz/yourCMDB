@@ -68,5 +68,47 @@
 			</fieldgroup>
 		</fields>
 	</object-type>
+	<object-type name="server">
+		<fields>
+			<fieldgroup name="network">
+				<field name="hostname" type="text" label="Hostname" summaryfield="true"/>
+				<field name="management-ip" type="text" label="management IP" summaryfield="true"/>
+				<field name="snmpCommunity" type="text" label="SNMP community" default="public"/>
+			</fieldgroup>
+			<fieldgroup name="hardware">
+				<field name="manufacturer" type="text" summaryfield="true"/>
+				<field name="serialno" type="text" label="serial number" />
+				<field name="maintenance-contract" type="text" label="maintenance contract" />
+			</fieldgroup>
+			<fieldgroup name="location">
+				<field name="location" type="objectref-datacenter" label="location" summaryfield="true"/>
+			</fieldgroup>
+			<fieldgroup name="age">
+				<field name="setup-date" type="date" label="setup date" />
+				<field name="contract-date" type="date" label="service contract date" />
+			</fieldgroup>
+			<fieldgroup name="admin">
+				<field name="Name" type="text" />
+				<field name="Mail" type="text" />
+			</fieldgroup>
+			<fieldgroup name="Management">
+				<field name="monitoring" label="Monitoring with OpenNMS" type="boolean" />
+				<field name="config-backup" label="Backup of configuration" type="boolean" />
+			</fieldgroup>
+			<fieldgroup name="Configuration Packages">
+				<field name="configtask-defaultpackage" label="default package" type="boolean" />
+				<field name="configtask-backupagent" label="backup agent" type="boolean" />
+				<field name="configtask-fail2ban" label="fail2ban" type="boolean" />
+			</fieldgroup>
+			<fieldgroup name="access">
+				<field name="access-username" label="Username" type="text" />
+				<field name="access-password" label="Password" type="password" />
+			</fieldgroup>
+			<fieldgroup name="Comment">
+				<field name="comment" type="textarea" />
+			</fieldgroup>
+		</fields>
+	</object-type>
+
 </group>
 

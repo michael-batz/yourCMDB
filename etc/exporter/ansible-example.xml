@@ -1,0 +1,28 @@
+<task name="ansible-example">
+	<sources>
+		<source objecttype="server" status="A" />
+	</sources>
+	<destination class="ExternalSystemAnsible">
+		<parameter key="output" value="stdout" />
+	</destination>
+	<variables>
+		<variable name="hostname">
+			<value objecttype="server" fieldname="management-ip" />
+		</variable>
+		<variable name="hostvar_hostname">
+			<value objecttype="server" fieldname="hostname" />
+		</variable>
+		<variable name="hostvar_ip">
+			<value objecttype="server" fieldname="management-ip" />
+		</variable>
+		<variable name="group_defaultpackage">
+			<value objecttype="server" fieldname="configtask-defaultpackage" />
+		</variable>
+		<variable name="group_backupagent">
+			<value objecttype="server" fieldname="configtask-backupagent" />
+		</variable>
+		<variable name="group_fail2ban">
+			<value objecttype="server" fieldname="configtask-fail2ban" />
+		</variable>
+	</variables>
+</task>

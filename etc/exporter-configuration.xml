@@ -1,4 +1,5 @@
 <exporter-configuration>
 	<includeconfig file="exporter/example.xml" />
 	<includeconfig file="exporter/opennms-example.xml" />
+	<includeconfig file="exporter/ansible-example.xml" />
 </exporter-configuration>
