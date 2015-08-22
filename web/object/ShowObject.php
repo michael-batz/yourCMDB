@@ -309,7 +309,7 @@
 	echo "</div>";
 
 	//Tab: object log
-	echo "<div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabs-4\">";
+	echo "<div role=\"tabpanel\" class=\"tab-pane fade table-responsive\" id=\"tabs-4\">";
 	echo "<table class=\"table table-hover cmdb-cleantable\">";
 	echo "<tr>";
 	echo "<th>".gettext("Date")."</th>";
@@ -321,8 +321,8 @@
 	foreach($objectLogEntries as $logEntry)
 	{
 		echo "<tr>";
-		echo "<td>".$logEntry->getTimestamp()->format("Y-m-d H:i")."</td>";
-		echo "<td>".htmlspecialchars($logEntry->getAction())."</td>";
+		echo "<td class=\"cmdb-nowrap\">".$logEntry->getTimestamp()->format("Y-m-d H:i")."</td>";
+		echo "<td class=\"cmdb-nowrap\">".htmlspecialchars($logEntry->getAction())."</td>";
 		echo "<td>".htmlspecialchars($logEntry->getDescription())."</td>";
 		echo "<td>".htmlspecialchars($logEntry->getUser())."</td>";
 		echo "</tr>";

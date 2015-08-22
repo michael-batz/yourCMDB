@@ -136,7 +136,7 @@
 	echo "</div>";
 
 	//start panel content
-	echo "<div class=\"panel-body\">";
+	echo "<div class=\"panel-body table-responsive\">";
 
 	//<!-- list objects -->
 	echo "<table class=\"table table-hover cmdb-cleantable\">";
@@ -164,7 +164,7 @@
 			$statusIcon = "<span class=\"label label-danger\" title=\"".gettext("inactive object")."\">N</span>";
 		}
 		echo "<tr>";
-		echo "<td>$statusIcon ".$objects[$i]->getId()."</td>";
+		echo "<td class=\"cmdb-nowrap\">$statusIcon ".$objects[$i]->getId()."</td>";
 		foreach(array_keys($summaryFields) as $fieldname)
 		{ 
 			$urlObjectShow = "object.php?action=show&amp;id=". $objects[$i]->getId();
@@ -175,7 +175,7 @@
 			showFieldForDataType($paramType, "$fieldname-$i", $fieldValue, $fieldType, false);
 			echo "</td>";
 		}
-		echo "<td class=\"text-center\">";
+		echo "<td class=\"text-center cmdb-nowrap\">";
 		echo "<a href=\"$urlObjectShow\"><span class=\"glyphicon glyphicon-eye-open\" title=\"".gettext("show")."\"></span></a>&nbsp;&nbsp;&nbsp;";
 		echo "<a href=\"$urlObjectEdit\"><span class=\"glyphicon glyphicon-pencil\" title=\"".gettext("edit")."\"></span></a>&nbsp;&nbsp;&nbsp;";
 		echo "<a href=\"#\" data-toggle=\"modal\" data-target=\"#confirmDeleteList\" data-form-id=\"".$objects[$i]->getId()."\">";

@@ -39,7 +39,7 @@
 	//1st row
 	echo "<div class=\"row\">";
 	//dashlet: newest objects
-	echo "<div class=\"col-md-8 col-md-offset-2 cmdb-dashlet\">";
+	echo "<div class=\"col-md-8 col-md-offset-2 cmdb-dashlet table-responsive\">";
 	include "dashboard/DashletNewestObjects.php";
 	echo "</div>";
 	//1st row end
@@ -48,7 +48,7 @@
 	//2nd row
 	echo "<div class=\"row\">";
 	//dashlet: last changed objects
-	echo "<div class=\"col-md-8 col-md-offset-2 cmdb-dashlet\">";
+	echo "<div class=\"col-md-8 col-md-offset-2 cmdb-dashlet table-responsive\">";
 	include "dashboard/DashletLastChangedObjects.php";
 	echo "</div>";
 	//2nd row end

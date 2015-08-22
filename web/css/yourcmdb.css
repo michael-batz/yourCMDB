@@ -72,6 +72,14 @@ a:focus, a:hover, a:active
 }
 
 /**
+* class to disable wrapping
+*/
+.cmdb-nowrap
+{
+	white-space:		nowrap;
+}
+
+/**
 * link lists
 */
 ul.cmdb-linklist

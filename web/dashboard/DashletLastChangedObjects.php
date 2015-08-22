@@ -60,7 +60,7 @@
 
 		//output
 		echo "<tr>";
-		echo "<td>$statusIcon $objectId</td>";
+		echo "<td class=\"cmdb-nowrap\">$statusIcon $objectId</td>";
 		echo "<td>$objectType</td>";
 		echo "<td>$objectChangedTime</td>";
 		echo "<td>$objectChangedUser</td>";
