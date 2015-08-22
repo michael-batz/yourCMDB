@@ -58,7 +58,7 @@
 
 	//menu
 	echo "<div class=\"collapse navbar-collapse\" id=\"cmdb-navigation-collapse\">";
-	echo "<ul class=\"nav navbar-nav\">";
+	echo "<ul class=\"nav navbar-nav navbar-right\">";
 	//menu entries
 	echo "<li><a href=\"index.php\"><span class=\"glyphicon glyphicon-home\"></span>".gettext("Home")."</a></li>";
 	echo "<li><a href=\"search.php\"><span class=\"glyphicon glyphicon-search\"></span>".gettext("Search")."</a></li>";
