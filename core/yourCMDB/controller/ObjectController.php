@@ -437,17 +437,16 @@ class ObjectController
 		$queryBuilder = $this->entityManager->createQueryBuilder();
 
 		//create query
-		$queryBuilder->select("o");
-		$queryBuilder->from("yourCMDB:CmdbObject", "o");
+		$queryBuilder->select("l, MAX(l.timestamp) AS HIDDEN maxtime");
 		$queryBuilder->from("yourCMDB:CmdbObjectLogEntry", "l");
-		$queryBuilder->andWhere("l.object = o.id");
 		$queryBuilder->andWhere("l.action != 'create'");
 		if($foruser != null)
 		{
 			$queryBuilder->andWhere("l.user = ?1");
 			$queryBuilder->setParameter(1, $foruser);
 		}
-		$queryBuilder->orderBy("l.timestamp", "DESC");
+		$queryBuilder->orderBy("maxtime", "DESC");
+		$queryBuilder->groupBy("l.object");
 
 		//limit results
 		$queryBuilder->setFirstResult($start);
@@ -458,7 +457,14 @@ class ObjectController
 
 		//get results
 		$query = $queryBuilder->getQuery();
-		$objects = $query->getResult();
+		$logEntries = $query->getResult();
+
+		//get objects
+		$objects = Array();
+		foreach($logEntries as $logEntry)
+		{
+			$objects[] = $logEntry->getObject();
+		}
 
 		//return
 		return $objects;
@@ -478,17 +484,16 @@ class ObjectController
 		$queryBuilder = $this->entityManager->createQueryBuilder();
 
 		//create query
-		$queryBuilder->select("o");
-		$queryBuilder->from("yourCMDB:CmdbObject", "o");
+		$queryBuilder->select("l, MAX(l.timestamp) AS HIDDEN maxtime");
 		$queryBuilder->from("yourCMDB:CmdbObjectLogEntry", "l");
-		$queryBuilder->andWhere("l.object = o.id");
 		$queryBuilder->andWhere("l.action = 'create'");
 		if($foruser != null)
 		{
 			$queryBuilder->andWhere("l.user = ?1");
 			$queryBuilder->setParameter(1, $foruser);
 		}
-		$queryBuilder->orderBy("l.timestamp", "DESC");
+		$queryBuilder->orderBy("maxtime", "DESC");
+		$queryBuilder->groupBy("l.object");
 
 		//limit results
 		$queryBuilder->setFirstResult($start);
@@ -499,7 +504,14 @@ class ObjectController
 
 		//get results
 		$query = $queryBuilder->getQuery();
-		$objects = $query->getResult();
+		$logEntries = $query->getResult();
+
+		//get objects
+		$objects = Array();
+		foreach($logEntries as $logEntry)
+		{
+			$objects[] = $logEntry->getObject();
+		}
 
 		//return
 		return $objects;
