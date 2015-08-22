@@ -242,6 +242,14 @@ div.cmdb-header h1 img
 }
 
 /**
+* navigation - searchbar
+*/
+.cmdb-navigation .cmdb-searchbar .glyphicon
+{
+	color:			#AAAAAA;
+}
+
+/**
 * login window
 */
 div#cmdb-loginpanel

@@ -45,10 +45,14 @@
 	echo "</div>";
 
 	//quicksearch
-	echo "<form class=\"navbar-form navbar-left\" role=\"search\" action=\"search.php\" method=\"get\">";
+	echo "<form class=\"navbar-form navbar-left cmdb-searchbar\" role=\"search\" action=\"search.php\" method=\"get\">";
 	echo "<div class=\"form-group\">";
+	echo "<div class=\"input-group\">";
 	echo "<input type=\"text\" name=\"searchstring\" class=\"form-control typeahead-searchbar\" placeholder=\"".gettext("Search...")."\">";
-	echo "<input type=\"submit\" class=\"cmdb-blind\">";
+	echo "<span class=\"input-group-btn\">";
+	echo "<button type=\"submit\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-search\"></span></button>";
+	echo "</span>";
+	echo "</div>";
 	echo "</div>";
 	echo "</form>";
 
