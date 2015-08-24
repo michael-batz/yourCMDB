@@ -169,7 +169,7 @@ function cmdbJsStart()
 			$(this).typeahead
 			(
 				{
-					hint:		true,
+					hint:		false,
 					minLength:	1,
 					highlight:	true
 				},
