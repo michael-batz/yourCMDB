@@ -194,6 +194,16 @@
 	//<!-- object comment -->
 	if($staticObjectComment != "")
 	{
+		//replace field variables (%fieldname%)
+		$staticObjectComment = preg_replace_callback("/%(.+?)%/",
+									function ($pregResult)
+									{
+										global $object;
+										$value = $object->getFieldValue($pregResult[1]);
+										return $value;
+									}, 
+									$staticObjectComment);
+
 		echo "<div class=\"comment\">";
 		echo "<h2>";
 		echo gettext("Comment");
