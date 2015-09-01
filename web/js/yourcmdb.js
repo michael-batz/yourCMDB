@@ -88,9 +88,8 @@ function cmdbRandomBetweenInt(min, max)
 function cmdbSearchbarClear()
 {
 	//clear other input fields
-	$( "#searchbarForm input[name='searchstring']" ).val('');
+	$( "#searchbarForm input[name='searchtext']" ).val('');
 	$( "#searchbarForm input[name='activeonly']" ).prop('checked', false);
-	$( "#searchbarForm select[name='typegroup']" ).val('');
 	$( "#searchbarForm select[name='type']" ).val('');
 };
 

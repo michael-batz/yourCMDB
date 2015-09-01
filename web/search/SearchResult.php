@@ -26,28 +26,17 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-	//include base functions
+	//include base functions and search form
 	include "../include/bootstrap-web.php";
 	include "../include/auth.inc.php";
 	include "SearchFunctions.php";
+	include "SearchForm.php";
 
 	//get all searched objects
 	$objects = Array();
-	if(count($searchstrings) > 0)
+	if(count($searchCondTextArray) > 0)
 	{
-		if($paramTypeGroup != "")
-		{
-			$searchTypes = $objectTypes[$paramTypeGroup];
-			$objects = $objectController->getObjectsByFieldvalue($searchstrings, $searchTypes, $paramStatus, 0, 0, $authUser);
-		}
-		else if($paramType != "")
-		{
-			$objects = $objectController->getObjectsByFieldvalue($searchstrings, array($paramType), $paramStatus, 0, 0, $authUser);
-		}
-		else
-		{
-			$objects = $objectController->getObjectsByFieldvalue($searchstrings, null, $paramStatus, 0, 0, $authUser);
-		}
+		$objects = $objectController->getObjectsByFieldvalue($searchCondTextArray, $searchCondTypes, $searchCondStatus, 0, 0, $authUser);
 	}
 
 	//calculate list view
@@ -76,10 +65,6 @@
         }
 
 
-	//urls
-	$listnavUrlBase = "search/SearchResult.php?typegroup=".urlencode($paramTypeGroup)."&amp;type=".urlencode($paramType)."&amp;max=".urlencode($paramMax)."&amp;activeonly=".urlencode($paramActiveOnly);
-	$listnavUrlBase .= "&amp;searchstring=".urlencode($paramSearchString);
-	$listnavUrlBase .= "&amp;page=";
 
 
 	//<!-- title -->
@@ -105,7 +90,7 @@
 			$objectMatchFields = Array();
 			foreach($objectFields->getKeys() as $fieldname)
 			{
-				foreach($searchstrings as $searchstring)
+				foreach($searchCondTextArray as $searchstring)
 				{
 					if(stristr($objects[$i]->getFieldValue($fieldname), $searchstring) !== FALSE)
 					{
@@ -135,7 +120,7 @@
 				$fieldlabel = $config->getObjectTypeConfig()->getFieldLabel($objectType, $fieldname);
 				$fieldvalue = $objects[$i]->getFieldValue($fieldname);
 				//mark search string in fieldvalues (use case insensitive match)
-				foreach($searchstrings as $searchstring)
+				foreach($searchCondTextArray as $searchstring)
 				{
 					if(preg_match("/.*?((?i:$searchstring)).*?/", $fieldvalue, $matchSearchString) == 1)
 					{
@@ -233,10 +218,13 @@
 	{
 		echo "<p>";
 		echo gettext("No objects found for searchstring ");
-		echo "<i>$paramSearchString</i>";
 		echo "</p>";
 	}
 
 
+	//search result footer
+	echo "</div>";
+	echo "</div>";
+	echo "</div>";
 
 ?>

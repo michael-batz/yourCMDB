@@ -27,6 +27,7 @@
 	//get data
 	$menuitems = $config->getViewConfig()->getMenuItems();
 	$objectGroups = $config->getObjectTypeConfig()->getObjectTypeGroups();
+	$quicksearchString = getHttpGetVar("searchstring", "");
 
 	//navbar header
 	echo "<nav class=\"navbar cmdb-navigation\">";
@@ -48,7 +49,7 @@
 	echo "<form class=\"navbar-form navbar-left cmdb-searchbar\" role=\"search\" action=\"search.php\" method=\"get\">";
 	echo "<div class=\"form-group\">";
 	echo "<div class=\"input-group\">";
-	echo "<input type=\"text\" name=\"searchstring\" class=\"form-control typeahead-searchbar\" placeholder=\"".gettext("Search...")."\">";
+	echo "<input type=\"text\" name=\"searchstring\" class=\"form-control typeahead-searchbar\" value=\"$quicksearchString\" placeholder=\"".gettext("Search...")."\">";
 	echo "<span class=\"input-group-btn\">";
 	echo "<button type=\"submit\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-search\"></span></button>";
 	echo "</span>";

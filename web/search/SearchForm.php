@@ -37,15 +37,19 @@
 	//start panel content
 	echo "<div class=\"panel-body\">";
 
+	//title
+	echo "<h2>";
+	echo gettext("Advanced Search Options");
+	echo "</h2>";
+
 
 	//HTML output
 	echo "<form id=\"searchbarForm\" class=\"form-horizontal\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\" onsubmit=\"javascript:cmdbSearchbarSubmit('#searchbarForm','#searchbarResult')\">";
-	//default  search field
+	//default search field
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("searchstring")."</label>";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("search for text")."</label>";
 	echo "<div class=\"col-md-4\">";
-	echo "<input class=\"form-control\" type=\"text\" value=\"$paramSearchString\" name=\"searchstring\" id=\"searchbarSearchstring\" ";
-	echo "			onfocus=\"javascript:showAutocompleter('#searchbarSearchstring', 'autocomplete.php?object=quicksearch')\"/>";
+	echo "<input class=\"form-control\" type=\"text\" value=\"$searchCondText\" name=\"searchtext\" id=\"searchbarSearchstring\" />";
 	echo "</div>";
 	echo "</div>";
 	//active objects
@@ -62,50 +66,39 @@
 	}
 	echo "</div>";
 	echo "</div>";
-	//objecttype group
-	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("objecttype group")."</label>";
-	echo "<div class=\"col-md-4\">";
-	if($paramActiveOnly == "1")
-	echo "<select name=\"typegroup\" class=\"form-control\">";
-	echo "<option></option>";
-        foreach(array_keys($objectTypes) as $group)
-        {
-		if($paramTypeGroup == $group)
-		{
-                	echo "<option selected=\"selected\">$group</option>";
-		}
-		else
-		{
-                	echo "<option>$group</option>";
-		}
-        }
-        echo "</select>";
-	echo "</div>";
-	echo "</div>";
-	//objecttype
+	//object types positive filter
 	echo "<div class=\"form-group\">";
 	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Type:")."</label>";
 	echo "<div class=\"col-md-4\">";
-	echo "<select name=\"type\" class=\"form-control\">";
-	echo "<option></option>";
-	foreach(array_keys($objectTypes) as $group)
+	foreach($paramTypes as $paramType)
 	{
-		echo "<optgroup label=\"$group\">";
-		foreach($objectTypes[$group] as $type)
-		{
-			if($paramType == $type)
-			{
-				echo "<option selected=\"selected\">$type</option>";
-			}
-			else
-			{
-				echo "<option>$type</option>";
-			}
-		}
-		echo "</optgroup>";
+		echo "<span id=\"cmdbSearchFormObjPos-$paramType\">";
+		echo "<input class=\"form-control\" type=\"hidden\" name=\"type[]\" value=\"$paramType\">";
+		echo "<span class=\"label label-default\">$paramType ";
+		echo "<a href=\"javascript:cmdbRemoveElement('#cmdbSearchFormObjPos-$paramType')\">";
+		echo "<span class=\"glyphicon glyphicon-remove\"></span></a>";
+		echo "</span>";
+		echo "</span>";
+		echo "<br />";
 	}
-	echo "</select>";
+	echo "</div>";
+	echo "</div>";
+
+	//object types negative filter
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Not Type:")."</label>";
+	echo "<div class=\"col-md-4\">";
+	foreach($paramNotTypes as $paramNotType)
+	{
+		echo "<span id=\"cmdbSearchFormObjNeg-$paramNotType\">";
+		echo "<input class=\"form-control\" type=\"hidden\" name=\"notType[]\" value=\"$paramNotType\">";
+		echo "<span class=\"label label-default\">$paramNotType ";
+		echo "<a href=\"javascript:cmdbRemoveElement('#cmdbSearchFormObjNeg-$paramNotType')\">";
+		echo "<span class=\"glyphicon glyphicon-remove\"></span></a>";
+		echo "</span>";
+		echo "</span>";
+		echo "<br />";
+	}
 	echo "</div>";
 	echo "</div>";
 
