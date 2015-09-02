@@ -49,25 +49,25 @@
 	echo "<div class=\"form-group\">";
 	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("search for text")."</label>";
 	echo "<div class=\"col-md-4\">";
-	echo "<input class=\"form-control\" type=\"text\" value=\"$searchCondText\" name=\"searchtext\" id=\"searchbarSearchstring\" />";
+	echo "<input class=\"form-control\" type=\"text\" value=\"$filterValueText\" name=\"text\" id=\"searchbarSearchstring\" />";
 	echo "</div>";
 	echo "</div>";
 	//active objects
-	echo "<div class=\"form-group\">";
+	/*echo "<div class=\"form-group\">";
 	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("show inactive objects")."</label>";
 	echo "<div class=\"col-md-4\">";
 	if($paramActiveOnly == "1")
 	{
-		echo "<input class=\"form-control\" type=\"checkbox\" name=\"activeonly\" value=\"0\"/>";
+		echo "<input class=\"form-control\" type=\"checkbox\" name=\"status\" value=\"0\"/>";
 	}
 	else
 	{
-		echo "<input class=\"form-control\" type=\"checkbox\" name=\"activeonly\" value=\"0\" checked=\"checked\" />";
+		echo "<input class=\"form-control\" type=\"checkbox\" name=\"status\" value=\"0\" checked=\"checked\" />";
 	}
 	echo "</div>";
-	echo "</div>";
+	echo "</div>";*/
 	//object types positive filter
-	echo "<div class=\"form-group\">";
+	/*echo "<div class=\"form-group\">";
 	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Type:")."</label>";
 	echo "<div class=\"col-md-4\">";
 	foreach($paramTypes as $paramType)
@@ -100,7 +100,7 @@
 		echo "<br />";
 	}
 	echo "</div>";
-	echo "</div>";
+	echo "</div>";*/
 
 	//searchform footer
 	echo "<div class=\"form-group\">";

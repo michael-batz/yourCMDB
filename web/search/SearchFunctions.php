@@ -25,11 +25,38 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-	//get data for functions
-	$objectTypes = $config->getObjectTypeConfig()->getAllTypes();
+	//create SearchFilter from given URL parameters
+	$paramFilter = getHttpGetVar("filter", Array());
+	foreach($paramFilter as $filterEntry)
+	{
+		$searchFilter->addFilter($filterEntry);
+	}
+
+	//get objects
+	$objects = $searchFilter->getObjects($authUser);
+
+	//setup pagination
+	$paramMax = getHttpGetVar("max", $config->getViewConfig()->getContentTableLength());
+        $paramPage = getHttpGetVar("page", "1");
+
+	//filter values
+	$filterValuesText = $searchFilter->getFilterValues("text");
+	$filterValueText = "";
+	if(isset($filterValuesText[0]))
+	{
+		$filterValueText = $filterValuesText[0];
+	}
+	$filterValueTextArray = array_filter(explode(" ", $filterValueText));
+	$filterValuesPosObjTypes = $searchFilter->getFilterValues("type");
+	$filterValuesNegObjTypes = $searchFilter->getFilterValues("notType");
+
+	//define urls for UI
+	$urlBase = "search/SearchResult.php?max=".urlencode($paramMax);
+	$urlBaseFiltered = $urlBase . $searchFilter->getUrlQueryString();
+	$listnavUrlBase = $urlBaseFiltered ."&amp;page=";
 
 	//interprete searchstring if set
-	$searchCondSearchstring = getHttpGetVar("searchstring", "");
+	/*$searchCondSearchstring = getHttpGetVar("searchstring", "");
 	if($searchCondSearchstring != "")
 	{
 		//parse values in searchstring
@@ -74,33 +101,6 @@
 	
 	}
 
-	//get search parameters
-	//search condition: object types
-	if(!isset($paramTypes))
-	{
-		$paramTypes = getHttpGetVar("type", Array());
-	}
-	if(!isset($paramNotTypes))
-	{
-		$paramNotTypes = getHttpGetVar("notType", Array());
-	}
-	if(count($paramTypes) == 0 && count($paramNotTypes) > 0)
-	{
-		$searchCondTypes = array_diff($objectTypes, $paramNotTypes);
-
-	}
-	elseif(count($paramTypes) == 0 && count($paramNotTypes) == 0)
-	{
-		$searchCondTypes = null;
-	}
-	else
-	{
-		$searchCondTypes = array_diff($paramTypes, $paramNotTypes);
-	}
-
-	//search condition: pagination
-	$paramMax = getHttpGetVar("max", $config->getViewConfig()->getContentTableLength());
-        $paramPage = getHttpGetVar("page", "1");
 
 	//search condition: active/inactive objects
         $paramActiveOnly = getHttpGetVar("activeonly", "1");
@@ -108,32 +108,6 @@
 	if($paramActiveOnly == "1")
 	{
 		$searchCondStatus = "A";
-	}
-
-
-	//search condition: get search text from parameter searchtext
-	if(!isset($searchCondText))
-	{
-		$searchCondText = getHttpGetVar("searchtext", "");
-	}
-	$searchCondTextArray = Array();
-	if($searchCondText != "")
-	{
-		$searchCondTextArray = array_filter(explode(" ", $searchCondText));
-	}
-
-	//define urls for UI
-	$urlBase = "search/SearchResult.php?max=".urlencode($paramMax)."&amp;activeonly=".urlencode($paramActiveOnly);
-	$urlBase .= "&amp;searchtext=".urlencode($searchCondText);
-	$listnavUrlBase = $urlBase;
-	foreach($paramTypes as $paramType)
-	{
-		$listnavUrlBase .= "&amp;type[]=" .urlencode($paramType);
-	}
-	foreach($paramNotTypes as $paramNotType)
-	{
-		$listnavUrlBase .= "&amp;notType[]=" .urlencode($paramNotType);
-	}
-	$listnavUrlBase .= "&amp;page=";
+	}*/
 
 ?>

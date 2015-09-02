@@ -95,7 +95,13 @@ function cmdbSearchbarClear()
 
 function cmdbSearchbarSubmit(selectorForm, selectorResult)
 {
-	var url = 'search/SearchResult.php?' + $( selectorForm ).serialize();
+	var url = 'search/SearchResult.php?';
+	var formElements = $( selectorForm ).serializeArray();
+	jQuery.each(formElements, function(i, formElement)
+	{
+		url += '&filter[]=' + encodeURIComponent(formElement.name + "=" + formElement.value);
+			
+	});
 	cmdbOpenUrlAjax(url, selectorResult, true, true);
 };
 

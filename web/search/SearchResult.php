@@ -29,15 +29,14 @@
 	//include base functions and search form
 	include "../include/bootstrap-web.php";
 	include "../include/auth.inc.php";
+
+	//class loading
+	use yourCMDB\web\search\SearchFilter;
+	$searchFilter = new SearchFilter();
+	
+	//include search functions and form
 	include "SearchFunctions.php";
 	include "SearchForm.php";
-
-	//get all searched objects
-	$objects = Array();
-	if(count($searchCondTextArray) > 0)
-	{
-		$objects = $objectController->getObjectsByFieldvalue($searchCondTextArray, $searchCondTypes, $searchCondStatus, 0, 0, $authUser);
-	}
 
 	//calculate list view
         $objectCount = count($objects);
@@ -90,7 +89,7 @@
 			$objectMatchFields = Array();
 			foreach($objectFields->getKeys() as $fieldname)
 			{
-				foreach($searchCondTextArray as $searchstring)
+				foreach($filterValueTextArray as $searchstring)
 				{
 					if(stristr($objects[$i]->getFieldValue($fieldname), $searchstring) !== FALSE)
 					{
@@ -107,10 +106,32 @@
 				$statusIcon = "<span class=\"label label-danger\" title=\"".gettext("inactive object")."\">N</span>";
 			}
 
+			//create URLs
+			$filterObjTypePlus = "type=$objectType";
+			$filterObjTypeMinus = "notType=$objectType";
+			$urlObjTypePlus = $urlBase . $searchFilter->getUrlQueryStringWithAddedFilter($filterObjTypePlus);
+			$urlObjTypeMinus = $urlBase . $searchFilter->getUrlQueryStringWithAddedFilter($filterObjTypeMinus);
+			$urlJsObjTypePlus = "javascript:cmdbOpenUrlAjax('" .$urlObjTypePlus ."','#searchbarResult', false, true);";
+			$urlJsObjTypeMinus = "javascript:cmdbOpenUrlAjax('" .$urlObjTypeMinus . "','#searchbarResult', false, true);";
+
 			//print headline
 			echo "<tr><td>";
-			echo "<p><a href=\"object.php?action=show&amp;id=$objectId\">";
-			echo "$statusIcon $objectType: $objectId</a><br />";
+			echo "<p>";
+			echo "$statusIcon";
+
+			echo "<span class=\"label label-default\">";
+			echo "<span class=\"glyphicon glyphicon-barcode\"></span>";
+			echo "$objectId";
+			echo "</span>";
+
+			echo "<span class=\"label label-default\">$objectType ";
+			echo "<a href=\"$urlJsObjTypePlus\"><span class=\"glyphicon glyphicon-plus\"></span></a>";
+			echo "<a href=\"$urlJsObjTypeMinus\"><span class=\"glyphicon glyphicon-minus\"></span></a>";
+			echo "</span>";
+
+			echo "<a href=\"object.php?action=show&amp;id=$objectId\">";
+			echo "<span class=\"glyphicon glyphicon-eye-open\"></span>";
+			echo "</a><br />";
 
 			//print matches
 			echo gettext("Matches: ");
@@ -120,7 +141,7 @@
 				$fieldlabel = $config->getObjectTypeConfig()->getFieldLabel($objectType, $fieldname);
 				$fieldvalue = $objects[$i]->getFieldValue($fieldname);
 				//mark search string in fieldvalues (use case insensitive match)
-				foreach($searchCondTextArray as $searchstring)
+				foreach($filterValueTextArray as $searchstring)
 				{
 					if(preg_match("/.*?((?i:$searchstring)).*?/", $fieldvalue, $matchSearchString) == 1)
 					{
