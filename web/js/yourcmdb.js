@@ -82,27 +82,15 @@ function cmdbRandomBetweenInt(min, max)
 	return Math.floor(Math.random() * (max - min + 1)) - min;
 };
 
-/**
-* clear search form
-*/
-function cmdbSearchbarClear()
+function cmdbSearchbarSubmit(baseUrl, selectorForm, selectorResult)
 {
-	//clear other input fields
-	$( "#searchbarForm input[name='searchtext']" ).val('');
-	$( "#searchbarForm input[name='activeonly']" ).prop('checked', false);
-	$( "#searchbarForm select[name='type']" ).val('');
-};
-
-function cmdbSearchbarSubmit(selectorForm, selectorResult)
-{
-	var url = 'search/SearchResult.php?';
 	var formElements = $( selectorForm ).serializeArray();
 	jQuery.each(formElements, function(i, formElement)
 	{
-		url += '&filter[]=' + encodeURIComponent(formElement.name + "=" + formElement.value);
+		baseUrl += '&filter[]=' + encodeURIComponent(formElement.name + "=" + formElement.value);
 			
 	});
-	cmdbOpenUrlAjax(url, selectorResult, true, true);
+	cmdbOpenUrlAjax(baseUrl, selectorResult, true, true);
 };
 
 /**

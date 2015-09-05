@@ -40,6 +40,7 @@
         $paramPage = getHttpGetVar("page", "1");
 
 	//filter values
+	//filter value text
 	$filterValuesText = $searchFilter->getFilterValues("text");
 	$filterValueText = "";
 	if(isset($filterValuesText[0]))
@@ -47,6 +48,14 @@
 		$filterValueText = $filterValuesText[0];
 	}
 	$filterValueTextArray = array_filter(explode(" ", $filterValueText));
+	//filter value status
+	$filterValuesStatus = $searchFilter->getFilterValues("status");
+	$filterValueStatus = "";
+	if(isset($filterValuesStatus[0]))
+	{
+		$filterValueStatus = $filterValuesStatus[0];
+	}
+	//filter value object types
 	$filterValuesPosObjTypes = $searchFilter->getFilterValues("type");
 	$filterValuesNegObjTypes = $searchFilter->getFilterValues("notType");
 

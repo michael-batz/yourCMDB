@@ -44,7 +44,8 @@
 
 
 	//HTML output
-	echo "<form id=\"searchbarForm\" class=\"form-horizontal\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\" onsubmit=\"javascript:cmdbSearchbarSubmit('#searchbarForm','#searchbarResult')\">";
+	$urlSearchForm = $urlBase . $searchFilter->getUrlQueryStringWithRemovedFilterTypes(Array("text", "status"));
+	echo "<form id=\"searchbarForm\" class=\"form-horizontal\" action=\"javascript:void(0);\" method=\"get\" accept-charset=\"UTF-8\" onsubmit=\"javascript:cmdbSearchbarSubmit('$urlSearchForm', '#searchbarForm','#searchbarResult')\">";
 	//default search field
 	echo "<div class=\"form-group\">";
 	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("search for text")."</label>";
@@ -52,61 +53,59 @@
 	echo "<input class=\"form-control\" type=\"text\" value=\"$filterValueText\" name=\"text\" id=\"searchbarSearchstring\" />";
 	echo "</div>";
 	echo "</div>";
-	//active objects
-	/*echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("show inactive objects")."</label>";
+	//status filter
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("show only active objects")."</label>";
 	echo "<div class=\"col-md-4\">";
-	if($paramActiveOnly == "1")
+	if($filterValueStatus == 'A')
 	{
-		echo "<input class=\"form-control\" type=\"checkbox\" name=\"status\" value=\"0\"/>";
+		echo "<input class=\"form-control\" type=\"checkbox\" name=\"status\" value=\"A\" checked=\"checked\" />";
 	}
 	else
 	{
-		echo "<input class=\"form-control\" type=\"checkbox\" name=\"status\" value=\"0\" checked=\"checked\" />";
+		echo "<input class=\"form-control\" type=\"checkbox\" name=\"status\" value=\"A\"/>";
 	}
 	echo "</div>";
-	echo "</div>";*/
-	//object types positive filter
-	/*echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Type:")."</label>";
+	echo "</div>";
+
+	//search filter
+	echo "<div class=\"form-group\">";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("search filter")."</label>";
 	echo "<div class=\"col-md-4\">";
-	foreach($paramTypes as $paramType)
+	//search filter: positive object types
+	foreach($filterValuesPosObjTypes as $filterValue)
 	{
-		echo "<span id=\"cmdbSearchFormObjPos-$paramType\">";
-		echo "<input class=\"form-control\" type=\"hidden\" name=\"type[]\" value=\"$paramType\">";
-		echo "<span class=\"label label-default\">$paramType ";
-		echo "<a href=\"javascript:cmdbRemoveElement('#cmdbSearchFormObjPos-$paramType')\">";
+		$filter = "type=$filterValue";
+		$urlRemovedFilter = $urlBase . $searchFilter->getUrlQueryStringWithRemovedFilter($filter);
+		$urlJsRemovedFilter = "javascript:cmdbOpenUrlAjax('$urlRemovedFilter', '#searchbarResult', false, true)";
+		echo "<span class=\"label label-default\">$filter";
+		echo "<a href=\"$urlJsRemovedFilter\">";
 		echo "<span class=\"glyphicon glyphicon-remove\"></span></a>";
 		echo "</span>";
+		echo "<br />";
+	}
+	//search filter: negative object types
+	foreach($filterValuesNegObjTypes as $filterValue)
+	{
+		$filter = "notType=$filterValue";
+		$urlRemovedFilter = $urlBase . $searchFilter->getUrlQueryStringWithRemovedFilter($filter);
+		$urlJsRemovedFilter = "javascript:cmdbOpenUrlAjax('$urlRemovedFilter', '#searchbarResult', false, true)";
+		echo "<span class=\"label label-default\">$filter ";
+		echo "<a href=\"$urlJsRemovedFilter\">";
+		echo "<span class=\"glyphicon glyphicon-remove\"></span></a>";
 		echo "</span>";
 		echo "<br />";
 	}
 	echo "</div>";
 	echo "</div>";
 
-	//object types negative filter
-	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Not Type:")."</label>";
-	echo "<div class=\"col-md-4\">";
-	foreach($paramNotTypes as $paramNotType)
-	{
-		echo "<span id=\"cmdbSearchFormObjNeg-$paramNotType\">";
-		echo "<input class=\"form-control\" type=\"hidden\" name=\"notType[]\" value=\"$paramNotType\">";
-		echo "<span class=\"label label-default\">$paramNotType ";
-		echo "<a href=\"javascript:cmdbRemoveElement('#cmdbSearchFormObjNeg-$paramNotType')\">";
-		echo "<span class=\"glyphicon glyphicon-remove\"></span></a>";
-		echo "</span>";
-		echo "</span>";
-		echo "<br />";
-	}
-	echo "</div>";
-	echo "</div>";*/
 
 	//searchform footer
+	$urlJsSearchFormClear = "javascript:cmdbOpenUrlAjax('$urlBase', '#searchbarResult', false, true)";
 	echo "<div class=\"form-group\">";
 	echo "<div class=\"col-md-4 col-md-offset-5\">";
 	echo "<input type=\"submit\" class=\"btn btn-danger\" value=\"".gettext("Go")."\" />";
-	echo "<input type=\"button\" class=\"btn btn-default\" value=\"".gettext("Clear Search")."\" onclick=\"javascript:cmdbSearchbarClear()\" />";
+	echo "<input type=\"button\" class=\"btn btn-default\" value=\"".gettext("Clear Search")."\" onclick=\"$urlJsSearchFormClear\" />";
 	echo "</div>";
 	echo "</div>";
 	echo "</form>";

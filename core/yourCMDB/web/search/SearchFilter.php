@@ -107,9 +107,9 @@ class SearchFilter
 
 		//create conditions from filter: status
 		$conditionStatus = null;
-		if(isset($this->filter['status']))
+		if(isset($this->filter['status'][0]) && $this->filter['status'][0] == 'A')
 		{
-			$conditionStatus = $this->filter['status'][0];
+			$conditionStatus = "A";
 		}
 
 		//get objects only if a search text is given
@@ -143,6 +143,21 @@ class SearchFilter
 			if($key !== FALSE)
 			{
 				unset($tempFilter[$filterVariable][$key]);
+			}
+		}
+		return $this->createUrlQueryString($tempFilter);
+	}
+
+	public function getUrlQueryStringWithRemovedFilterTypes($filterTypes)
+	{
+		//create temp filter
+		$tempFilter = $this->filter;
+
+		foreach($filterTypes as $filterType)
+		{
+			if(isset($tempFilter[$filterType]))
+			{
+				unset($tempFilter[$filterType]);
 			}
 		}
 		return $this->createUrlQueryString($tempFilter);
