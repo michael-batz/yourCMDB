@@ -24,12 +24,28 @@
 * WebUI element: search functions
 * @author Michael Batz <michael@yourcmdb.org>
 */
+	//class loading
+	use yourCMDB\web\search\SearchFilter;
+	use yourCMDB\web\search\SearchbarInterpreter;
 
-	//create SearchFilter from given URL parameters
-	$paramFilter = getHttpGetVar("filter", Array());
-	foreach($paramFilter as $filterEntry)
+	//if set: try to interprete user input in searchbar in an intelligent way :-)
+	$paramSearchbarString = getHttpGetVar("searchstring", "");
+	$searchbarInterpretedObject = null;
+	if($paramSearchbarString != "")
 	{
-		$searchFilter->addFilter($filterEntry);
+		$searchbarInterpreter = new SearchbarInterpreter($paramSearchbarString);
+		$searchFilter = $searchbarInterpreter->returnSearchFilter();
+		$searchbarInterpretedObject = $searchbarInterpreter->returnInterpretedObject();
+	}
+	//else: create SearchFilter from given URL parameters
+	else
+	{
+		$paramFilter = getHttpGetVar("filter", Array());
+		$searchFilter = new SearchFilter();
+		foreach($paramFilter as $filterEntry)
+		{
+			$searchFilter->addFilter($filterEntry);
+		}
 	}
 
 	//get objects
@@ -63,60 +79,5 @@
 	$urlBase = "search/SearchResult.php?max=".urlencode($paramMax);
 	$urlBaseFiltered = $urlBase . $searchFilter->getUrlQueryString();
 	$listnavUrlBase = $urlBaseFiltered ."&amp;page=";
-
-	//interprete searchstring if set
-	/*$searchCondSearchstring = getHttpGetVar("searchstring", "");
-	if($searchCondSearchstring != "")
-	{
-		//parse values in searchstring
-		$searchCondSearchstringArray = array_filter(explode(" ", $searchCondSearchstring));
-
-		//find objecttypes in searchstring
-		$matchesObjectTypes = Array();
-		$matchesSearchstrings = Array();
-		for($i = 0; $i < count($searchCondSearchstringArray); $i++)
-		{
-			$countMatches = count($matchesObjectTypes);
-			foreach($objectTypes as $objectType)
-			{
-				if(stripos($objectType, $searchCondSearchstringArray[$i]) !== FALSE)
-				{
-					$matchesObjectTypes[] = $objectType;
-				}
-			}
-			if(count($matchesObjectTypes) == $countMatches)
-			{
-				$matchesSearchstrings[] = $searchCondSearchstringArray[$i];
-			}
-		}
-		if(count($matchesSearchstrings > 0))
-		{
-			$paramTypes = $matchesObjectTypes;
-			$searchCondText = "";
-			$searchstringOutput = $matchesSearchstrings;
-		}
-		//default
-		else
-		{
-			$searchstringOutput = $searchCondSearchstringArray;
-
-		}
-
-		//create searchCondText
-		foreach($searchstringOutput as  $searchstringOutputElement)
-		{
-			$searchCondText .= $searchstringOutputElement . " ";
-		}
-	
-	}
-
-
-	//search condition: active/inactive objects
-        $paramActiveOnly = getHttpGetVar("activeonly", "1");
-	$searchCondStatus = null;
-	if($paramActiveOnly == "1")
-	{
-		$searchCondStatus = "A";
-	}*/
 
 ?>

@@ -26,6 +26,10 @@ use yourCMDB\config\CmdbConfig;
 
 /**
 * Filter for yourCMDB search
+*
+* A filter consists of multiple filter entries
+* each filter entry has the follwing format: filtervar=filtervalue
+*
 * @author Michael Batz <michael@yourcmdb.org>
 */
 class SearchFilter
@@ -41,7 +45,11 @@ class SearchFilter
 		$this->filter = Array();
 	}
 
-
+	/**
+	* Adds a new filter entry
+	* @param string $filter		new filter entry
+	*				format: filtervar=filtervalue
+	*/
 	public function addFilter($filter)
 	{
 		//urldecode filter
@@ -57,6 +65,11 @@ class SearchFilter
 		}
 	}
 
+	/**
+	* Gets all filter values for a given filter variable
+	* @param string $filterVariable
+	* @return string[]	values for the given filter variable
+	*/
 	public function getFilterValues($filterVariable)
 	{
 		$output = Array();
@@ -123,11 +136,20 @@ class SearchFilter
 		return $objects;
 	}
 
+	/**
+	* Returns the URL query string that represents the filter object
+	* @return string	URL query string
+	*/
 	public function getUrlQueryString()
 	{
 		return $this->createUrlQueryString($this->filter);
 	}
 
+	/**
+	* Returns the URL query string that represents the filter object after the given filter would be removed
+	* @param string $filter	filter entry that has to be removed, before the query string will be created
+	* @return string	URL query string
+	*/
 	public function getUrlQueryStringWithRemovedFilter($filter)
 	{
 		//create temp filter
@@ -148,6 +170,11 @@ class SearchFilter
 		return $this->createUrlQueryString($tempFilter);
 	}
 
+	/**
+	* Returns the URL query string that represents the filter object after the given filter types would be removed
+	* @param string[] $filterTypes	filter types that has to be removed, before the query string will be created
+	* @return string		URL query string
+	*/
 	public function getUrlQueryStringWithRemovedFilterTypes($filterTypes)
 	{
 		//create temp filter
@@ -163,6 +190,11 @@ class SearchFilter
 		return $this->createUrlQueryString($tempFilter);
 	}
 
+	/**
+	* Returns the URL query string that represents the filter object after the given filter would be added
+	* @param string $filter	filter entry that has to be added, before the query string will be created
+	* @return string	URL query string
+	*/
 	public function getUrlQueryStringWithAddedFilter($filter)
 	{
 		$queryString = $this->createUrlQueryString($this->filter);
@@ -170,6 +202,11 @@ class SearchFilter
 		return $queryString;
 	}
 
+	/**
+	* Returns the URL query string that represents the given filter array
+	* @param string[] $filterArray	filter array in format: Array[filterVariable] = filterValue
+	* @return string		URL query string
+	*/
 	private function createUrlQueryString($filterArray)
 	{
 		$queryString = "";

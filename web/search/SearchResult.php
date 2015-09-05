@@ -30,9 +30,6 @@
 	include "../include/bootstrap-web.php";
 	include "../include/auth.inc.php";
 
-	//class loading
-	use yourCMDB\web\search\SearchFilter;
-	$searchFilter = new SearchFilter();
 	
 	//include search functions and form
 	include "SearchFunctions.php";
@@ -64,9 +61,44 @@
         }
 
 
+	//show objects by ID if found
+	if(isset($searchbarInterpretedObject))
+	{
+		//title
+		echo "<h2>";
+		echo gettext("Found Object by ID");
+		echo "</h2>";
+
+		//object summary
+		$objectType = $searchbarInterpretedObject->getType();
+		$objectId = $searchbarInterpretedObject->getId();
+		$objectStatus = $searchbarInterpretedObject->getStatus();
+		//get status image
+		$statusIcon = "<span class=\"label label-success\" title=\"".gettext("active object")."\">A</span>";
+		if($objectStatus != 'A')
+		{
+			$statusIcon = "<span class=\"label label-danger\" title=\"".gettext("inactive object")."\">N</span>";
+		}
+
+		echo "<p>";
+		echo "$statusIcon";
+
+		echo "<span class=\"label label-default\">";
+		echo "<span class=\"glyphicon glyphicon-barcode\"></span>";
+		echo "$objectId";
+		echo "</span>";
+
+		echo "<span class=\"label label-default\">$objectType ";
+		echo "</span>";
+
+		echo "<a href=\"object.php?action=show&amp;id=$objectId\">";
+		echo "<span class=\"glyphicon glyphicon-eye-open\"></span>";
+		echo "</a>";
+		echo "</p>";
+	}
 
 
-	//<!-- title -->
+	//title
 	echo "<h2>";
 	echo sprintf(gettext("Search Results (%s)"), $objectCount);
 	echo "</h2>";
