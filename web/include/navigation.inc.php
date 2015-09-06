@@ -78,7 +78,7 @@
 		{
 			echo "<li>";
 			echo "<a  href=\"object.php?action=list&amp;type=$objectType\">";
-			echo "$objectType (".$objectController->getObjectCounts($objectType, $authUser).")";
+			echo "$objectType (".$objectController->getObjectCounts($objectType, 'A', $authUser).")";
 			echo "</a>";
 			echo "</li>";
 		}

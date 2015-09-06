@@ -620,9 +620,10 @@ class ObjectController
 	/**
 	* Returns the number of objects
 	* @param string[] $types	Array with object types or null, if no limit by object type is needed
+	* @param string $status		status of the object or null, if no limit by status is needed
 	* @param string $user		name of the user that wants to get the values
 	*/
-	public function getObjectCounts($types=null, $user)
+	public function getObjectCounts($types=null, $status, $user)
 	{
 		//create QueryBuilder
 		$queryBuilder = $this->entityManager->createQueryBuilder();
@@ -635,6 +636,11 @@ class ObjectController
 		{
 			$queryBuilder->andWhere("o.type IN (?1)");
 			$queryBuilder->setParameter(1, $types);
+		}
+		if($status != null)
+		{
+			$queryBuilder->andWhere("o.status = ?2");
+			$queryBuilder->setParameter(2, $status);
 		}
 
 		//get results
