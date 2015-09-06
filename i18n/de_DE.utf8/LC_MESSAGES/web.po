@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yourCMDB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-05 13:51+0100\n"
+"POT-Creation-Date: 2015-09-06 19:26+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Michael Batz <michael@yourcmdb.org>\n"
 "Language-Team: Michael Batz <michael@yourcmdb.org>\n"
@@ -23,7 +23,6 @@ msgstr ""
 "X-Poedit-SearchPath-0: /var/www/yourcmdb/web\n"
 
 #: /var/www/yourcmdb/web/object.php:80
-#: /var/www/yourcmdb/web/search.php:58
 #, php-format
 msgid "No object with AssetID %s found..."
 msgstr "Kein Objekt mit ID %s gefunden..."
@@ -100,27 +99,27 @@ msgid "Error sending event: object not found"
 msgstr "Fehler beim Senden des Events: Objekt wurde nicht gefunden"
 
 #: /var/www/yourcmdb/web/index.php:37
-#: /var/www/yourcmdb/web/login.php:44
+#: /var/www/yourcmdb/web/login.php:43
 msgid "Welcome to yourCMDB!"
 msgstr "Willkommen bei yourCMDB!"
 
-#: /var/www/yourcmdb/web/login.php:51
+#: /var/www/yourcmdb/web/login.php:50
 msgid "Sorry, wrong username or password. Please try again..."
 msgstr "Entschuldigung, Benutzername oder Passwort falsch..."
 
-#: /var/www/yourcmdb/web/login.php:53
+#: /var/www/yourcmdb/web/login.php:52
 msgid "yourCMDB logo"
 msgstr "yourCMDB Logo"
 
-#: /var/www/yourcmdb/web/login.php:57
-msgid "user:"
-msgstr "Benutzername:"
+#: /var/www/yourcmdb/web/login.php:58
+msgid "user"
+msgstr "Benutzer"
 
 #: /var/www/yourcmdb/web/login.php:66
-msgid "password:"
-msgstr "Passwort:"
+msgid "password"
+msgstr "Passwort"
 
-#: /var/www/yourcmdb/web/login.php:76
+#: /var/www/yourcmdb/web/login.php:72
 msgid "Go!"
 msgstr "Los!"
 
@@ -173,13 +172,13 @@ msgid "Do you really want to delete this object?"
 msgstr "Möchten Sie wirklich dieses Objekt löschen?"
 
 #: /var/www/yourcmdb/web/object/ListObjects.php:109
-msgid "cancel"
-msgstr "Abbrechen"
-
-#: /var/www/yourcmdb/web/object/ListObjects.php:110
 #: /var/www/yourcmdb/web/object/ListObjects.php:182
 msgid "delete"
 msgstr "löschen"
+
+#: /var/www/yourcmdb/web/object/ListObjects.php:110
+msgid "cancel"
+msgstr "Abbrechen"
 
 #: /var/www/yourcmdb/web/object/ListObjects.php:119
 msgid "switch"
@@ -276,62 +275,62 @@ msgstr "Externe Links"
 msgid "Custom Events"
 msgstr "Eigene Events"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:199
+#: /var/www/yourcmdb/web/object/ShowObject.php:209
 msgid "Comment"
 msgstr "Kommentar"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:213
+#: /var/www/yourcmdb/web/object/ShowObject.php:223
 msgid "Fields"
 msgstr "Felder"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:214
+#: /var/www/yourcmdb/web/object/ShowObject.php:224
 msgid "Referenced by"
 msgstr "Referenziert von"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:215
+#: /var/www/yourcmdb/web/object/ShowObject.php:225
 msgid "Links"
 msgstr "Links"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:216
+#: /var/www/yourcmdb/web/object/ShowObject.php:226
 msgid "Log"
 msgstr "Log"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:250
-#: /var/www/yourcmdb/web/object/ShowObject.php:275
+#: /var/www/yourcmdb/web/object/ShowObject.php:260
+#: /var/www/yourcmdb/web/object/ShowObject.php:285
 msgid "Type"
 msgstr "Typ"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:251
-#: /var/www/yourcmdb/web/object/ShowObject.php:276
-#: /var/www/yourcmdb/web/object/ShowObject.php:316
+#: /var/www/yourcmdb/web/object/ShowObject.php:261
+#: /var/www/yourcmdb/web/object/ShowObject.php:286
+#: /var/www/yourcmdb/web/object/ShowObject.php:326
 msgid "Action"
 msgstr "Aktion"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:263
+#: /var/www/yourcmdb/web/object/ShowObject.php:273
 msgid "show object with reference"
 msgstr "Objekt mit Referenz anzeigen"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:293
+#: /var/www/yourcmdb/web/object/ShowObject.php:303
 msgid "show linked object"
 msgstr "verlinktes Objekt anzeigen"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:294
+#: /var/www/yourcmdb/web/object/ShowObject.php:304
 msgid "delete link"
 msgstr "Link löschen"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:302
+#: /var/www/yourcmdb/web/object/ShowObject.php:312
 msgid "Add new link to object with ID:"
 msgstr "Neuen Objekt Link hinzufügen zu Objekt mit ID:"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:315
+#: /var/www/yourcmdb/web/object/ShowObject.php:325
 msgid "Date"
 msgstr "Datum"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:317
+#: /var/www/yourcmdb/web/object/ShowObject.php:327
 msgid "Description"
 msgstr "Beschreibung"
 
-#: /var/www/yourcmdb/web/object/ShowObject.php:318
+#: /var/www/yourcmdb/web/object/ShowObject.php:328
 msgid "User"
 msgstr "Benutzer"
 
@@ -372,17 +371,15 @@ msgid "User: %s"
 msgstr "Benutzer: %s"
 
 #: /var/www/yourcmdb/web/settings/UserDetails.php:87
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:144
 msgid "username"
 msgstr "Benutzername"
 
 #: /var/www/yourcmdb/web/settings/UserDetails.php:88
 #: /var/www/yourcmdb/web/admin/Authorisation.php:214
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:145
 msgid "access group"
 msgstr "Zugriffsgruppe"
-
-#: /var/www/yourcmdb/web/settings/UserDetails.php:91
-msgid "password"
-msgstr "Passwort"
 
 #: /var/www/yourcmdb/web/settings/UserDetails.php:92
 msgid "change password"
@@ -397,6 +394,7 @@ msgid "old password:"
 msgstr "altes Passwort:"
 
 #: /var/www/yourcmdb/web/settings/UserDetails.php:111
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:219
 msgid "new password:"
 msgstr "neues Passwort:"
 
@@ -404,20 +402,37 @@ msgstr "neues Passwort:"
 msgid "retype new password:"
 msgstr "neues Passwort wiederholen:"
 
-#: /var/www/yourcmdb/web/search/SearchResult.php:87
+#: /var/www/yourcmdb/web/search/SearchResult.php:69
+msgid "Found Object by ID"
+msgstr "Gefundene Objekte nach ID"
+
+#: /var/www/yourcmdb/web/search/SearchResult.php:96
+#: /var/www/yourcmdb/web/search/SearchResult.php:207
+msgid "Summary: "
+msgstr "Zusammenfassung:"
+
+#: /var/www/yourcmdb/web/search/SearchResult.php:117
 #, php-format
 msgid "Search Results (%s)"
 msgstr "Suchergebnisse (%s)"
 
-#: /var/www/yourcmdb/web/search/SearchResult.php:131
+#: /var/www/yourcmdb/web/search/SearchResult.php:175
+msgid "Type: "
+msgstr "Typ:"
+
+#: /var/www/yourcmdb/web/search/SearchResult.php:178
+msgid "add positive filter"
+msgstr "Positiv-Filter hinzufügen"
+
+#: /var/www/yourcmdb/web/search/SearchResult.php:179
+msgid "add negative filter"
+msgstr "Negativ-Filter hinzufügen"
+
+#: /var/www/yourcmdb/web/search/SearchResult.php:184
 msgid "Matches: "
 msgstr "Übereinstimmungen: "
 
-#: /var/www/yourcmdb/web/search/SearchResult.php:154
-msgid "Summary: "
-msgstr "Zusammenfassung:"
-
-#: /var/www/yourcmdb/web/search/SearchResult.php:235
+#: /var/www/yourcmdb/web/search/SearchResult.php:288
 msgid "No objects found for searchstring "
 msgstr "Keine Objekte gefunden für den eingegebenen Suchstring "
 
@@ -425,23 +440,28 @@ msgstr "Keine Objekte gefunden für den eingegebenen Suchstring "
 msgid "Search"
 msgstr "Suche"
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:45
-msgid "searchstring"
-msgstr "Suchstring"
+#: /var/www/yourcmdb/web/search/SearchForm.php:42
+msgid "Advanced Search Options"
+msgstr "Erweiterte Suchoptionen"
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:53
-msgid "show inactive objects"
-msgstr "inaktive Objekte anzeigen"
+#: /var/www/yourcmdb/web/search/SearchForm.php:51
+msgid "search for text"
+msgstr "nach Text suchen"
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:67
-msgid "objecttype group"
-msgstr "Objekttyp Gruppe"
+#: /var/www/yourcmdb/web/search/SearchForm.php:58
+msgid "show only active objects"
+msgstr "nur aktive Objekte anzeigen"
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:88
-msgid "Type:"
-msgstr "Typ:"
+#: /var/www/yourcmdb/web/search/SearchForm.php:73
+msgid "search filter"
+msgstr "Suchfilter"
 
-#: /var/www/yourcmdb/web/search/SearchForm.php:116
+#: /var/www/yourcmdb/web/search/SearchForm.php:82
+#: /var/www/yourcmdb/web/search/SearchForm.php:94
+msgid "remove filter"
+msgstr "Filter entfernen"
+
+#: /var/www/yourcmdb/web/search/SearchForm.php:108
 msgid "Clear Search"
 msgstr "Eingaben löschen"
 
@@ -502,11 +522,6 @@ msgstr "Typ"
 #: /var/www/yourcmdb/web/dashboard/DashletLastChangedObjects.php:35
 msgid "date changed"
 msgstr "Änderungsdatum"
-
-#: /var/www/yourcmdb/web/dashboard/DashletLastChangedObjects.php:36
-#: /var/www/yourcmdb/web/dashboard/DashletNewestObjects.php:36
-msgid "user"
-msgstr "Benutzer"
 
 #: /var/www/yourcmdb/web/dashboard/DashletLastChangedObjects.php:37
 #: /var/www/yourcmdb/web/dashboard/DashletNewestObjects.php:37
@@ -658,6 +673,10 @@ msgstr "Lokale Benutzer"
 msgid "username:"
 msgstr "Benutzername:"
 
+#: /var/www/yourcmdb/web/admin/LocalUsers.php:189
+msgid "password:"
+msgstr "Passwort:"
+
 #: /var/www/yourcmdb/web/admin/LocalUsers.php:190
 msgid "access group:"
 msgstr "Zugriffsgruppe:"
@@ -702,27 +721,27 @@ msgstr "PHP Server API:"
 msgid "authentication methods"
 msgstr "Authentifizierungs Methoden"
 
-#: /var/www/yourcmdb/web/include/navigation.inc.php:50
+#: /var/www/yourcmdb/web/include/navigation.inc.php:52
 msgid "Search..."
 msgstr "Suche..."
 
-#: /var/www/yourcmdb/web/include/navigation.inc.php:59
+#: /var/www/yourcmdb/web/include/navigation.inc.php:64
 msgid "Home"
 msgstr "Home"
 
-#: /var/www/yourcmdb/web/include/navigation.inc.php:62
+#: /var/www/yourcmdb/web/include/navigation.inc.php:67
 msgid "Import-Export"
 msgstr "Import-Export"
 
-#: /var/www/yourcmdb/web/include/navigation.inc.php:66
+#: /var/www/yourcmdb/web/include/navigation.inc.php:71
 msgid "Objects"
 msgstr "Objekte"
 
-#: /var/www/yourcmdb/web/include/navigation.inc.php:99
+#: /var/www/yourcmdb/web/include/navigation.inc.php:104
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: /var/www/yourcmdb/web/include/navigation.inc.php:106
+#: /var/www/yourcmdb/web/include/navigation.inc.php:111
 msgid "Logout"
 msgstr "Logout"
 
@@ -730,6 +749,15 @@ msgstr "Logout"
 #: /var/www/yourcmdb/web/include/functions.inc.php:76
 msgid "close"
 msgstr "schließen"
+
+#~ msgid "user:"
+#~ msgstr "Benutzername:"
+
+#~ msgid "show inactive objects"
+#~ msgstr "inaktive Objekte anzeigen"
+
+#~ msgid "objecttype group"
+#~ msgstr "Objekttyp Gruppe"
 
 #~ msgid "user created"
 #~ msgstr "Benutzer erzeugt"
@@ -779,9 +807,6 @@ msgstr "schließen"
 
 #~ msgid "No objects with field value %s found. Please try again..."
 #~ msgstr "Kein Objekt mit Feldinhalt %s gefunden. Bitte nochmal versuchen..."
-
-#~ msgid "Search Form"
-#~ msgstr "Suchformular"
 
 #~ msgid "Search in all objects"
 #~ msgstr "Suche in allen Objekten"
