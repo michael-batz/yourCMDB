@@ -78,8 +78,8 @@
 		$filter = "type=$filterValue";
 		$urlRemovedFilter = $urlBase . $searchFilter->getUrlQueryStringWithRemovedFilter($filter);
 		$urlJsRemovedFilter = "javascript:cmdbOpenUrlAjax('$urlRemovedFilter', '#searchbarResult', false, true)";
-		echo "<span class=\"label label-default\">$filter";
-		echo "<a href=\"$urlJsRemovedFilter\">";
+		echo "<span class=\"label label-default\">$filter ";
+		echo "<a href=\"$urlJsRemovedFilter\" title=\"".gettext("remove filter")."\">";
 		echo "<span class=\"glyphicon glyphicon-remove\"></span></a>";
 		echo "</span>";
 		echo "<br />";
@@ -91,7 +91,7 @@
 		$urlRemovedFilter = $urlBase . $searchFilter->getUrlQueryStringWithRemovedFilter($filter);
 		$urlJsRemovedFilter = "javascript:cmdbOpenUrlAjax('$urlRemovedFilter', '#searchbarResult', false, true)";
 		echo "<span class=\"label label-default\">$filter ";
-		echo "<a href=\"$urlJsRemovedFilter\">";
+		echo "<a href=\"$urlJsRemovedFilter\" title=\"".gettext("remove filter")."\">";
 		echo "<span class=\"glyphicon glyphicon-remove\"></span></a>";
 		echo "</span>";
 		echo "<br />";

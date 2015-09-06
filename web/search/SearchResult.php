@@ -70,9 +70,12 @@
 		echo "</h2>";
 
 		//object summary
+		//get object data
 		$objectType = $searchbarInterpretedObject->getType();
 		$objectId = $searchbarInterpretedObject->getId();
 		$objectStatus = $searchbarInterpretedObject->getStatus();
+		$objectSummaryFields = $config->getObjectTypeConfig()->getSummaryFields($objectType);
+
 		//get status image
 		$statusIcon = "<span class=\"label label-success\" title=\"".gettext("active object")."\">A</span>";
 		if($objectStatus != 'A')
@@ -80,21 +83,32 @@
 			$statusIcon = "<span class=\"label label-danger\" title=\"".gettext("inactive object")."\">N</span>";
 		}
 
+		echo "<table class=\"table cmdb-cleantable\">";
+		echo "<tr><td>";
+
+		//print object summary
 		echo "<p>";
-		echo "$statusIcon";
-
-		echo "<span class=\"label label-default\">";
-		echo "<span class=\"glyphicon glyphicon-barcode\"></span>";
-		echo "$objectId";
-		echo "</span>";
-
-		echo "<span class=\"label label-default\">$objectType ";
-		echo "</span>";
-
+		echo "$statusIcon ";
 		echo "<a href=\"object.php?action=show&amp;id=$objectId\">";
-		echo "<span class=\"glyphicon glyphicon-eye-open\"></span>";
+		echo "$objectType: $objectId";
 		echo "</a>";
 		echo "</p>";
+		echo gettext("Summary: ");
+		$fieldnames = array_keys($objectSummaryFields);
+		for($j = 0; $j < count($fieldnames); $j++)
+		{
+			$fieldname = $fieldnames[$j];
+			$fieldlabel = $config->getObjectTypeConfig()->getFieldLabel($objectType, $fieldname);
+			$fieldvalue = $searchbarInterpretedObject->getFieldValue($fieldname);
+			echo "$fieldlabel: $fieldvalue";
+			if($j < count($fieldnames) - 1)
+			{
+				echo " | ";
+			}
+		}
+
+		echo "</td></tr>";
+		echo "</table>";
 	}
 
 
@@ -149,21 +163,22 @@
 			//print headline
 			echo "<tr><td>";
 			echo "<p>";
-			echo "$statusIcon";
-
-			echo "<span class=\"label label-default\">";
-			echo "<span class=\"glyphicon glyphicon-barcode\"></span>";
-			echo "$objectId";
-			echo "</span>";
-
-			echo "<span class=\"label label-default\">$objectType ";
-			echo "<a href=\"$urlJsObjTypePlus\"><span class=\"glyphicon glyphicon-plus\"></span></a>";
-			echo "<a href=\"$urlJsObjTypeMinus\"><span class=\"glyphicon glyphicon-minus\"></span></a>";
-			echo "</span>";
+			echo "$statusIcon ";
 
 			echo "<a href=\"object.php?action=show&amp;id=$objectId\">";
-			echo "<span class=\"glyphicon glyphicon-eye-open\"></span>";
+			echo "$objectType: $objectId";
+			echo "</span>";
+
 			echo "</a><br />";
+
+			//print type
+			echo gettext("Type: ");
+			echo "$objectType ";
+			echo "<small>";
+			echo "<a href=\"$urlJsObjTypePlus\"><span class=\"glyphicon glyphicon-plus\" title=\"".gettext("add positive filter")."\"></span></a>";
+			echo "<a href=\"$urlJsObjTypeMinus\"><span class=\"glyphicon glyphicon-minus\" title=\"".gettext("add negative filter")."\"></span></a>";
+			echo "</small>";
+			echo "<br />";
 
 			//print matches
 			echo gettext("Matches: ");
