@@ -109,7 +109,7 @@ class SearchFilter
 		{
 			$conditionTypes = array_diff($conditionTypes, $this->filter['notType']);
 		}
-		elseif(isset($this->filter['notType']) && count($conditionTypes) == 0)
+		if(isset($this->filter['notType']) && count($conditionTypes) == 0)
 		{
 			$conditionTypes = array_diff($conditionAllTypes, $this->filter['notType']);
 		}
