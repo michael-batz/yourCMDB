@@ -69,7 +69,7 @@ class ExportVariable
 		$objectController = ObjectController::create();
 
 		//get object type config
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 		$configObjecttype = $config->getObjectTypeConfig();
 		$value = $this->defaultValue;
 

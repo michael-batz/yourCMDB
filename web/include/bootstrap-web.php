@@ -47,7 +47,7 @@ include "$coreBaseDir/bootstrap.php";
 include "functions.inc.php";
 
 //define variables
-$config = new CmdbConfig();
+$config = CmdbConfig::create();
 $accessGroupController = AccessGroupController::create();
 $objectController = ObjectController::create();
 $objectLinkController = ObjectLinkController::create();

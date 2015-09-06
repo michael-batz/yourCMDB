@@ -91,7 +91,7 @@ class SearchbarInterpreter
 	private function interpreteObjectTypes($inputArray)
 	{
 		//get CMDB Config
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 
 		//find object types in input string
 		$interpretedTypes = Array();

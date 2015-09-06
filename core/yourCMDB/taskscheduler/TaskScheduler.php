@@ -38,7 +38,7 @@ class TaskScheduler
 	function __construct()
 	{
 		//get configuration
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 		$this->configTaskScheduler = $config->getTaskSchedulerConfig();
 	}
 

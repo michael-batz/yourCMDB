@@ -23,6 +23,7 @@ namespace yourCMDB\config;
 
 /**
 * Main class for getting the configuration
+* Singleton: use CmdbConfig::create() for getting an instance
 * @author Michael Batz <michael@yourcmdb.org>
 */
 class CmdbConfig
@@ -50,11 +51,29 @@ class CmdbConfig
 	//security configuration
 	private $configSecurity;
 
+	//CmdbConfig object (for singleton pattern)
+	private static $cmdbConfig;
+
 	/**
-	* Creates a new configuration object
+	* creates a new CmdbConfig
+	* @return CmdbConfig	CmdbConfig instance
+	*/
+	public static function create()
+	{
+		//check, if a CmdbConfig instance already exists
+		if(CmdbConfig::$cmdbConfig == null)
+		{
+			CmdbConfig::$cmdbConfig = new CmdbConfig();
+		}
+
+		return CmdbConfig::$cmdbConfig;
+	}
+
+	/**
+	* private constructor: Creates a new configuration object
 	* Reads configuration from xml files and returns configuration objects
 	*/
-	public function __construct()
+	private function __construct()
 	{
 		$configurationBase = realpath(dirname(__FILE__)."/../../../etc");
 		$this->configDatastore = new DatastoreConfig("$configurationBase/datastore-configuration.xml");

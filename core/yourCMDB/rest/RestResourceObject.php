@@ -44,7 +44,7 @@ class RestResourceObject extends RestResource
 	public function getResource()
 	{
 		$objectController = ObjectController::create();
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 
 		//try to get object and generate output
 		try
@@ -99,7 +99,7 @@ class RestResourceObject extends RestResource
 	public function postResource($data)
 	{
 		$objectController = ObjectController::create();
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 
 		try
 		{

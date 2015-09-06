@@ -92,7 +92,7 @@ class ObjectController
 		$this->entityManager->flush();
 
 		//get object type configuration
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 		$configObjectTypes = $config->getObjectTypeConfig();
 
 		//create fields and add to object - only if they are configured
@@ -161,7 +161,7 @@ class ObjectController
 		$objectLogController = ObjectLogController::create();
 
 		//get object type configuration
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 		$configObjectTypes = $config->getObjectTypeConfig();
 
 		//update status if changed
@@ -663,7 +663,7 @@ class ObjectController
 	{
 		//get object and config object
 		$object = $this->getObject($objectId, $user);
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 		$configObjectTypes = $config->getObjectTypeConfig();
 
 		//get reference fields

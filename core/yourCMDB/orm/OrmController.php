@@ -51,7 +51,7 @@ class OrmController
 	private function __construct()
 	{
 		//get configuration for connection
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 		$configDatastore = $config->getDatastoreConfig();
 		$connectionParameters = array(
 			'driver'   => $configDatastore->getDriver(),

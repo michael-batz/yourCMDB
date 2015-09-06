@@ -88,7 +88,7 @@ class SearchFilter
 	public function getObjects($authUser)
 	{
 		//get CMDB config
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 
 		//create conditions from filter: text
 		$conditionText = Array();

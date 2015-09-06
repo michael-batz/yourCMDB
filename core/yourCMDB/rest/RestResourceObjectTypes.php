@@ -40,7 +40,7 @@ class RestResourceObjectTypes extends RestResource
 
 	public function getResource()
 	{
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 
 		//try to get a list of objects
 		try

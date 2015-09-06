@@ -48,7 +48,7 @@ class Exporter
 	function __construct($taskname)
 	{
 		//create configuration object
-		$config = new CmdbConfig();
+		$config = CmdbConfig::create();
 
 		//get configuration for exporter task
 		$this->task = $taskname;
