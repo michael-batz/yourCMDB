@@ -182,10 +182,12 @@ class DatastoreSetupHelper
 
 		//set version for doctrine migrations
 		$migrationConfig = $this->getMigrationsConfiguration();
-		$migrationVersionString = $this->createDatabaseVersionString();
-		$migrationVersion = $migrationConfig->getVersion($migrationVersionString);
-		$migrationVersion->markMigrated();
-		
+		$migrationVersions = $migrationConfig->getAvailableVersions();
+		foreach($migrationVersions as $migrationVersionString)
+		{
+			$migrationVersion = $migrationConfig->getVersion($migrationVersionString);
+			$migrationVersion->markMigrated();
+		}
 	}
 
 	/**
@@ -204,9 +206,12 @@ class DatastoreSetupHelper
 
 		//set version for doctrine migrations
 		$migrationConfig = $this->getMigrationsConfiguration();
-		$migrationVersionString = $this->createDatabaseVersionString();
-		$migrationVersion = $migrationConfig->getVersion($migrationVersionString);
-		$migrationVersion->markMigrated();
+		$migrationVersions = $migrationConfig->getAvailableVersions();
+		foreach($migrationVersions as $migrationVersionString)
+		{
+			$migrationVersion = $migrationConfig->getVersion($migrationVersionString);
+			$migrationVersion->markMigrated();
+		}
 	}
 
 	/**
