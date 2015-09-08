@@ -118,6 +118,9 @@ class ObjectController
 		$eventProcessor = new EventProcessor();
 		$eventProcessor->generateEvent("objectAdded", $object->getId(), $object->getType());
 
+		//clear cache (solves performance issues during bulk inserts)
+		$this->entityManager->clear();
+
 		//return created object
 		return $object;
 	}
