@@ -78,13 +78,7 @@
 			{
 				//show error message and search form
 				$paramError = sprintf(gettext("No object with AssetID %s found..."), $paramId);
-				include "include/messagebar.inc.php";
-				//search functions
-				include "search/SearchFunctions.php";
-				//show search form
-				include "search/SearchForm.php";
-				//load search result using AJAX
-				include "search/SearchResultFrame.php";
+				include "error/Error.php";
 				break;
 			}
 			//show object page
