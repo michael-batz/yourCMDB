@@ -8,6 +8,8 @@ yourCMDB is a web based flexible CMDB and asset management tool which easily all
 <tr><td>Documentation</td><td>http://yourcmdb.org</td></tr>
 </table>
 
+![home](https://cloud.githubusercontent.com/assets/14247054/9831026/58952408-5946-11e5-8d45-5518b8dc4bff.png)
+
 ## Functions:
 - Define object types by yourself in XML configuration files
 - Add/Edit/Delete/Duplicate/Show objects
