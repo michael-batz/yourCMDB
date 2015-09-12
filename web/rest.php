@@ -25,6 +25,7 @@
 * @author: Michael Batz <michael@yourcmdb.org>
 */
 	use yourCMDB\rest\RestResponse;
+	use yourCMDB\rest\RestResourceExporter;
 	use yourCMDB\rest\RestResourceObject;
 	use yourCMDB\rest\RestResourceObjectLog;
 	use yourCMDB\rest\RestResourceObjectLinks;
@@ -90,6 +91,10 @@
 
 		case "objecttypes":
 			$restResource = new RestResourceObjectTypes($requestPath, $authUser);
+			break;
+
+		case "exporter":
+			$restResource = new RestResourceExporter($requestPath, $authUser);
 			break;
 	}
 
