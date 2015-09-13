@@ -19,38 +19,21 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\fileimporter;
+
+use \Exception;
+
 /**
-* WebUI element: import actions
+* Exception, if there is a problem in the FileImporter
 * @author Michael Batz <michael@yourcmdb.org>
 */
+class FileImportException extends Exception
+{
 
-
-	//get header
-	include "include/bootstrap-web.php";
-	include "include/auth.inc.php";
-	include "include/htmlheader.inc.php";
-	include "include/cmdbheader.inc.php";
-
-	//get parameters
-	$paramAction = getHttpPostVar("action", "form");
-
-	switch($paramAction)
+	public function __construct($message, $code = 0)
 	{
-		case "form":
-			include "import/Form.php";
-			break;
-
-		case "preview":
-			include "import/Preview.php";
-			break;
-
-		case "import":
-			include "import/Import.php";
-			include "import/Form.php";
-			break;
+        	parent::__construct($message, $code);
 	}
 
-	//include footer
-	include "include/cmdbfooter.inc.php";
-	include "include/htmlfooter.inc.php";
+}
 ?>

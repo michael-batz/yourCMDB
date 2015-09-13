@@ -24,8 +24,10 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
+use yourCMDB\fileimporter\Importer;
+
 	//get import and export formats
-	$importFormats = $config->getDataExchangeConfig()->getImportFormats();
+	$importFormats = Importer::getInputFormats();
 	$exportFormats = $config->getDataExchangeConfig()->getExportFormats();
 
 	//get objecttypes
@@ -71,9 +73,10 @@
 	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Import Format:")."</label>";
 	echo "<div class=\"col-md-4\">";
 	echo "<select name=\"format\" class=\"form-control\">";
-	foreach($importFormats as $importFormat)
+	foreach(array_keys($importFormats) as $importFormat)
 	{
-		echo "<option>$importFormat</option>";
+		$importClassName = $importFormats[$importFormat];
+		echo "<option value=\"$importClassName\">$importFormat</option>";
 	}
 	echo "</select>";
 	echo "</div>";

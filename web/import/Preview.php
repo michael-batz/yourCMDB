@@ -24,34 +24,35 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
+use yourCMDB\fileimporter\Importer;
+use yourCMDB\fileimporter\FileImportException;
+
+	//get parameters
+	$paramFormat = getHttpPostVar("format", "");
+	$paramType = getHttpPostVar("type", "");
+
 	//save uploaded file in temp directory
 	$paramFilename = "../tmp/".time().".import";
 	move_uploaded_file($_FILES['file']['tmp_name'], $paramFilename);
 
-	switch($paramFormat)
+	$fileImporter = new Importer($paramFilename, $paramType, $paramFormat, null);
+	try
 	{
-		case "csv":
-			importCsvPreview($paramType, $paramFilename);
-			break;
+		//get data for preview
+		$previewData = $fileImporter->getPreviewData();
 
+		print_r($previewData);
+	}
+	catch(FileImportException $e)
+	{
+		//print error
+		$paramError = gettext("Could not read from uploaded file. Please check permissions.");
+		include "import/Form.php";
 	}
 
 
-
-	//define functions
-	function readCsv($file, $length, $delimiter, $enclosure)
-	{
-		if($enclosure != "")
-		{
-			return fgetcsv($file, $length, $delimiter, $enclosure);
-		}
-		else
-		{
-			return fgetcsv($file, $length, $delimiter);
-		}
-	}	
-
-	function importCsvPreview($paramType, $paramFilename)
+	//ToDo
+	/*function importCsvPreview($paramType, $paramFilename)
 	{
 		//access to global configuration variables
 		global $config;
@@ -151,7 +152,7 @@
 			include "import/Form.php";
 		}
 
-	}
+	}*/
 
 
 

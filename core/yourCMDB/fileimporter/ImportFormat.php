@@ -19,38 +19,36 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\fileimporter;
+
+use yourCMDB\entities\CmdbObject;
+
 /**
-* WebUI element: import actions
+* File Importer - Interface for an import format
 * @author Michael Batz <michael@yourcmdb.org>
 */
+abstract class ImportFormat
+{
+	//import filename
+	protected $importFilename;
 
+	//import object type
+	protected $importObjectType;
 
-	//get header
-	include "include/bootstrap-web.php";
-	include "include/auth.inc.php";
-	include "include/htmlheader.inc.php";
-	include "include/cmdbheader.inc.php";
+	//import options
+	protected $importOptions;
 
-	//get parameters
-	$paramAction = getHttpPostVar("action", "form");
-
-	switch($paramAction)
+	public function __construct($importFilename, $importObjectType, $importOptions)
 	{
-		case "form":
-			include "import/Form.php";
-			break;
-
-		case "preview":
-			include "import/Preview.php";
-			break;
-
-		case "import":
-			include "import/Import.php";
-			include "import/Form.php";
-			break;
+		$this->importFilename = $importFilename;
+		$this->importObjectType = $importObjectType;
+		$this->importOptions = $importOptions;
 	}
 
-	//include footer
-	include "include/cmdbfooter.inc.php";
-	include "include/htmlfooter.inc.php";
+	public static abstract function getFormatName();
+
+	public abstract function getPreviewData();
+	
+	public abstract function batchImport($batchSize);
+}
 ?>
