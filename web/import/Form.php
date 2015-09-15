@@ -54,22 +54,6 @@ use yourCMDB\fileimporter\Importer;
 	echo "<h2>".gettext("Import Objects")."</h2>";
 	echo "<form action=\"import.php\" enctype=\"multipart/form-data\" method=\"post\" class=\"form-horizontal\">";
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Object Type:")."</label>";
-	echo "<div class=\"col-md-4\">";
-	echo "<select name=\"type\" class=\"form-control\">";
-	foreach(array_keys($objectTypes) as $group)
-	{
-		echo "<optgroup label=\"$group\">";
-		foreach($objectTypes[$group] as $type)
-		{
-			echo "<option>$type</option>";
-		}
-		echo "</optgroup>";
-	}
-	echo "</select>";
-	echo "</div>";
-	echo "</div>";
-	echo "<div class=\"form-group\">";
 	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Import Format:")."</label>";
 	echo "<div class=\"col-md-4\">";
 	echo "<select name=\"format\" class=\"form-control\">";

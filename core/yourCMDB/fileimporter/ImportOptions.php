@@ -55,10 +55,11 @@ class ImportOptions
 	/**
 	* Returns the value for an import option identified by $key
 	* @param string $key		key of the import option
+	* @param string $defaultValue	default value
 	* @return string		value of the import option if set
-	*				empty string, if the key does not exist
+	*				$defaultValue, if the key does not exist
 	*/
-	public function getOptionValue($key)
+	public function getOptionValue($key, $defaultValue)
 	{
 		$output = "";
 		if(isset($this->importOptions[$key]))

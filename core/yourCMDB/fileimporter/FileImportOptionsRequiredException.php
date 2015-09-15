@@ -21,30 +21,19 @@
 *********************************************************************/
 namespace yourCMDB\fileimporter;
 
-use yourCMDB\entities\CmdbObject;
+use \Exception;
 
 /**
-* File Importer - Interface for an import format
+* Exception, if an ImportFormat requires some further options
 * @author Michael Batz <michael@yourcmdb.org>
 */
-abstract class ImportFormat
+class FileImportOptionsRequiredException extends Exception
 {
-	//import filename
-	protected $importFilename;
 
-	//import options
-	protected $importOptions;
-
-	public function __construct($importFilename, $importOptions)
+	public function __construct($message, $code = 0)
 	{
-		$this->importFilename = $importFilename;
-		$this->importOptions = $importOptions;
+        	parent::__construct($message, $code);
 	}
 
-	public static abstract function getFormatName();
-
-	public abstract function getPreviewData();
-	
-	public abstract function batchImport($batchSize);
 }
 ?>

@@ -36,6 +36,11 @@ class ImportFormatCsv extends ImportFormat
 
 	public function getPreviewData()
 	{
+		//check if required options are set
+		$optionDelimiter = $this->importOptions->getOptionValue("delimiter", ";");
+		$optionEnclosure = $this->importOptions->getOptionValue("enclosure", "");
+		$optionType = $this->importOptions->getOptionValue("objectType", "");
+
 		$output = Array();
 
 		//open file		
@@ -46,11 +51,8 @@ class ImportFormatCsv extends ImportFormat
 		}
 
 		//read max 5 lines from CSV file
-		//ToDo: make options configurable
-		$delimiter = ";";
-		$enclosure = "";
 		$rows = 0;
-		while(($line = $this->readCsv($csvFile, 0, $delimiter, $enclosure)) !== FALSE)
+		while(($line = $this->readCsv($csvFile, 0, $optionDelimiter, $optionEnclosure)) !== FALSE)
 		{
 			if($rows >= 5)
 			{

@@ -32,29 +32,22 @@ class Importer
 	//file for import
 	private $importFilename;
 
-	//object type for import
-	private $importObjectType;
-
-	//import format classname
-	private $importClassname;
-
 	//options for import
 	private $importOptions;
 
 	//import format object
 	private $importFormat;
 
-	public function __construct($importFilename, $importObjectType, $importClassname, $importOptions)
+	public function __construct($importFilename, $importClassname, $importOptions)
 	{
 		//save variables
 		$this->importFilename = $importFilename;
-		$this->importObjectType = $importObjectType;
 		$importClassname = 'yourCMDB\fileimporter\\'. $importClassname;
 		$this->importClassname = $importClassname;
 		$this->importOptions = $importOptions;
 
 		//create ImportFormat object
-		$this->importFormat = new $importClassname($importFilename, $importObjectType, $importOptions);
+		$this->importFormat = new $importClassname($importFilename, $importOptions);
 	}
 
 	public function getPreviewData()
