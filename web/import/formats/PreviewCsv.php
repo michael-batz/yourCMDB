@@ -55,13 +55,27 @@
 		for($i = 0; $i < $previewDataMaxCols; $i++)
 		{
 			echo "<tr>";
-	
+
+			//get value in line0
+			$valueLine0 = "";
+			if(isset($previewData[0][$i]))
+			{
+				$valueLine0 = $previewData[0][$i];
+			}
+
 			//show dropdown for each col
 			echo "<td><select name=\"column$i\" class=\"form-control\">";
 			echo "<option></option>";
 			foreach(array_keys($config->getObjectTypeConfig()->getFields($optionType)) as $objectFieldName)
 			{
-				echo "<option>$objectFieldName</option>";
+				if($valueLine0 == $objectFieldName)
+				{
+					echo "<option selected=\"selected\">$objectFieldName</option>";
+				}
+				else
+				{
+					echo "<option>$objectFieldName</option>";
+				}
 			}
 			echo "</select></td>";
 	
