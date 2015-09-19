@@ -23,93 +23,36 @@
 * WebUI element: import from file after preview
 * @author Michael Batz <michael@yourcmdb.org>
 */
+use yourCMDB\fileimporter\Importer;
+use yourCMDB\fileimporter\FileImportException;
+use yourCMDB\fileimporter\FileImportOptionsRequiredException;
 
-	//switch format
-	switch($paramFormat)
+
+	//required parameters: $paramFilename, $paramFormat, $importOptions
+	$fileImporter = new Importer($paramFilename, $paramFormat, $importOptions);
+	$count = 0;
+	try
 	{
-		case "csv":
-			//get CSV parameters
-			$importOptions = $config->getDataExchangeConfig()->getImportOptions("csv");
-			$delimiter = ';';
-			$enclosure = "";
-			if(isset($importOptions['delimiter']))
-			{
-				$delimiter = $importOptions['delimiter'];
-			}
-			if(isset($importOptions['enclosure']))
-			{
-				$enclosure = $importOptions['enclosure'];
-			}
-
-			//get mapping of csv columns to object fiels
-			$objectFieldMapping = Array();
-			for($i = 0; $i < $paramCols; $i++)
-			{
-				if(getHttpPostVar("column$i", "") != "")
-				{
-					$objectFieldMapping[getHttpPostVar("column$i", "")] = $i;
-				}
-			}
-
-
-			//read from csv file
-			$file = fopen($paramFilename, "r");
-			if($file != FALSE)
-			{
-				//create objects for each line in csv file
-				$i = 0;
-				$j = 0;
-				while(($line = readCsv($file, 0, $delimiter, $enclosure)) !== FALSE)
-				{
-					//check start of import
-					if($i >= $paramFirstRow)
-					{
-						//generate object fields
-						$objectFields = Array();
-						foreach(array_keys($objectFieldMapping) as $objectField)
-						{
-							$objectFields[$objectField] = $line[$objectFieldMapping[$objectField]];
-						}
-
-						//generate object and save to datastore
-						$objectController->addObject($paramType, 'A', $objectFields, $authUser);
-						$j++;
-					}
-
-					//increment counter
-					$i++;
-				}
-
-				//delete csv file from server
-				fclose($file);
-				unlink($paramFilename);
-
-				//generate output
-				$paramMessage = sprintf(gettext("Import of %s objects was successful"),$j);
-
-                	}
-			else
-			{
-				$paramError = gettext("Could not read from CSV file.");
-			}
-			break;
+		//get data for preview
+		$count = $fileImporter->import();
 
 	}
-
-
-
-	//define functions
-	function readCsv($file, $length, $delimiter, $enclosure)
+	catch(FileImportException $e)
 	{
-		if($enclosure != "")
-		{
-			return fgetcsv($file, $length, $delimiter, $enclosure);
-		}
-		else
-		{
-			return fgetcsv($file, $length, $delimiter);
-		}
-	}	
+		//print error
+		$paramError = gettext("Could not read from uploaded file. Please check permissions.");
+		include "Form.php";
+	}
+	catch(FileImportOptionsRequiredException $e)
+	{
+		//print error
+		$paramError = gettext("Not all required options for input were set correctly. Please try again.");
+		include "Form.php";
+	}
+
+	//generate output
+	$paramMessage = sprintf(gettext("Import of %s objects was successful"),$count);
+	include "Form.php";
 
 ?>
 

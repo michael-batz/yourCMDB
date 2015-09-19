@@ -23,7 +23,7 @@
 * WebUI element: import actions
 * @author Michael Batz <michael@yourcmdb.org>
 */
-
+use yourCMDB\fileimporter\ImportOptions;
 
 	//get header
 	include "include/bootstrap-web.php";
@@ -33,7 +33,20 @@
 
 	//get parameters
 	$paramAction = getHttpPostVar("action", "form");
+	$paramFormat = getHttpPostVar("format", "");
+	$paramFilename = getHttpPostVar("filename", "");
 
+	//set import options from URL/POST data
+	$importOptions = new ImportOptions;
+	foreach(array_keys($_POST) as $parameter)
+	{
+		if($parameter != "action" && $parameter != "format" && $parameter != "filename")
+		{
+			$importOptions->addOption($parameter, $_POST[$parameter]);
+		}
+	}
+
+	//load page for action
 	switch($paramAction)
 	{
 		case "form":
@@ -46,7 +59,6 @@
 
 		case "import":
 			include "import/Import.php";
-			include "import/Form.php";
 			break;
 	}
 

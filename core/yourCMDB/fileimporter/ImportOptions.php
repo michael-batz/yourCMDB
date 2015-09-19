@@ -61,7 +61,7 @@ class ImportOptions
 	*/
 	public function getOptionValue($key, $defaultValue)
 	{
-		$output = "";
+		$output = $defaultValue;
 		if(isset($this->importOptions[$key]))
 		{
 			$output = $this->importOptions[$key];

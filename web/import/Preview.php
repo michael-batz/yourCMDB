@@ -25,20 +25,21 @@
 */
 
 use yourCMDB\fileimporter\Importer;
-use yourCMDB\fileimporter\ImportOptions;
 use yourCMDB\fileimporter\FileImportException;
+use yourCMDB\fileimporter\FileImportOptionsRequiredException;
 
-	//get parameters
-	$paramFormat = getHttpPostVar("format", "");
+	//required parameters: $paramFilename, $paramFormat, $importOptions
 
 	//save uploaded file in temp directory
-	$paramFilename = "../tmp/".time().".import";
-	move_uploaded_file($_FILES['file']['tmp_name'], $paramFilename);
+	if($paramFilename == "")
+	{
+		$paramFilename = "../tmp/".time().".import";
+		move_uploaded_file($_FILES['file']['tmp_name'], $paramFilename);
+	}
 
-	//ToDo set import options from URL/POST data
-	$importOptions = new ImportOptions;
 
 	$fileImporter = new Importer($paramFilename, $paramFormat, $importOptions);
+	$previewData = null;
 	try
 	{
 		//get data for preview
@@ -50,6 +51,10 @@ use yourCMDB\fileimporter\FileImportException;
 		//print error
 		$paramError = gettext("Could not read from uploaded file. Please check permissions.");
 		include "Form.php";
+	}
+	catch(FileImportOptionsRequiredException $e)
+	{
+		//doing nothing
 	}
 
 	//show import options page for import format

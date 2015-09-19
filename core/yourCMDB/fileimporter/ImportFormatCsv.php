@@ -22,6 +22,7 @@
 namespace yourCMDB\fileimporter;
 
 use yourCMDB\entities\CmdbObject;
+use yourCMDB\controller\ObjectController;
 
 /**
 * File Importer - ImportFormat: CSV
@@ -40,6 +41,11 @@ class ImportFormatCsv extends ImportFormat
 		$optionDelimiter = $this->importOptions->getOptionValue("delimiter", ";");
 		$optionEnclosure = $this->importOptions->getOptionValue("enclosure", "");
 		$optionType = $this->importOptions->getOptionValue("objectType", "");
+		if($optionType == "")
+		{
+			throw new FileImportOptionsRequiredException(gettext("Missing option objectType for file import"));
+		}
+
 
 		$output = Array();
 
@@ -68,11 +74,74 @@ class ImportFormatCsv extends ImportFormat
 		return $output;
 	}
 	
-	public function batchImport($batchSize)
+	public function import($start=0, $length=0)
 	{
-		;
-	}
+		//ToDo: partial import
 
+		//check if required options are set
+		$optionFirstrow = $this->importOptions->getOptionValue("firstrow", "0");
+		$optionCols = $this->importOptions->getOptionValue("cols", "0");
+		$optionDelimiter = $this->importOptions->getOptionValue("delimiter", ";");
+		$optionEnclosure = $this->importOptions->getOptionValue("enclosure", "");
+		$optionType = $this->importOptions->getOptionValue("objectType", "");
+		if($optionType == "")
+		{
+			throw new FileImportOptionsRequiredException(gettext("Missing option objectType for file import"));
+		}
+
+		//create object controller
+		$objectController = ObjectController::create();
+
+		//get mapping of csv columns to object fiels
+		$objectFieldMapping = Array();
+		for($i = 0; $i < $optionCols; $i++)
+		{
+			if($this->importOptions->getOptionValue("column$i", "") != "")
+			{
+				$objectFieldMapping[$this->importOptions->getOptionValue("column$i", "")] = $i;
+			}
+		}
+
+		//open file		
+		$csvFile = fopen($this->importFilename, "r");
+		if($csvFile == FALSE)
+		{
+			throw new FileImportException(gettext("Could not open file for import."));
+		}
+
+		//create objects for each line in csv file
+		$i = 0;
+		$j = 0;
+		while(($line = $this->readCsv($csvFile, 0, $optionDelimiter, $optionEnclosure)) !== FALSE)
+		{
+			//check start of import
+			if($i >= $optionFirstrow)
+			{
+				//generate object fields
+				$objectFields = Array();
+				foreach(array_keys($objectFieldMapping) as $objectField)
+				{
+					$objectFields[$objectField] = $line[$objectFieldMapping[$objectField]];
+				}
+
+				//generate object and save to datastore
+				$objectController->addObject($optionType, 'A', $objectFields, "yourCMDB Fileimporter");
+				$j++;
+			}
+
+			//increment counter
+			$i++;
+		}
+
+		//close file
+		fclose($csvFile);
+
+		//delete file from server
+		unlink($this->importFilename);
+
+		//return imported objects
+		return $j;
+	}
 
 	private function readCsv($file, $length, $delimiter, $enclosure)
 	{

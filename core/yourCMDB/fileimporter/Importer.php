@@ -55,6 +55,11 @@ class Importer
 		return $this->importFormat->getPreviewData();
 	}
 
+	public function import($start=0, $length=0)
+	{
+		return $this->importFormat->import($start=0, $length=0);
+	}
+
 	public static function getInputFormats()
 	{
 		//define input formats

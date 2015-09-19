@@ -45,6 +45,6 @@ abstract class ImportFormat
 
 	public abstract function getPreviewData();
 	
-	public abstract function batchImport($batchSize);
+	public abstract function import($start=0, $length=0);
 }
 ?>

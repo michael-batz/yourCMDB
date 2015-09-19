@@ -24,76 +24,137 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 
-	//parameters: $previewData, $importOptions
-
-	//get
-	$previewDataMaxCols = 0;
-	foreach($previewData as $line)
-	{
-		if(count($line) > $previewDataMaxCols)
-		{
-			$previewDataMaxCols = count($line);
-		}
-	}
-	
-	//ToDo: check, if all required import options for preview was set
+	//required parameters: $previewData, $importOptions, $paramFilename
 
 	//output: headline
 	echo "<h1 class=\"text-center\">";
-	echo gettext("CSV Import - Preview (first lines of csv file)");
+	echo gettext("CSV Import - Preview");
 	echo "</h1>";
+	echo "<form action=\"import.php\" method=\"post\" class=\"form-horizontal\">";
 
-	echo "<table class=\"table\">";
-	echo "<form action=\"import.php\" method=\"post\">";
-
-	//preview data and field mapping
-	for($i = 0; $i < $previewDataMaxCols; $i++)
+	//check, if previewData could be fetched
+	if($previewData != null)
 	{
-		echo "<tr>";
+		//load options
+		$optionType = $importOptions->getOptionValue("objectType", "");
+		$optionDelimiter = $importOptions->getOptionValue("delimiter", ";");
+		$optionEnclosure = $importOptions->getOptionValue("enclosure", "");
 
-		//show dropdown for each col
-		echo "<td><select name=\"column$i\" class=\"form-control\">";
-		echo "<option></option>";
-		foreach(array_keys($config->getObjectTypeConfig()->getFields($paramType)) as $objectFieldName)
-		{
-			echo "<option>$objectFieldName</option>";
-		}
-		echo "</select></td>";
-
-		//show preview data for each col
+		//get
+		$previewDataMaxCols = 0;
 		foreach($previewData as $line)
 		{
-			echo "<td>";
-			if(isset($line[$i]))
+			if(count($line) > $previewDataMaxCols)
 			{
-				echo $line[$i];
+				$previewDataMaxCols = count($line);
 			}
-			echo "</td>";
 		}
-		echo "</tr>";
+	
+		//preview data and field mapping
+		echo "<table class=\"table\">";
+		for($i = 0; $i < $previewDataMaxCols; $i++)
+		{
+			echo "<tr>";
+	
+			//show dropdown for each col
+			echo "<td><select name=\"column$i\" class=\"form-control\">";
+			echo "<option></option>";
+			foreach(array_keys($config->getObjectTypeConfig()->getFields($optionType)) as $objectFieldName)
+			{
+				echo "<option>$objectFieldName</option>";
+			}
+			echo "</select></td>";
+	
+			//show preview data for each col
+			foreach($previewData as $line)
+			{
+				echo "<td>";
+				if(isset($line[$i]))
+				{
+					echo $line[$i];
+				}
+				echo "</td>";
+			}
+			echo "</tr>";
+		}
+	
+		echo "</table>";
+		echo "<p>";
+		echo "<input type=\"hidden\" name=\"action\" value=\"import\" />";
+		echo "<input type=\"hidden\" name=\"objectType\" value=\"$optionType\" />";
+		echo "<input type=\"hidden\" name=\"delimiter\" value=\"$optionDelimiter\" />";
+		echo "<input type=\"hidden\" name=\"enclosure\" value=\"$optionEnclosure\" />";
+		echo "<input type=\"hidden\" name=\"cols\" value=\"$previewDataMaxCols\" />";
+	
+		echo "<div class=\"form-group\">";
+		echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Start in line:")."</label>";
+		echo "<div class=\"col-md-4\">";
+		echo "<select name=\"firstrow\" class=\"form-control\">";
+		for($i = 0; $i < count($previewData) && $i < 5; $i++)
+		{
+			echo "<option>$i</option>";
+		}
+		echo "</select>";
+		echo "</div>";
+		echo "</div>";
 	}
-
-
-	echo "</table>";
-	echo "<p>";
-	echo "<input type=\"hidden\" name=\"action\" value=\"import\" />";
-	//echo "<input type=\"hidden\" name=\"filename\" value=\"$paramFilename\" />";
-	echo "<input type=\"hidden\" name=\"format\" value=\"csv\" />";
-	//echo "<input type=\"hidden\" name=\"type\" value=\"$paramType\" />";
-	//echo "<input type=\"hidden\" name=\"cols\" value=\"$cols\" />";
-
-
-	echo gettext("Start in line ");
-	echo "<select name=\"firstrow\">";
-	for($i = 0; $i < count($previewData) && $i < 5; $i++)
+	//if previewData could not be fetched
+	else
 	{
-		echo "<option>$i</option>";
+		//show options
+		$objectTypes = $config->getObjectTypeConfig()->getObjectTypeGroups();
+
+		//option: object type	
+		echo "<div class=\"form-group\">";
+		echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Object Type:")."</label>";
+		echo "<div class=\"col-md-4\">";
+		echo "<select name=\"objectType\" class=\"form-control\">";
+		foreach(array_keys($objectTypes) as $group)
+		{
+			echo "<optgroup label=\"$group\">";
+			foreach($objectTypes[$group] as $type)
+			{
+				echo "<option>$type</option>";
+			}
+			echo "</optgroup>";
+		}
+		echo "</select>";
+		echo "</div>";
+		echo "</div>";
+
+		//option: csv delimiter
+		echo "<div class=\"form-group\">";
+		echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("CSV delimiter")."</label>";
+		echo "<div class=\"col-md-4\">";
+		echo "<input type=\"text\" name=\"delimiter\" value=\";\" />";
+		echo "</div>";
+		echo "</div>";
+
+		//option: csv enclosure
+		echo "<div class=\"form-group\">";
+		echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("CSV enclosure")."</label>";
+		echo "<div class=\"col-md-4\">";
+		echo "<input type=\"text\" name=\"enclosure\" value=\"\" />";
+		echo "</div>";
+		echo "</div>";
+
+		//hidden form data
+		echo "<input type=\"hidden\" name=\"action\" value=\"preview\" />";
+		
 	}
-	echo "<input type=\"submit\" value=\"".gettext("Go")."\" />";
-	echo "</p>";
+
+	//hidden form data
+	echo "<input type=\"hidden\" name=\"filename\" value=\"$paramFilename\" />";
+	echo "<input type=\"hidden\" name=\"format\" value=\"ImportFormatCsv\" />";
+
+	//form submit
+	echo "<div class=\"form-group\">";
+	echo "<div class=\"col-md-4 col-md-offset-5\">";
+	echo "<input type=\"submit\" class=\"btn btn-danger\" value=\"".gettext("Go")."\" />";
+	echo "</div>";
+	echo "</div>";
+
 	echo "</form>";
-
-
 
 ?>
 
