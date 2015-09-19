@@ -40,6 +40,7 @@ function cmdbOpenUrlAjax(url, selector, scrollTo, showWaitingAnimation)
 	}
 };
 
+
 /**
 * Scroll to specific element
 */
@@ -132,6 +133,26 @@ function cmdbAdminAuthorisationEditGroupAddEntry(id)
 	htmlstring += '<span class="glyphicon glyphicon-tresh" title="delete"></span></a></td>';
 	htmlstring += '</tr>';
 	$( id  ).add(htmlstring).appendTo( id );
+};
+
+/**
+* Helper for Fileimporter
+*/
+function cmdbFileimporterImport(options, selectorOutput, maxCount)
+{
+	$.post('import.php', options).done(function(data)
+	{
+		//set output for progressbar
+		var percentage = Math.round((data / maxCount) * 100) + '%';
+		$( selectorOutput ).html(percentage);
+		$( selectorOutput ).css('width', percentage)
+		options['start'] = data;
+		if(data < maxCount)
+		{
+			cmdbFileimporterImport(options, selectorOutput, maxCount);
+		}
+	});
+	
 };
 
 /**

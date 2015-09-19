@@ -89,7 +89,7 @@
 		echo "<div class=\"form-group\">";
 		echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Start in line:")."</label>";
 		echo "<div class=\"col-md-4\">";
-		echo "<select name=\"firstrow\" class=\"form-control\">";
+		echo "<select name=\"start\" class=\"form-control\">";
 		for($i = 0; $i < count($previewData) && $i < 5; $i++)
 		{
 			echo "<option>$i</option>";
@@ -146,6 +146,8 @@
 	//hidden form data
 	echo "<input type=\"hidden\" name=\"filename\" value=\"$paramFilename\" />";
 	echo "<input type=\"hidden\" name=\"format\" value=\"ImportFormatCsv\" />";
+	//ToDo: make length configurable
+	echo "<input type=\"hidden\" name=\"length\" value=\"10\" />";
 
 	//form submit
 	echo "<div class=\"form-group\">";

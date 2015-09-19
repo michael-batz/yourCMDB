@@ -28,8 +28,6 @@ use yourCMDB\fileimporter\ImportOptions;
 	//get header
 	include "include/bootstrap-web.php";
 	include "include/auth.inc.php";
-	include "include/htmlheader.inc.php";
-	include "include/cmdbheader.inc.php";
 
 	//get parameters
 	$paramAction = getHttpPostVar("action", "form");
@@ -50,19 +48,30 @@ use yourCMDB\fileimporter\ImportOptions;
 	switch($paramAction)
 	{
 		case "form":
+			include "include/htmlheader.inc.php";
+			include "include/cmdbheader.inc.php";
 			include "import/Form.php";
+			include "include/cmdbfooter.inc.php";
+			include "include/htmlfooter.inc.php";
 			break;
 
 		case "preview":
+			include "include/htmlheader.inc.php";
+			include "include/cmdbheader.inc.php";
 			include "import/Preview.php";
+			include "include/cmdbfooter.inc.php";
+			include "include/htmlfooter.inc.php";
 			break;
 
 		case "import":
+			include "include/htmlheader.inc.php";
+			include "include/cmdbheader.inc.php";
 			include "import/Import.php";
+			include "include/cmdbfooter.inc.php";
+			include "include/htmlfooter.inc.php";
 			break;
-	}
 
-	//include footer
-	include "include/cmdbfooter.inc.php";
-	include "include/htmlfooter.inc.php";
+		case "importWorker":
+			include "import/ImportWorker.php";
+	}
 ?>

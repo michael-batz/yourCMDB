@@ -74,12 +74,11 @@ class ImportFormatCsv extends ImportFormat
 		return $output;
 	}
 	
-	public function import($start=0, $length=0)
+	public function import()
 	{
-		//ToDo: partial import
-
 		//check if required options are set
-		$optionFirstrow = $this->importOptions->getOptionValue("firstrow", "0");
+		$optionStart = $this->importOptions->getOptionValue("start", "0");
+		$optionLength = $this->importOptions->getOptionValue("length", "0");
 		$optionCols = $this->importOptions->getOptionValue("cols", "0");
 		$optionDelimiter = $this->importOptions->getOptionValue("delimiter", ";");
 		$optionEnclosure = $this->importOptions->getOptionValue("enclosure", "");
@@ -111,11 +110,16 @@ class ImportFormatCsv extends ImportFormat
 
 		//create objects for each line in csv file
 		$i = 0;
-		$j = 0;
 		while(($line = $this->readCsv($csvFile, 0, $optionDelimiter, $optionEnclosure)) !== FALSE)
 		{
+			//
+			if($i >= ($optionLength + $optionStart) && $optionLength != 0)
+			{
+				break;
+			}
+
 			//check start of import
-			if($i >= $optionFirstrow)
+			if($i >= $optionStart)
 			{
 				//generate object fields
 				$objectFields = Array();
@@ -126,21 +130,53 @@ class ImportFormatCsv extends ImportFormat
 
 				//generate object and save to datastore
 				$objectController->addObject($optionType, 'A', $objectFields, "yourCMDB Fileimporter");
-				$j++;
 			}
 
 			//increment counter
 			$i++;
 		}
 
+		//check, if CSV file could be deleted
+		$deleteFile = false;
+		if(feof($csvFile))
+		{
+			$deleteFile = true;
+		}
+
 		//close file
 		fclose($csvFile);
 
 		//delete file from server
-		unlink($this->importFilename);
+		if($deleteFile)
+		{
+			unlink($this->importFilename);
+		}
 
 		//return imported objects
-		return $j;
+		return $i;
+	}
+
+	public function getObjectsToImportCount()
+	{
+		//open file		
+		$csvFile = fopen($this->importFilename, "r");
+		if($csvFile == FALSE)
+		{
+			throw new FileImportException(gettext("Could not open file for import."));
+		}
+
+		//count lines
+		$lines = 0;
+		while(($line = fgets($csvFile)) !== FALSE)
+		{
+			$lines++;
+		}
+
+		//close file
+		fclose($csvFile);
+
+		//return result
+		return $lines;
 	}
 
 	private function readCsv($file, $length, $delimiter, $enclosure)

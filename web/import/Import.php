@@ -29,30 +29,26 @@ use yourCMDB\fileimporter\FileImportOptionsRequiredException;
 
 
 	//required parameters: $paramFilename, $paramFormat, $importOptions
+
+	//get number of objects to import
 	$fileImporter = new Importer($paramFilename, $paramFormat, $importOptions);
-	$count = 0;
-	try
-	{
-		//get data for preview
-		$count = $fileImporter->import();
+	$countObjectsToImport = $fileImporter->getObjectsToImportCount();
 
-	}
-	catch(FileImportException $e)
-	{
-		//print error
-		$paramError = gettext("Could not read from uploaded file. Please check permissions.");
-		include "Form.php";
-	}
-	catch(FileImportOptionsRequiredException $e)
-	{
-		//print error
-		$paramError = gettext("Not all required options for input were set correctly. Please try again.");
-		include "Form.php";
-	}
+	echo gettext("Importing objects...");
 
-	//generate output
-	$paramMessage = sprintf(gettext("Import of %s objects was successful"),$count);
-	include "Form.php";
+	//load worker
+	$data = $_POST;
+	$data['action'] = "importWorker";
+	$postDataString = json_encode($data);
+	echo "<script type=\"text/javascript\">";
+	echo "cmdbFileimporterImport($postDataString, '#cmdbFileimporterResult', $countObjectsToImport)";
+	echo "</script>";
+
+	//result
+	echo "<div class=\"progress\">";
+	echo "<div class=\"progress-bar progress-bar-success\" id=\"cmdbFileimporterResult\">";
+	echo "</div>";
+	echo "</div>";
 
 ?>
 

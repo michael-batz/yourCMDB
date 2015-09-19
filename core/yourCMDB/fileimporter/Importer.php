@@ -55,9 +55,14 @@ class Importer
 		return $this->importFormat->getPreviewData();
 	}
 
-	public function import($start=0, $length=0)
+	public function import()
 	{
-		return $this->importFormat->import($start=0, $length=0);
+		return $this->importFormat->import();
+	}
+
+	public function getObjectsToImportCount()
+	{
+		return $this->importFormat->getObjectsToImportCount();
 	}
 
 	public static function getInputFormats()

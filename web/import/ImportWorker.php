@@ -19,34 +19,31 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-namespace yourCMDB\fileimporter;
-
-use yourCMDB\entities\CmdbObject;
-
 /**
-* File Importer - Interface for an import format
+* WebUI element: import from file after preview
 * @author Michael Batz <michael@yourcmdb.org>
 */
-abstract class ImportFormat
-{
-	//import filename
-	protected $importFilename;
+use yourCMDB\fileimporter\Importer;
+use \Exception;
 
-	//import options
-	protected $importOptions;
 
-	public function __construct($importFilename, $importOptions)
+	//required parameters: $paramFilename, $paramFormat, $importOptions
+	$fileImporter = new Importer($paramFilename, $paramFormat, $importOptions);
+	$output = 0;
+	try
 	{
-		$this->importFilename = $importFilename;
-		$this->importOptions = $importOptions;
+		//get data for preview
+		$output = $fileImporter->import();
+
+	}
+	catch(Exception $e)
+	{
+		//print error
+		$output = "error";
 	}
 
-	public static abstract function getFormatName();
+	//output
+	echo $output;
 
-	public abstract function getPreviewData();
-	
-	public abstract function import();
-
-	public abstract function getObjectsToImportCount();
-}
 ?>
+
