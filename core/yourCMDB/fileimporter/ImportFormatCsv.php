@@ -23,6 +23,7 @@ namespace yourCMDB\fileimporter;
 
 use yourCMDB\entities\CmdbObject;
 use yourCMDB\controller\ObjectController;
+use yourCMDB\exceptions\CmdbObjectNotFoundException;
 
 /**
 * File Importer - ImportFormat: CSV
@@ -93,11 +94,17 @@ class ImportFormatCsv extends ImportFormat
 
 		//get mapping of csv columns to object fiels
 		$objectFieldMapping = Array();
+		$assetIdMapping = -1;
 		for($i = 0; $i < $optionCols; $i++)
 		{
-			if($this->importOptions->getOptionValue("column$i", "") != "")
+			$fieldname = $this->importOptions->getOptionValue("column$i", "");
+			if($fieldname == "yourCMDB_assetid")
 			{
-				$objectFieldMapping[$this->importOptions->getOptionValue("column$i", "")] = $i;
+				$assetIdMapping = $i;
+			}
+			elseif($fieldname != "")
+			{
+				$objectFieldMapping[$fieldname] = $i;
 			}
 		}
 
@@ -108,7 +115,7 @@ class ImportFormatCsv extends ImportFormat
 			throw new FileImportException(gettext("Could not open file for import."));
 		}
 
-		//create objects for each line in csv file
+		//create or update objects for each line in csv file
 		$i = 0;
 		while(($line = $this->readCsv($csvFile, 0, $optionDelimiter, $optionEnclosure)) !== FALSE)
 		{
@@ -128,8 +135,26 @@ class ImportFormatCsv extends ImportFormat
 					$objectFields[$objectField] = $line[$objectFieldMapping[$objectField]];
 				}
 
-				//generate object and save to datastore
-				$objectController->addObject($optionType, 'A', $objectFields, "yourCMDB Fileimporter");
+				//check if assetID is set in CSV file for updating objects
+				if($assetIdMapping != -1)
+				{
+					$assetId = $line[$assetIdMapping];
+					try
+					{
+						$objectController->updateObject($assetId, 'A', $objectFields, "yourCMDB Fileimporter");
+					}
+					catch(CmdbObjectNotFoundException $e)
+					{
+						//if object was not found, add new one
+						$objectController->addObject($optionType, 'A', $objectFields, "yourCMDB Fileimporter");
+					}
+				}
+				//if not, create a new object
+				else
+				{
+					//generate object and save to datastore
+					$objectController->addObject($optionType, 'A', $objectFields, "yourCMDB Fileimporter");
+				}
 			}
 
 			//increment counter

@@ -66,6 +66,7 @@
 			//show dropdown for each col
 			echo "<td><select name=\"column$i\" class=\"form-control\">";
 			echo "<option></option>";
+			echo "<option>yourCMDB_assetid</option>";
 			foreach(array_keys($config->getObjectTypeConfig()->getFields($optionType)) as $objectFieldName)
 			{
 				if($valueLine0 == $objectFieldName)
