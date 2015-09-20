@@ -40,7 +40,7 @@
 		$optionDelimiter = $importOptions->getOptionValue("delimiter", ";");
 		$optionEnclosure = $importOptions->getOptionValue("enclosure", "");
 
-		//get
+		//get preview data
 		$previewDataMaxCols = 0;
 		foreach($previewData as $line)
 		{
@@ -50,7 +50,27 @@
 			}
 		}
 	
-		//preview data and field mapping
+		//generate field mapping
+		$objectFieldsConfig = $config->getObjectTypeConfig()->getFields($optionType);
+		$objectFields = Array();
+		$foreignKeys = Array();
+		foreach(array_keys($objectFieldsConfig) as $objectFieldConfig)
+		{
+			//create fieldmapping
+			$objectFields[] = $objectFieldConfig;
+			
+			//check, if type is objectref and add to foreignKeys
+			$objectFieldType = $objectFieldsConfig[$objectFieldConfig];
+			if(preg_match('/^objectref-(.*)/', $objectFieldType, $matches) == 1)
+			{
+				$referenceType = $matches[1];
+				$referenceFields = array_keys($config->getObjectTypeConfig()->getFields($referenceType));
+				$foreignKeys[$objectFieldConfig] = $referenceFields;
+			}
+
+		}
+
+		//output preview data
 		echo "<table class=\"table\">";
 		for($i = 0; $i < $previewDataMaxCols; $i++)
 		{
@@ -64,10 +84,12 @@
 			}
 
 			//show dropdown for each col
-			echo "<td><select name=\"column$i\" class=\"form-control\">";
+			echo "<td><select name=\"column$i\" class=\"form-control\" id=\"column$i\">";
 			echo "<option></option>";
-			echo "<option>yourCMDB_assetid</option>";
-			foreach(array_keys($config->getObjectTypeConfig()->getFields($optionType)) as $objectFieldName)
+			echo "<option value=\"yourCMDB_assetid\">AssetID</option>";
+			//dropdown: object fields
+			echo "<optgroup label=\"".gettext("Object Fields")."\">";
+			foreach($objectFields as $objectFieldName)
 			{
 				if($valueLine0 == $objectFieldName)
 				{
@@ -78,7 +100,20 @@
 					echo "<option>$objectFieldName</option>";
 				}
 			}
-			echo "</select></td>";
+			echo "</optgroup>";
+			//dropdown: foreign keys
+			foreach(array_keys($foreignKeys) as $foreignKey)
+			{
+				echo "<optgroup label=\"".gettext("foreign key for field: ")."$foreignKey\">";
+				foreach($foreignKeys[$foreignKey] as $referenceFieldName)
+				{
+					echo "<option value=\"yourCMDB_fk_$foreignKey/$referenceFieldName\">$foreignKey/$referenceFieldName</option>";
+				}
+				echo "</optgroup>";
+			}
+			
+			echo "</select>";
+			echo "</td>";
 	
 			//show preview data for each col
 			foreach($previewData as $line)

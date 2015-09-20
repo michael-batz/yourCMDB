@@ -21,6 +21,7 @@
 *********************************************************************/
 namespace yourCMDB\fileimporter;
 
+use yourCMDB\config\CmdbConfig;
 use yourCMDB\entities\CmdbObject;
 use yourCMDB\controller\ObjectController;
 use yourCMDB\exceptions\CmdbObjectNotFoundException;
@@ -91,17 +92,29 @@ class ImportFormatCsv extends ImportFormat
 
 		//create object controller
 		$objectController = ObjectController::create();
+		$config = CmdbConfig::create();
 
 		//get mapping of csv columns to object fiels
+		$objectFieldConfig = $config->getObjectTypeConfig()->getFields($optionType);
 		$objectFieldMapping = Array();
+		$foreignKeyMapping = Array();
 		$assetIdMapping = -1;
 		for($i = 0; $i < $optionCols; $i++)
 		{
 			$fieldname = $this->importOptions->getOptionValue("column$i", "");
+			//assetId mapping
 			if($fieldname == "yourCMDB_assetid")
 			{
 				$assetIdMapping = $i;
 			}
+			//foreign key mapping
+			elseif(preg_match('#^yourCMDB_fk_(.*)/(.*)#', $fieldname, $matches) == 1)
+			{
+				$foreignKeyField = $matches[1];
+				$foreignKeyRefField = $matches[2];
+				$foreignKeyMapping[$foreignKeyField][$foreignKeyRefField] = $i;
+			}
+			//fielf mapping
 			elseif($fieldname != "")
 			{
 				$objectFieldMapping[$fieldname] = $i;
@@ -133,6 +146,29 @@ class ImportFormatCsv extends ImportFormat
 				foreach(array_keys($objectFieldMapping) as $objectField)
 				{
 					$objectFields[$objectField] = $line[$objectFieldMapping[$objectField]];
+				}
+
+				//resolve foreign keys
+				foreach(array_keys($foreignKeyMapping) as $foreignKey)
+				{
+					foreach(array_keys($foreignKeyMapping[$foreignKey]) as $foreignKeyRefField)
+					{
+						//set foreign key object type
+						$foreignKeyType = Array(preg_replace("/^objectref-/", "", $objectFieldConfig[$foreignKey]));
+						$foreignKeyLinePosition = $foreignKeyMapping[$foreignKey][$foreignKeyRefField];
+						$foreignKeyRefFieldValue = $line[$foreignKeyLinePosition];
+
+						//get object defined by foreign key
+						$foreignKeyObjects = $objectController->getObjectsByField(	$foreignKeyRefField, 
+														$foreignKeyRefFieldValue, 
+														$foreignKeyType, 
+														null, 0, 0, "yourCMDB fileimporter");
+						//if object was found, set ID as fieldvalue
+						if(isset($foreignKeyObjects[0]))
+						{
+							$objectFields[$foreignKey] = $foreignKeyObjects[0]->getId();
+						}
+					}
 				}
 
 				//check if assetID is set in CSV file for updating objects
