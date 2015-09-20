@@ -184,20 +184,32 @@ class ObjectController
 		foreach($objectFields->getKeys() as $objectFieldkey)
 		{
 			$oldValue = $object->getFields()->get($objectFieldkey)->getFieldvalue();
-			$newValue = $oldValue;
-			//if there was a changed field, set new value and remove from array
-			if(isset($fields[$objectFieldkey]))
-			{
-				$newValue = $fields[$objectFieldkey];
-				unset($fields[$objectFieldkey]);
-			}
-			//interpret value
-			$newValue = $interpreter->interpret($newValue, $configuredFields[$objectFieldkey]);
 
-			if($newValue != $oldValue)
+			//only keep or update them, if they are configured
+			if(isset($configuredFields[$objectFieldkey]))
 			{
-				$objectFields->get($objectFieldkey)->setFieldvalue($newValue);
-				$logString.= "$objectFieldkey: $oldValue -> $newValue; ";
+				$newValue = $oldValue;
+				//if there was a changed field, set new value and remove from array
+				if(isset($fields[$objectFieldkey]))
+				{
+					$newValue = $fields[$objectFieldkey];
+					unset($fields[$objectFieldkey]);
+				}
+				//interpret value
+				$newValue = $interpreter->interpret($newValue, $configuredFields[$objectFieldkey]);
+	
+				if($newValue != $oldValue)
+				{
+					$objectFields->get($objectFieldkey)->setFieldvalue($newValue);
+					$logString.= "$objectFieldkey: $oldValue -> $newValue; ";
+				}
+			}
+			//if they are not configured anymore, remove them
+			else
+			{
+				$fieldObject = $object->getFields()->remove($objectFieldkey);
+				$this->entityManager->remove($fieldObject);
+				$logString.= "$objectFieldkey: $oldValue -> null; ";
 			}
         	}
 		//walk over all remaining entries of $fields to add new fields
@@ -222,6 +234,12 @@ class ObjectController
 			$eventProcessor = new EventProcessor();
 			$eventProcessor->generateEvent("objectChanged", $object->getId(), $object->getType());
 		}
+
+		//write changes to database
+		$this->entityManager->flush();
+
+		//clear cache (solves performance issues during bulk updates)
+		$this->entityManager->clear();
 
 		//return the object
 		return $object;
