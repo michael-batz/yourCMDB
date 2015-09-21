@@ -25,11 +25,19 @@
 */
 
 	//required parameters: $previewData, $importOptions, $paramFilename
+	//start: panel
+	echo "<div class=\"container\">";
+	echo "<div class=\"panel panel-default cmdb-contentpanel\">";
 
-	//output: headline
-	echo "<h1 class=\"text-center\">";
+	//panel headline
+	echo "<div class=\"panel-heading\">";
+	echo "<h3 class=\"panel-title text-center\">";
 	echo gettext("CSV Import - Preview");
-	echo "</h1>";
+	echo "</h3>";
+	echo "</div>";
+
+	//start panel content
+	echo "<div class=\"panel-body\">";
 	echo "<form action=\"import.php\" method=\"post\" class=\"form-horizontal\">";
 
 	//check, if previewData could be fetched
@@ -71,6 +79,7 @@
 		}
 
 		//output preview data
+		echo "<h2>".gettext("first lines of csv file")."</h2>";
 		echo "<table class=\"table\">";
 		for($i = 0; $i < $previewDataMaxCols; $i++)
 		{
@@ -129,13 +138,13 @@
 		}
 	
 		echo "</table>";
-		echo "<p>";
 		echo "<input type=\"hidden\" name=\"action\" value=\"import\" />";
 		echo "<input type=\"hidden\" name=\"objectType\" value=\"$optionType\" />";
 		echo "<input type=\"hidden\" name=\"delimiter\" value=\"$optionDelimiter\" />";
 		echo "<input type=\"hidden\" name=\"enclosure\" value=\"$optionEnclosure\" />";
 		echo "<input type=\"hidden\" name=\"cols\" value=\"$previewDataMaxCols\" />";
 	
+		echo "<h2>".gettext("further options")."</h2>";
 		echo "<div class=\"form-group\">";
 		echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Start in line:")."</label>";
 		echo "<div class=\"col-md-4\">";
@@ -207,6 +216,11 @@
 	echo "</div>";
 
 	echo "</form>";
+
+	//close panel body and panel
+	echo "</div>";
+	echo "</div>";
+	echo "</div>";
 
 ?>
 
