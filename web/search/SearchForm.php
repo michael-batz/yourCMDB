@@ -55,15 +55,15 @@
 	echo "</div>";
 	//status filter
 	echo "<div class=\"form-group\">";
-	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("show only active objects")."</label>";
+	echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("only active objects")."</label>";
 	echo "<div class=\"col-md-4\">";
 	if($filterValueStatus == 'A')
 	{
-		echo "<input class=\"form-control\" type=\"checkbox\" name=\"status\" value=\"A\" checked=\"checked\" />";
+		echo "<input type=\"checkbox\" name=\"status\" value=\"A\" checked=\"checked\" />";
 	}
 	else
 	{
-		echo "<input class=\"form-control\" type=\"checkbox\" name=\"status\" value=\"A\"/>";
+		echo "<input type=\"checkbox\" name=\"status\" value=\"A\"/>";
 	}
 	echo "</div>";
 	echo "</div>";
