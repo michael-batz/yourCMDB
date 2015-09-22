@@ -47,6 +47,7 @@
 		$optionType = $importOptions->getOptionValue("objectType", "");
 		$optionDelimiter = $importOptions->getOptionValue("delimiter", ";");
 		$optionEnclosure = $importOptions->getOptionValue("enclosure", "");
+		$optionLength = $importOptions->getOptionValue("length", "10");
 
 		//get preview data
 		$previewDataMaxCols = 0;
@@ -142,6 +143,7 @@
 		echo "<input type=\"hidden\" name=\"objectType\" value=\"$optionType\" />";
 		echo "<input type=\"hidden\" name=\"delimiter\" value=\"$optionDelimiter\" />";
 		echo "<input type=\"hidden\" name=\"enclosure\" value=\"$optionEnclosure\" />";
+		echo "<input type=\"hidden\" name=\"length\" value=\"$optionLength\" />";
 		echo "<input type=\"hidden\" name=\"cols\" value=\"$previewDataMaxCols\" />";
 	
 		echo "<h2>".gettext("further options")."</h2>";
@@ -197,6 +199,14 @@
 		echo "</div>";
 		echo "</div>";
 
+		//option: import batch size
+		echo "<div class=\"form-group\">";
+		echo "<label class=\"col-md-2 col-md-offset-3 control-label\">".gettext("Import Batch Size")."</label>";
+		echo "<div class=\"col-md-4\">";
+		echo "<input type=\"text\" name=\"length\" value=\"10\" />";
+		echo "</div>";
+		echo "</div>";
+
 		//hidden form data
 		echo "<input type=\"hidden\" name=\"action\" value=\"preview\" />";
 		
@@ -205,8 +215,6 @@
 	//hidden form data
 	echo "<input type=\"hidden\" name=\"filename\" value=\"$paramFilename\" />";
 	echo "<input type=\"hidden\" name=\"format\" value=\"ImportFormatCsv\" />";
-	//ToDo: make length configurable
-	echo "<input type=\"hidden\" name=\"length\" value=\"10\" />";
 
 	//form submit
 	echo "<div class=\"form-group\">";
