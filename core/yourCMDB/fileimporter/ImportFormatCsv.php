@@ -25,6 +25,7 @@ use yourCMDB\config\CmdbConfig;
 use yourCMDB\entities\CmdbObject;
 use yourCMDB\controller\ObjectController;
 use yourCMDB\exceptions\CmdbObjectNotFoundException;
+use \Exception;
 
 /**
 * File Importer - ImportFormat: CSV
@@ -145,7 +146,10 @@ class ImportFormatCsv extends ImportFormat
 				$objectFields = Array();
 				foreach(array_keys($objectFieldMapping) as $objectField)
 				{
-					$objectFields[$objectField] = $line[$objectFieldMapping[$objectField]];
+					if(isset($line[$objectFieldMapping[$objectField]]))
+					{
+						$objectFields[$objectField] = $line[$objectFieldMapping[$objectField]];
+					}
 				}
 
 				//resolve foreign keys
@@ -156,40 +160,47 @@ class ImportFormatCsv extends ImportFormat
 						//set foreign key object type
 						$foreignKeyType = Array(preg_replace("/^objectref-/", "", $objectFieldConfig[$foreignKey]));
 						$foreignKeyLinePosition = $foreignKeyMapping[$foreignKey][$foreignKeyRefField];
-						$foreignKeyRefFieldValue = $line[$foreignKeyLinePosition];
-
-						//get object defined by foreign key
-						$foreignKeyObjects = $objectController->getObjectsByField(	$foreignKeyRefField, 
-														$foreignKeyRefFieldValue, 
-														$foreignKeyType, 
-														null, 0, 0, "yourCMDB fileimporter");
-						//if object was found, set ID as fieldvalue
-						if(isset($foreignKeyObjects[0]))
+						if(isset($line[$foreignKeyLinePosition]))
 						{
-							$objectFields[$foreignKey] = $foreignKeyObjects[0]->getId();
+							$foreignKeyRefFieldValue = $line[$foreignKeyLinePosition];
+	
+							//get object defined by foreign key
+							$foreignKeyObjects = $objectController->getObjectsByField(	$foreignKeyRefField, 
+															$foreignKeyRefFieldValue, 
+															$foreignKeyType, 
+															null, 0, 0, "yourCMDB fileimporter");
+							//if object was found, set ID as fieldvalue
+							if(isset($foreignKeyObjects[0]))
+							{
+								$objectFields[$foreignKey] = $foreignKeyObjects[0]->getId();
+							}
 						}
 					}
 				}
 
-				//check if assetID is set in CSV file for updating objects
-				if($assetIdMapping != -1)
+				//only create objects, if 1 or more fields are set
+				if(count($objectFields) > 0)
 				{
-					$assetId = $line[$assetIdMapping];
-					try
+					//check if assetID is set in CSV file for updating objects
+					if($assetIdMapping != -1 && isset($line[$assetIdMapping]))
 					{
-						$objectController->updateObject($assetId, 'A', $objectFields, "yourCMDB Fileimporter");
+						$assetId = $line[$assetIdMapping];
+						try
+						{
+							$objectController->updateObject($assetId, 'A', $objectFields, "yourCMDB Fileimporter");
+						}
+						catch(Exception $e)
+						{
+							//if object was not found, add new one
+							$objectController->addObject($optionType, 'A', $objectFields, "yourCMDB Fileimporter");
+						}
 					}
-					catch(CmdbObjectNotFoundException $e)
+					//if not, create a new object
+					else
 					{
-						//if object was not found, add new one
+						//generate object and save to datastore
 						$objectController->addObject($optionType, 'A', $objectFields, "yourCMDB Fileimporter");
 					}
-				}
-				//if not, create a new object
-				else
-				{
-					//generate object and save to datastore
-					$objectController->addObject($optionType, 'A', $objectFields, "yourCMDB Fileimporter");
 				}
 			}
 
