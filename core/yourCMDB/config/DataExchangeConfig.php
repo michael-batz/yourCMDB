@@ -28,9 +28,6 @@ namespace yourCMDB\config;
 class DataExchangeConfig
 {
 
-	//import formats
-	private $importFormats;
-
 	//export formats
 	private $exportFormats;
 
@@ -41,23 +38,6 @@ class DataExchangeConfig
 	public function __construct($xmlfile)
 	{
 		$xmlobject = simplexml_load_file($xmlfile);
-
-		//read import formats
-		$this->importFormats = Array();
-		foreach($xmlobject->xpath('//import') as $importFormat)
-		{
-			//save format name
-			$formatName = (string)$importFormat['type'];
-			$this->importFormats[$formatName] = Array();
-
-			//read format parameters
-			foreach($importFormat[0]->parameter as $parameter)
-			{
-				$parameterName = (string) $parameter['key'];
-				$parameterValue = (string) $parameter['value'];
-				$this->importFormats[$formatName][$parameterName] = $parameterValue;
-			}
-		}
 
 		//read export formats
 		$this->exportFormats = Array();
@@ -80,34 +60,11 @@ class DataExchangeConfig
 	}
 
 	/**
-	* Returns import formats
-	*/
-	public function getImportFormats()
-	{
-		return array_keys($this->importFormats);
-	}
-
-	/**
 	* Returns export formats
 	*/
 	public function getExportFormats()
 	{
 		return array_keys($this->exportFormats);
-	}
-
-	/**
-	* Returns import options
-	*/
-	public function getImportOptions($format)
-	{
-		if(isset($this->importFormats[$format]))
-		{
-			return $this->importFormats[$format];
-		}
-		else
-		{
-			return null;
-		}
 	}
 
 	/**
