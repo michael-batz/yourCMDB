@@ -35,10 +35,14 @@ abstract class ImportFormat
 	//import options
 	protected $importOptions;
 
-	public function __construct($importFilename, $importOptions)
+	//user that makes the import
+	protected $authUser;
+
+	public function __construct($importFilename, $importOptions, $authUser)
 	{
 		$this->importFilename = $importFilename;
 		$this->importOptions = $importOptions;
+		$this->authUser = $authUser;
 	}
 
 	public static abstract function getFormatName();

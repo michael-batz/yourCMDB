@@ -168,7 +168,7 @@ class ImportFormatCsv extends ImportFormat
 							$foreignKeyObjects = $objectController->getObjectsByField(	$foreignKeyRefField, 
 															$foreignKeyRefFieldValue, 
 															$foreignKeyType, 
-															null, 0, 0, "yourCMDB fileimporter");
+															null, 0, 0, $this->authUser);
 							//if object was found, set ID as fieldvalue
 							if(isset($foreignKeyObjects[0]))
 							{
@@ -187,19 +187,19 @@ class ImportFormatCsv extends ImportFormat
 						$assetId = $line[$assetIdMapping];
 						try
 						{
-							$objectController->updateObject($assetId, 'A', $objectFields, "yourCMDB Fileimporter");
+							$objectController->updateObject($assetId, 'A', $objectFields, $this->authUser);
 						}
 						catch(Exception $e)
 						{
 							//if object was not found, add new one
-							$objectController->addObject($optionType, 'A', $objectFields, "yourCMDB Fileimporter");
+							$objectController->addObject($optionType, 'A', $objectFields, $this->authUser);
 						}
 					}
 					//if not, create a new object
 					else
 					{
 						//generate object and save to datastore
-						$objectController->addObject($optionType, 'A', $objectFields, "yourCMDB Fileimporter");
+						$objectController->addObject($optionType, 'A', $objectFields, $this->authUser);
 					}
 				}
 			}

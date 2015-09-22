@@ -31,7 +31,7 @@ use yourCMDB\fileimporter\FileImportOptionsRequiredException;
 	//required parameters: $paramFilename, $paramFormat, $importOptions
 
 	//get number of objects to import
-	$fileImporter = new Importer($paramFilename, $paramFormat, $importOptions);
+	$fileImporter = new Importer($paramFilename, $paramFormat, $importOptions, $authUser);
 	$countObjectsToImport = $fileImporter->getObjectsToImportCount();
 
 	//start: panel

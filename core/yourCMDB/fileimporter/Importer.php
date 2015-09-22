@@ -38,16 +38,20 @@ class Importer
 	//import format object
 	private $importFormat;
 
-	public function __construct($importFilename, $importClassname, $importOptions)
+	//user that makes the import
+	private $authUser;
+
+	public function __construct($importFilename, $importClassname, $importOptions, $authUser)
 	{
 		//save variables
 		$this->importFilename = $importFilename;
 		$importClassname = 'yourCMDB\fileimporter\\'. $importClassname;
 		$this->importClassname = $importClassname;
 		$this->importOptions = $importOptions;
+		$this->authUser = $authUser;
 
 		//create ImportFormat object
-		$this->importFormat = new $importClassname($importFilename, $importOptions);
+		$this->importFormat = new $importClassname($importFilename, $importOptions, $authUser);
 	}
 
 	public function getPreviewData()

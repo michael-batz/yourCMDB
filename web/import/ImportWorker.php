@@ -28,7 +28,7 @@ use \Exception;
 
 
 	//required parameters: $paramFilename, $paramFormat, $importOptions
-	$fileImporter = new Importer($paramFilename, $paramFormat, $importOptions);
+	$fileImporter = new Importer($paramFilename, $paramFormat, $importOptions, $authUser);
 	$output = 0;
 	try
 	{

@@ -38,7 +38,7 @@ use yourCMDB\fileimporter\FileImportOptionsRequiredException;
 	}
 
 
-	$fileImporter = new Importer($paramFilename, $paramFormat, $importOptions);
+	$fileImporter = new Importer($paramFilename, $paramFormat, $importOptions, $authUser);
 	$previewData = null;
 	try
 	{
