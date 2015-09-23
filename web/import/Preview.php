@@ -45,6 +45,14 @@ use yourCMDB\fileimporter\FileImportOptionsRequiredException;
 		//get data for preview
 		$previewData = $fileImporter->getPreviewData();
 
+		//show import options page for import format
+		switch($paramFormat)
+		{
+			case "ImportFormatCsv":
+				include "formats/PreviewCsv.php";
+				break;
+		}
+
 	}
 	catch(FileImportException $e)
 	{
@@ -52,19 +60,5 @@ use yourCMDB\fileimporter\FileImportOptionsRequiredException;
 		$paramError = gettext("Could not read from uploaded file. Please check permissions.");
 		include "Form.php";
 	}
-	catch(FileImportOptionsRequiredException $e)
-	{
-		//doing nothing
-	}
-
-	//show import options page for import format
-	switch($paramFormat)
-	{
-		case "ImportFormatCsv":
-			include "formats/PreviewCsv.php";
-			break;
-
-	}
-
 ?>
 

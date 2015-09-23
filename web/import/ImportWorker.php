@@ -39,7 +39,7 @@ use \Exception;
 	catch(Exception $e)
 	{
 		//print error
-		$output = "error";
+		$output = gettext("Error importing objects");
 	}
 
 	//output

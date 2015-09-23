@@ -142,14 +142,29 @@ function cmdbFileimporterImport(options, selectorOutput, maxCount)
 {
 	$.post('import.php', options).done(function(data)
 	{
-		//set output for progressbar
-		var percentage = Math.round((data / maxCount) * 100) + '%';
-		$( selectorOutput ).html(percentage);
-		$( selectorOutput ).css('width', percentage)
-		options['start'] = data;
-		if(data < maxCount)
+		//check, if there is an error during import
+		if(!isNaN(parseInt(data)))
 		{
-			cmdbFileimporterImport(options, selectorOutput, maxCount);
+			//set output for progressbar
+			var percentage = Math.round((data / maxCount) * 100);
+			if(percentage == 100 && data < maxCount)
+			{
+				percentage = 99;
+			}
+			$( selectorOutput ).html(percentage + '%');
+			$( selectorOutput ).css('width', percentage + '%')
+			options['start'] = data;
+			if(data < maxCount)
+			{
+				cmdbFileimporterImport(options, selectorOutput, maxCount);
+			}
+		}
+		//on error
+		else
+		{
+			$( selectorOutput ).html(data);
+			$( selectorOutput ).css('width', '99%')
+			$( selectorOutput ).removeClass('progress-bar-success').addClass('progress-bar-danger');
 		}
 	});
 	

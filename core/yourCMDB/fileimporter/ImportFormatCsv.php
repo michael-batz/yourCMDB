@@ -46,7 +46,7 @@ class ImportFormatCsv extends ImportFormat
 		$optionType = $this->importOptions->getOptionValue("objectType", "");
 		if($optionType == "")
 		{
-			throw new FileImportOptionsRequiredException(gettext("Missing option objectType for file import"));
+			return null;
 		}
 
 

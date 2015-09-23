@@ -32,40 +32,49 @@ use yourCMDB\fileimporter\FileImportOptionsRequiredException;
 
 	//get number of objects to import
 	$fileImporter = new Importer($paramFilename, $paramFormat, $importOptions, $authUser);
-	$countObjectsToImport = $fileImporter->getObjectsToImportCount();
+	try
+	{
+		$countObjectsToImport = $fileImporter->getObjectsToImportCount();
 
-	//start: panel
-	echo "<div class=\"container\">";
-	echo "<div class=\"panel panel-default cmdb-contentpanel\">";
+		//start: panel
+		echo "<div class=\"container\">";
+		echo "<div class=\"panel panel-default cmdb-contentpanel\">";
+	
+		//panel headline
+		echo "<div class=\"panel-heading\">";
+		echo "<h3 class=\"panel-title text-center\">";
+		echo gettext("Importing objects...");
+		echo "</h3>";
+		echo "</div>";
+	
+		//start panel content
+		echo "<div class=\"panel-body\">";
+	
+		//load worker
+		$data = $_POST;
+		$data['action'] = "importWorker";
+		$postDataString = json_encode($data);
+		echo "<script type=\"text/javascript\">";
+		echo "cmdbFileimporterImport($postDataString, '#cmdbFileimporterResult', $countObjectsToImport)";
+		echo "</script>";
+	
+		//progress bar
+		echo "<div class=\"progress\">";
+		echo "<div class=\"progress-bar progress-bar-success\" id=\"cmdbFileimporterResult\">";
+		echo "</div>";
+		echo "</div>";
+	
+		//close panel body and panel
+		echo "</div>";
+		echo "</div>";
+		echo "</div>";
+	}
+	catch(FileImportException $e)
+	{
+		//print error
+		$paramError = gettext("Error importing objects");
+		include "Form.php";
+	}
 
-	//panel headline
-	echo "<div class=\"panel-heading\">";
-	echo "<h3 class=\"panel-title text-center\">";
-	echo gettext("Importing objects...");
-	echo "</h3>";
-	echo "</div>";
-
-	//start panel content
-	echo "<div class=\"panel-body\">";
-
-	//load worker
-	$data = $_POST;
-	$data['action'] = "importWorker";
-	$postDataString = json_encode($data);
-	echo "<script type=\"text/javascript\">";
-	echo "cmdbFileimporterImport($postDataString, '#cmdbFileimporterResult', $countObjectsToImport)";
-	echo "</script>";
-
-	//result
-	echo "<div class=\"progress\">";
-	echo "<div class=\"progress-bar progress-bar-success\" id=\"cmdbFileimporterResult\">";
-	echo "</div>";
-	echo "</div>";
-
-	//close panel body and panel
-	echo "</div>";
-	echo "</div>";
-	echo "</div>";
 
 ?>
-
