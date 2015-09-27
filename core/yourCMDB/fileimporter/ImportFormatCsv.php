@@ -230,6 +230,10 @@ class ImportFormatCsv extends ImportFormat
 
 	public function getObjectsToImportCount()
 	{
+		//setup options
+		$optionDelimiter = $this->importOptions->getOptionValue("delimiter", ";");
+		$optionEnclosure = $this->importOptions->getOptionValue("enclosure", "");
+
 		//open file		
 		$csvFile = fopen($this->importFilename, "r");
 		if($csvFile == FALSE)
@@ -239,7 +243,7 @@ class ImportFormatCsv extends ImportFormat
 
 		//count lines
 		$lines = 0;
-		while(($line = fgets($csvFile)) !== FALSE)
+		while(($line = $this->readCsv($csvFile, 0, $optionDelimiter, $optionEnclosure)) !== FALSE)
 		{
 			$lines++;
 		}
