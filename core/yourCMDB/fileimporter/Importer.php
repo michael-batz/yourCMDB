@@ -41,6 +41,13 @@ class Importer
 	//user that makes the import
 	private $authUser;
 
+	/**
+	* Creates a new Importer
+	* @param string $importFilename		file name
+	* @param string $importClassname	name if the import format class
+	* @param ImportOptions $importOptions	ImportOptions object
+	* @param string $authUser		name of the user, that wants to make the import
+	*/
 	public function __construct($importFilename, $importClassname, $importOptions, $authUser)
 	{
 		//save variables
@@ -54,21 +61,37 @@ class Importer
 		$this->importFormat = new $importClassname($importFilename, $importOptions, $authUser);
 	}
 
+	/**
+	* Gets and returns preview data for the import
+	* @return Array previewData
+	*/
 	public function getPreviewData()
 	{
 		return $this->importFormat->getPreviewData();
 	}
 
+	/**
+	* Executes the import
+	* @return int 	position in import file (i.e. if a partial import was executed)
+	*/
 	public function import()
 	{
 		return $this->importFormat->import();
 	}
 
+	/**
+	* Returns the number of objects to import
+	* @return int	number of objects to import
+	*/
 	public function getObjectsToImportCount()
 	{
 		return $this->importFormat->getObjectsToImportCount();
 	}
 
+	/**
+	* Returns all supported InputFormats
+	* @return Array		supported InputFormats (format -> classname)
+	*/
 	public static function getInputFormats()
 	{
 		//define input formats

@@ -38,6 +38,12 @@ abstract class ImportFormat
 	//user that makes the import
 	protected $authUser;
 
+	/**
+	* Creates a new ImportFormat object
+	* @param string $importFilename		file name
+	* @param ImportOptions $importOptions	ImportOptions object
+	* @param string $authUser		name of the user, that wants to make the import
+	*/
 	public function __construct($importFilename, $importOptions, $authUser)
 	{
 		$this->importFilename = $importFilename;
@@ -45,12 +51,28 @@ abstract class ImportFormat
 		$this->authUser = $authUser;
 	}
 
+	/**
+	* Returns the name of the format
+	* @return string	name of the format
+	*/ 
 	public static abstract function getFormatName();
 
+	/**
+	* Gets and returns preview data for the import
+	* @return Array previewData
+	*/
 	public abstract function getPreviewData();
-	
+
+	/**
+	* Executes the import
+	* @return int 	position in import file (i.e. if a partial import was executed)
+	*/
 	public abstract function import();
 
+	/**
+	* Returns the number of objects to import
+	* @return int	number of objects to import
+	*/
 	public abstract function getObjectsToImportCount();
 }
 ?>
