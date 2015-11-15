@@ -82,17 +82,19 @@ class ExporterConfig
 
 			}
 
-			//get destination
-			$destination = $task[0]->destination[0];
-			$destinationClass = (string)$destination['class'];
-			$destinationParameter = Array();
-			foreach($destination->parameter as $parameter)
+			//get destinations
+			foreach($task[0]->destination as $destination)
 			{
-				$key = (string)$parameter['key'];
-				$value = (string)$parameter['value'];
-				$destinationParameter[$key] = $value;
+				$destinationClass = (string)$destination['class'];
+				$destinationParameter = Array();
+				foreach($destination->parameter as $parameter)
+				{
+					$key = (string)$parameter['key'];
+					$value = (string)$parameter['value'];
+					$destinationParameter[$key] = $value;
+				}
+				$this->destinations[$taskname][] = new ExportDestination($destinationClass, $destinationParameter);
 			}
-			$this->destinations[$taskname] = new ExportDestination($destinationClass, $destinationParameter);
 
 			//get variable bindings
 			$variables = Array();
@@ -137,10 +139,10 @@ class ExporterConfig
 	}
 
 	/**
-	* Returns an export destination for an export task
+	* Returns an array of export destinations for an export task
 	* @param $taskname	Name of the export task
 	*/
-	public function getDestinationForTask($taskname)
+	public function getDestinationsForTask($taskname)
 	{
 		if(!isset($this->destinations[$taskname]))
 		{

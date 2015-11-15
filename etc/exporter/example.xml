@@ -7,6 +7,10 @@
 		<parameter key="testparameter1" value="value1" />
 		<parameter key="testparameter2" value="value2" />
 	</destination>
+	<destination class="ExternalSystemDummy">
+		<parameter key="testparameter1" value="value3" />
+		<parameter key="testparameter2" value="value4" />
+	</destination>
 	<variables>
 		<variable name="dummy1">
 			<value objecttype="router" fieldname="hostname" />

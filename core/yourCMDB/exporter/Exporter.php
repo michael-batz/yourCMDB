@@ -38,8 +38,8 @@ class Exporter
 	//exporter sources
 	private $exportSources;
 
-	//exporter destination
-	private $exportDestination;
+	//exporter destinationa
+	private $exportDestinations;
 
 	//exporter variables
 	private $exportVariables;
@@ -53,7 +53,7 @@ class Exporter
 		//get configuration for exporter task
 		$this->task = $taskname;
 		$this->exportSources = $config->getExporterConfig()->getSourcesForTask($taskname);
-		$this->exportDestination = $config->getExporterConfig()->getDestinationForTask($taskname);
+		$this->exportDestinations = $config->getExporterConfig()->getDestinationsForTask($taskname);
 		$this->exportVariables = $config->getExporterConfig()->getVariablesForTask($taskname);
 
 		//run export
@@ -69,43 +69,48 @@ class Exporter
 		//get ObjectController
 		$objectController = ObjectController::create();
 
-		//set up exportDestination
-		$exportDestinationClass = __NAMESPACE__."\\".$this->exportDestination->getClass();
-		$exportDestination = new $exportDestinationClass();
-		$exportDestination->setUp($this->exportDestination, $this->exportVariables);
-		
-
-		//walk through all ExportSources
-		foreach($this->exportSources as $exportSource)
+		//walk through all ExportDestinations
+		foreach($this->exportDestinations as $exportDestinationObj)
 		{
-			//get objects to export
-			$objects = Array();
-			$exportSourceFieldname = $exportSource->getFieldname();
-			$exportSourceFieldvalue = $exportSource->getFieldvalue();
-			$exportSourceObjectTypes = array($exportSource->getObjectType());
-			$exportSourceStatusActive = $exportSource->getStatus();
-			if($exportSourceFieldname == null || $exportSourceFieldvalue == null )
+	
+			//set up exportDestination
+			$exportDestinationClass = __NAMESPACE__."\\".$exportDestinationObj->getClass();
+			$exportDestination = new $exportDestinationClass();
+			$exportDestination->setUp($exportDestinationObj, $this->exportVariables);
+			
+	
+			//walk through all ExportSources
+			foreach($this->exportSources as $exportSource)
 			{
-				$objects = $objectController->getObjectsByType($exportSourceObjectTypes[0], "", "ASC", $exportSourceStatusActive, 0, 0, "yourCMDB-exporter");
+				//get objects to export
+				$objects = Array();
+				$exportSourceFieldname = $exportSource->getFieldname();
+				$exportSourceFieldvalue = $exportSource->getFieldvalue();
+				$exportSourceObjectTypes = array($exportSource->getObjectType());
+				$exportSourceStatusActive = $exportSource->getStatus();
+				if($exportSourceFieldname == null || $exportSourceFieldvalue == null )
+				{
+					$objects = $objectController->getObjectsByType($exportSourceObjectTypes[0], "", "ASC", $exportSourceStatusActive, 0, 0, "yourCMDB-exporter");
+				}
+				else
+				{
+					$objects = $objectController->getObjectsByField($exportSourceFieldname, 
+											$exportSourceFieldvalue, 
+											$exportSourceObjectTypes, 
+											$exportSourceStatusActive,
+											0,0, "yourCMDB-exporter");
+				}
+	
+				//export objects
+				foreach($objects as $object)
+				{
+					$exportDestination->addObject($object);
+				}
 			}
-			else
-			{
-				$objects = $objectController->getObjectsByField($exportSourceFieldname, 
-										$exportSourceFieldvalue, 
-										$exportSourceObjectTypes, 
-										$exportSourceStatusActive,
-										0,0, "yourCMDB-exporter");
-			}
-
-			//export objects
-			foreach($objects as $object)
-			{
-				$exportDestination->addObject($object);
-			}
+	
+			//finish export
+			$exportDestination->finishExport();
 		}
-
-		//finish export
-		$exportDestination->finishExport();
 	}
 }
 ?>
