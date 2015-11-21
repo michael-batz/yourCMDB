@@ -2,4 +2,5 @@
 	<includeconfig file="exporter/example.xml" />
 	<includeconfig file="exporter/opennms-example.xml" />
 	<includeconfig file="exporter/ansible-example.xml" />
+	<includeconfig file="exporter/openvas-example.xml" />
 </exporter-configuration>
