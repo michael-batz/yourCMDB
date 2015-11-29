@@ -49,11 +49,11 @@ class ExternalSystemOpenvas implements ExternalSystem
 	//prefix for OpenVAS target and task names
 	private $namespacePrefix;
 
-	//ID of the OpenVAS scanner
-	private $scannerId;
+	//name of the OpenVAS scanner
+	private $scannerName;
 
-	//ID of the OpenVAS scan config to use
-	private $configId;
+	//name of the OpenVAS scan config to use
+	private $configName;
 
 	//store for targets and tasks information
 	private $openvasTasks;
@@ -70,8 +70,8 @@ class ExternalSystemOpenvas implements ExternalSystem
 			in_array("ompPort", $parameterKeys) && 
 			in_array("ompUser", $parameterKeys) &&
 			in_array("ompPassword", $parameterKeys) &&
-			in_array("scannerId", $parameterKeys) &&
-			in_array("configId", $parameterKeys)))
+			in_array("scannerName", $parameterKeys) &&
+			in_array("configName", $parameterKeys)))
 		{
 			throw new ExportExternalSystemException("Parameters for ExternalSystem not set correctly");
 		}
@@ -89,9 +89,9 @@ class ExternalSystemOpenvas implements ExternalSystem
 			$this->namespacePrefix = $destination->getParameterValue("namespacePrefix");
 		}
 
-		//setup OpenVAS scannerID and configID
-		$this->scannerId = $destination->getParameterValue("scannerId");
-		$this->configId = $destination->getParameterValue("configId");
+		//setup OpenVAS scannerName and configName
+		$this->scannerName = $destination->getParameterValue("scannerName");
+		$this->configName = $destination->getParameterValue("configName");
 		
 
 		//init store for OpenVAS tasks
@@ -125,9 +125,15 @@ class ExternalSystemOpenvas implements ExternalSystem
 		{
 			throw new ExportExternalSystemException("Error connecting to host $this->ompHost on Port $ompPort");
 		}
+		//set non blocking mode
+		stream_set_blocking($ompConnection, false);
 
 		//omp: authentication
 		$result = $this->ompAuthenticate($ompConnection, $this->ompUser, $this->ompPassword);
+
+		//omp: get scan config
+		$scanConfigId = $this->ompGetConfigId($ompConnection, $this->configName);
+		$scannerId = $this->ompGetScannerId($ompConnection, $this->scannerName);
 
 		//omp: get all exististing OpenVAS tasks and targets in namespace
 		$existingTargets = $this->ompGetTargets($ompConnection);
@@ -176,7 +182,7 @@ class ExternalSystemOpenvas implements ExternalSystem
 				$createTargetId = $this->ompCreateTarget($ompConnection, $createTargetName, $createTargetHosts);
 
 				//create task
-				$this->ompCreateTask($ompConnection, $createTargetName, $createTargetId, $this->scannerId, $this->configId);
+				$this->ompCreateTask($ompConnection, $createTargetName, $createTargetId, $scannerId, $scanConfigId);
 			}
 		}
 
@@ -228,9 +234,22 @@ class ExternalSystemOpenvas implements ExternalSystem
 		//send request
 		fwrite($connection, $request, strlen($request));
 		fflush($connection);
-	
+
 		//get response
-		$response = fread($connection, 8192);
+		$response = "";
+		$timeIntervall = 0;
+		$timeStart = time();
+		while(!feof($connection) && ($timeIntervall <= 1))
+		{
+			$responseLength = strlen($response);
+			$response .= fread($connection, 8192);
+			if(strlen($response) > $responseLength)
+			{
+				$timeStart = time();
+			}
+			$timeNow = time();
+			$timeIntervall = $timeNow - $timeStart;
+		}
 		return $response;
 	}
 
@@ -499,6 +518,85 @@ class ExternalSystemOpenvas implements ExternalSystem
 		{
 			throw new ExportExternalSystemException("Error updating target name with OMP: $responseStatus");
 		}
+	}
+
+
+	/**
+	* OMP helper: gets the ID of an OpenVAS scan configuration
+	* @param resource $connection	connection to OpenVAS server
+	* @param string $name		name of the config
+	* @return string		ID of the OpenVAS scan configuration
+	* @throws ExportExternalSystemException	if there was an error
+	*/
+	private function ompGetConfigId($connection, $name)
+	{
+		//send request
+		$requestXml = "<get_configs />";
+		$responseXml = $this->sendRequest($connection, $requestXml);
+
+		//check response
+		$responseObject = simplexml_load_string($responseXml);
+		$responseStatus = $responseObject[0]['status'];
+		if($responseStatus > 202)
+		{
+			throw new ExportExternalSystemException("Error getting configuration ID with OMP: $responseStatus");
+		}
+		$responseConfigId = "";
+		foreach($responseObject[0]->config as $config)
+		{
+			$configId = (string)$config['id'];
+			$configName = (string)$config->name[0];
+			if($configName == $name)
+			{
+				$responseConfigId = $configId;
+			}
+		}
+		if($responseConfigId == "")
+		{
+			throw new ExportExternalSystemException("Error getting configuration ID with OMP: Configuration $name not found");
+		}
+
+		//return output
+		return $responseConfigId;
+	}
+
+	/**
+	* OMP helper: gets the ID of an OpenVAS scanner
+	* @param resource $connection	connection to OpenVAS server
+	* @param string $name		name of the scanner
+	* @return string		ID of the OpenVAS scanner
+	* @throws ExportExternalSystemException	if there was an error
+	*/
+	private function ompGetScannerId($connection, $name)
+	{
+		//send request
+		$requestXml = "<get_scanners />";
+		$responseXml = $this->sendRequest($connection, $requestXml);
+
+		//check response
+		$responseObject = simplexml_load_string($responseXml);
+		$responseStatus = $responseObject[0]['status'];
+		if($responseStatus > 202)
+		{
+			throw new ExportExternalSystemException("Error getting scanner ID with OMP: $responseStatus");
+		}
+		$responseScannerId = "";
+		foreach($responseObject[0]->scanner as $scanner)
+		{
+			$scannerId = (string)$scanner['id'];
+			$scannerName = (string)$scanner->name[0];
+			if($scannerName == $name)
+			{
+				$responseScannerId = $scannerId;
+			}
+		}
+		if($responseScannerId == "")
+		{
+			throw new ExportExternalSystemException("Error getting scanner ID with OMP: Scanner $name not found");
+		}
+
+		//return output
+		return $responseScannerId;
 	}
 
 }

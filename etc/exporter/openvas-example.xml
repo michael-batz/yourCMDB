@@ -3,12 +3,12 @@
 		<source objecttype="server" status="A" fieldname="management-secscan" fieldvalue="true" />
 	</sources>
 	<destination class="ExternalSystemOpenvas">
-		<parameter key="ompHost" value="10.0.1.103" />
+		<parameter key="ompHost" value="10.0.1.104" />
 		<parameter key="ompPort" value="9390" />
 		<parameter key="ompUser" value="admin" />
 		<parameter key="ompPassword" value="admin" />
-		<parameter key="scannerId" value="08b69003-5fc2-4037-a479-93b440211c73" />
-		<parameter key="configId" value="74db13d6-7489-11df-91b9-002264764cea" />
+		<parameter key="scannerName" value="OpenVAS Default" />
+		<parameter key="configName" value="Full and very deep ultimate" />
 		<parameter key="namespacePrefix" value="yourCMDB_" />
 	</destination>
 	<variables>
