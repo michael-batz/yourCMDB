@@ -119,6 +119,12 @@ class ExternalSystemOpenvas implements ExternalSystem
 
 	public function finishExport()
 	{
+		//remove dupplicate IPs from task array
+		foreach(array_keys($this->openvasTasks) as $openvasTaskName)
+		{
+			$this->openvasTasks[$openvasTaskName] = array_unique($this->openvasTasks[$openvasTaskName]);
+		}
+
 		//open connection
 		$ompConnection = fsockopen("tls://$this->ompHost", $this->ompPort);
 		if(!$ompConnection)
