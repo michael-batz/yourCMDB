@@ -18,5 +18,8 @@
 		<variable name="ip">
 			<value objecttype="server" fieldname="management-ip" />
 		</variable>
+		<variable name="hostname">
+			<value objecttype="server" fieldname="hostname" />
+		</variable>
 	</variables>
 </task>

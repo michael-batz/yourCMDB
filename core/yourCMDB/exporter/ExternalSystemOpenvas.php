@@ -100,31 +100,26 @@ class ExternalSystemOpenvas implements ExternalSystem
 
 	public function addObject(\yourCMDB\entities\CmdbObject $object)
 	{
-		//get taskname and ip
-		$taskname = $this->variables->getVariable("taskname")->getValue($object);
-		$taskname = $this->namespacePrefix . $taskname;
-		if($taskname == "")
-		{
-			$taskname = "_empty_";
-		}
+		//create taskname
+		$taskname = $this->namespacePrefix;
+		$taskname.= $object->getId() . " ";
+		$taskname.= $this->variables->getVariable("hostname")->getValue($object) . " ";
+		$taskname.= $this->variables->getVariable("taskname")->getValue($object);
+
+		//get IP
 		$ip = $this->variables->getVariable("ip")->getValue($object);
 
-		//save information in OpenVAS tasks
-		if(!isset($this->openvasTasks[$taskname]))
+		//only export as task, if IP is valid
+		if(filter_var($ip, FILTER_VALIDATE_IP) !== FALSE)
 		{
-			$this->openvasTasks[$taskname] = Array();
+			//save information in OpenVAS tasks
+			$this->openvasTasks[$taskname] = $ip;
 		}
-		$this->openvasTasks[$taskname][] = $ip;
+
 	}
 
 	public function finishExport()
 	{
-		//remove dupplicate IPs from task array
-		foreach(array_keys($this->openvasTasks) as $openvasTaskName)
-		{
-			$this->openvasTasks[$openvasTaskName] = array_unique($this->openvasTasks[$openvasTaskName]);
-		}
-
 		//open connection
 		$ompConnection = fsockopen("tls://$this->ompHost", $this->ompPort);
 		if(!$ompConnection)
@@ -156,23 +151,22 @@ class ExternalSystemOpenvas implements ExternalSystem
 				$existingTargetId = $existingTasks[$taskName]['targetId'];
 				$existingTargetName = $existingTargets[$existingTargetId]['name'];
 				$existingTargetHosts = $existingTargets[$existingTargetId]['hosts'];
-				$createTargetHosts = $this->generateHostList($this->openvasTasks[$taskName]);
+				$createTargetHosts = $this->openvasTasks[$taskName];
 
 				//check, if hostlist has changed
 				if($existingTargetHosts != $createTargetHosts)
 				{
-					//create a new target with new hostlist and a temporary name
-					$createTargetId = $this->ompCreateTarget($ompConnection, $existingTargetName."_tmp", $createTargetHosts);
-
-					//change task to use new target
-					$this->ompUpdateTask($ompConnection, $existingTaskId, $createTargetId);
+					//delete old task
+					$this->ompDeleteTask($ompConnection, $existingTaskId);
 
 					//delete old target
 					$this->ompDeleteTarget($ompConnection, $existingTargetId);
 
-					//rename new target
-					$this->ompUpdateTarget($ompConnection, $createTargetId, $existingTargetName);
-					
+					//create a new target with new hostlist
+					$createTargetId = $this->ompCreateTarget($ompConnection, $existingTargetName, $createTargetHosts);
+
+					//create a new task
+					$this->ompCreateTask($ompConnection, $existingTargetName, $createTargetId, $scannerId, $scanConfigId);
 				}
 
 				//remove target and task from lists
@@ -184,7 +178,7 @@ class ExternalSystemOpenvas implements ExternalSystem
 			{
 				//create target
 				$createTargetName = $taskName;
-				$createTargetHosts = $this->generateHostList($this->openvasTasks[$taskName]);
+				$createTargetHosts = $this->openvasTasks[$taskName];
 				$createTargetId = $this->ompCreateTarget($ompConnection, $createTargetName, $createTargetHosts);
 
 				//create task
@@ -209,24 +203,6 @@ class ExternalSystemOpenvas implements ExternalSystem
 		fclose($ompConnection);
 	}
 
-	/**
-	* Generates a comma seperated host list from the input array
-	* @param array $inputArray	array with hosts
-	* @return string		comma seperated host list
-	*/
-	private function generateHostList($inputArray)
-	{
-		$output = "";
-		for($i = 0; $i < count($inputArray); $i++)
-		{
-			$output .= $inputArray[$i];
-			if($i != count($inputArray) - 1)
-			{
-				$output .= ",";
-			}
-		}
-		return $output;
-	}
 
 	/**
 	* send xml request on an existing connection and gets and returns 
@@ -245,7 +221,7 @@ class ExternalSystemOpenvas implements ExternalSystem
 		$response = "";
 		$timeIntervall = 0;
 		$timeStart = time();
-		while(!feof($connection) && ($timeIntervall <= 1))
+		while(!feof($connection) && ($timeIntervall <= 2))
 		{
 			$responseLength = strlen($response);
 			$response .= fread($connection, 8192);
@@ -477,55 +453,6 @@ class ExternalSystemOpenvas implements ExternalSystem
 		}
 
 	}
-
-	/**
-	* OMP helper: modify an OpenVAS task
-	* @param resource $connection	connection to OpenVAS server
-	* @param string $id		task ID
-	* @param string $targetId	updated targetId
-	* @throws ExportExternalSystemException	if there was an error
-	*/
-	private function ompUpdateTask($connection, $id, $targetId)
-	{
-		//send request
-		$requestXml = "<modify_task task_id=\"$id\">";
-		$requestXml.= "<target id=\"$targetId\" />";
-		$requestXml.= "</modify_task>";
-		$responseXml = $this->sendRequest($connection, $requestXml);
-
-		//check response
-		$responseObject = simplexml_load_string($responseXml);
-		$responseStatus = $responseObject[0]['status'];
-		if($responseStatus > 202)
-		{
-			throw new ExportExternalSystemException("Error updating task with OMP: $responseStatus");
-		}
-	}
-
-	/**
-	* OMP helper: modify an OpenVAS target
-	* @param resource $connection	connection to OpenVAS server
-	* @param string $id		target ID
-	* @param string $name		updated name
-	* @throws ExportExternalSystemException	if there was an error
-	*/
-	private function ompUpdateTarget($connection, $id, $name)
-	{
-		//send request
-		$requestXml = "<modify_target target_id=\"$id\">";
-		$requestXml.= "<name>$name</name>";
-		$requestXml.= "</modify_target>";
-		$responseXml = $this->sendRequest($connection, $requestXml);
-
-		//check response
-		$responseObject = simplexml_load_string($responseXml);
-		$responseStatus = $responseObject[0]['status'];
-		if($responseStatus > 202)
-		{
-			throw new ExportExternalSystemException("Error updating target name with OMP: $responseStatus");
-		}
-	}
-
 
 	/**
 	* OMP helper: gets the ID of an OpenVAS scan configuration
