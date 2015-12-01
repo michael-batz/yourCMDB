@@ -218,10 +218,11 @@ class ExternalSystemOpenvas implements ExternalSystem
 		fflush($connection);
 
 		//get response
+		libxml_use_internal_errors(true);
 		$response = "";
 		$timeIntervall = 0;
 		$timeStart = time();
-		while(!feof($connection) && ($timeIntervall <= 2))
+		while(!feof($connection) && ($timeIntervall <= 5))
 		{
 			$responseLength = strlen($response);
 			$response .= fread($connection, 8192);
@@ -231,6 +232,10 @@ class ExternalSystemOpenvas implements ExternalSystem
 			}
 			$timeNow = time();
 			$timeIntervall = $timeNow - $timeStart;
+			if(simplexml_load_string($response) !== FALSE && strlen($response) > 0)
+			{
+				break;
+			}
 		}
 		return $response;
 	}
