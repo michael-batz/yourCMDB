@@ -9,6 +9,7 @@
 		<parameter key="ompPassword" value="admin" />
 		<parameter key="scannerName" value="OpenVAS Default" />
 		<parameter key="configName" value="Full and very deep ultimate" />
+		<parameter key="taskVisibilityRole" value="User" />
 		<parameter key="namespacePrefix" value="yourCMDB_" />
 	</destination>
 	<variables>

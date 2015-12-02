@@ -55,6 +55,9 @@ class ExternalSystemOpenvas implements ExternalSystem
 	//name of the OpenVAS scan config to use
 	private $configName;
 
+	//OpenVAS role for which the tasks are visible and executable
+	private $taskVisibilityRole;
+
 	//store for targets and tasks information
 	private $openvasTasks;
 
@@ -71,7 +74,8 @@ class ExternalSystemOpenvas implements ExternalSystem
 			in_array("ompUser", $parameterKeys) &&
 			in_array("ompPassword", $parameterKeys) &&
 			in_array("scannerName", $parameterKeys) &&
-			in_array("configName", $parameterKeys)))
+			in_array("configName", $parameterKeys) &&
+			in_array("taskVisibilityRole", $parameterKeys)))
 		{
 			throw new ExportExternalSystemException("Parameters for ExternalSystem not set correctly");
 		}
@@ -92,6 +96,7 @@ class ExternalSystemOpenvas implements ExternalSystem
 		//setup OpenVAS scannerName and configName
 		$this->scannerName = $destination->getParameterValue("scannerName");
 		$this->configName = $destination->getParameterValue("configName");
+		$this->taskVisibilityRole = $destination->getParameterValue("taskVisibilityRole");
 		
 
 		//init store for OpenVAS tasks
@@ -136,6 +141,9 @@ class ExternalSystemOpenvas implements ExternalSystem
 		$scanConfigId = $this->ompGetConfigId($ompConnection, $this->configName);
 		$scannerId = $this->ompGetScannerId($ompConnection, $this->scannerName);
 
+		//omp: get role
+		$taskRoleName = $this->ompGetRoleId($ompConnection, $this->taskVisibilityRole);
+
 		//omp: get all exististing OpenVAS tasks and targets in namespace
 		$existingTargets = $this->ompGetTargets($ompConnection);
 		$existingTasks = $this->ompGetTasks($ompConnection);
@@ -164,9 +172,14 @@ class ExternalSystemOpenvas implements ExternalSystem
 
 					//create a new target with new hostlist
 					$createTargetId = $this->ompCreateTarget($ompConnection, $existingTargetName, $createTargetHosts);
+					$this->ompCreatePermission($ompConnection, "get_targets", $createTargetId, $taskRoleName, "role");
 
 					//create a new task
-					$this->ompCreateTask($ompConnection, $existingTargetName, $createTargetId, $scannerId, $scanConfigId);
+					$createTaskId = $this->ompCreateTask($ompConnection, $existingTargetName, $createTargetId, $scannerId, $scanConfigId);
+					$this->ompCreatePermission($ompConnection, "get_tasks", $createTaskId, $taskRoleName, "role");
+					$this->ompCreatePermission($ompConnection, "start_task", $createTaskId, $taskRoleName, "role");
+					$this->ompCreatePermission($ompConnection, "stop_task", $createTaskId, $taskRoleName, "role");
+					$this->ompCreatePermission($ompConnection, "resume_task", $createTaskId, $taskRoleName, "role");
 				}
 
 				//remove target and task from lists
@@ -180,9 +193,14 @@ class ExternalSystemOpenvas implements ExternalSystem
 				$createTargetName = $taskName;
 				$createTargetHosts = $this->openvasTasks[$taskName];
 				$createTargetId = $this->ompCreateTarget($ompConnection, $createTargetName, $createTargetHosts);
+				$this->ompCreatePermission($ompConnection, "get_targets", $createTargetId, $taskRoleName, "role");
 
 				//create task
-				$this->ompCreateTask($ompConnection, $createTargetName, $createTargetId, $scannerId, $scanConfigId);
+				$createTaskId = $this->ompCreateTask($ompConnection, $createTargetName, $createTargetId, $scannerId, $scanConfigId);
+				$this->ompCreatePermission($ompConnection, "get_tasks", $createTaskId, $taskRoleName, "role");
+				$this->ompCreatePermission($ompConnection, "start_task", $createTaskId, $taskRoleName, "role");
+				$this->ompCreatePermission($ompConnection, "stop_task", $createTaskId, $taskRoleName, "role");
+				$this->ompCreatePermission($ompConnection, "resume_task", $createTaskId, $taskRoleName, "role");
 			}
 		}
 
@@ -535,6 +553,74 @@ class ExternalSystemOpenvas implements ExternalSystem
 
 		//return output
 		return $responseScannerId;
+	}
+
+	/**
+	* OMP helper: gets the ID of an role
+	* @param resource $connection	connection to OpenVAS server
+	* @param string $name		name of the role
+	* @return string		ID of the role
+	* @throws ExportExternalSystemException	if there was an error
+	*/
+	private function ompGetRoleId($connection, $name)
+	{
+		//send request
+		$requestXml = "<get_roles />";
+		$responseXml = $this->sendRequest($connection, $requestXml);
+
+		//check response
+		$responseObject = simplexml_load_string($responseXml);
+		$responseStatus = $responseObject[0]['status'];
+		if($responseStatus > 202)
+		{
+			throw new ExportExternalSystemException("Error getting role ID with OMP: $responseStatus");
+		}
+		$responseRoleId = "";
+		foreach($responseObject[0]->role as $role)
+		{
+			$roleId = (string)$role['id'];
+			$roleName = (string)$role->name[0];
+			if($roleName == $name)
+			{
+				$responseRoleId = $roleId;
+			}
+		}
+		if($responseRoleId == "")
+		{
+			throw new ExportExternalSystemException("Error getting role ID with OMP: Role $name not found");
+		}
+
+		//return output
+		return $responseRoleId;
+	}
+
+	/**
+	* OMP helper: create a permission for an OpenVAS object
+	* @param resource $connection		connection to OpenVAS server
+	* @param string $permissionName		name of the permission, e.g. create_task
+	* @param string $resourceId		resource for setting the permission
+	* @param string $subjectId		ID of user, group or role
+	* @param string $subjectType		"user", "group" or "role"
+	* @throws ExportExternalSystemException	if there was an error
+	*/
+	private function ompCreatePermission($connection, $permissionName, $resourceId, $subjectId, $subjectType)
+	{
+		//send request
+		$requestXml = "<create_permission>";
+		$requestXml.= "<name>$permissionName</name>";
+		$requestXml.= "<resource id=\"$resourceId\" />";
+		$requestXml.= "<subject id=\"$subjectId\"><type>$subjectType</type></subject>";
+		$requestXml.= "</create_permission>";
+		$responseXml = $this->sendRequest($connection, $requestXml);
+
+		//check response
+		$responseObject = simplexml_load_string($responseXml);
+		$responseStatus = $responseObject[0]['status'];
+		if($responseStatus > 202)
+		{
+			throw new ExportExternalSystemException("Error creating permission with OMP: $responseStatus");
+		}
+
 	}
 
 }
