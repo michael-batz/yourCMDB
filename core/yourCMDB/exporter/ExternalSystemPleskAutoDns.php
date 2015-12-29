@@ -69,7 +69,7 @@ class ExternalSystemPleskAutoDns implements ExternalSystem
 			throw new ExportExternalSystemException("Parameters for ExternalSystem not set correctly");
 		}
 
-		//get parameters for OpenNMS access
+		//get parameters for Plesk automation access
 		$this->pleskApiUrl = $destination->getParameterValue("pleskApiUrl");
 		$this->pleskApiUser = $destination->getParameterValue("pleskApiUser");
 		$this->pleskApiPassword = $destination->getParameterValue("pleskApiPassword");
