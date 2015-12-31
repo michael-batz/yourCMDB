@@ -47,4 +47,6 @@ new ClassLoader("Doctrine\DBAL\Migrations", "$coreBaseDir/libs/composer/vendor/d
 new ClassLoader("yourCMDB", "$coreBaseDir");
 //class loading: QR code helper class
 new ClassLoader("qrcode", "$coreBaseDir/libs");
+//class loading: FPDF
+new ClassLoader("fpdf", "$coreBaseDir/libs");
 ?>
