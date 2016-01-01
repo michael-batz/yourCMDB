@@ -32,29 +32,80 @@ class PdfLabel extends Label
 {
 	public function getContent()
 	{
-		//ToDo: create label
-		$pdf = new FPDF();
+		//ToDo: configuration options
+		$configPageHeight = 29;
+		$configPageWidth = 90;
+		$configBorderTop = 2;
+		$configBorderBottom = 2;
+		$configBorderLeft = 0;
+
+		//calculate coordinates
+		$coordXColLeft = $configBorderLeft;
+		$coordXColRight = (0.3 * ($configPageWidth - $configBorderLeft)) + $configBorderLeft;
+		$widthColLeft = $coordXColRight - $coordXColLeft;
+		$widthColRight = $configPageWidth - $coordXColRight;
+		$coordYTop = $configBorderTop;
+		$heightContent = $configPageHeight - $coordYTop - $configBorderBottom;
+
+		//PDF: start
+		$pdf = new FPDF("L", "mm", array($configPageWidth, $configPageHeight));
+		$pdf->SetAutoPageBreak(false);
+		$pdf->SetMargins(0, 0, 0);
 		$pdf->addPage();
 		$pdf->SetFont("Helvetica", "", 8);
 
-		//print QR code
+		//PDF: left column (30% width)
+		$pdf->SetXY($coordXColLeft, 0);
+
+		//PDF: print QR code (full width of left column, max 80% of height)
+		$imageLength = $widthColLeft;
+		if($imageLength > 0.8 * $configPageHeight)
+		{
+			$imageLength = 0.8 * $configPageHeight;
+		}
 		$qrCodeBase64 = "data://image/gif;base64," . base64_encode($this->contentQrCode->image(4));
-		$pdf->Image($qrCodeBase64, 0, 0, 0, 0, "GIF");
+		$pdf->Image($qrCodeBase64, $coordXColLeft, 0, $imageLength, $imageLength, "GIF");
 
-		//print assetId
-		$pdf->SetXY(40, 5);
-		$pdf->Cell(60, 5, "#".$this->contentAssetId, "B");
-		$pdf->Ln();
-		$pdf->SetX(40);
+		//PDF: print assetId
+		$pdf->SetXY($coordXColLeft, $imageLength);
+		$pdf->Cell($imageLength, 1, "#".$this->contentAssetId, 0, 0, "C");
 
-		//print summary fields
+
+		//PDF: right column (70% width)
+		$pdf->SetXY($coordXColRight, $coordYTop);
+
+		//PDF: print summary fields
+		$outputSummaryfields = "";
+		$outputSummaryfieldsCounts = 0;
+		$outputSummaryfieldsMinLineHeight = 3;
+		$outputSummaryfieldsMaxLineHeight = 6;
+		$outputSummaryfieldsMaxLines = floor($heightContent / $outputSummaryfieldsMinLineHeight);
 		foreach(array_keys($this->contentSummaryFields) as $summaryFieldName)
 		{
 			$summaryFieldValue = $this->contentSummaryFields[$summaryFieldName];
-			$pdf->Cell(60, 5, "$summaryFieldName: $summaryFieldValue");
-			$pdf->Ln();
-			$pdf->SetX(40);
+			$outputSummaryfields .= "$summaryFieldValue\n";
+			$outputSummaryfieldsCounts++;
+			//stop printing summary fields if max number of lines is reached
+			if($outputSummaryfieldsCounts >= $outputSummaryfieldsMaxLines)
+			{
+				break;
+			}
 		}
+		//calulate optimal height of output of summary fiels
+		$outputSummaryfieldsHeight = $outputSummaryfieldsMinLineHeight;
+		if($outputSummaryfieldsCounts > 0)
+		{
+			$outputSummaryfieldsHeightOpt = floor($heightContent / $outputSummaryfieldsCounts);
+			if($outputSummaryfieldsHeight < $outputSummaryfieldsHeightOpt)
+			{
+				$outputSummaryfieldsHeight = $outputSummaryfieldsHeightOpt;
+			}
+			if($outputSummaryfieldsHeight > $outputSummaryfieldsMaxLineHeight)
+			{
+				$outputSummaryfieldsHeight = $outputSummaryfieldsMaxLineHeight;
+			}
+		}
+		$pdf->MultiCell($widthColRight, $outputSummaryfieldsHeight, $outputSummaryfields);
 
 
 		//return PDF data
