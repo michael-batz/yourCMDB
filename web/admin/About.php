@@ -2,7 +2,7 @@
 /********************************************************************
 * This file is part of yourCMDB.
 *
-* Copyright 2013-2015 Michael Batz
+* Copyright 2013-2016 Michael Batz
 *
 *
 * yourCMDB is free software: you can redistribute it and/or modify
@@ -50,7 +50,7 @@
 	echo "<br />";
 	echo gettext("yourCMDB is published under GPLv3.");
 	echo "<br />";
-	echo "&copy; 2013-2015 Michael Batz";
+	echo "&copy; 2013-2016 Michael Batz";
 	echo "<br />";
 	echo "<a href=\"http://www.yourcmdb.org\">http://www.yourcmdb.org</a>";
 	echo "</p>";

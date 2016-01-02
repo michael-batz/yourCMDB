@@ -1,7 +1,7 @@
 /********************************************************************
 * This file is part of yourCMDB.
 *
-* Copyright 2013-2015 Michael Batz
+* Copyright 2013-2016 Michael Batz
 *
 *
 * yourCMDB is free software: you can redistribute it and/or modify
