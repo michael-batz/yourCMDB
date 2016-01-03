@@ -19,40 +19,21 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-namespace yourCMDB\labelprinter;
+namespace yourCMDB\printer;
 
-use yourCMDB\entities\CmdbObject;
-use yourCMDB\printer\PrinterOptions;
-use yourCMDB\printer\PrinterIpp;
+use \Exception;
 
 /**
-* LabelPrinter for yourCMDB
+* Exception, if a print job could not be finished
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class LabelPrinter
+class PrintException extends Exception
 {
 
-	//CmdbObject for creating a label
-	private $cmdbObject;
-
-	public function __construct(\yourCMDB\entities\CmdbObject $object)
+	public function __construct($message, $code = 0)
 	{
-		$this->cmdbObject = $object;
+        	parent::__construct($message, $code);
 	}
 
-	public function getLabel()
-	{
-		//ToDo: define format and output options
-		$label = new PdfLabel($this->cmdbObject);
-
-		//ToDO: make configurable
-		$printerOptions = new PrinterOptions();
-		$printerOptions->addOption("url", "http://localhost:631/printers/PDF");
-		$printer = new PrinterIpp($printerOptions);
-		$printer->printData($label->getContent());
-
-		//return label data
-		return $label->getContent();
-	}
 }
 ?>

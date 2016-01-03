@@ -19,40 +19,48 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-namespace yourCMDB\labelprinter;
-
-use yourCMDB\entities\CmdbObject;
-use yourCMDB\printer\PrinterOptions;
-use yourCMDB\printer\PrinterIpp;
+namespace yourCMDB\printer;
 
 /**
-* LabelPrinter for yourCMDB
+* Options for a Printer object in yourCMDB
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class LabelPrinter
+class PrinterOptions
 {
+	//array with printer options
+	private $printerOptions;
 
-	//CmdbObject for creating a label
-	private $cmdbObject;
-
-	public function __construct(\yourCMDB\entities\CmdbObject $object)
+	/**
+	* Creates a new, empty PrinterOptions object
+	*/
+	public function __construct()
 	{
-		$this->cmdbObject = $object;
+		$this->printerOptions = Array();
 	}
 
-	public function getLabel()
+	/**
+	* Adds a new option
+	* @param string $key	key of the option
+	* @param string $value	value of the option
+	*/
+	public function addOption($key, $value)
 	{
-		//ToDo: define format and output options
-		$label = new PdfLabel($this->cmdbObject);
+		$this->printerOptions[$key] = $value;
+	}
 
-		//ToDO: make configurable
-		$printerOptions = new PrinterOptions();
-		$printerOptions->addOption("url", "http://localhost:631/printers/PDF");
-		$printer = new PrinterIpp($printerOptions);
-		$printer->printData($label->getContent());
-
-		//return label data
-		return $label->getContent();
+	/**
+	* Returns the value for the given option or an empty string, if option does not exist
+	* @param string $key	key of the option
+	* @return string	value of the given option or an empty string
+	*/
+	public function getOption($key)
+	{
+		$output = "";
+		if(isset($this->printerOptions[$key]))
+		{
+			$output = $this->printerOptions[$key];
+		}
+		return $output;
 	}
 }
 ?>

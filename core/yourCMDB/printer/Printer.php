@@ -19,40 +19,29 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-namespace yourCMDB\labelprinter;
-
-use yourCMDB\entities\CmdbObject;
-use yourCMDB\printer\PrinterOptions;
-use yourCMDB\printer\PrinterIpp;
+namespace yourCMDB\printer;
 
 /**
-* LabelPrinter for yourCMDB
+* Printer for yourCMDB
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class LabelPrinter
+abstract class Printer
 {
+	//Options for the printer to use
+	protected $printerOptions;
 
-	//CmdbObject for creating a label
-	private $cmdbObject;
-
-	public function __construct(\yourCMDB\entities\CmdbObject $object)
+	/**
+	* Creates a new printer object using the given printer options
+	*/
+	public function __construct(\yourCMDB\printer\PrinterOptions $printerOptions)
 	{
-		$this->cmdbObject = $object;
+		$this->printerOptions = $printerOptions;
 	}
 
-	public function getLabel()
-	{
-		//ToDo: define format and output options
-		$label = new PdfLabel($this->cmdbObject);
-
-		//ToDO: make configurable
-		$printerOptions = new PrinterOptions();
-		$printerOptions->addOption("url", "http://localhost:631/printers/PDF");
-		$printer = new PrinterIpp($printerOptions);
-		$printer->printData($label->getContent());
-
-		//return label data
-		return $label->getContent();
-	}
+	/**
+	* Sends the given data to the printer for printing
+	* @param string $data	data for printing
+	*/
+	public abstract function printData($data);
 }
 ?>
