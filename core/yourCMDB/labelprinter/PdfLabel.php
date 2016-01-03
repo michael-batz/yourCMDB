@@ -82,7 +82,8 @@ class PdfLabel extends Label
 		$outputSummaryfieldsMaxLines = floor($heightContent / $outputSummaryfieldsMinLineHeight);
 		foreach(array_keys($this->contentSummaryFields) as $summaryFieldName)
 		{
-			$summaryFieldValue = $this->contentSummaryFields[$summaryFieldName];
+			//only ISO8859-1 is supported with PDFs default fonts
+			$summaryFieldValue = utf8_decode($this->contentSummaryFields[$summaryFieldName]);
 			$outputSummaryfields .= "$summaryFieldValue\n";
 			$outputSummaryfieldsCounts++;
 			//stop printing summary fields if max number of lines is reached
