@@ -38,6 +38,7 @@ class PdfLabel extends Label
 		$configBorderTop = 2;
 		$configBorderBottom = 2;
 		$configBorderLeft = 0;
+		$configPageRotation = 90;
 
 		//calculate coordinates
 		$coordXColLeft = $configBorderLeft;
@@ -48,10 +49,10 @@ class PdfLabel extends Label
 		$heightContent = $configPageHeight - $coordYTop - $configBorderBottom;
 
 		//PDF: start
-		$pdf = new FPDF("L", "mm", array($configPageWidth, $configPageHeight));
+		$pdf = new FPDF();
 		$pdf->SetAutoPageBreak(false);
 		$pdf->SetMargins(0, 0, 0);
-		$pdf->addPage();
+		$pdf->addPage("L", array($configPageWidth, $configPageHeight), $configPageRotation);
 		$pdf->SetFont("Helvetica", "", 8);
 
 		//PDF: left column (30% width)
