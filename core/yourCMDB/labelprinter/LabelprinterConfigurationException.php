@@ -21,44 +21,19 @@
 *********************************************************************/
 namespace yourCMDB\labelprinter;
 
-use yourCMDB\config\CmdbConfig;
-use yourCMDB\entities\CmdbObject;
-use yourCMDB\printer\PrinterOptions;
-use yourCMDB\printer\PrinterIpp;
+use \Exception;
 
 /**
-* LabelPrinter for yourCMDB
+* Exception, if there is a problem in configuration of LabelPrinterAPI
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class LabelPrinter
+class LabelprinterConfigurationException extends Exception
 {
 
-	//CmdbObject for creating a label
-	private $cmdbObject;
-
-	public function __construct(\yourCMDB\entities\CmdbObject $object)
+	public function __construct($message, $code = 0)
 	{
-		$this->cmdbObject = $object;
+        	parent::__construct($message, $code);
 	}
 
-	public function getLabel()
-	{
-		//ToDo: make labelprinter name variable, error handling
-		$labelprinterName = "Default";
-
-		//get label and printer objects
-		$config = CmdbConfig::create();
-		$label = $config->getLabelprinterConfig()->getLabelObject($labelprinterName);
-		$printer = $config->getLabelprinterConfig()->getPrinterObject($labelprinterName);
-
-		//init label
-		$label->init($this->cmdbObject);
-
-		//print label
-		$printer->printData($label->getContent());
-
-		//return label data
-		return $label->getContent();
-	}
 }
 ?>

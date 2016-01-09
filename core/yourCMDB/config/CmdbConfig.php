@@ -51,6 +51,9 @@ class CmdbConfig
 	//security configuration
 	private $configSecurity;
 
+	//labelprinter configuration
+	private $configLabelprinter;
+
 	//CmdbConfig object (for singleton pattern)
 	private static $cmdbConfig;
 
@@ -83,6 +86,7 @@ class CmdbConfig
 		$this->configExporter = new ExporterConfig("$configurationBase/exporter-configuration.xml");
 		$this->configTaskScheduler = new TaskSchedulerConfig("$configurationBase/taskscheduler-configuration.xml");
 		$this->configSecurity = new SecurityConfig("$configurationBase/security-configuration.xml");
+		$this->configLabelprinter = new LabelprinterConfig("$configurationBase/labelprinter-configuration.xml");
 	}
 
 
@@ -140,6 +144,14 @@ class CmdbConfig
 	public function getSecurityConfig()
 	{
 		return $this->configSecurity;
+	}
+
+	/**
+	* Returns a LabelprinterConfig object
+	*/
+	public function getLabelprinterConfig()
+	{
+		return $this->configLabelprinter;
 	}
 
 }

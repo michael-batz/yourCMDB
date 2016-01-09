@@ -31,6 +31,9 @@ use qrcode\QR;
 */
 abstract class Label
 {
+	//options for creating a label
+	protected $labelOptions;
+
 	//CmdbObject for creating a label
 	protected $cmdbObject;
 
@@ -43,7 +46,16 @@ abstract class Label
 	//label content: QR code object
 	protected $contentQrCode;
 
-	public function __construct(\yourCMDB\entities\CmdbObject $object)
+	public function __construct(LabelOptions $labelOptions)
+	{
+		$this->labelOptions = $labelOptions;
+	}
+
+	/**
+	* Initialize the label with a CmdbObject to print
+	* @param \yourCMDB\entities\CmdbObject $object	object to create label for
+	*/
+	public function init(\yourCMDB\entities\CmdbObject $object)
 	{
 		$this->cmdbObject = $object;
 

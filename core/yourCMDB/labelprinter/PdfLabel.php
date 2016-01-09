@@ -32,13 +32,13 @@ class PdfLabel extends Label
 {
 	public function getContent()
 	{
-		//ToDo: configuration options
-		$configPageHeight = 29;
-		$configPageWidth = 90;
-		$configBorderTop = 2;
-		$configBorderBottom = 2;
-		$configBorderLeft = 0;
-		$configPageRotation = 90;
+		//get configuration options
+		$configPageHeight = $this->labelOptions->getOption("PageHeight", "29");
+		$configPageWidth = $this->labelOptions->getOption("PageWidth", "90");
+		$configPageRotation = $this->labelOptions->getOption("PageRotation", "0");
+		$configBorderTop = $this->labelOptions->getOption("BorderTop", "2");
+		$configBorderBottom = $this->labelOptions->getOption("BorderBottom", "2");
+		$configBorderLeft = $this->labelOptions->getOption("BorderLeft", "2");
 
 		//calculate coordinates
 		$coordXColLeft = $configBorderLeft;

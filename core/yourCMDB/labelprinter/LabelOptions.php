@@ -21,44 +21,47 @@
 *********************************************************************/
 namespace yourCMDB\labelprinter;
 
-use yourCMDB\config\CmdbConfig;
-use yourCMDB\entities\CmdbObject;
-use yourCMDB\printer\PrinterOptions;
-use yourCMDB\printer\PrinterIpp;
-
 /**
-* LabelPrinter for yourCMDB
+* Options for a Label object in yourCMDB
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class LabelPrinter
+class LabelOptions
 {
+	//array with label options
+	private $labelOptions;
 
-	//CmdbObject for creating a label
-	private $cmdbObject;
-
-	public function __construct(\yourCMDB\entities\CmdbObject $object)
+	/**
+	* Creates a new, empty LabelOptions object
+	*/
+	public function __construct()
 	{
-		$this->cmdbObject = $object;
+		$this->labelOptions = Array();
 	}
 
-	public function getLabel()
+	/**
+	* Adds a new option
+	* @param string $key	key of the option
+	* @param string $value	value of the option
+	*/
+	public function addOption($key, $value)
 	{
-		//ToDo: make labelprinter name variable, error handling
-		$labelprinterName = "Default";
+		$this->labelOptions[$key] = $value;
+	}
 
-		//get label and printer objects
-		$config = CmdbConfig::create();
-		$label = $config->getLabelprinterConfig()->getLabelObject($labelprinterName);
-		$printer = $config->getLabelprinterConfig()->getPrinterObject($labelprinterName);
-
-		//init label
-		$label->init($this->cmdbObject);
-
-		//print label
-		$printer->printData($label->getContent());
-
-		//return label data
-		return $label->getContent();
+	/**
+	* Returns the value for the given option or the default value, if option does not exist
+	* @param string $key		key of the option
+	* @param string $defaultValue	default value of the option
+	* @return string	value of the given option or default value
+	*/
+	public function getOption($key, $defaultValue)
+	{
+		$output = $defaultValue;
+		if(isset($this->labelOptions[$key]))
+		{
+			$output = $this->labelOptions[$key];
+		}
+		return $output;
 	}
 }
 ?>
