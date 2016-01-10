@@ -115,6 +115,33 @@ function cmdbRemoveElement(id)
 };
 
 /**
+* Executes an action by opening a URL and returns status in messagebar
+*/
+function cmdbAjaxActionWithStatus(url)
+{
+	$.get(url, function(data)
+	{
+		var result = $.parseJSON(data);
+		var statusCode = result.status;
+		var statusMessage = result.status_message;
+		var selector;
+		var selectorMessage;
+		if(statusCode == 0)
+		{
+			selector = '#cmdbMessagebarSuccess';
+		}
+		else
+		{
+			selector = '#cmdbMessagebarFailure';
+		}
+		selectorMessage = selector + ' > .cmdb-message';
+
+		$( selectorMessage ).html(statusMessage);
+		$( selector ).removeClass('cmdb-blind');
+	});
+}
+
+/**
 * add access right entry
 */
 function cmdbAdminAuthorisationEditGroupAddEntry(id)

@@ -23,11 +23,9 @@ namespace yourCMDB\labelprinter;
 
 use yourCMDB\config\CmdbConfig;
 use yourCMDB\entities\CmdbObject;
-use yourCMDB\printer\PrinterOptions;
-use yourCMDB\printer\PrinterIpp;
 
 /**
-* LabelPrinter for yourCMDB
+* Prints a summary of a CMDB object on a configured LabelPrinter
 * @author Michael Batz <michael@yourcmdb.org>
 */
 class LabelPrinter
@@ -36,29 +34,52 @@ class LabelPrinter
 	//CmdbObject for creating a label
 	private $cmdbObject;
 
-	public function __construct(\yourCMDB\entities\CmdbObject $object)
-	{
-		$this->cmdbObject = $object;
-	}
+	//name of the labelprinter
+	private $labelprinterName;
 
-	public function getLabel()
+	//label object
+	private $label;
+
+	//printer object
+	private $printer;
+
+	/**
+	* creates a new label printer
+	* @param CmdbObject $object		CmdbObject to print the label for
+	* @param string $labelprinterName	name of the configured labelprinter
+	* @throws LabelprinterConfigurationException if there is no configured label printer with the given name 
+	*/
+	public function __construct(\yourCMDB\entities\CmdbObject $object, $labelprinterName)
 	{
-		//ToDo: make labelprinter name variable, error handling
-		$labelprinterName = "Default";
+		//init variables
+		$this->cmdbObject = $object;
+		$this->labelprinterName = $labelprinterName;
 
 		//get label and printer objects
 		$config = CmdbConfig::create();
-		$label = $config->getLabelprinterConfig()->getLabelObject($labelprinterName);
-		$printer = $config->getLabelprinterConfig()->getPrinterObject($labelprinterName);
+		$this->label = $config->getLabelprinterConfig()->getLabelObject($this->labelprinterName);
+		$this->printer = $config->getLabelprinterConfig()->getPrinterObject($this->labelprinterName);
 
 		//init label
-		$label->init($this->cmdbObject);
+		$this->label->init($this->cmdbObject);
+	}
 
+	/**
+	* prints the label on the configured printer
+	*/
+	public function printLabel()
+	{
 		//print label
-		$printer->printData($label->getContent());
+		$this->printer->printData($this->label->getContent());
+	}
 
-		//return label data
-		return $label->getContent();
+	/**
+	* returns the label content as string
+	* @return string	label content
+	*/
+	public function getLabelContent()
+	{
+		return $this->label->getContent();
 	}
 }
 ?>

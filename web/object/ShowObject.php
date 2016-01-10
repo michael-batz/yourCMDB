@@ -33,6 +33,7 @@
 	$objectLogEntries = $objectLogController->getLogEntries($object, 31, 0, $authUser);
 	$objectEvents = $config->getObjectTypeConfig()->getObjectEvents($object->getType());
 	$objectExternalLinks = $config->getObjectTypeConfig()->getObjectLinks($object->getType());
+	$objectLabelPrinters = $config->getLabelprinterConfig()->getLabelprinterNames();
 
 	//create output strings
 	$urlList = "object.php?action=list&amp;type=".$object->getType();
@@ -41,6 +42,7 @@
 	$urlEdit = "object.php?action=edit&amp;type=".$object->getType()."&amp;id=".$object->getId();
 	$urlDelete = "object.php?action=delete&amp;id=".$object->getId();
 	$urlQrCode = $config->getViewConfig()->getQrCodeUrlPrefix() .$object->getId();
+	$urlLabelPrinting = "object/ShowObjectLabel.php?id=".$object->getId()."&amp;";
 	$statusImage = "<span class=\"label label-success\" title=\"".gettext("active object")."\">A</span>";
 	if($object->getStatus() == 'N')
 	{
@@ -88,13 +90,25 @@
 
 
 	//<!-- submenu  -->
-	echo "<div class=\"submenu\">";
-	echo "<a href=\"$urlList\"><span class=\"glyphicon glyphicon-th-list\"></span>".gettext("object list")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlNew\"><span class=\"glyphicon glyphicon-plus\"></span>".gettext("add new object")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlDuplicate\"><span class=\"glyphicon glyphicon-forward\"></span>".gettext("duplicate")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"$urlEdit\"><span class=\"glyphicon glyphicon-pencil\"></span>".gettext("edit")."</a>&nbsp;&nbsp;|&nbsp;&nbsp;";
-	echo "<a href=\"#\" data-toggle=\"modal\" data-target=\"#confirmDelete\"><span class=\"glyphicon glyphicon-trash\"></span>".gettext("delete")."</a>";
-	echo "</div>";
+	echo "<ul class=\"nav nav-pills\">";
+	echo "<li><a href=\"$urlList\"><span class=\"glyphicon glyphicon-th-list\"></span>".gettext("object list")."</a></li>";
+	echo "<li><a href=\"$urlNew\"><span class=\"glyphicon glyphicon-plus\"></span>".gettext("add new object")."</a></li>";
+	echo "<li><a href=\"$urlDuplicate\"><span class=\"glyphicon glyphicon-forward\"></span>".gettext("duplicate")."</a></li>";
+	echo "<li><a href=\"$urlEdit\"><span class=\"glyphicon glyphicon-pencil\"></span>".gettext("edit")."</a></li>";
+	echo "<li><a href=\"#\" data-toggle=\"modal\" data-target=\"#confirmDelete\"><span class=\"glyphicon glyphicon-trash\"></span>".gettext("delete")."</a></li>";
+	echo "<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">";
+        echo "<span class=\"glyphicon glyphicon-print\"></span>".gettext("print label")."<span class=\"caret\"></span></a>";
+	echo "<ul class=\"dropdown-menu\">";
+	echo "<li><a href=\"#\"><span class=\"glyphicon glyphicon-open-file\"></span>".gettext("show as PDF")."</a></li>";
+	foreach($objectLabelPrinters  as $objectLabelPrinter)
+	{
+		$urlLabelPrinting .= "labelprinter=$objectLabelPrinter";
+		$urlLabelPrintingJs = "javascript:cmdbAjaxActionWithStatus('$urlLabelPrinting', 'messagebar')";
+		echo "<li><a href=\"$urlLabelPrintingJs\"><span class=\"glyphicon glyphicon-print\"></span>".gettext("print on ")."$objectLabelPrinter</a></li>";
+	}
+	echo "</ul>";
+	echo "</li>";
+	echo "</ul>";
 
 	//print messagebar
 	include "include/messagebar.inc.php";

@@ -31,23 +31,65 @@
 	include "../include/auth.inc.php";
 
 	use yourCMDB\labelprinter\LabelPrinter;
+	use yourCMDB\labelprinter\LabelprinterConfigurationException;
+	use yourCMDB\printer\exceptions\PrinterNotFoundException;
+	use yourCMDB\printer\exceptions\PrintUnauthorizedException;
+	use yourCMDB\printer\exceptions\PrinterErrorException;
+	use yourCMDB\printer\exceptions\PrintException;
 
 	//get parameters
 	$paramId = getHttpGetVar("id", 0);
+	$paramAction = getHttpGetVar("action", "print");
+	$paramLabelprinter = getHttpGetVar("labelprinter", "");
 
-	//try to load object and print label
-	try
-	{
-		$object= $objectController->getObject($paramId, $authUser);
-		$labelPrinter = new LabelPrinter($object);
+	$status = 0;
+	$statusMessage = "";
 
-		//ToDo: set correct header options
-		header("content-type: application/pdf");
-		echo $labelPrinter->getLabel();
-	}
-	catch(Exception $e)
+	switch($paramAction)
 	{
-		//ToDo: error handling
-		error_log($e->getMessage());
+		case "print":
+			try
+			{
+				//print label on labelprinter
+				$object= $objectController->getObject($paramId, $authUser);
+				$labelPrinter = new LabelPrinter($object, $paramLabelprinter);
+				$labelPrinter->printLabel();
+				$status = 0;
+				$statusMessage = gettext("Label successfully printed on $paramLabelprinter");
+			}
+			catch(LabelprinterConfigurationException $e)
+			{
+				$status = 1;
+				$statusMessage = gettext("Labelprinter with name $paramLabelprinter not found");
+			}
+			catch(PrinterNotFoundException $e)
+			{
+				$status = 1;
+				$statusMessage = gettext("Error printing label on $paramLabelprinter. The configured printer could not be found.");
+			}
+			catch(PrintUnauthorizedException $e)
+			{
+				$status = 1;
+				$statusMessage = gettext("Error printing label on $paramLabelprinter. Insufficient rights for printing on that device.");
+			}
+			catch(PrinterErrorException $e)
+			{
+				$status = 1;
+				$statusMessage = gettext("Error printing label on $paramLabelprinter. There was a problem with the printer device.");
+			}
+			catch(PrintException $e)
+			{
+				$status = 1;
+				$statusMessage = gettext("Error printing label on $paramLabelprinter. Internal Error.");
+			}
+		break;
 	}
+
+	//create output JSON
+	$result = Array();
+	$result['status'] = $status;
+	$result['status_message'] = $statusMessage;
+
+	//return output
+	echo json_encode($result);
 ?>
