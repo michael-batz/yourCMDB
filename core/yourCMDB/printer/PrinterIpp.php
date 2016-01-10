@@ -21,6 +21,11 @@
 *********************************************************************/
 namespace yourCMDB\printer;
 
+use yourCMDB\printer\exceptions\PrinterErrorException;
+use yourCMDB\printer\exceptions\PrinterNotFoundException;
+use yourCMDB\printer\exceptions\PrintException;
+use yourCMDB\printer\exceptions\PrintUnauthorizedException;
+
 /**
 * Printer using the Internet Printing Protocol (IPP)
 * @author Michael Batz <michael@yourcmdb.org>
@@ -29,14 +34,10 @@ class PrinterIpp extends Printer
 {
 	public function printData($data)
 	{
-		//read configuration
-		$configUrl = $this->printerOptions->getOption("url");
-		if($configUrl == "")
-		{
-			throw new PrintException("Printer URL was not configured");
-		}
+		//get configuration
+		$configUrl = $this->printerOptions->getOption("url", "http://localhost:631/printers/PDF");
 
-		//ToDo: Error handling, document-format
+		//ToDo: document-format
 		//print data
 		$this->ippPrint($data, $configUrl);
 	}
@@ -78,7 +79,50 @@ class PrinterIpp extends Printer
 		);
 		curl_setopt_array($curl, $curlOptions);
 		$result = curl_exec($curl);
+		$httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+		if($result === false || $httpStatus != 200)
+		{
+			throw new PrinterNotFoundException("Error communicating with IPP server");
+		}
+		$ippStatus = $this->ippGetStatusCode($result);
 		curl_close($curl);
+
+		//check return status
+		switch($ippStatus)
+		{
+			case "0":
+			case "1":
+			case "2":
+				return true;
+				break;
+
+			case "406":
+			case "407":
+				throw new PrinterNotFoundException("Printer not found");
+				break;
+
+			case "401":
+			case "402":
+			case "403":
+				throw new PrintUnauthorizedException("Unauthroized");
+				break;
+
+			case "502":
+			case "504":
+			case "505":
+			case "506":
+			case "507":
+			case "508":
+				throw new PrinterErrorException("Device Error");
+
+			default:
+				throw new PrintException("Internal Error");
+				break;
+		}
+
+		return true;
+		
 	}
 
 	/**
@@ -170,6 +214,21 @@ class PrinterIpp extends Printer
 
 		$output = chr($int2) . chr($int1);
 		return $output;
+	}
+
+	/**
+	* IPP helper function: get status code for the given response
+	* @param string	$responseString		Response from IPP server as string
+	* @return string			Status code (hex) as string
+	*/
+	private function ippGetStatusCode($responseString)
+	{
+		//decode IPP response
+		$ippData = unpack("cversion_major/cversion_minor/nstatus", $responseString);
+		$ippStatusCode = dechex($ippData['status']);
+
+		//return status code
+		return $ippStatusCode;
 	}
 
 }

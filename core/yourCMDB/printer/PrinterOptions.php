@@ -49,13 +49,14 @@ class PrinterOptions
 	}
 
 	/**
-	* Returns the value for the given option or an empty string, if option does not exist
-	* @param string $key	key of the option
-	* @return string	value of the given option or an empty string
+	* Returns the value for the given option or the default value, if option does not exist
+	* @param string $key		key of the option
+	* @param string $defaultValue	default value of the option
+	* @return string		value of the given option or the default value
 	*/
-	public function getOption($key)
+	public function getOption($key, $defaultValue)
 	{
-		$output = "";
+		$output = $defaultValue;
 		if(isset($this->printerOptions[$key]))
 		{
 			$output = $this->printerOptions[$key];

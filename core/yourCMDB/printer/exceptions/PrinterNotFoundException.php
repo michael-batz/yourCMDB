@@ -19,35 +19,21 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
+namespace yourCMDB\printer\exceptions;
+
+use \Exception;
 
 /**
-* WebUI element: show label of a CmdbObject
-* loaded directly
+* Exception, if a printer could not be found
 * @author Michael Batz <michael@yourcmdb.org>
 */
+class PrinterNotFoundException extends Exception
+{
 
-	//include base functions and search form
-	include "../include/bootstrap-web.php";
-	include "../include/auth.inc.php";
-
-	use yourCMDB\labelprinter\LabelPrinter;
-
-	//get parameters
-	$paramId = getHttpGetVar("id", 0);
-
-	//try to load object and print label
-	try
+	public function __construct($message, $code = 0)
 	{
-		$object= $objectController->getObject($paramId, $authUser);
-		$labelPrinter = new LabelPrinter($object);
+        	parent::__construct($message, $code);
+	}
 
-		//ToDo: set correct header options
-		header("content-type: application/pdf");
-		echo $labelPrinter->getLabel();
-	}
-	catch(Exception $e)
-	{
-		//ToDo: error handling
-		error_log($e->getMessage());
-	}
+}
 ?>

@@ -19,15 +19,15 @@
 * along with yourCMDB.  If not, see <http://www.gnu.org/licenses/>.
 *
 *********************************************************************/
-namespace yourCMDB\printer;
+namespace yourCMDB\printer\exceptions;
 
 use \Exception;
 
 /**
-* Exception, if a print job could not be finished
+* Exception, if there was an error with the printer device
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class PrintException extends Exception
+class PrinterErrorException extends Exception
 {
 
 	public function __construct($message, $code = 0)
