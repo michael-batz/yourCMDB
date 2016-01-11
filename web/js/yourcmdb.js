@@ -117,27 +117,40 @@ function cmdbRemoveElement(id)
 /**
 * Executes an action by opening a URL and returns status in messagebar
 */
-function cmdbAjaxActionWithStatus(url)
+function cmdbAjaxActionWithStatus(url, selectorMessagebar)
 {
 	$.get(url, function(data)
 	{
+		//get JSON data
 		var result = $.parseJSON(data);
 		var statusCode = result.status;
 		var statusMessage = result.status_message;
-		var selector;
-		var selectorMessage;
+		var statusClass;
 		if(statusCode == 0)
 		{
-			selector = '#cmdbMessagebarSuccess';
+			statusClass = 'alert-success';
 		}
 		else
 		{
-			selector = '#cmdbMessagebarFailure';
+			statusClass = 'alert-danger';
 		}
-		selectorMessage = selector + ' > .cmdb-message';
 
-		$( selectorMessage ).html(statusMessage);
-		$( selector ).removeClass('cmdb-blind');
+		//clone template
+		var selectorMessagebarTemplate = selectorMessagebar + '> .cmdb-template';
+		var newMessage = $( selectorMessagebarTemplate ).clone();
+
+		//change copy of message template
+		newMessage.addClass(statusClass);
+		newMessage.removeClass('cmdb-template');
+		newMessage.removeClass('cmdb-blind');
+		newMessage.find('.cmdb-message').html(statusMessage);
+
+		//remove all old messages from message bar
+		$( selectorMessagebar + ' > .alert-success').remove();
+		$( selectorMessagebar + ' > .alert-danger').remove();
+
+		//add copy of message to message bar
+		newMessage.appendTo( selectorMessagebar );
 	});
 }
 

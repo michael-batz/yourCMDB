@@ -26,15 +26,8 @@
 */
 	echo "<div id=\"messagebar\">";
 
-	//success message template for ajax functions	
-	echo "<div class=\"alert alert-success alert-dismissbile cmdb-blind\" id=\"cmdbMessagebarSuccess\" role=\"alert\">";
-	echo "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"".gettext("close")."\">";
-	echo "<span aria-hidden=\"true\">&times;</span></button>";
-	echo "<span class=\"cmdb-message\"></span>";
-	echo "</div>";
-
-	//failure message template for ajax functions	
-	echo "<div class=\"alert alert-danger alert-dismissbile cmdb-blind\" id=\"cmdbMessagebarFailure\" role=\"alert\">";
+	//message template for ajax functions	
+	echo "<div class=\"alert alert-dismissbile cmdb-template cmdb-blind\" role=\"alert\">";
 	echo "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"".gettext("close")."\">";
 	echo "<span aria-hidden=\"true\">&times;</span></button>";
 	echo "<span class=\"cmdb-message\"></span>";

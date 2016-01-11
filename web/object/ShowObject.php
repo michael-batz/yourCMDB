@@ -103,7 +103,7 @@
 	foreach($objectLabelPrinters  as $objectLabelPrinter)
 	{
 		$urlLabelPrinting .= "labelprinter=$objectLabelPrinter";
-		$urlLabelPrintingJs = "javascript:cmdbAjaxActionWithStatus('$urlLabelPrinting', 'messagebar')";
+		$urlLabelPrintingJs = "javascript:cmdbAjaxActionWithStatus('$urlLabelPrinting', '#messagebar')";
 		echo "<li><a href=\"$urlLabelPrintingJs\"><span class=\"glyphicon glyphicon-print\"></span>".gettext("print on ")."$objectLabelPrinter</a></li>";
 	}
 	echo "</ul>";
