@@ -33,7 +33,8 @@
 	$objectLogEntries = $objectLogController->getLogEntries($object, 31, 0, $authUser);
 	$objectEvents = $config->getObjectTypeConfig()->getObjectEvents($object->getType());
 	$objectExternalLinks = $config->getObjectTypeConfig()->getObjectLinks($object->getType());
-	$objectLabelPrinters = $config->getLabelprinterConfig()->getLabelprinterNames();
+	$objectLabelPrintersPrint = $config->getLabelprinterConfig()->getLabelprinterNamesForPrinting();
+	$objectLabelPrintersShow = $config->getLabelprinterConfig()->getLabelprinterNamesForShowing();
 
 	//create output strings
 	$urlList = "object.php?action=list&amp;type=".$object->getType();
@@ -42,7 +43,7 @@
 	$urlEdit = "object.php?action=edit&amp;type=".$object->getType()."&amp;id=".$object->getId();
 	$urlDelete = "object.php?action=delete&amp;id=".$object->getId();
 	$urlQrCode = $config->getViewConfig()->getQrCodeUrlPrefix() .$object->getId();
-	$urlLabelPrinting = "object/ShowObjectLabel.php?id=".$object->getId()."&amp;";
+	$urlLabelPrinting = "objectlabel.php?id=".$object->getId()."&amp;";
 	$statusImage = "<span class=\"label label-success\" title=\"".gettext("active object")."\">A</span>";
 	if($object->getStatus() == 'N')
 	{
@@ -99,11 +100,18 @@
 	echo "<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">";
         echo "<span class=\"glyphicon glyphicon-print\"></span>".gettext("print label")."<span class=\"caret\"></span></a>";
 	echo "<ul class=\"dropdown-menu\">";
-	echo "<li><a href=\"#\"><span class=\"glyphicon glyphicon-open-file\"></span>".gettext("show as PDF")."</a></li>";
-	foreach($objectLabelPrinters  as $objectLabelPrinter)
+	//label printer show
+	foreach($objectLabelPrintersShow  as $objectLabelPrinter)
 	{
-		$urlLabelPrinting .= "labelprinter=$objectLabelPrinter";
-		$urlLabelPrintingJs = "javascript:cmdbAjaxActionWithStatus('$urlLabelPrinting', '#messagebar')";
+		$urlLabelPrintingEntry = $urlLabelPrinting ."action=show&amp;labelprinter=$objectLabelPrinter";
+		echo "<li><a href=\"$urlLabelPrintingEntry\" target=\"_blank\">";
+		echo "<span class=\"glyphicon glyphicon-open-file\"></span>".gettext("show as ")."$objectLabelPrinter</a></li>";
+	}
+	//label printer print
+	foreach($objectLabelPrintersPrint  as $objectLabelPrinter)
+	{
+		$urlLabelPrintingEntry = $urlLabelPrinting ."action=print&amp;labelprinter=$objectLabelPrinter";
+		$urlLabelPrintingJs = "javascript:cmdbAjaxActionWithStatus('$urlLabelPrintingEntry', '#messagebar')";
 		echo "<li><a href=\"$urlLabelPrintingJs\"><span class=\"glyphicon glyphicon-print\"></span>".gettext("print on ")."$objectLabelPrinter</a></li>";
 	}
 	echo "</ul>";

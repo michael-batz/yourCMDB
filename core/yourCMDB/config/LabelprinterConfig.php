@@ -31,8 +31,11 @@ use yourCMDB\labelprinter\LabelprinterConfigurationException;
 */
 class LabelprinterConfig
 {
-	//array with configured labelprinter names
-	private $labelprinters;
+	//array with configured labelprinter names for printing
+	private $labelprintersPrint;
+
+	//array with configured labelprinter names for showing labels
+	private $labelprintersShow;
 
 	//array with Label objects: format labelprintername -> Label
 	private $labels;
@@ -46,7 +49,8 @@ class LabelprinterConfig
 	public function __construct($xmlfile)
 	{
 		//initialize arrays
-		$this->labelprinters = Array();
+		$this->labelprintersPrint = Array();
+		$this->labelprintersShow = Array();
 		$this->labels = Array();
 		$this->printer = Array();
 		
@@ -54,9 +58,8 @@ class LabelprinterConfig
 		$xmlobject = simplexml_load_file($xmlfile);
 		foreach($xmlobject->xpath('//labelprinter') as $labelprinter)
 		{
-			//save labelprinter name
+			//get labelprinter name
 			$labelprinterName = (string) $labelprinter['name'];
-			$this->labelprinters[] = $labelprinterName;
 
 			//create Label objects
 			foreach($labelprinter[0]->label as $label)
@@ -85,16 +88,35 @@ class LabelprinterConfig
 				}
 				$this->printer[$labelprinterName] = new $printerClass($printerOptions);
 			}
+
+			//save labelprinter name
+			if(isset($this->printer[$labelprinterName]))
+			{
+				$this->labelprintersPrint[] = $labelprinterName;
+			}
+			else
+			{
+				$this->labelprintersShow[] = $labelprinterName;
+			}
 		}
 	}
 
 	/**
-	* Returns an array with names of all configured labelprinters
+	* Returns an array with names of all configured labelprinters which are used to print labels on a printer
 	* @return array 	Array with names of all configured labelprinters
 	*/
-	public function getLabelprinterNames()
+	public function getLabelprinterNamesForPrinting()
 	{
-		return $this->labelprinters;
+		return $this->labelprintersPrint;
+	}
+
+	/**
+	* Returns an array with names of all configured labelprinters which are used to show labels on WebUI
+	* @return array 	Array with names of all configured labelprinters
+	*/
+	public function getLabelprinterNamesForShowing()
+	{
+		return $this->labelprintersShow;
 	}
 
 	/**

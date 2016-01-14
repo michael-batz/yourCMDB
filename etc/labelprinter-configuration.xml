@@ -1,4 +1,14 @@
 <labelprinter-configuration>
+	<labelprinter name="PDF">
+		<label class="PdfLabel">
+			<parameter key="PageHeight" value="29" />
+			<parameter key="PageWidth" value="90" />
+			<parameter key="PageRotation" value="90" />
+			<parameter key="BorderTop" value="2" />
+			<parameter key="BorderBottom" value="2" />
+			<parameter key="BorderLeft" value="0" />
+		</label>
+	</labelprinter>
 	<labelprinter name="Default">
 		<label class="PdfLabel">
 			<parameter key="PageHeight" value="29" />

@@ -40,9 +40,6 @@ class LabelPrinter
 	//label object
 	private $label;
 
-	//printer object
-	private $printer;
-
 	/**
 	* creates a new label printer
 	* @param CmdbObject $object		CmdbObject to print the label for
@@ -55,10 +52,9 @@ class LabelPrinter
 		$this->cmdbObject = $object;
 		$this->labelprinterName = $labelprinterName;
 
-		//get label and printer objects
+		//get label object
 		$config = CmdbConfig::create();
 		$this->label = $config->getLabelprinterConfig()->getLabelObject($this->labelprinterName);
-		$this->printer = $config->getLabelprinterConfig()->getPrinterObject($this->labelprinterName);
 
 		//init label
 		$this->label->init($this->cmdbObject);
@@ -66,11 +62,14 @@ class LabelPrinter
 
 	/**
 	* prints the label on the configured printer
+	* @throws LabelprinterConfigurationException if there is no configured printer for the given label printer 
 	*/
 	public function printLabel()
 	{
 		//print label
-		$this->printer->printData($this->label->getContent(), $this->label->getContentType());
+		$config = CmdbConfig::create();
+		$printer = $config->getLabelprinterConfig()->getPrinterObject($this->labelprinterName);
+		$printer->printData($this->label->getContent(), $this->label->getContentType());
 	}
 
 	/**
@@ -81,5 +80,15 @@ class LabelPrinter
 	{
 		return $this->label->getContent();
 	}
+
+	/**
+	* returns the label content type
+	* @return string	label content type
+	*/
+	public function getLabelContentType()
+	{
+		return $this->label->getContentType();
+	}
+
 }
 ?>

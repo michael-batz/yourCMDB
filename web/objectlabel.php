@@ -27,8 +27,8 @@
 */
 
 	//include base functions and search form
-	include "../include/bootstrap-web.php";
-	include "../include/auth.inc.php";
+	include "include/bootstrap-web.php";
+	include "include/auth.inc.php";
 
 	use yourCMDB\labelprinter\LabelPrinter;
 	use yourCMDB\labelprinter\LabelprinterConfigurationException;
@@ -36,6 +36,7 @@
 	use yourCMDB\printer\exceptions\PrintUnauthorizedException;
 	use yourCMDB\printer\exceptions\PrinterErrorException;
 	use yourCMDB\printer\exceptions\PrintException;
+	use \Exception;
 
 	//get parameters
 	$paramId = getHttpGetVar("id", 0);
@@ -77,19 +78,44 @@
 				$status = 1;
 				$statusMessage = gettext("Error printing label on $paramLabelprinter. There was a problem with the printer device.");
 			}
-			catch(PrintException $e)
+			catch(Exception $e)
 			{
 				$status = 1;
 				$statusMessage = gettext("Error printing label on $paramLabelprinter. Internal Error.");
 			}
+
+			//create output JSON
+			$result = Array();
+			$result['status'] = $status;
+			$result['status_message'] = $statusMessage;
+
+			//return output
+			echo json_encode($result);
 		break;
+
+		case "show":
+			try
+			{
+				//show label on WebUI
+				$object= $objectController->getObject($paramId, $authUser);
+				$labelPrinter = new LabelPrinter($object, $paramLabelprinter);
+				$contentType = $labelPrinter->getLabelContentType();
+				$content = $labelPrinter->getLabelContent();
+	
+				//return content
+				header("Content-Type: $contentType");
+				echo $content;
+			}
+			catch(Exception $e)
+			{
+				//show error message
+				include "include/htmlheader.inc.php";
+				include "include/cmdbheader.inc.php";
+				$paramError = gettext("Error showing label for object $paramId and label printer $paramLabelprinter");
+				include "error/Error.php";
+				include "include/cmdbfooter.inc.php";
+				include "include/htmlfooter.inc.php";
+			}
 	}
 
-	//create output JSON
-	$result = Array();
-	$result['status'] = $status;
-	$result['status_message'] = $statusMessage;
-
-	//return output
-	echo json_encode($result);
 ?>
