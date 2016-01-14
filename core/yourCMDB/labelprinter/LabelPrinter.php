@@ -70,7 +70,7 @@ class LabelPrinter
 	public function printLabel()
 	{
 		//print label
-		$this->printer->printData($this->label->getContent());
+		$this->printer->printData($this->label->getContent(), $this->label->getContentType());
 	}
 
 	/**

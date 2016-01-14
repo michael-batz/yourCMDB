@@ -40,8 +40,9 @@ abstract class Printer
 
 	/**
 	* Sends the given data to the printer for printing
-	* @param string $data	data for printing
+	* @param string $data		data for printing
+	* @param string $contentType	ContentType of the data. e.g. "application/pdf"
 	*/
-	public abstract function printData($data);
+	public abstract function printData($data, $contentType);
 }
 ?>

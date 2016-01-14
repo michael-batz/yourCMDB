@@ -75,6 +75,16 @@ abstract class Label
 		$this->contentQrCode = new QR($urlQrCode, $config->getViewConfig()->getQrCodeEccLevel());
 	}
 
+	/**
+	* Returns the Label content in its specific format
+	* @return string	label content
+	*/
 	public abstract function getContent();
+
+	/**
+	* Returns the MIME type of the label content
+	* @return string	MIME type, e.g. application/pdf
+	*/
+	public abstract function getContentType();
 }
 ?>

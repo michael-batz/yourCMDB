@@ -32,22 +32,22 @@ use yourCMDB\printer\exceptions\PrintUnauthorizedException;
 */
 class PrinterIpp extends Printer
 {
-	public function printData($data)
+	public function printData($data, $contentType)
 	{
 		//get configuration
 		$configUrl = $this->printerOptions->getOption("url", "http://localhost:631/printers/PDF");
 
-		//ToDo: document-format
 		//print data
-		$this->ippPrint($data, $configUrl);
+		$this->ippPrint($data, $contentType, $configUrl);
 	}
 
 	/**
 	* creates a print job for the given data and sends it to a printer using IPP
 	* @param string $data		the data to print
+	* @param string $contentType	content type of the data to print
 	* @param string $url		HTTP URL for the printer, e.g. http://localhost:631/printers/PDF
 	*/
-	private function ippPrint($data, $url)
+	private function ippPrint($data, $contentType, $url)
 	{
 		//ipp operation layer
 		$ippData = "";
@@ -63,7 +63,7 @@ class PrinterIpp extends Printer
 		$ippData .= $this->ippEncodeAttribute(0x47, "attributes-charset", "utf-8");
 		$ippData .= $this->ippEncodeAttribute(0x48, "attributes-natural-language", "en-us");
 		$ippData .= $this->ippEncodeAttribute(0x45, "printer-uri", $this->ippCreateIppUrl($url));
-		$ippData .= $this->ippEncodeAttribute(0x44, "document-format", "application/pdf");
+		$ippData .= $this->ippEncodeAttribute(0x44, "document-format", $contentType);
 		$ippData .= chr(0x03);
 		$ippData .= $data;
 

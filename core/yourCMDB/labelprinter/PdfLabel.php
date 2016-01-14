@@ -113,5 +113,10 @@ class PdfLabel extends Label
 		//return PDF data
 		return $pdf->Output("S");
 	}
+
+	public function getContentType()
+	{
+		return "application/pdf";
+	}
 }
 ?>
