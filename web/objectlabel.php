@@ -56,32 +56,32 @@
 				$labelPrinter = new LabelPrinter($object, $paramLabelprinter);
 				$labelPrinter->printLabel();
 				$status = 0;
-				$statusMessage = gettext("Label successfully printed on $paramLabelprinter");
+				$statusMessage = sprintf(gettext("Label successfully printed on %s"), $paramLabelprinter);
 			}
 			catch(LabelprinterConfigurationException $e)
 			{
 				$status = 1;
-				$statusMessage = gettext("Labelprinter with name $paramLabelprinter not found");
+				$statusMessage = sprintf(gettext("Labelprinter with name %s not found"), $paramLabelprinter);
 			}
 			catch(PrinterNotFoundException $e)
 			{
 				$status = 1;
-				$statusMessage = gettext("Error printing label on $paramLabelprinter. The configured printer could not be found.");
+				$statusMessage = sprintf(gettext("Error printing label on %s. The configured printer could not be found."), $paramLabelprinter);
 			}
 			catch(PrintUnauthorizedException $e)
 			{
 				$status = 1;
-				$statusMessage = gettext("Error printing label on $paramLabelprinter. Insufficient rights for printing on that device.");
+				$statusMessage = sprintf(gettext("Error printing label on %s. Insufficient rights for printing on that device."), $paramLabelprinter);
 			}
 			catch(PrinterErrorException $e)
 			{
 				$status = 1;
-				$statusMessage = gettext("Error printing label on $paramLabelprinter. There was a problem with the printer device.");
+				$statusMessage = sprintf(gettext("Error printing label on %s. There was a problem with the printer device."), $paramLabelprinter);
 			}
 			catch(Exception $e)
 			{
 				$status = 1;
-				$statusMessage = gettext("Error printing label on $paramLabelprinter. Internal Error.");
+				$statusMessage = sprintf(gettext("Error printing label on %s. Internal Error."), $paramLabelprinter);
 			}
 
 			//create output JSON
@@ -111,7 +111,7 @@
 				//show error message
 				include "include/htmlheader.inc.php";
 				include "include/cmdbheader.inc.php";
-				$paramError = gettext("Error showing label for object $paramId and label printer $paramLabelprinter");
+				$paramError = sprintf(gettext("Error showing label for object %s and label printer %s"), $paramId, $paramLabelprinter);
 				include "error/Error.php";
 				include "include/cmdbfooter.inc.php";
 				include "include/htmlfooter.inc.php";

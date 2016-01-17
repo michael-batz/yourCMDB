@@ -105,14 +105,14 @@
 	{
 		$urlLabelPrintingEntry = $urlLabelPrinting ."action=show&amp;labelprinter=$objectLabelPrinter";
 		echo "<li><a href=\"$urlLabelPrintingEntry\" target=\"_blank\">";
-		echo "<span class=\"glyphicon glyphicon-open-file\"></span>".gettext("show as ")."$objectLabelPrinter</a></li>";
+		echo "<span class=\"glyphicon glyphicon-open-file\"></span>".gettext("show as")." $objectLabelPrinter</a></li>";
 	}
 	//label printer print
 	foreach($objectLabelPrintersPrint  as $objectLabelPrinter)
 	{
 		$urlLabelPrintingEntry = $urlLabelPrinting ."action=print&amp;labelprinter=$objectLabelPrinter";
 		$urlLabelPrintingJs = "javascript:cmdbAjaxActionWithStatus('$urlLabelPrintingEntry', '#messagebar')";
-		echo "<li><a href=\"$urlLabelPrintingJs\"><span class=\"glyphicon glyphicon-print\"></span>".gettext("print on ")."$objectLabelPrinter</a></li>";
+		echo "<li><a href=\"$urlLabelPrintingJs\"><span class=\"glyphicon glyphicon-print\"></span>".gettext("print on")." $objectLabelPrinter</a></li>";
 	}
 	echo "</ul>";
 	echo "</li>";

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yourCMDB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-27 10:52+0100\n"
+"POT-Creation-Date: 2016-01-17 12:19+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Michael Batz <michael@yourcmdb.org>\n"
 "Language-Team: Michael Batz <michael@yourcmdb.org>\n"
@@ -122,6 +122,41 @@ msgstr "Passwort"
 #: /var/www/yourCMDB/web/login.php:72
 msgid "Go!"
 msgstr "Los!"
+
+#: /var/www/yourCMDB/web/objectlabel.php:59
+#, php-format
+msgid "Label successfully printed on %s"
+msgstr "Etikett wurde erfolgreich auf %s gedruckt."
+
+#: /var/www/yourCMDB/web/objectlabel.php:64
+#, php-format
+msgid "Labelprinter with name %s not found"
+msgstr "Etikettendrucker mit Name %s wurde nicht gefunden."
+
+#: /var/www/yourCMDB/web/objectlabel.php:69
+#, php-format
+msgid "Error printing label on %s. The configured printer could not be found."
+msgstr "Fehler beim Drucken des Etiketts auf %s. Der konfigurierte Drucker konnte nicht gefunden werden."
+
+#: /var/www/yourCMDB/web/objectlabel.php:74
+#, php-format
+msgid "Error printing label on %s. Insufficient rights for printing on that device."
+msgstr "Fehler beim Drucken des Etiketts auf %s. Es fehlen ausreichende Berechtigungen, um auf diesem Drucker zu drucken."
+
+#: /var/www/yourCMDB/web/objectlabel.php:79
+#, php-format
+msgid "Error printing label on %s. There was a problem with the printer device."
+msgstr "Fehler beim Drucken des Etiketts auf %s. Es gab ein Problem mit dem Drucker."
+
+#: /var/www/yourCMDB/web/objectlabel.php:84
+#, php-format
+msgid "Error printing label on %s. Internal Error."
+msgstr "Fehler beim Drucken des Etiketts auf %s. Interner Fehler."
+
+#: /var/www/yourCMDB/web/objectlabel.php:114
+#, php-format
+msgid "Error showing label for object %s and label printer %s"
+msgstr "Fehler beim Anzeigen des Etiketts für das Objekt %s und den Drucker %s."
 
 #: /var/www/yourCMDB/web/admin.php:36
 msgid "Admin"
@@ -241,96 +276,114 @@ msgid "Object Status"
 msgstr "Objektstatus"
 
 #: /var/www/yourCMDB/web/object/EditObject.php:108
+#: /var/www/yourCMDB/web/object/ShowObject.php:338
+#: /var/www/yourCMDB/web/object/NewObject.php:66
+#: /var/www/yourCMDB/web/search/SearchForm.php:107
+#: /var/www/yourCMDB/web/import/Form.php:77
+#: /var/www/yourCMDB/web/import/Form.php:115
+#: /var/www/yourCMDB/web/import/formats/PreviewCsv.php:222
 msgid "Go"
 msgstr "Los!"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:74
+#: /var/www/yourCMDB/web/object/ShowObject.php:77
 #, php-format
 msgid ""
 "\tThere are %s objects that reference to this object. \n"
 "\t\t\t\t\tIf you delete this object, all references will be set to null."
 msgstr "Es gibt %s Objekte, die auf dieses Objekt referenzieren. Wenn Sie dieses Objekt löschen, werden alle Referenzen zurückgesetzt."
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:92
+#: /var/www/yourCMDB/web/object/ShowObject.php:95
 msgid "object list"
 msgstr "Objekt Liste"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:94
+#: /var/www/yourCMDB/web/object/ShowObject.php:97
 msgid "duplicate"
 msgstr "kopieren"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:112
+#: /var/www/yourCMDB/web/object/ShowObject.php:101
+msgid "print label"
+msgstr "Etikett drucken"
+
+#: /var/www/yourCMDB/web/object/ShowObject.php:108
+msgid "show as"
+msgstr "Anzeigen als"
+
+#: /var/www/yourCMDB/web/object/ShowObject.php:115
+msgid "print on"
+msgstr "Drucken auf"
+
+#: /var/www/yourCMDB/web/object/ShowObject.php:134
 msgid "QR-Code for object"
 msgstr "QR-Code für Objekt"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:118
+#: /var/www/yourCMDB/web/object/ShowObject.php:140
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:143
+#: /var/www/yourCMDB/web/object/ShowObject.php:165
 msgid "External Links"
 msgstr "Externe Links"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:180
+#: /var/www/yourCMDB/web/object/ShowObject.php:202
 msgid "Custom Events"
 msgstr "Eigene Events"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:209
+#: /var/www/yourCMDB/web/object/ShowObject.php:231
 msgid "Comment"
 msgstr "Kommentar"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:223
+#: /var/www/yourCMDB/web/object/ShowObject.php:245
 msgid "Fields"
 msgstr "Felder"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:224
+#: /var/www/yourCMDB/web/object/ShowObject.php:246
 msgid "Referenced by"
 msgstr "Referenziert von"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:225
+#: /var/www/yourCMDB/web/object/ShowObject.php:247
 msgid "Links"
 msgstr "Links"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:226
+#: /var/www/yourCMDB/web/object/ShowObject.php:248
 msgid "Log"
 msgstr "Log"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:260
-#: /var/www/yourCMDB/web/object/ShowObject.php:285
+#: /var/www/yourCMDB/web/object/ShowObject.php:282
+#: /var/www/yourCMDB/web/object/ShowObject.php:307
 msgid "Type"
 msgstr "Typ"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:261
-#: /var/www/yourCMDB/web/object/ShowObject.php:286
-#: /var/www/yourCMDB/web/object/ShowObject.php:326
+#: /var/www/yourCMDB/web/object/ShowObject.php:283
+#: /var/www/yourCMDB/web/object/ShowObject.php:308
+#: /var/www/yourCMDB/web/object/ShowObject.php:348
 msgid "Action"
 msgstr "Aktion"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:273
+#: /var/www/yourCMDB/web/object/ShowObject.php:295
 msgid "show object with reference"
 msgstr "Objekt mit Referenz anzeigen"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:303
+#: /var/www/yourCMDB/web/object/ShowObject.php:325
 msgid "show linked object"
 msgstr "verlinktes Objekt anzeigen"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:304
+#: /var/www/yourCMDB/web/object/ShowObject.php:326
 msgid "delete link"
 msgstr "Link löschen"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:312
+#: /var/www/yourCMDB/web/object/ShowObject.php:334
 msgid "Add new link to object with ID:"
 msgstr "Neuen Objekt Link hinzufügen zu Objekt mit ID:"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:325
+#: /var/www/yourCMDB/web/object/ShowObject.php:347
 msgid "Date"
 msgstr "Datum"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:327
+#: /var/www/yourCMDB/web/object/ShowObject.php:349
 msgid "Description"
 msgstr "Beschreibung"
 
-#: /var/www/yourCMDB/web/object/ShowObject.php:328
+#: /var/www/yourCMDB/web/object/ShowObject.php:350
 msgid "User"
 msgstr "Benutzer"
 
@@ -745,6 +798,12 @@ msgstr "PHP Server API:"
 msgid "authentication methods"
 msgstr "Authentifizierungs Methoden"
 
+#: /var/www/yourCMDB/web/include/messagebar.inc.php:31
+#: /var/www/yourCMDB/web/include/functions.inc.php:64
+#: /var/www/yourCMDB/web/include/functions.inc.php:76
+msgid "close"
+msgstr "schließen"
+
 #: /var/www/yourCMDB/web/include/navigation.inc.php:52
 msgid "Search..."
 msgstr "Suche..."
@@ -768,11 +827,6 @@ msgstr "Einstellungen"
 #: /var/www/yourCMDB/web/include/navigation.inc.php:111
 msgid "Logout"
 msgstr "Logout"
-
-#: /var/www/yourCMDB/web/include/functions.inc.php:64
-#: /var/www/yourCMDB/web/include/functions.inc.php:76
-msgid "close"
-msgstr "schließen"
 
 #~ msgid "show only active objects"
 #~ msgstr "nur aktive Objekte anzeigen"
