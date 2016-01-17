@@ -39,6 +39,7 @@ class PdfLabel extends Label
 		$configBorderTop = $this->labelOptions->getOption("BorderTop", "2");
 		$configBorderBottom = $this->labelOptions->getOption("BorderBottom", "2");
 		$configBorderLeft = $this->labelOptions->getOption("BorderLeft", "2");
+		$configTitlePrefix = $this->labelOptions->getOption("TitlePrefix", "yourCMDB");
 
 		//calculate coordinates
 		$coordXColLeft = $configBorderLeft;
@@ -46,7 +47,8 @@ class PdfLabel extends Label
 		$widthColLeft = $coordXColRight - $coordXColLeft;
 		$widthColRight = $configPageWidth - $coordXColRight;
 		$coordYTop = $configBorderTop;
-		$heightContent = $configPageHeight - $coordYTop - $configBorderBottom;
+		$heightTitle = ($configPageHeight - $coordYTop - $configBorderBottom) * 0.2;
+		$heightContent = $configPageHeight - $coordYTop - $configBorderBottom - $heightTitle;
 
 		//PDF: start
 		$pdf = new FPDF();
@@ -58,22 +60,22 @@ class PdfLabel extends Label
 		//PDF: left column (30% width)
 		$pdf->SetXY($coordXColLeft, 0);
 
-		//PDF: print QR code (full width of left column, max 80% of height)
+		//PDF: print QR code (full width of left column, max 95% of height)
 		$imageLength = $widthColLeft;
-		if($imageLength > 0.8 * $configPageHeight)
+		if($imageLength > 0.95 * $configPageHeight)
 		{
-			$imageLength = 0.8 * $configPageHeight;
+			$imageLength = 0.95 * $configPageHeight;
 		}
 		$qrCodeBase64 = "data://image/gif;base64," . base64_encode($this->contentQrCode->image(4));
 		$pdf->Image($qrCodeBase64, $coordXColLeft, 0, $imageLength, $imageLength, "GIF");
 
-		//PDF: print assetId
-		$pdf->SetXY($coordXColLeft, $imageLength);
-		$pdf->Cell($imageLength, 1, "#".$this->contentAssetId, 0, 0, "C");
-
 
 		//PDF: right column (70% width)
 		$pdf->SetXY($coordXColRight, $coordYTop);
+
+		//PDF: print title (20% height)
+		$pdf->Cell($widthColRight, $heightTitle, "$configTitlePrefix #".$this->contentAssetId, 'B', 1, "L");
+		$pdf->SetX($coordXColRight);
 
 		//PDF: print summary fields
 		$outputSummaryfields = "";
@@ -107,7 +109,7 @@ class PdfLabel extends Label
 				$outputSummaryfieldsHeight = $outputSummaryfieldsMaxLineHeight;
 			}
 		}
-		$pdf->MultiCell($widthColRight, $outputSummaryfieldsHeight, $outputSummaryfields);
+		$pdf->MultiCell($widthColRight, $outputSummaryfieldsHeight, $outputSummaryfields, 0, 'L');
 
 
 		//return PDF data

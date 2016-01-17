@@ -1,22 +1,24 @@
 <labelprinter-configuration>
 	<labelprinter name="PDF">
 		<label class="PdfLabel">
-			<parameter key="PageHeight" value="29" />
-			<parameter key="PageWidth" value="90" />
+			<parameter key="PageHeight" value="17" />
+			<parameter key="PageWidth" value="87" />
 			<parameter key="PageRotation" value="90" />
 			<parameter key="BorderTop" value="2" />
 			<parameter key="BorderBottom" value="2" />
-			<parameter key="BorderLeft" value="0" />
+			<parameter key="BorderLeft" value="2" />
+			<parameter key="TitlePrefix" value="yourCMDB" />
 		</label>
 	</labelprinter>
 	<labelprinter name="Default">
 		<label class="PdfLabel">
-			<parameter key="PageHeight" value="29" />
-			<parameter key="PageWidth" value="90" />
+			<parameter key="PageHeight" value="17" />
+			<parameter key="PageWidth" value="87" />
 			<parameter key="PageRotation" value="90" />
 			<parameter key="BorderTop" value="2" />
 			<parameter key="BorderBottom" value="2" />
-			<parameter key="BorderLeft" value="0" />
+			<parameter key="BorderLeft" value="2" />
+			<parameter key="TitlePrefix" value="yourCMDB" />
 		</label>
 		<printer class="PrinterIpp">
 			<parameter key="url" value="http://localhost:631/printers/PDF" />
