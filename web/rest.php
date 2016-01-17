@@ -26,6 +26,7 @@
 */
 	use yourCMDB\rest\RestResponse;
 	use yourCMDB\rest\RestResourceExporter;
+	use yourCMDB\rest\RestResourceLabelprinter;
 	use yourCMDB\rest\RestResourceObject;
 	use yourCMDB\rest\RestResourceObjectLog;
 	use yourCMDB\rest\RestResourceObjectLinks;
@@ -95,6 +96,10 @@
 
 		case "exporter":
 			$restResource = new RestResourceExporter($requestPath, $authUser);
+			break;
+
+		case "labelprinter":
+			$restResource = new RestResourceLabelprinter($requestPath, $authUser);
 			break;
 	}
 
