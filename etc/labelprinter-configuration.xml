@@ -2,7 +2,7 @@
 	<labelprinter name="PDF">
 		<label class="PdfLabel">
 			<parameter key="PageHeight" value="17" />
-			<parameter key="PageWidth" value="87" />
+			<parameter key="PageWidth" value="54" />
 			<parameter key="PageRotation" value="90" />
 			<parameter key="BorderTop" value="2" />
 			<parameter key="BorderBottom" value="2" />
@@ -13,7 +13,7 @@
 	<labelprinter name="Default">
 		<label class="PdfLabel">
 			<parameter key="PageHeight" value="17" />
-			<parameter key="PageWidth" value="87" />
+			<parameter key="PageWidth" value="54" />
 			<parameter key="PageRotation" value="90" />
 			<parameter key="BorderTop" value="2" />
 			<parameter key="BorderBottom" value="2" />

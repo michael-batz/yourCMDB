@@ -84,11 +84,17 @@ class ObjectTypeConfig
 					{
 						$fieldIsSummary = true;
 					}
+					$fieldIsLabel = false;
+					if(isset($field['labelfield']) && $field['labelfield'] == "true")
+					{
+						$fieldIsLabel = true;
+					}
 					$this->objectFields[$objectName][$fieldGroupName][$fieldName]['name'] = $fieldName;
 					$this->objectFields[$objectName][$fieldGroupName][$fieldName]['type'] = $fieldType;
 					$this->objectFields[$objectName][$fieldGroupName][$fieldName]['label'] = $fieldLabel;
 					$this->objectFields[$objectName][$fieldGroupName][$fieldName]['default'] = $fieldDefaultValue;
 					$this->objectFields[$objectName][$fieldGroupName][$fieldName]['summary'] = $fieldIsSummary;
+					$this->objectFields[$objectName][$fieldGroupName][$fieldName]['labelfield'] = $fieldIsLabel;
 				}
 			}
 
@@ -196,6 +202,29 @@ class ObjectTypeConfig
 			foreach($group as $field)
 			{
 				if($field['summary'])
+				{	
+					$fieldname = $field['name'];
+					$fieldtype = $field['type'];
+					$output[$fieldname] = $fieldtype;
+				}
+			}
+		}
+		return $output;
+	}
+
+	/**
+	* Returns an array with all label fields of a specific object type
+	* @param $objectType	object type for getting the label fields
+	* @returns 		array with fieldname->datatype
+	*/
+	public function getLabelFields($objectType)
+	{
+		$output = Array();
+		foreach($this->objectFields[$objectType] as $group)
+		{
+			foreach($group as $field)
+			{
+				if($field['labelfield'])
 				{	
 					$fieldname = $field['name'];
 					$fieldtype = $field['type'];

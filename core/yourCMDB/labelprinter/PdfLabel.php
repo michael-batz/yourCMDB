@@ -77,39 +77,39 @@ class PdfLabel extends Label
 		$pdf->Cell($widthColRight, $heightTitle, "$configTitlePrefix #".$this->contentAssetId, 'B', 1, "L");
 		$pdf->SetX($coordXColRight);
 
-		//PDF: print summary fields
-		$outputSummaryfields = "";
-		$outputSummaryfieldsCounts = 0;
-		$outputSummaryfieldsMinLineHeight = 3;
-		$outputSummaryfieldsMaxLineHeight = 6;
-		$outputSummaryfieldsMaxLines = floor($heightContent / $outputSummaryfieldsMinLineHeight);
-		foreach(array_keys($this->contentSummaryFields) as $summaryFieldName)
+		//PDF: print content fields
+		$outputContentfields = "";
+		$outputContentfieldsCounts = 0;
+		$outputContentfieldsMinLineHeight = 3;
+		$outputContentfieldsMaxLineHeight = 6;
+		$outputContentfieldsMaxLines = floor($heightContent / $outputContentfieldsMinLineHeight);
+		foreach(array_keys($this->contentFields) as $contentFieldName)
 		{
 			//only ISO8859-1 is supported with PDFs default fonts
-			$summaryFieldValue = utf8_decode($this->contentSummaryFields[$summaryFieldName]);
-			$outputSummaryfields .= "$summaryFieldValue\n";
-			$outputSummaryfieldsCounts++;
-			//stop printing summary fields if max number of lines is reached
-			if($outputSummaryfieldsCounts >= $outputSummaryfieldsMaxLines)
+			$contentFieldValue = utf8_decode($this->contentFields[$contentFieldName]);
+			$outputContentfields .= "$contentFieldValue\n";
+			$outputContentfieldsCounts++;
+			//stop printing fields if max number of lines is reached
+			if($outputContentfieldsCounts >= $outputContentfieldsMaxLines)
 			{
 				break;
 			}
 		}
-		//calulate optimal height of output of summary fiels
-		$outputSummaryfieldsHeight = $outputSummaryfieldsMinLineHeight;
-		if($outputSummaryfieldsCounts > 0)
+		//calulate optimal height of output of content fiels
+		$outputContentfieldsHeight = $outputContentfieldsMinLineHeight;
+		if($outputContentfieldsCounts > 0)
 		{
-			$outputSummaryfieldsHeightOpt = floor($heightContent / $outputSummaryfieldsCounts);
-			if($outputSummaryfieldsHeight < $outputSummaryfieldsHeightOpt)
+			$outputContentfieldsHeightOpt = floor($heightContent / $outputContentfieldsCounts);
+			if($outputContentfieldsHeight < $outputContentfieldsHeightOpt)
 			{
-				$outputSummaryfieldsHeight = $outputSummaryfieldsHeightOpt;
+				$outputContentfieldsHeight = $outputContentfieldsHeightOpt;
 			}
-			if($outputSummaryfieldsHeight > $outputSummaryfieldsMaxLineHeight)
+			if($outputContentfieldsHeight > $outputContentfieldsMaxLineHeight)
 			{
-				$outputSummaryfieldsHeight = $outputSummaryfieldsMaxLineHeight;
+				$outputContentfieldsHeight = $outputContentfieldsMaxLineHeight;
 			}
 		}
-		$pdf->MultiCell($widthColRight, $outputSummaryfieldsHeight, $outputSummaryfields, 0, 'L');
+		$pdf->MultiCell($widthColRight, $outputContentfieldsHeight, $outputContentfields, 0, 'L');
 
 
 		//return PDF data

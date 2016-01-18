@@ -40,8 +40,8 @@ abstract class Label
 	//label content: assetId of CmdbObject
 	protected $contentAssetId;
 
-	//label content: summary fields of CmdbObject
-	protected $contentSummaryFields;
+	//label content: specific fields of CmdbObject
+	protected $contentFields;
 
 	//label content: QR code object
 	protected $contentQrCode;
@@ -62,15 +62,26 @@ abstract class Label
 		//create configuration object
 		$config = CmdbConfig::create();
 
-		//get data from CmdbObject
+		//get ID from CmdbObject
 		$this->contentAssetId = $this->cmdbObject->getId();
-		$this->contentSummaryFields = Array();
-		foreach(array_keys($config->getObjectTypeConfig()->getSummaryFields($object->getType())) as $summaryfield)
+
+		//get some fields from CmdbObject. Use label fields if defined and fallback to summary fields
+		$this->contentFields = Array();
+		$labelFields = $config->getObjectTypeConfig()->getLabelFields($object->getType());
+		$summaryFields = $config->getObjectTypeConfig()->getSummaryFields($object->getType());
+		$contentFieldSource = $labelFields;
+		if(count($labelFields) <= 0)
 		{
-			$fieldLabel = $config->getObjectTypeConfig()->getFieldLabel($object->getType(), $summaryfield);
-			$fieldValue = $object->getFieldValue($summaryfield);
-			$this->contentSummaryFields[$fieldLabel] = $fieldValue;
+			$contentFieldSource = $summaryFields;
 		}
+		foreach(array_keys($contentFieldSource) as $fieldName)
+		{
+			$fieldLabel = $config->getObjectTypeConfig()->getFieldLabel($object->getType(), $fieldName);
+			$fieldValue = $object->getFieldValue($fieldName);
+			$this->contentFields[$fieldLabel] = $fieldValue;
+		}
+
+		//get QR code data
 		$urlQrCode = $config->getViewConfig()->getQrCodeUrlPrefix() .$object->getId();
 		$this->contentQrCode = new QR($urlQrCode, $config->getViewConfig()->getQrCodeEccLevel());
 	}
