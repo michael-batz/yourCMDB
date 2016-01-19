@@ -46,7 +46,7 @@ new ClassLoader("Doctrine\DBAL\Migrations", "$coreBaseDir/libs/composer/vendor/d
 //class loading: yourCMDB
 new ClassLoader("yourCMDB", "$coreBaseDir");
 //class loading: QR code helper class
-new ClassLoader("qrcode", "$coreBaseDir/libs");
+new ClassLoader("Endroid\QrCode", "$coreBaseDir/libs/QrCode/src");
 //class loading: FPDF
 new ClassLoader("fpdf", "$coreBaseDir/libs");
 ?>

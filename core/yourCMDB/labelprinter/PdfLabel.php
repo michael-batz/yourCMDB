@@ -66,8 +66,8 @@ class PdfLabel extends Label
 		{
 			$imageLength = 0.95 * $configPageHeight;
 		}
-		$qrCodeBase64 = "data://image/gif;base64," . base64_encode($this->contentQrCode->image(4));
-		$pdf->Image($qrCodeBase64, $coordXColLeft, 0, $imageLength, $imageLength, "GIF");
+		$qrCodeBase64 = "data://image/png;base64," . base64_encode($this->contentQrCode->getPngImage());
+		$pdf->Image($qrCodeBase64, $coordXColLeft, 0, $imageLength, $imageLength, "PNG");
 
 
 		//PDF: right column (70% width)

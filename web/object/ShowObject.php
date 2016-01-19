@@ -23,7 +23,7 @@
 * WebUI element: show object
 * @author Michael Batz <michael@yourcmdb.org>
 */
-	use qrcode\QR;
+	use yourCMDB\qrcode\QrCodeGenerator;
 
 	//this page needs the following variable to be set: $object
 
@@ -52,7 +52,7 @@
 	$textTitle = "$statusImage ". $object->getType() ." #". $object->getId();
 
 	//create QRcode
-	$qrcode = new QR($urlQrCode, $config->getViewConfig()->getQrCodeEccLevel());
+	$qrcode = new QrCodeGenerator($urlQrCode, $config->getViewConfig()->getQrCodeEccLevel());
 
 	//static comment
 	$staticObjectComment = $config->getObjectTypeConfig()->getStaticFieldValue($object->getType(), "comment");
@@ -131,7 +131,7 @@
 	echo "<div class=\"row\">";
 	//<!-- label with qr code-->
 	echo "<div class=\"col-md-3\">";
-	echo "<img src=\"data:image/gif;base64,".base64_encode($qrcode->image(4))."\" alt=\"".gettext("QR-Code for object")."\" />";
+	echo "<img src=\"data:image/png;base64,".base64_encode($qrcode->getPngImage())."\" alt=\"".gettext("QR-Code for object")."\" />";
 	echo "</div>";
 	
 	//<!-- summary fields -->

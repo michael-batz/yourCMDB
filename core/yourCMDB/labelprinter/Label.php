@@ -23,7 +23,7 @@ namespace yourCMDB\labelprinter;
 
 use yourCMDB\entities\CmdbObject;
 use yourCMDB\config\CmdbConfig;
-use qrcode\QR;
+use yourCMDB\qrcode\QrCodeGenerator;
 
 /**
 * Label for a CMDB object
@@ -83,7 +83,7 @@ abstract class Label
 
 		//get QR code data
 		$urlQrCode = $config->getViewConfig()->getQrCodeUrlPrefix() .$object->getId();
-		$this->contentQrCode = new QR($urlQrCode, $config->getViewConfig()->getQrCodeEccLevel());
+		$this->contentQrCode = new QrCodeGenerator($urlQrCode, $config->getViewConfig()->getQrCodeEccLevel());
 	}
 
 	/**
