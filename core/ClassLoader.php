@@ -22,7 +22,7 @@
 
 
 /**
-* PSR-0 compatible class loader for yourCMDB
+* PSR-4 compatible class loader for yourCMDB
 * @author Michael Batz <michael@yourcmdb.org>
 *
 */
@@ -67,12 +67,18 @@ class ClassLoader
 		if(preg_match("#^$namespacePrefixNormalized.*?$#", $classNameNormalized) === 1)
 		{
 			//build directory structure
-			$filename = $this->baseDirectory . self::DIRECTORY_SEPERATOR . $classNameNormalized . ".php";
+			$classNameWithoutNamespace = preg_replace("#^$namespacePrefixNormalized(.*)?$#", "\\1", $classNameNormalized);
+			$filenames = Array();
+			$filenames[] = $this->baseDirectory . self::DIRECTORY_SEPERATOR . $classNameNormalized . ".php";
+			$filenames[] = $this->baseDirectory . self::DIRECTORY_SEPERATOR . $classNameWithoutNamespace . ".php";
 
 			//load file if available
-			if(is_readable($filename))
+			foreach($filenames as $filename)
 			{
-				require($filename);
+				if(is_readable($filename))
+				{
+					require($filename);
+				}
 			}
 		}
 	}
