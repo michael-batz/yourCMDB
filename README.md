@@ -16,12 +16,13 @@ yourCMDB is a web based flexible CMDB and asset management tool which easily all
 - create references between objects
 - Define links between objects
 - Import objects (at the moment from CSV file)
-- export objects to other systems (e.g. OpenNMS, ansible, Plesk automation
+- export objects to other systems (e.g. OpenNMS, ansible, Plesk automation, OpenVAS, cPanel)
 - Search over all fields
 - Execute tasks for specific events (e.g. on object created, ...)
+- Print labels for CMDB object (e.g. with CUPS and the Internet Printing Protocol)
 
 ## APIs:
-- Export API: export objects to external systems (e.g. OpenNMS, ansible, Plesk Automation)
+- Export API: export objects to external systems (e.g. OpenNMS, ansible, Plesk Automation, OpenVAS, cPanel)
 - RestAPI: access objects 
 
 ## supported languages in WebUI:
