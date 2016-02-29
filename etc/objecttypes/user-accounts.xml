@@ -1,0 +1,20 @@
+<group name="user accounts">
+	<object-type name="RadiusAccount">
+		<static>
+			<comment>A comment...</comment>
+		</static>
+		<fields>
+			<fieldgroup name="Customer">
+                                <field name="customer-nummer" label="Customer Number" type="text" summaryfield="true"/>
+                                <field name="customer-name" label="Customer Name" type="text" summaryfield="true"/>
+                        </fieldgroup>
+                        <fieldgroup name="Account">
+                                <field name="account-managed" label="Account deployment" type="boolean"/>
+                                <field name="account-password" label="Password" type="password" />
+                                <field name="account-downstream" label="Downstream" default="25000" type="text" />
+                                <field name="account-upstream" label="Upstream" type="text" />
+                        </fieldgroup>
+		</fields>
+	</object-type>
+</group>
+

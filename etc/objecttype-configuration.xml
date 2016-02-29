@@ -1,4 +1,5 @@
 <object-types>
 	<includeconfig file="objecttypes/locations.xml" />
 	<includeconfig file="objecttypes/network-devices.xml" />
+	<includeconfig file="objecttypes/user-accounts.xml" />
 </object-types>
