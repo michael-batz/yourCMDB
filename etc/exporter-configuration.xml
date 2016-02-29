@@ -3,4 +3,5 @@
 	<includeconfig file="exporter/opennms-example.xml" />
 	<includeconfig file="exporter/ansible-example.xml" />
 	<includeconfig file="exporter/openvas-example.xml" />
+	<includeconfig file="exporter/freeradius-example.xml" />
 </exporter-configuration>

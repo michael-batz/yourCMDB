@@ -1,0 +1,22 @@
+<task name="freeradius-example">
+	<sources>
+		<source objecttype="RadiusAccount" status="A" fieldname="account-managed" fieldvalue="true" />
+	</sources>
+	<destination class="ExternalSystemFreeRadius">
+		<parameter key="databaseUrl" value="mysql://radius:radius@localhost/radius" />
+		<parameter key="prefixUsername" value="yourCMDB_" />
+		<parameter key="radreply_0" value="Cisco-Avpair += lcp:interface-config=rate-limit input %downstream% 950000 1920000 conform-action continue exceed-action drop" />
+		<parameter key="radreply_1" value="Cisco-Avpair += lcp:interface-config=rate-limit output %upstream% 950000 1920000 conform-action continue exceed-action drop" />
+	</destination>
+	<variables>
+		<variable name="password">
+			<value objecttype="RadiusAccount" fieldname="account-password" />
+		</variable>
+		<variable name="downstream">
+			<value objecttype="RadiusAccount" fieldname="account-downstream" />
+		</variable>
+		<variable name="upstream">
+			<value objecttype="RadiusAccount" fieldname="account-upstream" />
+		</variable>
+	</variables>
+</task>
