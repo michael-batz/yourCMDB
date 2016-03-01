@@ -1,0 +1,28 @@
+<task name="asterisk-example">
+	<sources>
+		<source objecttype="AsteriskAccount" status="A" fieldname="account-managed" fieldvalue="true" />
+	</sources>
+	<destination class="ExternalSystemAsterisk">
+		<parameter key="databaseUrl" value="mysql://asterisk:asterisk@localhost/asterisk" />
+		<parameter key="databaseTableSip" value="sippeers" />
+		<parameter key="databaseTableExtensions" value="extensions" />
+		<parameter key="prefixUsername" value="yourCMDB_" />
+		<parameter key="extension_1" value="'incoming', '%telephone1%', 1, 'Dial', 'SIP/%telephone1%@%yourCMDB_sip_username%'" />
+		<parameter key="extension_2" value="'incoming', '%telephone2%', 1, 'Dial', 'SIP/%telephone2%@%yourCMDB_sip_username%'" />
+		<parameter key="extension_3" value="'incoming', '%telephone3%', 1, 'Dial', 'SIP/%telephone3%@%yourCMDB_sip_username%'" />
+	</destination>
+	<variables>
+		<variable name="password">
+			<value objecttype="AsteriskAccount" fieldname="account-password" />
+		</variable>
+		<variable name="telephone1">
+			<value objecttype="AsteriskAccount" fieldname="account-telephone1" />
+		</variable>
+		<variable name="telephone2">
+			<value objecttype="AsteriskAccount" fieldname="account-telephone2" />
+		</variable>
+		<variable name="telephone3">
+			<value objecttype="AsteriskAccount" fieldname="account-telephone3" />
+		</variable>
+	</variables>
+</task>
