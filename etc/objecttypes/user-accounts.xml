@@ -16,5 +16,23 @@
                         </fieldgroup>
 		</fields>
 	</object-type>
+	<object-type name="AsteriskAccount">
+		<static>
+			<comment>A comment...</comment>
+		</static>
+		<fields>
+			<fieldgroup name="Customer">
+                                <field name="customer-nummer" label="Customer Number" type="text" summaryfield="true"/>
+                                <field name="customer-name" label="Customer Name" type="text" summaryfield="true"/>
+                        </fieldgroup>
+                        <fieldgroup name="Account">
+                                <field name="account-managed" label="Account deployment" type="boolean"/>
+                                <field name="account-password" label="Password" type="password" />
+                                <field name="account-telephone1" label="Telephone 1" type="text" />
+                                <field name="account-telephone2" label="Telephone 1" type="text" />
+                                <field name="account-telephone3" label="Telephone 1" type="text" />
+                        </fieldgroup>
+		</fields>
+	</object-type>
 </group>
 
