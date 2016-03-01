@@ -49,6 +49,9 @@ class ExternalSystemFreeRadius implements ExternalSystem
 	//store for radius account to create
 	private $accountsToCreate;
 
+	//store for existing radius accounts
+	private $existingAccounts;
+
 	public function setUp(ExportDestination $destination, ExportVariables $variables)
 	{
 		//get variables
@@ -94,8 +97,8 @@ class ExternalSystemFreeRadius implements ExternalSystem
 		$dbalConfig = new \Doctrine\DBAL\Configuration();
 		$this->databaseConnection = DriverManager::getConnection($dbalConnectionParams, $dbalConfig);
 
-		//ToDo: get all existing Radius accounts from database
-
+		//get all existing Radius accounts from database
+		$this->existingAccounts = $this->getAllExistingAccounts();
 		$this->accountsToCreate = Array();
 	}
 
@@ -107,7 +110,7 @@ class ExternalSystemFreeRadius implements ExternalSystem
 		$radiusReply = Array();
 		foreach($this->genericRadReply as $genericRadReplyEntry)
 		{
-			//ToDo: replace values
+			//replace values
 			$attribute = $genericRadReplyEntry['attribute'];
 			$op = $genericRadReplyEntry['op'];
 			$value = $this->replaceVariables($genericRadReplyEntry['value'], $object);
@@ -116,20 +119,111 @@ class ExternalSystemFreeRadius implements ExternalSystem
 						'value'         => $value);
 		}
 
-		//save data
-		$this->accountsToCreate[$radiusUsername] = Array();
-		$this->accountsToCreate[$radiusUsername]['password'] = $radiusPassword;
-		$this->accountsToCreate[$radiusUsername]['reply'] = $radiusReply;
+		//check, if a record exist for this account
+		if(isset($this->existingAccounts[$radiusUsername]))
+		{
+			//check, if password has changed
+			if($this->existingAccounts[$radiusUsername]['password'] != $radiusPassword)
+			{
+				//recreate entry
+				$this->removeRadiusAccount($radiusUsername);
+				$this->addRadiusAccount($radiusUsername, $radiusPassword, $radiusReply);
+			}
+
+			//check, if radreply entries have changed
+			$radiusReplyCheck = $radiusReply;
+			$existingReplyCheck = $this->existingAccounts[$radiusUsername]['reply'];
+			foreach($existingReplyCheck as $i => $existingReplyCheckEntry)
+			{
+				//walk through all reply entries
+				foreach($radiusReplyCheck as $j => $radiusReplyCheckEntry)
+				{
+					//remove entries, if they are equal
+					if(count(array_diff_assoc($existingReplyCheckEntry, $radiusReplyCheckEntry)) == 0)
+					{
+						unset($existingReplyCheck[$i]);
+						unset($radiusReplyCheck[$j]);
+					}
+				}
+			}
+			if(count($existingReplyCheck) > 0 || count($radiusReplyCheck) >  0)
+			{
+				//recreate entry
+				$this->removeRadiusAccount($radiusUsername);
+				$this->addRadiusAccount($radiusUsername, $radiusPassword, $radiusReply);
+			}
+
+			//delete entry from existing records array
+			unset($this->existingAccounts[$radiusUsername]);
+		}
+		//if not create a new one
+		else
+		{
+			$this->accountsToCreate[$radiusUsername] = Array();
+			$this->accountsToCreate[$radiusUsername]['password'] = $radiusPassword;
+			$this->accountsToCreate[$radiusUsername]['reply'] = $radiusReply;
+		}
 	}
 
 	public function finishExport()
 	{
+		//add accounts to create to FreeRadius database
 		foreach(array_keys($this->accountsToCreate) as $username)
 		{
 			$password = $this->accountsToCreate[$username]['password'];
 			$reply = $this->accountsToCreate[$username]['reply'];
 			$this->addRadiusAccount($username, $password, $reply);
 		}
+
+		//remove all entries that does not exist in CMDB
+		foreach(array_keys($this->existingAccounts) as $existingAccountUsername)
+		{
+			$this->removeRadiusAccount($existingAccountUsername);
+		}
+	}
+
+	/**
+	* Get all existing accounts from FreeRadius database
+	*/
+	private function getAllExistingAccounts()
+	{
+		$existingRadiusEntries = Array();
+		
+		//get radcheck entries
+		$radcheckEntries = $this->databaseConnection->fetchAll('SELECT * FROM  radcheck');
+
+		//get radreply entries
+		$radreplyEntries = $this->databaseConnection->fetchAll('SELECT * FROM  radreply');
+
+		//save existing radius accounts in store
+		foreach($radcheckEntries as $radcheckEntry)
+		{
+			$username = $radcheckEntry['username'];
+			$password = $radcheckEntry['value'];
+
+			$existingRadiusEntries[$username] = Array();
+			$existingRadiusEntries[$username]['password'] = $password;
+			$existingRadiusEntries[$username]['reply'] = Array();
+		}
+
+		//save radreply entries in store
+		foreach($radreplyEntries as $radreplyEntry)
+		{
+			$username = $radreplyEntry['username'];
+			$attribute = $radreplyEntry['attribute'];
+			$op = $radreplyEntry['op'];
+			$value = $radreplyEntry['value'];
+
+			$existingRadiusEntries[$username]['reply'][] = Array
+			(
+				'attribute'	=> $attribute,
+				'op'		=> $op,
+				'value'		=> $value
+			);
+		}
+
+		//return data as array
+		return $existingRadiusEntries;
 	}
 
 	/**
@@ -158,6 +252,19 @@ class ExternalSystemFreeRadius implements ExternalSystem
 			$radreplyData['Value'] = $replyEntry['value'];
 			$this->databaseConnection->insert('radreply', $radreplyData);
 		}
+	}
+
+	/**
+	* Removes the account with the given username in FreeRadius database
+	* @param string $username	username for FreeRadius account
+	*/
+	private function removeRadiusAccount($username)
+	{
+		//remove radreply entries
+		$this->databaseConnection->delete('radreply', Array('username' => $username));
+
+		//remove radcheck entries
+		$this->databaseConnection->delete('radcheck', Array('username' => $username));
 	}
 
 	private function replaceVariables($input, $cmdbObject)
