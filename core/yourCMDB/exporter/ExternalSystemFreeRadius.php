@@ -272,7 +272,11 @@ class ExternalSystemFreeRadius implements ExternalSystem
 		$output  = preg_replace_callback("/%(.+?)%/", 
 						function($pregResult) use($cmdbObject)
 						{
-							$value =  $this->variables->getVariable($pregResult[1])->getValue($cmdbObject);
+							$value = $pregResult[1];
+							if($this->variables->getVariable($pregResult[1]) != null)
+							{
+								$value =  $this->variables->getVariable($pregResult[1])->getValue($cmdbObject);
+							}
 							return $value;
 						},
 						$input);
