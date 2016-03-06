@@ -174,7 +174,7 @@
 			//only show link, if 1 var in link was not empty or the link has no vars
 			if($objectExternalLinkHref != "")
 			{
-				echo "<li><a href=\"$objectExternalLinkHref\"><span class=\"glyphicon glyphicon-new-window\"></span>$objectExternalLinkName</a></li>";
+				echo "<li><a href=\"$objectExternalLinkHref\" target=\"_blank\"><span class=\"glyphicon glyphicon-new-window\"></span>$objectExternalLinkName</a></li>";
 			}
 		}
 		echo "</ul>";
