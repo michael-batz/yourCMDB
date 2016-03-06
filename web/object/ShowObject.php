@@ -24,6 +24,7 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 	use yourCMDB\qrcode\QrCodeGenerator;
+	use yourCMDB\helper\VariableSubstitution;
 
 	//this page needs the following variable to be set: $object
 
@@ -167,25 +168,11 @@
 		echo "<ul class=\"cmdb-linklist\">";
 		foreach($objectExternalLinks as $objectExternalLink)
 		{
-			$countVars = 0;
-			$countEmptyVars = 0 ;
 			$objectExternalLinkName = $objectExternalLink['name'];
-			$objectExternalLinkHref = preg_replace_callback("/%(.+?)%/", 
-									function ($pregResult)
-									{
-										global $object, $countVars, $countEmptyVars; 
-										$value = $object->getFieldValue($pregResult[1]);
-										$countVars++;
-										if($value == "")
-										{
-											$countEmptyVars++;
-										}
-										return $value;
-									}, 
-									$objectExternalLink['href']);
+			$objectExternalLinkHref = VariableSubstitution::substituteObjectVariables($objectExternalLink['href'], $object, true);
 
 			//only show link, if 1 var in link was not empty or the link has no vars
-			if((($countVars - $countEmptyVars) > 0 )|| ($countVars == 0))
+			if($objectExternalLinkHref != "")
 			{
 				echo "<li><a href=\"$objectExternalLinkHref\"><span class=\"glyphicon glyphicon-new-window\"></span>$objectExternalLinkName</a></li>";
 			}
@@ -216,15 +203,8 @@
 	//<!-- object comment -->
 	if($staticObjectComment != "")
 	{
-		//replace field variables (%fieldname%)
-		$staticObjectComment = preg_replace_callback("/%(.+?)%/",
-									function ($pregResult)
-									{
-										global $object;
-										$value = $object->getFieldValue($pregResult[1]);
-										return $value;
-									}, 
-									$staticObjectComment);
+		//replace variables
+		$staticObjectComment = VariableSubstitution::substituteObjectVariables($staticObjectComment, $object);
 
 		echo "<div class=\"comment\">";
 		echo "<h2>";

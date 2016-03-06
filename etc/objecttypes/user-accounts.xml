@@ -1,7 +1,7 @@
 <group name="user accounts">
 	<object-type name="RadiusAccount">
 		<static>
-			<comment>A comment...</comment>
+			<comment><![CDATA[Username: %yourCMDB_object_id%<br />Password: %account-password%]]></comment>
 		</static>
 		<fields>
 			<fieldgroup name="Customer">
