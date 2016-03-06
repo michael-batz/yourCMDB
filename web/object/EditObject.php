@@ -89,6 +89,10 @@
 			$fieldLabel = $config->getObjectTypeConfig()->getFieldLabel($paramType, $field);
 			$fieldType = $config->getObjectTypeConfig()->getFieldType($paramType, $field);
 			$fieldValue = "";
+			if($paramAction == "add")
+			{
+				$fieldValue = $config->getObjectTypeConfig()->getFieldDefaultValue($paramType, $fieldName);
+			}
 			if($sourceObject != null)
 			{
 				$fieldValue = $sourceObject->getFieldValue($fieldName);
