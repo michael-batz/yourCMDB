@@ -22,6 +22,7 @@
 namespace yourCMDB\exporter;
 
 use yourCMDB\entities\CmdbObject;
+use yourCMDB\helper\VariableSubstitution;
 use \Doctrine\DBAL\DriverManager;
 
 /**
@@ -46,6 +47,12 @@ class ExternalSystemAsterisk implements ExternalSystem
 	//prefix for username
 	private $prefixUsername;
 
+	//context for SIP accounts
+	private $sipContext;
+
+	//default country code
+	private $defaultCountryCode;
+
 	//generic extensions entry
 	private $genericExtentsions;
 
@@ -54,6 +61,9 @@ class ExternalSystemAsterisk implements ExternalSystem
 
 	//accounts for creation
 	private $accountsToCreate;
+
+	//store for extensions that should be created for checking that they are unique
+	private $checkUniqueExtensions;
 
 	//database connection
 	private $databaseConnection;
@@ -68,7 +78,8 @@ class ExternalSystemAsterisk implements ExternalSystem
 		if(!(	in_array("databaseUrl", $parameterKeys) &&
 			in_array("databaseTableSip", $parameterKeys) &&
 			in_array("databaseTableExtensions", $parameterKeys) &&
-			in_array("prefixUsername", $parameterKeys) ))
+			in_array("prefixUsername", $parameterKeys) && 
+			in_array("sipContext", $parameterKeys) ))
 		{
 			throw new ExportExternalSystemException("Parameters for ExternalSystem not set correctly");
 		}
@@ -78,6 +89,12 @@ class ExternalSystemAsterisk implements ExternalSystem
 		$this->databaseTableSip = $destination->getParameterValue("databaseTableSip");
 		$this->databaseTableExtensions = $destination->getParameterValue("databaseTableExtensions");
 		$this->prefixUsername = $destination->getParameterValue("prefixUsername");
+		$this->sipContext = $destination->getParameterValue("sipContext");
+		$this->defaultCountryCode = "+49";
+		if(in_array("defaultCountryCode", $parameterKeys))
+		{
+			$this->defaultCountryCode = $destination->getParameterValue("defaultCountryCode");
+		}
 
 		//get generic extensions
 		$this->genericExtensions = Array();
@@ -90,12 +107,12 @@ class ExternalSystemAsterisk implements ExternalSystem
 				$extensionValue = $destination->getParameterValue($parameterKey);
 	
 				//parse extension entry
-				$extensionEntry = str_getcsv($extensionValue);
-				$extensionContext = $extensionEntry[0];
-				$extensionExten = $extensionEntry[1];
-				$extensionPrio = $extensionEntry[2];
-				$extensionApp = $extensionEntry[3];
-				$extensionAppData = $extensionEntry[4];
+				$extensionEntry = str_getcsv($extensionValue, ",", "'");
+				$extensionContext = trim($extensionEntry[0]);
+				$extensionExten = trim($extensionEntry[1]);
+				$extensionPrio = trim($extensionEntry[2]);
+				$extensionApp = trim($extensionEntry[3]);
+				$extensionAppData = trim($extensionEntry[4]);
 				$this->genericExtensions[] = Array
 				(
 					'context'	=> $extensionContext,
@@ -116,6 +133,7 @@ class ExternalSystemAsterisk implements ExternalSystem
 		//get all existing Asterisk accounts from database
 		$this->existingAccounts = $this->getExistingAccounts();
 		$this->accountsToCreate = Array();
+		$this->checkUniqueExtensions =  Array();
 	}
 
 	public function addObject(\yourCMDB\entities\CmdbObject $object)
@@ -123,29 +141,45 @@ class ExternalSystemAsterisk implements ExternalSystem
 		//get data
 		$sipUsername = $this->prefixUsername.$object->getId();
 		$sipPassword = $this->variables->getVariable("password")->getValue($object);
-		$sipContext =  "outgoing";
+		$sipContext =  $this->sipContext;
 		$sipHost = "dynamic";
 		$extensions = Array();
 
-		//ToDo: replace variables
-		$specialVars = Array();
-		$specialVars['yourCMDB_sip_username'] = $sipUsername;
+		//replace variables
+		$variables = Array();
+		$variables['yourCMDB_sip_username'] = $sipUsername;
+		foreach($this->variables->getVariableNames() as $exportVariableName)
+		{
+			$varValue = $this->variables->getVariable($exportVariableName)->getValue($object);
+			if(preg_match('/^telephone_(.*)$/', $exportVariableName) == 1)
+			{
+				$varValue = $this->normalizePhoneNumber($varValue); 
+			}
+
+			$variables[$exportVariableName] = $varValue;
+		}
+		//create extensions
 		foreach($this->genericExtensions as $genericExtension)
 		{
-			$extenContext = $this->replaceVariables($genericExtension['context'], $object, $specialVars);
-			$extenExten = $this->replaceVariables($genericExtension['exten'], $object, $specialVars);
-			$extenPriority = $this->replaceVariables($genericExtension['priority'], $object, $specialVars);
-			$extenApp = $this->replaceVariables($genericExtension['app'], $object, $specialVars);
-			$extenAppData = $this->replaceVariables($genericExtension['appdata'], $object, $specialVars);
-			$extensions[] = Array
-			(
-				'sipname'	=> $sipUsername,
-				'context'	=> $extenContext,
-				'exten'		=> $extenExten,
-				'priority'	=> $extenPriority,
-				'app'		=> $extenApp,
-				'appdata'	=> $extenAppData
-			);
+			$extensionEntry = Array();
+			$extensionEntry['sipname'] = $sipUsername;
+			$extensionEntry['context'] = VariableSubstitution::substitute($genericExtension['context'], $variables, true);
+			$extensionEntry['exten'] = VariableSubstitution::substitute($genericExtension['exten'], $variables, true);
+			$extensionEntry['priority'] = VariableSubstitution::substitute($genericExtension['priority'], $variables, true);
+			$extensionEntry['app'] = VariableSubstitution::substitute($genericExtension['app'], $variables, true);
+			$extensionEntry['appdata'] = VariableSubstitution::substitute($genericExtension['appdata'], $variables, true);
+			//only add extensions if the fields were not empty
+			if(!($extensionEntry['sipname'] == "" || $extensionEntry['context'] == "" || $extensionEntry['exten'] == "" ||
+				$extensionEntry['priority'] == "" || $extensionEntry['app'] == ""))
+			{
+				//check, if extension entry is unique
+				$uniqueExtensionString = $extensionEntry['context']."/".$extensionEntry['exten']."/".$extensionEntry['priority'];
+				if(!isset($this->checkUniqueExtensions[$uniqueExtensionString]))
+				{
+					$extensions[] = $extensionEntry;
+					$this->checkUniqueExtensions[$uniqueExtensionString] = "ok";
+				}
+			}
 		}
 
 		//check, if a record exist for this account
@@ -291,26 +325,30 @@ class ExternalSystemAsterisk implements ExternalSystem
 		return $existingAccounts;
 	}
 
-	private function replaceVariables($input, $cmdbObject, $specialVars)
+	/**
+	* Normalizes a phone number
+	* output format: +49123456789 (use of configured default country code)
+	* @param string $input		input phone number
+	* @return string		normalized phone number
+	*				or empty string, if there was an error
+	*/
+	private function normalizePhoneNumber($input)
 	{
-		$output  = preg_replace_callback("/%(.+?)%/", 
-						function($pregResult) use($cmdbObject, $specialVars)
-						{
-							$varName = $pregResult[1];
-							$value = $pregResult[0];
-							if($this->variables->getVariable($varName) != null)
-							{
-								$value =  $this->variables->getVariable($varName)->getValue($cmdbObject);
-							}
-							elseif(isset($specialVars[$varName]))
-							{
-								$value = $specialVars[$varName];
-							}
-							return $value;
-						},
-						$input);
+		$output = $input;
+
+		//replace starting "+" with "00"
+		$output = preg_replace("/^\+/", "00", $output);
+
+		//replace all non numeric characters
+		$output = preg_replace("/[^0-9]/", "", $output);
+
+		//replace starting "00" with "+"
+		$output = preg_replace("/^00/", "+", $output);
+
+		//replace starting "0" with default country code
+		$output = preg_replace("/^0/", $this->defaultCountryCode, $output);
+
 		return $output;
 	}
-
 }
 ?>

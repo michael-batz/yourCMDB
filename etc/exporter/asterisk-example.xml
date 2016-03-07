@@ -7,21 +7,22 @@
 		<parameter key="databaseTableSip" value="sippeers" />
 		<parameter key="databaseTableExtensions" value="extensions" />
 		<parameter key="prefixUsername" value="yourCMDB_" />
-		<parameter key="extension_1" value="'incoming', '%telephone1%', 1, 'Dial', 'SIP/%telephone1%@%yourCMDB_sip_username%'" />
-		<parameter key="extension_2" value="'incoming', '%telephone2%', 1, 'Dial', 'SIP/%telephone2%@%yourCMDB_sip_username%'" />
-		<parameter key="extension_3" value="'incoming', '%telephone3%', 1, 'Dial', 'SIP/%telephone3%@%yourCMDB_sip_username%'" />
+		<parameter key="sipContext" value="outgoing" />
+		<parameter key="extension_1" value="'incoming','%telephone_1%','1','Dial','SIP/%telephone_1%@%yourCMDB_sip_username%'" />
+		<parameter key="extension_2" value="'incoming','%telephone_2%','1','Dial','SIP/%telephone_2%@%yourCMDB_sip_username%'" />
+		<parameter key="extension_3" value="'incoming','%telephone_3%','1','Dial','SIP/%telephone_3%@%yourCMDB_sip_username%'" />
 	</destination>
 	<variables>
 		<variable name="password">
 			<value objecttype="AsteriskAccount" fieldname="account-password" />
 		</variable>
-		<variable name="telephone1">
+		<variable name="telephone_1">
 			<value objecttype="AsteriskAccount" fieldname="account-telephone1" />
 		</variable>
-		<variable name="telephone2">
+		<variable name="telephone_2">
 			<value objecttype="AsteriskAccount" fieldname="account-telephone2" />
 		</variable>
-		<variable name="telephone3">
+		<variable name="telephone_3">
 			<value objecttype="AsteriskAccount" fieldname="account-telephone3" />
 		</variable>
 	</variables>

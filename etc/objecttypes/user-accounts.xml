@@ -1,7 +1,7 @@
 <group name="user accounts">
 	<object-type name="RadiusAccount">
 		<static>
-			<comment><![CDATA[Username: %yourCMDB_object_id%<br />Password: %account-password%]]></comment>
+			<comment><![CDATA[Username: yourCMDB_%yourCMDB_object_id%<br />Password: %account-password%]]></comment>
 		</static>
 		<fields>
 			<fieldgroup name="Customer">
@@ -18,7 +18,7 @@
 	</object-type>
 	<object-type name="AsteriskAccount">
 		<static>
-			<comment>A comment...</comment>
+			<comment><![CDATA[Username: yourCMDB_%yourCMDB_object_id%<br />Password: %account-password%]]></comment>
 		</static>
 		<fields>
 			<fieldgroup name="Customer">
@@ -29,8 +29,8 @@
                                 <field name="account-managed" label="Account deployment" type="boolean"/>
                                 <field name="account-password" label="Password" type="password" />
                                 <field name="account-telephone1" label="Telephone 1" type="text" />
-                                <field name="account-telephone2" label="Telephone 1" type="text" />
-                                <field name="account-telephone3" label="Telephone 1" type="text" />
+                                <field name="account-telephone2" label="Telephone 2" type="text" />
+                                <field name="account-telephone3" label="Telephone 3" type="text" />
                         </fieldgroup>
 		</fields>
 	</object-type>
