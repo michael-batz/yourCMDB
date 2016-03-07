@@ -22,6 +22,7 @@
 namespace yourCMDB\exporter;
 
 use yourCMDB\entities\CmdbObject;
+use yourCMDB\helper\VariableSubstitution;
 use \Doctrine\DBAL\DriverManager;
 
 /**
@@ -104,6 +105,14 @@ class ExternalSystemFreeRadius implements ExternalSystem
 
 	public function addObject(\yourCMDB\entities\CmdbObject $object)
 	{
+		//export variables for replacement
+		$variables = Array();
+		foreach($this->variables->getVariableNames() as $exportVariableName)
+		{
+			$varValue = trim($this->variables->getVariable($exportVariableName)->getValue($object));
+			$variables[$exportVariableName] = $varValue;
+		}
+
 		//get data
 		$radiusUsername = $this->prefixUsername.$object->getId();
 		$radiusPassword = $this->variables->getVariable("password")->getValue($object);
@@ -113,7 +122,7 @@ class ExternalSystemFreeRadius implements ExternalSystem
 			//replace values
 			$attribute = $genericRadReplyEntry['attribute'];
 			$op = $genericRadReplyEntry['op'];
-			$value = $this->replaceVariables($genericRadReplyEntry['value'], $object);
+			$value = VariableSubstitution::substitute($genericRadReplyEntry['value'], $variables);
 			$radiusReply[] = Array(	'attribute'     => $attribute,
 						'op'            => $op,
 						'value'         => $value);
@@ -266,22 +275,5 @@ class ExternalSystemFreeRadius implements ExternalSystem
 		//remove radcheck entries
 		$this->databaseConnection->delete('radcheck', Array('username' => $username));
 	}
-
-	private function replaceVariables($input, $cmdbObject)
-	{
-		$output  = preg_replace_callback("/%(.+?)%/", 
-						function($pregResult) use($cmdbObject)
-						{
-							$value = $pregResult[0];
-							if($this->variables->getVariable($pregResult[1]) != null)
-							{
-								$value =  $this->variables->getVariable($pregResult[1])->getValue($cmdbObject);
-							}
-							return $value;
-						},
-						$input);
-		return $output;
-	}
-
 }
 ?>
