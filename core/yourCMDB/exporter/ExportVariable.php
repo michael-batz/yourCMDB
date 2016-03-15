@@ -79,28 +79,42 @@ class ExportVariable
 		if(isset($this->fieldValue[$objectType]['name']))
 		{
 			$fieldname = $this->fieldValue[$objectType]['name'];
-			$value = $object->getFieldvalue($fieldname);
 
-			//check if field is an object reference (type objectref)
-			if(preg_match('/objectref-.*/', $configObjecttype->getFieldType($objectType, $fieldname)) == 1)
+			//check special fieldnames
+			switch($fieldname)
 			{
-				try
-				{
-					//get referenced object
-					$refObject = $objectController->getObject($value, "yourCMDB-exporter");
+				case "yourCMDB_object_id":
+					$value = $object->getId();
+					break;
 
-					//get value of referenced field if configured
-					if($this->fieldValue[$objectType]['refobjectfield'] != "")
+				case "yourCMDB_object_type":
+					$value = $object->getType();
+					break;
+
+				default:
+					$value = $object->getFieldvalue($fieldname);
+
+					//check if field is an object reference (type objectref)
+					if(preg_match('/objectref-.*/', $configObjecttype->getFieldType($objectType, $fieldname)) == 1)
 					{
-						$refFieldname = $this->fieldValue[$objectType]['refobjectfield'];
-						$value = $refObject->getFieldvalue($refFieldname);
-					}
+						try
+						{
+							//get referenced object
+							$refObject = $objectController->getObject($value, "yourCMDB-exporter");
+
+							//get value of referenced field if configured
+							if($this->fieldValue[$objectType]['refobjectfield'] != "")
+							{
+								$refFieldname = $this->fieldValue[$objectType]['refobjectfield'];
+								$value = $refObject->getFieldvalue($refFieldname);
+							}
 					
-				}
-				catch(Exception $e)
-				{
-					;
-				}
+						}
+						catch(Exception $e)
+						{
+							;
+						}
+					}
 			}
 		}
 
