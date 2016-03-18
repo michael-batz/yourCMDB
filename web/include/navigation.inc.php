@@ -99,7 +99,7 @@
 
 	//documentation dropdown
 	echo "<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">";
-	echo "<span class=\"glyphicon glyphicon-book\"></span>".gettext("Documentation")."</a>";
+	echo "<span class=\"glyphicon glyphicon-question-sign\"></span>".gettext("Help")."</a>";
 	echo "<ul class=\"dropdown-menu\">";
 	echo "<li><a href=\"documentation.php?document=admin-guide\"><span class=\"glyphicon glyphicon-file\"></span>".gettext("Admin Guide")."</a></li>";
 	echo "<li><a href=\"documentation.php?document=development-guide\"><span class=\"glyphicon glyphicon-file\"></span>".gettext("Development Guide")."</a></li>";
