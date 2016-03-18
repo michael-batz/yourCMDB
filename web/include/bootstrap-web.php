@@ -39,6 +39,7 @@ use yourCMDB\info\InfoController;
 //define base directories
 $webScriptBaseDir = dirname(__FILE__);
 $coreBaseDir = realpath("$webScriptBaseDir/../../core");
+$docsBaseDir = realpath("$webScriptBaseDir/../../docs-new");
 
 //include yourCMDB bootstrap
 include "$coreBaseDir/bootstrap.php";
