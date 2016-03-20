@@ -1,8 +1,10 @@
 = yourCMDB Admin Guide
 Michael Batz <michael@yourcmdb.org>
 :toc: left
+:toclevels: 1
 :icons: font
 :source-highlighter: pygments
+
 
 == Getting started
 
