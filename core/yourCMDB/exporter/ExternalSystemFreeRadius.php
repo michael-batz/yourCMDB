@@ -122,10 +122,13 @@ class ExternalSystemFreeRadius implements ExternalSystem
 			//replace values
 			$attribute = $genericRadReplyEntry['attribute'];
 			$op = $genericRadReplyEntry['op'];
-			$value = VariableSubstitution::substitute($genericRadReplyEntry['value'], $variables);
-			$radiusReply[] = Array(	'attribute'     => $attribute,
-						'op'            => $op,
-						'value'         => $value);
+			$value = VariableSubstitution::substitute($genericRadReplyEntry['value'], $variables, true);
+			if($value != "")
+			{
+				$radiusReply[] = Array(	'attribute'     => $attribute,
+							'op'            => $op,
+							'value'         => $value);
+			}
 		}
 
 		//check, if a record exist for this account
