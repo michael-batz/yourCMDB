@@ -34,10 +34,11 @@ class VariableSubstitution
 	* substitute all object fields in the given input string
 	* @param string $input			input string
 	* @param CmdbObject $object		CmdbObject
-	* @param boolean $failOnMissingVars	fail, if no variables could be replaced
+	* @param boolean $failOnMissingVars	fail, if some variables could not be replaced
+	* @param int $ignoreFailOnGoodCount	ignore fail, if this count of variables could be replaced
 	* @return string		string with replaced variables
 	*/
-	public static function substituteObjectVariables($input, \yourCMDB\entities\CmdbObject $object, $failOnMissingVars=false)
+	public static function substituteObjectVariables($input, \yourCMDB\entities\CmdbObject $object, $failOnMissingVars=false, $ignoreFailOnGoodCount=0)
 	{
 		$variables = Array();
 		$variables['yourCMDB_object_id'] = $object->getId();
@@ -48,7 +49,7 @@ class VariableSubstitution
 			$variables[$fieldname] = $fieldvalue;
 		}
 
-		$output = self::substitute($input, $variables, $failOnMissingVars);
+		$output = self::substitute($input, $variables, $failOnMissingVars, $ignoreFailOnGoodCount);
 		return $output;
 	}
 
@@ -56,10 +57,11 @@ class VariableSubstitution
 	* substitute all variables in the given input string
 	* @param string $input			input string
 	* @param array $variables		associative array variableName -> variableValue
-	* @param boolean $failOnMissingVars	fail, if no variables could be replaced
+	* @param boolean $failOnMissingVars	fail, if some variables could not be replaced
+	* @param int $ignoreFailOnGoodCount	ignore fail, if this count of variables could be replaced
 	* @return string			string with replaced variables, empty string on errors
 	*/
-	public static function substitute($input, $variables, $failOnMissingVars=false)
+	public static function substitute($input, $variables, $failOnMissingVars=false, $ignoreFailOnGoodCount=0)
 	{
 		$countVars = 0;
 		$countReplacedVars = 0 ;
@@ -80,13 +82,17 @@ class VariableSubstitution
 							return $value;
 						}, 
 						$input);
-		//error handling, if configured
-		if($failOnMissingVars)
+		//error handling, if configured and variables were found
+		if($failOnMissingVars && $countVars > 0)
 		{
-			//if variables were found and no variable could be replaced, fail
-			if($countVars > 0 && $countReplacedVars == 0)
+			//if variables were found some variables could not be replaced, fail
+			if($countReplacedVars < $countVars )
 			{
-				return "";
+				//check, if the error should be ignored
+				if(!($ignoreFailOnGoodCount > 0 && $countReplacedVars >= $ignoreFailOnGoodCount))
+				{
+					return "";
+				}
 			}
 		}
 

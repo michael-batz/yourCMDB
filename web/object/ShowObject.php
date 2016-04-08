@@ -169,7 +169,7 @@
 		foreach($objectExternalLinks as $objectExternalLink)
 		{
 			$objectExternalLinkName = $objectExternalLink['name'];
-			$objectExternalLinkHref = VariableSubstitution::substituteObjectVariables($objectExternalLink['href'], $object, true);
+			$objectExternalLinkHref = VariableSubstitution::substituteObjectVariables($objectExternalLink['href'], $object, true, 1);
 
 			//only show link, if 1 var in link was not empty or the link has no vars
 			if($objectExternalLinkHref != "")
