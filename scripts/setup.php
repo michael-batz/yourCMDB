@@ -1,4 +1,4 @@
-#! /usr/bin/php5
+#! /usr/bin/php
 <?php
 /********************************************************************
 * This file is part of yourCMDB.
@@ -28,7 +28,6 @@
 
 use yourCMDB\setup\DatastoreSetupHelper;
 use yourCMDB\setup\UserSetupHelper;
-use \Exception;
 
 //load bootstrap
 $scriptBaseDir = dirname(__FILE__);

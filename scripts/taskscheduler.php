@@ -1,4 +1,4 @@
-#! /usr/bin/php5
+#! /usr/bin/php
 <?php
 /********************************************************************
 * This file is part of yourCMDB.

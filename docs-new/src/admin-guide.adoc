@@ -23,6 +23,7 @@ yourCMDB is designed for working in a LAMP/WAMP environment. The following softw
 ** MySQL
 ** LDAP
 ** CLI
+** XML/SimpleXML
 * MySQL database server
 
 If all the required software is installed, download the current version of yourCMDB and extract the files in a directory of your choice, for example in /opt/yourCMDB. After that, link the web subdirectory in your webserver's document root.

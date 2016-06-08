@@ -29,7 +29,6 @@
 	use yourCMDB\exceptions\CmdbAccessGroupNotFoundException;
 	use yourCMDB\exceptions\CmdbAccessGroupAlreadyExistsException;
 	use yourCMDB\exceptions\CmdbAccessRuleAlreadyExistsException;
-	use \Exception;
 
 	//include base
 	include "../include/bootstrap-web.php";

@@ -24,7 +24,6 @@
 * @author Michael Batz <michael@yourcmdb.org>
 */
 use yourCMDB\fileimporter\Importer;
-use \Exception;
 
 
 	//required parameters: $paramFilename, $paramFormat, $importOptions

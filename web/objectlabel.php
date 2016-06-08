@@ -36,7 +36,6 @@
 	use yourCMDB\printer\exceptions\PrintUnauthorizedException;
 	use yourCMDB\printer\exceptions\PrinterErrorException;
 	use yourCMDB\printer\exceptions\PrintException;
-	use \Exception;
 
 	//get parameters
 	$paramId = getHttpGetVar("id", 0);
