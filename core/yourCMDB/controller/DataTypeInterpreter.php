@@ -34,7 +34,7 @@ class DataTypeInterpreter
 {
 
 	//datatypes
-	private static $types = Array("text", "textarea", "boolean","date", "objectref", "password");
+	private static $types = Array("text", "textarea", "boolean","date", "objectref", "password", "dropdown");
 
 	//object controller
 	private $objectController;
@@ -83,6 +83,9 @@ class DataTypeInterpreter
 				$value = $this->interpretObjectref($value, $typeParameter);
 				break;
 
+			case "dropdown":
+				$value = $this->interpretDropdown($value, $typeParameter);
+				break;
 		}
 
 		//return interpreted valze
@@ -128,6 +131,25 @@ class DataTypeInterpreter
 		{
 			return "";
 		}
+	}
+
+	private function interpretDropdown($value, $typeParameter)
+	{
+		//check if value is allowed
+		$possibleValues = explode(",", $typeParameter);
+		$possibleValues[] = "";
+
+		//check if value is in possibleValues
+		foreach($possibleValues as $possibleValue)
+		{
+			if($value == $possibleValue)
+			{
+				return $possibleValue;
+			}
+		}
+
+		//if not, return empty value
+		return "";
 	}
 }
 ?>

@@ -69,6 +69,10 @@
 				showFieldForObjectref($typeParameter, $name, $value, $writable);
 				break;
 
+			case "dropdown";
+				showFieldForDropdown($typeParameter, $name, $value, $writable);
+				break;
+
 			default:
 				showFieldForText($objectType, $name, $value, $writable);
 				break;
@@ -254,4 +258,39 @@
 		}
 
 	}
+
+	function showFieldForDropdown($typeParameter, $name, $value, $writable)
+	{
+		if($writable)
+		{
+			$possibleValues = explode(",", $typeParameter);
+			$possibleValues[] = "";
+			?>
+			<select id="<?php echo $name; ?>"
+				class="form-control"
+				name="<?php echo $name; ?>"
+				>
+			<?php
+			foreach($possibleValues as $possibleValue)
+			{
+				if($possibleValue == $value)
+				{
+					echo "<option selected=\"selected\">$possibleValue</option>";
+				}
+				else
+				{
+					echo "<option>$possibleValue</option>";
+				}
+			}
+			?>
+			</select>
+			<?php
+		}
+		else
+		{
+			echo htmlspecialchars($value);
+		}
+
+	}
+
 ?>

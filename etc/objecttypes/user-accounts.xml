@@ -4,6 +4,9 @@
 			<comment><![CDATA[Username: yourCMDB_%yourCMDB_object_id%<br />Password: %account-password%]]></comment>
 		</static>
 		<fields>
+			<fieldgroup name="State">
+                                <field name="state-state" label="State" type="dropdown-predefined,active,disabled,closed" summaryfield="true"/>
+                        </fieldgroup>
 			<fieldgroup name="Customer">
                                 <field name="customer-nummer" label="Customer Number" type="text" summaryfield="true"/>
                                 <field name="customer-name" label="Customer Name" type="text" summaryfield="true"/>
