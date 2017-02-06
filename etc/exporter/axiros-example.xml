@@ -1,0 +1,79 @@
+<task name="axiros-example">
+	<sources>
+		<source objecttype="Account" status="A" fieldname="device-managed" fieldvalue="true" />
+	</sources>
+	<destination class="ExternalSystemCustomAxirosAcs">
+		<parameter key="apiUrl" value="https://axiros.example.com/live/CPEManager/AXServiceStorage/Interfaces/soap/getWSDL" />
+		<parameter key="apiUser" value="admin" />
+		<parameter key="apiPassword" value="admin" />
+		<parameter key="prefixUsernamePppoe" value="yourcmdb_pppoe_" />
+		<parameter key="prefixUsernameVoice" value="yourcmdb_voice_" />
+		<parameter key="voiceRegistrar" value="sip.example.com" />
+	</destination>
+	<variables>
+		<variable name="general_mac">
+			<value objecttype="Account" fieldname="device-mac" />
+		</variable>
+		<variable name="general_custno">
+			<value objecttype="Account" fieldname="customer-number" />
+		</variable>
+		<variable name="general_custname">
+			<value objecttype="Account" fieldname="customer-name" />
+		</variable>
+
+		<variable name="pppoe_enabled">
+			<value objecttype="Account" fieldname="pppoe-managed" />
+		</variable>
+		<variable name="pppoe_password">
+			<value objecttype="Account" fieldname="pppoe-password" />
+		</variable>
+		<variable name="pppoe_downstream">
+			<value objecttype="Account" fieldname="pppoe-downstream" />
+		</variable>
+		<variable name="pppoe_upstream">
+			<value objecttype="Account" fieldname="pppoe-upstream" />
+		</variable>
+
+
+		<variable name="voice_enabled">
+			<value objecttype="Account" fieldname="sip-managed" />
+		</variable>
+		<variable name="voice_password">
+			<value objecttype="Account" fieldname="sip-password" />
+		</variable>
+		<variable name="voice_areacode">
+			<value objecttype="Account" fieldname="sip-areacode" />
+		</variable>
+		<variable name="voice_phone_1">
+			<value objecttype="Account" fieldname="sip-phone1" />
+		</variable>
+		<variable name="voice_phone_2">
+			<value objecttype="Account" fieldname="sip-phone2" />
+		</variable>
+		<variable name="voice_phone_3">
+			<value objecttype="Account" fieldname="sip-phone3" />
+		</variable>
+		<variable name="voice_phone_4">
+			<value objecttype="Account" fieldname="sip-phone4" />
+		</variable>
+		<variable name="voice_phone_5">
+			<value objecttype="Account" fieldname="sip-phone5" />
+		</variable>
+		<variable name="voice_phone_6">
+			<value objecttype="Account" fieldname="sip-phone6" />
+		</variable>
+		<variable name="voice_phone_7">
+			<value objecttype="Account" fieldname="sip-phone7" />
+		</variable>
+		<variable name="voice_phone_8">
+			<value objecttype="Account" fieldname="sip-phone8" />
+		</variable>
+		<variable name="voice_phone_9">
+			<value objecttype="Account" fieldname="sip-phone9" />
+		</variable>
+		<variable name="voice_phone_10">
+			<value objecttype="Account" fieldname="sip-phone10" />
+		</variable>
+
+	</variables>
+</task>
