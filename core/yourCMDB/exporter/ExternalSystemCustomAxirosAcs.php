@@ -244,6 +244,10 @@ class ExternalSystemCustomAxirosAcs implements ExternalSystem
 			{
 				$serviceDefinition["parameters"]["main_number"] = $voiceService->pending_properties->main_number;
 			}
+			if($serviceDefinition["parameters"]["main_number"] == null)
+			{
+				$serviceDefinition["parameters"]["main_number"] = 0;
+			}
 
 			//create identifiers
 			$serviceDefinition["identifiers"]["cpeid"] = $voiceService->cpeid;
@@ -270,15 +274,15 @@ class ExternalSystemCustomAxirosAcs implements ExternalSystem
 	public function addObject(\yourCMDB\entities\CmdbObject $object)
 	{
 		//get variables
-		$varMac = $this->variables->getVariable("general_mac")->getValue($object);
+		$varMac = substr($this->variables->getVariable("general_cwmp")->getValue($object), 7, 12);
 		$varCustName = $this->variables->getVariable("general_custname")->getValue($object);
 		$varCustNumber = $this->variables->getVariable("general_custno")->getValue($object);
 		$varCmdbId = $object->getId();
 		$varPPPoeEnabled = $this->variables->getVariable("pppoe_enabled")->getValue($object);
 		$varPPPoeUser = $this->prefixUsernamePppoe . $object->getId();
 		$varPPPoePassword = $this->variables->getVariable("pppoe_password")->getValue($object);
-		$varPPPoeUpstream = $this->variables->getVariable("pppoe_upstream")->getValue($object);
-		$varPPPoeDownstream = $this->variables->getVariable("pppoe_downstream")->getValue($object);
+		$varPPPoeUpstream = $this->variables->getVariable("pppoe_upstream")->getValue($object) * 1024;
+		$varPPPoeDownstream = $this->variables->getVariable("pppoe_downstream")->getValue($object) * 1024;
 		$varVoiceEnabled = $this->variables->getVariable("voice_enabled")->getValue($object);
 		$varVoiceUser = $this->prefixUsernameVoice . $object->getId();
 		$varVoicePassword = $this->variables->getVariable("voice_password")->getValue($object);
@@ -379,7 +383,7 @@ class ExternalSystemCustomAxirosAcs implements ExternalSystem
 		}
 
 		//add voice services, if enabled
-		if($varPPPoeEnabled == "true")
+		if($varVoiceEnabled == "true")
 		{
 			foreach($varVoicePhoneNumbers as $phoneNumber)
 			{
