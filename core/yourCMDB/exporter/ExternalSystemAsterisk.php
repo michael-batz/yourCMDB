@@ -24,6 +24,7 @@ namespace yourCMDB\exporter;
 use yourCMDB\entities\CmdbObject;
 use yourCMDB\helper\VariableSubstitution;
 use \Doctrine\DBAL\DriverManager;
+use \Exception;
 
 /**
 * Export API - External System: SIP accounts for Asterisk
@@ -68,6 +69,10 @@ class ExternalSystemAsterisk implements ExternalSystem
 	//database connection
 	private $databaseConnection;
 
+	//use extenion as username setting
+	private $useExtensionAsUsername;
+
+
 	public function setUp(ExportDestination $destination, ExportVariables $variables)
 	{
 		//get variables
@@ -94,6 +99,11 @@ class ExternalSystemAsterisk implements ExternalSystem
 		if(in_array("defaultCountryCode", $parameterKeys))
 		{
 			$this->defaultCountryCode = $destination->getParameterValue("defaultCountryCode");
+		}
+		$this->useExtensionAsUsername = "false";
+		if(in_array("useExtensionAsUsername", $parameterKeys))
+		{
+			$this->useExtensionAsUsername = $destination->getParameterValue("useExtensionAsUsername");
 		}
 
 		//get generic extensions
@@ -138,11 +148,136 @@ class ExternalSystemAsterisk implements ExternalSystem
 
 	public function addObject(\yourCMDB\entities\CmdbObject $object)
 	{
+		//check, if managed variable is set and return if it is not true
+		$managed = $this->variables->getVariable("managed")->getValue($object);
+		if($managed != "" && $managed != "true")
+		{
+			return;
+		}
+
+		//check parameter useExtensionAsUsername
+		if($this->useExtensionAsUsername == "true")
+		{
+			$this->addObjectExtensionAsUsername($object);
+		}
+		else
+		{
+			$this->addObjectUsual($object);
+		}
+	}
+
+	public function addObjectExtensionAsUsername(\yourCMDB\entities\CmdbObject $object)
+	{
+		//replace variables
+		$variables = Array();
+		foreach($this->variables->getVariableNames() as $exportVariableName)
+		{
+			$varValue = $this->variables->getVariable($exportVariableName)->getValue($object);
+			if(preg_match('/^telephone_(.*)$/', $exportVariableName) == 1)
+			{
+				$varValue = $this->normalizePhoneNumber($varValue); 
+			}
+
+			$variables[$exportVariableName] = $varValue;
+		}
+
+		//for each configured extension create sippeer and extension entry
+		foreach($this->genericExtensions as $genericExtension)
+		{
+			$sipUsername = VariableSubstitution::substitute($genericExtension['exten'], $variables, true);
+			$sipPassword = $this->variables->getVariable("password")->getValue($object);
+			$sipContext =  $this->sipContext;
+			$sipHost = "dynamic";
+			$sipReference = $this->variables->getVariable("reference")->getValue($object);
+			$extensions = Array();
+
+			$extensionEntry = Array();
+			$extensionEntry['sipname'] = $sipUsername;
+			$extensionEntry['context'] = VariableSubstitution::substitute($genericExtension['context'], $variables, true);
+			$extensionEntry['exten'] = VariableSubstitution::substitute($genericExtension['exten'], $variables, true);
+			$extensionEntry['priority'] = VariableSubstitution::substitute($genericExtension['priority'], $variables, true);
+			$extensionEntry['app'] = VariableSubstitution::substitute($genericExtension['app'], $variables, true);
+			$extensionEntry['appdata'] = VariableSubstitution::substitute($genericExtension['appdata'], $variables, true);
+			//only add extensions if the fields were not empty
+			if(!($extensionEntry['sipname'] == "" || $extensionEntry['context'] == "" || $extensionEntry['exten'] == "" ||
+				$extensionEntry['priority'] == "" || $extensionEntry['app'] == ""))
+			{
+				//check, if extension entry is unique
+				$uniqueExtensionString = $extensionEntry['context']."/".$extensionEntry['exten']."/".$extensionEntry['priority'];
+				if(!isset($this->checkUniqueExtensions[$uniqueExtensionString]))
+				{
+					$extensions[] = $extensionEntry;
+					$this->checkUniqueExtensions[$uniqueExtensionString] = "ok";
+				}
+			}
+			else
+			{
+				continue;
+			}
+
+			//check, if a record exist for this account
+			if(isset($this->existingAccounts[$sipUsername]))
+			{
+				//check, if password, context or host has changed
+				if(    	($this->existingAccounts[$sipUsername]['password'] != $sipPassword) ||
+					($this->existingAccounts[$sipUsername]['context'] != $sipContext) ||
+					($this->existingAccounts[$sipUsername]['host'] != $sipHost) ||
+					($this->existingAccounts[$sipUsername]['reference'] != $sipReference))
+				{
+					//recreate entry
+					$this->removeAsteriskAccount($sipUsername);
+					$this->addAsteriskAccount($sipUsername, $sipPassword, $sipContext, $sipHost, $sipReference, $extensions);
+				}
+
+				//check, if extensions were changed
+				$extensionCheck = $extensions;
+				$existingExtensionCheck = $this->existingAccounts[$sipUsername]['extensions'];
+				foreach($existingExtensionCheck as $i => $existingExtensionCheckEntry)
+				{
+					//walk through all extension entries
+					foreach($extensionCheck as $j => $extensionCheckEntry)
+					{
+						//remove entries, if they are equal
+						if(count(array_diff_assoc($existingExtensionCheckEntry, $extensionCheckEntry)) == 0)
+						{
+							unset($existingExtensionCheck[$i]);
+							unset($extensionCheck[$j]);
+						}
+					}
+				}
+				if(count($existingExtensionCheck) > 0 || count($extensionCheck) >  0)
+				{
+					//recreate entry
+					$this->removeAsteriskAccount($sipUsername);
+					$this->addAsteriskAccount($sipUsername, $sipPassword, $sipContext, $sipHost, $sipReference, $extensions);
+				}
+
+				//delete entry from existing records array
+				unset($this->existingAccounts[$sipUsername]);
+			}
+			else
+			//if not, save data to store
+			{
+				$this->accountsToCreate[$sipUsername] = Array();
+				$this->accountsToCreate[$sipUsername]['password'] = $sipPassword;
+				$this->accountsToCreate[$sipUsername]['context'] = $sipContext;
+				$this->accountsToCreate[$sipUsername]['host'] = $sipHost;
+				$this->accountsToCreate[$sipUsername]['reference'] = $sipReference;
+				$this->accountsToCreate[$sipUsername]['extensions'] = $extensions;
+			}
+
+		}
+
+	}
+
+	public function addObjectUsual(\yourCMDB\entities\CmdbObject $object)
+	{
 		//get data
 		$sipUsername = $this->prefixUsername.$object->getId();
 		$sipPassword = $this->variables->getVariable("password")->getValue($object);
 		$sipContext =  $this->sipContext;
 		$sipHost = "dynamic";
+		$sipReference = $this->variables->getVariable("reference")->getValue($object);
 		$extensions = Array();
 
 		//replace variables
@@ -188,11 +323,12 @@ class ExternalSystemAsterisk implements ExternalSystem
 			//check, if password, context or host has changed
 			if(    	($this->existingAccounts[$sipUsername]['password'] != $sipPassword) ||
 				($this->existingAccounts[$sipUsername]['context'] != $sipContext) ||
-				($this->existingAccounts[$sipUsername]['host'] != $sipHost))
+				($this->existingAccounts[$sipUsername]['host'] != $sipHost) ||
+				($this->existingAccounts[$sipUsername]['reference'] != $sipReference))
 			{
 				//recreate entry
 				$this->removeAsteriskAccount($sipUsername);
-				$this->addAsteriskAccount($sipUsername, $sipPassword, $sipContext, $sipHost, $extensions);
+				$this->addAsteriskAccount($sipUsername, $sipPassword, $sipContext, $sipHost, $sipReference, $extensions);
 			}
 
 			//check, if extensions were changed
@@ -215,7 +351,7 @@ class ExternalSystemAsterisk implements ExternalSystem
 			{
 				//recreate entry
 				$this->removeAsteriskAccount($sipUsername);
-				$this->addAsteriskAccount($sipUsername, $sipPassword, $sipContext, $sipHost, $extensions);
+				$this->addAsteriskAccount($sipUsername, $sipPassword, $sipContext, $sipHost, $sipReference, $extensions);
 			}
 
 			//delete entry from existing records array
@@ -228,6 +364,7 @@ class ExternalSystemAsterisk implements ExternalSystem
 			$this->accountsToCreate[$sipUsername]['password'] = $sipPassword;
 			$this->accountsToCreate[$sipUsername]['context'] = $sipContext;
 			$this->accountsToCreate[$sipUsername]['host'] = $sipHost;
+			$this->accountsToCreate[$sipUsername]['reference'] = $sipReference;
 			$this->accountsToCreate[$sipUsername]['extensions'] = $extensions;
 		}
 	}
@@ -240,8 +377,9 @@ class ExternalSystemAsterisk implements ExternalSystem
 			$password = $this->accountsToCreate[$username]['password'];
 			$context = $this->accountsToCreate[$username]['context'];
 			$host = $this->accountsToCreate[$username]['host'];
+			$reference = $this->accountsToCreate[$username]['reference'];
 			$extensions = $this->accountsToCreate[$username]['extensions'];
-			$this->addAsteriskAccount($username, $password, $context, $host, $extensions);
+			$this->addAsteriskAccount($username, $password, $context, $host, $reference, $extensions);
 		}
 
 		//remove all accounts that does not exist in CMDB
@@ -251,7 +389,7 @@ class ExternalSystemAsterisk implements ExternalSystem
 		}
 	}
 
-	private function addAsteriskAccount($username, $password, $context, $host, $extensions)
+	private function addAsteriskAccount($username, $password, $context, $host, $reference, $extensions)
 	{
 		//insert data in database table for SIP Accounts
 		$sipData =  Array();
@@ -259,7 +397,16 @@ class ExternalSystemAsterisk implements ExternalSystem
 		$sipData['context'] = $context;
 		$sipData['secret'] = $password;
 		$sipData['host'] = $host;
-		$this->databaseConnection->insert($this->databaseTableSip, $sipData);
+		$sipData['accountcode'] = $reference;
+		try
+		{
+			$this->databaseConnection->insert($this->databaseTableSip, $sipData);
+		}
+		catch(Exception $e)
+		{
+			echo "Error inserting SIP account: " . $sipData['name'];
+			return;
+		}
 
 		//insert data in database table for extensions
 		foreach($extensions as $extension)
@@ -295,10 +442,12 @@ class ExternalSystemAsterisk implements ExternalSystem
 			$password = $sipEntry['secret'];
 			$context = $sipEntry['context'];
 			$host = $sipEntry['host'];
+			$reference = $sipEntry['accountcode'];
 			$existingAccounts[$username] = Array();
 			$existingAccounts[$username]['password'] = $password;
 			$existingAccounts[$username]['context'] = $context;
 			$existingAccounts[$username]['host'] = $host;
+			$existingAccounts[$username]['reference'] = $reference;
 			$existingAccounts[$username]['extensions'] = Array();
 		}
 

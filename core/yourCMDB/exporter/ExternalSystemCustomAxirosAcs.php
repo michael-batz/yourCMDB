@@ -137,6 +137,7 @@ class ExternalSystemCustomAxirosAcs implements ExternalSystem
 
 			//create parameters
 			$serviceDefinition["parameters"]["name"] = $metadataService->properties->name;
+			$serviceDefinition["parameters"]["version"] = $metadataService->properties->version;
 
 			//create internal id
 			$id = $metadataService->cpeid;;
@@ -210,7 +211,6 @@ class ExternalSystemCustomAxirosAcs implements ExternalSystem
 			$serviceDefinition["parameters"]["area_code"] = $voiceService->properties->area_code;
 			$serviceDefinition["parameters"]["phone_number"] = $voiceService->properties->phone_number;
 			$serviceDefinition["parameters"]["directory_number"] = $voiceService->properties->directory_number;
-			$serviceDefinition["parameters"]["main_number"] = $voiceService->properties->main_number;
 			//check pending parameters
 			if(isset($voiceService->pending_properties->username))
 			{
@@ -240,15 +240,7 @@ class ExternalSystemCustomAxirosAcs implements ExternalSystem
 			{
 				$serviceDefinition["parameters"]["directory_number"] = $voiceService->pending_properties->directory_number;
 			}
-			if(isset($voiceService->pending_properties->main_number))
-			{
-				$serviceDefinition["parameters"]["main_number"] = $voiceService->pending_properties->main_number;
-			}
-			if($serviceDefinition["parameters"]["main_number"] == null)
-			{
-				$serviceDefinition["parameters"]["main_number"] = 0;
-			}
-
+			
 			//create identifiers
 			$serviceDefinition["identifiers"]["cpeid"] = $voiceService->cpeid;
 			$serviceDefinition["identifiers"]["directory_number"] = $serviceDefinition["parameters"]["directory_number"];
@@ -278,6 +270,7 @@ class ExternalSystemCustomAxirosAcs implements ExternalSystem
 		$varCustName = $this->variables->getVariable("general_custname")->getValue($object);
 		$varCustNumber = $this->variables->getVariable("general_custno")->getValue($object);
 		$varCmdbId = $object->getId();
+		$varConfigVersion = $this->variables->getVariable("general_configversion")->getValue($object);
 		$varPPPoeEnabled = $this->variables->getVariable("pppoe_enabled")->getValue($object);
 		$varPPPoeUser = $this->prefixUsernamePppoe . $object->getId();
 		$varPPPoePassword = $this->variables->getVariable("pppoe_password")->getValue($object);
@@ -315,6 +308,7 @@ class ExternalSystemCustomAxirosAcs implements ExternalSystem
 		$metaService["identifiers"]["cid2"] = "CMDB#" . $varCmdbId;
 		$metaService["parameters"] = Array();
 		$metaService["parameters"]["name"] = $varCustName;
+		$metaService["parameters"]["version"] = $varConfigVersion;
 		//check, if service should be created or updated
 		if(isset($this->existingServicesMeta[$metaServiceId]))
 		{
@@ -383,7 +377,7 @@ class ExternalSystemCustomAxirosAcs implements ExternalSystem
 		}
 
 		//add voice services, if enabled
-		if($varVoiceEnabled == "true")
+		if($varVoiceEnabled == "true" && $varConfigVersion >= 2)
 		{
 			foreach($varVoicePhoneNumbers as $phoneNumber)
 			{
@@ -394,7 +388,7 @@ class ExternalSystemCustomAxirosAcs implements ExternalSystem
 				$voiceService["identifiers"]["cpeid"] = $varMac;
 				$voiceService["identifiers"]["directory_number"] = $phoneNumberDirectory;
 				$voiceService["parameters"] = Array();
-				$voiceService["parameters"]["username"] = $varVoiceUser;
+				$voiceService["parameters"]["username"] = $phoneNumberDirectory;
 				$voiceService["parameters"]["password"] = $varVoicePassword;
 				$voiceService["parameters"]["registrar"] = $varVoiceRegistrar;
 				$voiceService["parameters"]["country_code"] = $varVoicePhoneCountryCode;
