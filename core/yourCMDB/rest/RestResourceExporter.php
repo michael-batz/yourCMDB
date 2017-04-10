@@ -33,6 +33,7 @@ use \Exception;
 * - GET 	/rest.php/exporter/list/
 * /rest.php/exporter/export/<task>
 * - PUT		/rest.php/exporter/export/<task>
+* - GET		/rest.php/exporter/export/<task>
 *
 * @author Michael Batz <michael@yourcmdb.org>
 */
@@ -51,7 +52,35 @@ class RestResourceExporter extends RestResource
 				$output = $config->getExporterConfig()->getTasks();
 				return new RestResponse(200, json_encode($output));
 				break;
+				
+			//resource is export
+			case "export":
+				try
+				{
+					//get exporter task
+					$task = $this->uri[2];
 
+					//turn on output buffering to get exporters STDOUT
+					ob_start();
+
+					//run export task					
+					$exporter = new Exporter($task);
+
+					//get output from buffer
+					$output = ob_get_contents();
+
+					//end and clear output buffer
+					ob_end_clean();
+
+					//return result
+					return new RestResponse(200, $output);
+				}
+				catch(Exception $e)
+				{
+					return new RestResponse(400);
+				}
+				break;
+				
 			//other values: return 405
 			default:
 				return new RestResponse(405);
