@@ -14,10 +14,15 @@
 				<parameter key="groupmap_admin" value="admin" />
 				<parameter key="groupmap_rest" value="rest" />
 				<parameter key="groupmap_user" value="user" />
+            </authprovider>
+			<authprovider name="opennms-auth" class="AuthenticationProviderOpennms">
+                <parameter key="url" value="http://localhost:8980/opennms" />
+                <parameter key="defaultAccessgroup" value="user" />
+                <parameter key="accessuser_admin" value="admin" />
 			</authprovider>
 		</authproviders>
 		<authmethods>
-			<authmethod part="web" authprovider="local-auth" />
+			<authmethod part="web" authprovider="opennms-auth" />
 			<authmethod part="rest" authprovider="local-auth" />
 		</authmethods>
 	</authentication>
