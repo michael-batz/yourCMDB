@@ -10,6 +10,17 @@
 				<field name="city" type="text" summaryfield="true" />
 				<field name="country" type="text" summaryfield="true"/>
 			</fieldgroup>
+			<fieldgroup name="region">
+				<field name="region" label="region" type="objectref-region" />
+			</fieldgroup>
+		</fields>
+    </object-type>
+	<object-type name="region">
+		<fields>
+			<fieldgroup name="region">
+				<field name="region-name" label="region name" type="text" summaryfield="true" />
+				<field name="region-responsibility" label="responsibility" type="text" summaryfield="true" />
+			</fieldgroup>
 		</fields>
 	</object-type>
 </group>

@@ -91,36 +91,47 @@ class ExportVariable
 					$value = $object->getType();
 					break;
 
-				default:
+                default:
+                    //simply use the field value
 					$value = $object->getFieldvalue($fieldname);
 
-					//check if field is an object reference (type objectref)
-					if(preg_match('/objectref-.*/', $configObjecttype->getFieldType($objectType, $fieldname)) == 1)
+                    //check if field is an object reference (type objectref) 
+                    //and refobjectfield in exporter config is defined
+                    if(
+                        (preg_match('/objectref-.*/', $configObjecttype->getFieldType($objectType, $fieldname)) == 1)
+                        && ($this->fieldValue[$objectType]['refobjectfield'] != "")
+                    )
 					{
 						try
 						{
 							//get referenced object
-							$refObject = $objectController->getObject($value, "yourCMDB-exporter");
+                            $refObject = $objectController->getObject($value, "yourCMDB-exporter");
 
-							//get value of referenced field if configured
-							if($this->fieldValue[$objectType]['refobjectfield'] != "")
-							{
-								$refFieldname = $this->fieldValue[$objectType]['refobjectfield'];
-								$value = $refObject->getFieldvalue($refFieldname);
+                            //get object field path from config entry "refobjectfield"
+							$refFieldname = $this->fieldValue[$objectType]['refobjectfield'];
+                            foreach(preg_split("#\.#", $refFieldname) as $refFieldnameElement)
+                            {
+                                //get value of referenced field
+                                $value = $refObject->getFieldvalue($refFieldnameElement);
+                                //if referenced field is a reference itself -> dereference
+                                if(preg_match('/objectref-.*/', $configObjecttype->getFieldType($refObject->getType(), 
+                                              $refFieldnameElement)) == 1)
+                                {
+                                    $refObject = $objectController->getObject($value, "yourCMDB-exporter");
+                                }
 							}
-					
 						}
 						catch(Exception $e)
 						{
 							;
-						}
+                        }
 					}
 			}
 		}
 
 		//return the value
 		return $value;
-	}
+    }
 
 }
 ?>
