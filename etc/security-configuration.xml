@@ -22,7 +22,7 @@
 			</authprovider>
 		</authproviders>
 		<authmethods>
-			<authmethod part="web" authprovider="opennms-auth" />
+			<authmethod part="web" authprovider="local-auth" />
 			<authmethod part="rest" authprovider="local-auth" />
 		</authmethods>
 	</authentication>
