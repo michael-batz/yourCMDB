@@ -54,7 +54,10 @@ class ExternalSystemOpennms implements ExternalSystem
 	private $sslVerify;
 
 	//rescan existing nodes when importing
-	private $rescanExisting;
+    private $rescanExisting;
+
+    //export SNMP config
+    private $exportSnmpConfig;
 
 	//static var: category name lentgh
 	private static $categoryLength = 64;
@@ -166,6 +169,13 @@ class ExternalSystemOpennms implements ExternalSystem
 			$this->rescanExisting = $destination->getParameterValue("rescanExisting");
 		}
 
+		//exportSnmpConfig
+		$this->exportSnmpConfig = "false";
+		if(in_array("exportSnmpConfig", $parameterKeys))
+		{
+			$this->exportSnmpConfig = $destination->getParameterValue("exportSnmpConfig");
+        }
+
 		//check connection to OpenNMS
 		if(!($this->checkConnection()))
 		{
@@ -255,7 +265,36 @@ class ExternalSystemOpennms implements ExternalSystem
 
 		//add nodes to requisition
 		$xml = $this->addNode($nodeLabel, $nodeForeignId, $nodeInterfaces, $nodeServices, $nodeCategories, $nodeAssets);
-		$this->requisitionXml .= $xml;
+        $this->requisitionXml .= $xml;
+
+        //if configured, export SNMP Config (currently only v1/v2 is supported)
+        if($this->exportSnmpConfig == "true")
+        {
+            //snmp community
+		    $snmpCommunity = "public";
+		    if($this->variables->getVariable("snmp_community") != null)
+		    {
+			    $snmpCommunity = $this->formatField($this->variables->getVariable("snmp_community")->getValue($object));
+            }
+
+            //snmp version
+            $snmpVersion = "v2c";
+		    if($this->variables->getVariable("snmp_version") != null)
+		    {
+                $snmpVersionInput = $this->formatField($this->variables->getVariable("snmp_version")->getValue($object));
+                if($snmpVersionInput == "v1" || $snmpVersionInput  == "v2c")
+                {
+                    $snmpVersion = $snmpVersionInput;
+                }
+            }
+
+            //create SNMP Config via REST
+            foreach($nodeInterfaces as $nodeInterface)
+            {
+                $this->setSnmpV2Config($nodeInterface, $snmpCommunity, $snmpVersion);
+            }
+        }
+
 	}
 
 	public function finishExport()
@@ -477,11 +516,30 @@ class ExternalSystemOpennms implements ExternalSystem
 	}
 
 
-	private function formatField($value, $length)
-	{
-		$value = substr($value, 0, $length);
+	private function formatField($value, $length=0)
+    {
+        if($length != 0)
+        {
+            $value = substr($value, 0, $length);
+        }
 		$value = htmlspecialchars($value);
 		return $value;
-	}
+    }
+
+    private function setSnmpV2Config($ip, $community, $version="v2c", $port="162", $timeout="2000", $retries="1")
+    {
+        //create XML structure
+        $xml = "<snmp-info>";
+        $xml.= "<readCommunity>$community</readCommunity>";
+        $xml.= "<port>$port</port>";
+        $xml.= "<retries>$retries</retries>";
+        $xml.= "<timeout>$timeout</timeout>";
+        $xml.= "<version>$version</version>";
+        $xml.= "</snmp-info>";
+
+        //send XML structure to OpenNMS
+		$resource = "snmpConfig/$ip";
+		return $this->sendData($resource, "PUT", $xml);
+    }
 }
 ?>

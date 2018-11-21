@@ -4,12 +4,13 @@
 		<source objecttype="switch" status="A" />
 	</sources>
 	<destination class="ExternalSystemOpennms">
-		<parameter key="resturl" value="http://10.0.1.104:8980/opennms/rest" />
+		<parameter key="resturl" value="http://127.0.0.1:8980/opennms/rest" />
 		<parameter key="restuser" value="admin" />
 		<parameter key="restpassword" value="admin" />
 		<parameter key="requisition" value="yourcmdb" />
 		<parameter key="services" value="ICMP" />
-		<parameter key="rescanExisting" value="dbOnly" />
+		<parameter key="rescanExisting" value="true" />
+		<parameter key="exportSnmpConfig" value="true" />
 	</destination>
 	<variables>
 		<variable name="nodelabel">
@@ -19,6 +20,14 @@
 		<variable name="ip">
 			<value objecttype="router" fieldname="management-ip" />
 			<value objecttype="switch" fieldname="management-ip" />
+        </variable>
+		<variable name="snmp_community">
+			<value objecttype="router" fieldname="snmpCommunity" />
+			<value objecttype="switch" fieldname="snmpCommunity" />
+        </variable>
+		<variable name="snmp_version">
+			<value objecttype="router" fieldname="snmpVersion" />
+			<value objecttype="switch" fieldname="snmpVersion" />
 		</variable>
 		<variable name="asset_city">
 			<value objecttype="router" fieldname="manufacturer" />
@@ -28,9 +37,9 @@
 			<value objecttype="router" fieldname="Name" />
 			<value objecttype="switch" fieldname="Name" />
 		</variable>
-		<variable name="category_1">
+		<!--variable name="category_1">
 			<value objecttype="router" fieldname="manufacturer" />
 			<value objecttype="switch" fieldname="manufacturer" />
-		</variable>
+		</variable-->
 	</variables>
 </task>
