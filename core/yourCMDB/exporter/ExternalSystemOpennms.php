@@ -477,7 +477,7 @@ class ExternalSystemOpennms implements ExternalSystem
 	public function addNode($nodelabel, $foreignID, $interfaces, $services, $categories, $assets)
 	{
 		//adding node information
-		$xml = '<node node-label="'.$nodelabel.'" foreign-id="'.$foreignID.'" building="'.$foreignID.'">';
+		$xml = '<node node-label="'.$nodelabel.'" foreign-id="'.$foreignID.'">';
 
 		//adding L3 interfaces and services
 		foreach($interfaces as $interface)
