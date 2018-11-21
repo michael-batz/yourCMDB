@@ -254,8 +254,12 @@ class ExternalSystemOpennms implements ExternalSystem
 
 				//check if it is an unnamed category (example: "category_1")
 				if(preg_match('/^[\d]+$/', $categoryname) === 1)
-				{
-					$nodeCategories[]  = $this->formatField($this->variables->getVariable($variableName)->getValue($object), self::$categoryLength);
+                {
+                    $catName = $this->formatField($this->variables->getVariable($variableName)->getValue($object), self::$categoryLength);
+                    if($catName != "")
+                    {
+					    $nodeCategories[] = $catName;
+                    }
 				}
 				else
 				{

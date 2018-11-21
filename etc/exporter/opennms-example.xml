@@ -37,9 +37,9 @@
 			<value objecttype="router" fieldname="Name" />
 			<value objecttype="switch" fieldname="Name" />
 		</variable>
-		<!--variable name="category_1">
+		<variable name="category_1">
 			<value objecttype="router" fieldname="manufacturer" />
 			<value objecttype="switch" fieldname="manufacturer" />
-		</variable-->
+		</variable>
 	</variables>
 </task>
