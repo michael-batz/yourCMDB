@@ -111,7 +111,7 @@ class ExternalSystemOpennms implements ExternalSystem
 					"connection"			=> 32,
 					"cpu"				=> 64,
 					"ram"				=> 10,
-					"storagectrl"			=> 64,
+					"storagectrl"		=> 64,
 					"hdd1"				=> 64,
 					"hdd2"				=> 64,
 					"hdd3"				=> 64,
@@ -119,8 +119,10 @@ class ExternalSystemOpennms implements ExternalSystem
 					"hdd5"				=> 64,
 					"hdd6"				=> 64,
 					"admin"				=> 32,
-					"snmpcommunity"			=> 32,
-					"country"			=> 32
+					"snmpcommunity"		=> 32,
+                    "country"			=> 32,
+                    "latitude"          => 32,
+                    "longitude"         => 32
 					);
 
 	public function setUp(ExportDestination $destination, ExportVariables $variables)
