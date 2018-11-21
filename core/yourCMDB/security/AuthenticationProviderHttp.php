@@ -26,13 +26,13 @@ use yourCMDB\entities\CmdbLocalUser;
 use \Exception;
 
 /**
-* Authentication provider against an OpenNMS server
+* Authentication provider against an HTTP server
 * @author Michael Batz <michael@yourcmdb.org>
 */
-class AuthenticationProviderOpennms implements AuthenticationProvider
+class AuthenticationProviderHttp implements AuthenticationProvider
 {
 
-    //config: OpenNMS URL
+    //config: HTTP URL
     private $configUrl;
 
     //config: default accessgroup
@@ -41,10 +41,13 @@ class AuthenticationProviderOpennms implements AuthenticationProvider
     //config: mapping user -> accessgroup
     private $configAccessMap;
 
+    //config: allowed users for authentication
+    private $allowedUsers;
+
 	function __construct($parameters)
 	{
-        // OpenNMS base config
-        $this->configUrl = $this->getParameterValue($parameters, "url", "http://localhost:8980/opennms");
+        // base config
+        $this->configUrl = $this->getParameterValue($parameters, "url", "http://localhost");
         $this->configDefaultAccessgroup = $this->getParameterValue($parameters, "defaultAccessgroup", "user");
 
         // mapping users to accessgroups
@@ -58,16 +61,32 @@ class AuthenticationProviderOpennms implements AuthenticationProvider
                 $this->configAccessMap[$username] = $accessgroup;
             }
         }
+
+        //if configured, get allowed users
+        $this->allowedUsers = array();
+        if(in_array("allowedUsers", array_keys($parameters)))
+        {
+            $this->allowedUsers = preg_split("#\s*,\s*#", $this->getParameterValue($parameters, "allowedUsers", ""));
+        }
 	}
 
 	public function authenticate($username, $password)
     {
-        // ask OpenNMS REST API
+        //check if allowedUsers is set
+        if(count($this->allowedUsers) > 0)
+        {
+            //check if user is in allowed users
+            if(!in_array($username, $this->allowedUsers))
+            {
+                return false;
+            }
+        }
+
+        // ask HTTP server
         $curl = curl_init();
-        $url = $this->configUrl . "/rest/info";
         $curlOptions = array
         (
-            CURLOPT_URL     => $url,
+            CURLOPT_URL     => $this->configUrl,
             CURLOPT_USERPWD => "$username:$password",
             CURLOPT_RETURNTRANSFER  => true
         );

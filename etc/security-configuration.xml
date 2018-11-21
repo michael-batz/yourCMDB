@@ -15,8 +15,8 @@
 				<parameter key="groupmap_rest" value="rest" />
 				<parameter key="groupmap_user" value="user" />
             </authprovider>
-			<authprovider name="opennms-auth" class="AuthenticationProviderOpennms">
-                <parameter key="url" value="http://localhost:8980/opennms" />
+			<authprovider name="http-auth" class="AuthenticationProviderHttp">
+                <parameter key="url" value="http://localhost:8980/opennms/rest/info" />
                 <parameter key="defaultAccessgroup" value="user" />
                 <parameter key="accessuser_admin" value="admin" />
 			</authprovider>
