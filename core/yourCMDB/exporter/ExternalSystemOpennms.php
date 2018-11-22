@@ -562,7 +562,7 @@ class ExternalSystemOpennms implements ExternalSystem
         $xml.= "<timeout>$this->exportSnmpConfigTimeout</timeout>";
         $xml.= "<version>$version</version>";
         $xml.= "</snmp-info>";
-print($xml);
+
         //send XML structure to OpenNMS
 		$resource = "snmpConfig/$ip";
         return $this->sendData($resource, "PUT", $xml);
