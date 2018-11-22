@@ -11,6 +11,8 @@
 		<parameter key="services" value="ICMP" />
 		<parameter key="rescanExisting" value="true" />
 		<parameter key="exportSnmpConfig" value="true" />
+		<parameter key="exportSnmpConfigRetries" value="1" />
+		<parameter key="exportSnmpConfigTimeout" value="2000" />
 	</destination>
 	<variables>
 		<variable name="nodelabel">

@@ -59,6 +59,12 @@ class ExternalSystemOpennms implements ExternalSystem
     //export SNMP config
     private $exportSnmpConfig;
 
+    //export SNMP config: retries
+    private $exportSnmpConfigRetries;
+
+    //export SNMP config: timeout
+    private $exportSnmpConfigTimeout;
+
 	//static var: category name lentgh
 	private static $categoryLength = 64;
 
@@ -176,6 +182,20 @@ class ExternalSystemOpennms implements ExternalSystem
 		if(in_array("exportSnmpConfig", $parameterKeys))
 		{
 			$this->exportSnmpConfig = $destination->getParameterValue("exportSnmpConfig");
+        }
+
+		//exportSnmpConfigRetries
+		$this->exportSnmpConfigRetries = "1";
+		if(in_array("exportSnmpConfigRetries", $parameterKeys))
+		{
+			$this->exportSnmpConfigRetries = $destination->getParameterValue("exportSnmpConfigRetries");
+        }
+
+		//exportSnmpConfigTimeout
+		$this->exportSnmpConfigTimeout = "2000";
+		if(in_array("exportSnmpConfigTimeout", $parameterKeys))
+		{
+			$this->exportSnmpConfigTimeout = $destination->getParameterValue("exportSnmpConfigTimeout");
         }
 
 		//check connection to OpenNMS
@@ -532,20 +552,20 @@ class ExternalSystemOpennms implements ExternalSystem
 		return $value;
     }
 
-    private function setSnmpV2Config($ip, $community, $version="v2c", $port="162", $timeout="2000", $retries="1")
+    private function setSnmpV2Config($ip, $community, $version="v2c", $port="161")
     {
         //create XML structure
         $xml = "<snmp-info>";
         $xml.= "<readCommunity>$community</readCommunity>";
         $xml.= "<port>$port</port>";
-        $xml.= "<retries>$retries</retries>";
-        $xml.= "<timeout>$timeout</timeout>";
+        $xml.= "<retries>$this->exportSnmpConfigRetries</retries>";
+        $xml.= "<timeout>$this->exportSnmpConfigTimeout</timeout>";
         $xml.= "<version>$version</version>";
         $xml.= "</snmp-info>";
-
+print($xml);
         //send XML structure to OpenNMS
 		$resource = "snmpConfig/$ip";
-		return $this->sendData($resource, "PUT", $xml);
+        return $this->sendData($resource, "PUT", $xml);
     }
 }
 ?>
