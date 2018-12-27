@@ -30,7 +30,16 @@
 
 	//get object ressources
 	$objectLinks = $objectLinkController->getObjectLinks($object, $authUser);
-	$objectRefs = $objectController->getObjectReferences($paramId, $authUser);
+    $objectRefs = $objectController->getObjectReferences($paramId, $authUser);
+    $objectRefTypes = Array();
+    foreach($objectRefs as $objectRef)
+    {
+        $objectRefType = $objectRef->getType();
+        if(!in_array($objectRefType, $objectRefTypes))
+        {
+            $objectRefTypes[] = $objectRefType;
+        }
+    }
 	$objectLogEntries = $objectLogController->getLogEntries($object, 31, 0, $authUser);
 	$objectEvents = $config->getObjectTypeConfig()->getObjectEvents($object->getType());
 	$objectExternalLinks = $config->getObjectTypeConfig()->getObjectLinks($object->getType());
@@ -256,6 +265,20 @@
 	
 	//Tab: object references
 	echo "<div role=\"tabpanel\" class=\"tab-pane fade\" id=\"tabs-2\">";
+	//<!-- subsubmenu  -->
+	echo "<ul class=\"nav nav-pills\">";
+	echo "<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">";
+        echo "<span class=\"glyphicon glyphicon-share-alt\"></span>".gettext("CSV export")."<span class=\"caret\"></span></a>";
+    echo "<ul class=\"dropdown-menu\">";
+    foreach($objectRefTypes as $objectRefType)
+    {
+        $objectRefTypeExportUrl = "export.php?action=exportReferences&type=$objectRefType&ref=".$object->getId();
+		echo "<li><a href=\"$objectRefTypeExportUrl\"><span class=\"glyphicon glyphicon-share-alt\"></span>$objectRefType</a></li>";
+    }
+    echo "</ul>";
+    echo "</li>";
+    echo "</ul>";
+    //<!-- content -->
 	echo "<table class=\"table table-hover cmdb-cleantable\">";
 	echo "<tr>";
 	echo "<th>".gettext("AssetID")."</th>";
