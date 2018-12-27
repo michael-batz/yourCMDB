@@ -260,17 +260,20 @@
 	echo "<tr>";
 	echo "<th>".gettext("AssetID")."</th>";
 	echo "<th>".gettext("Type")."</th>";
+	echo "<th>".gettext("Summary")."</th>";
 	echo "<th>".gettext("Action")."</th>";
 	echo "</tr>";
 	//<!-- print object references -->
 	foreach($objectRefs as $refObject)
 	{
 		$refObjectType = $refObject->getType();
-		$refObjectId = $refObject->getId();
+        $refObjectId = $refObject->getId();
+        $refObjectSummary = getObjectSummary($refObject);
 		$urlLinkShow = "object.php?action=show&amp;id=$refObjectId";
 		echo "<tr>";
 		echo "<td>$refObjectId</td>";
 		echo "<td>$refObjectType</td>";
+		echo "<td>$refObjectSummary</td>";
 		echo "<td>";
 		echo "<a href=\"$urlLinkShow\"><span class=\"glyphicon glyphicon-eye-open\" title=\"".gettext("show object with reference")."\"></span></a>&nbsp;&nbsp;&nbsp;";
 		echo "</td>";

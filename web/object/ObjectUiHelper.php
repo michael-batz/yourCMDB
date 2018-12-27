@@ -291,6 +291,31 @@
 			echo htmlspecialchars($value);
 		}
 
-	}
+    }
+
+    function getObjectSummary($cmdbObject)
+    {
+		//use global datastore variable
+		global $config;
+
+		//get summary fields for object type
+		$summaryFields = array_keys($config->getObjectTypeConfig()->getSummaryFields($cmdbObject->getType()));
+
+		//get summary of referenced object
+		$summary = "";
+		for($i=0; $i < count($summaryFields); $i++)
+        {
+            $fieldName = $summaryFields[$i];
+            $fieldLabel = $config->getObjectTypeConfig()->getFieldLabel($cmdbObject->getType(), $fieldName);
+            $fieldValue = $cmdbObject->getFieldValue($fieldName);
+            $summary .= "$fieldLabel: $fieldValue";
+            if($i < (count($summaryFields) - 1))
+            {
+			    $summary .= " | ";
+            }
+        }
+
+        return $summary;
+    }
 
 ?>
