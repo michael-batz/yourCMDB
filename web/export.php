@@ -29,11 +29,22 @@
 	require "include/auth.inc.php";
 
 	//get parameter
+    $paramAction = getHttpGetVar("action", "exportSimple");
+    $paramReference = getHttpGetVar("ref", "");
 	$paramType = getHttpGetVar("type", "");
 	$paramFormat = getHttpGetVar("format", "csv");
 
-	//get data
-	$objects = $objectController->getObjectsByType(Array($paramType), null, "ASC", null, 0, 0, $authUser);
+    //get data
+    switch($paramAction)
+    {
+        case "exportReferences":
+            $objects = $objectController->getObjectReferencesByType($paramReference, $paramType, $authUser);
+            break;
+
+        case "exportSimple":
+            $objects = $objectController->getObjectsByType(Array($paramType), null, "ASC", null, 0, 0, $authUser);
+            break;
+    }
 
 	switch($paramFormat)
 	{

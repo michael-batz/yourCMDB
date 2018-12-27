@@ -732,6 +732,32 @@ class ObjectController
 
 		//return
 		return $objects;
-	}
+    }
+
+	/**
+	* Returns all objects that have a reference to the given object, filtered by type
+	* @param integer $objectId	ID of the object
+	* @param string $type		object type 
+	* @param string $user		name of the user that wants to execute the operation
+	* @throws CmdbObjectNotFoundException
+	* @return CmdbObject[]		Array with CmdbObject objects that have a reference to the given object
+	*/
+    public function getObjectReferencesByType($objectId, $type, $user)
+    {
+        //get all referenced objects
+        $refObjects = $this->getObjectReferences($objectId, $user);
+
+        //filter referenced objects by type
+        $output = array();
+        foreach($refObjects as $refObject)
+        {
+            if($refObject->getType() == $type)
+            {
+                $output[] = $refObject;
+            }
+        }
+
+        return $output;
+    }
 }
 ?>
