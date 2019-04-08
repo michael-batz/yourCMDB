@@ -1,0 +1,33 @@
+<task name="csv-example">
+	<sources>
+		<source objecttype="router" status="A" />
+		<source objecttype="switch" status="A" />
+	</sources>
+	<destination class="ExternalSystemCsv">
+        <parameter key="csv_filename" value="/tmp/testexport.csv" />
+        <parameter key="csv_delimiter" value=";" />
+        <parameter key="csv_enclosure" value="&quot;" />
+	</destination>
+	<variables>
+		<variable name="nodelabel">
+			<value objecttype="router" fieldname="hostname" />
+			<value objecttype="switch" fieldname="management-ip" />
+		</variable>
+		<variable name="city">
+			<value objecttype="router" fieldname="location" refobjectfield="region.region-name" />
+			<value objecttype="switch" fieldname="location" refobjectfield="region.region-name" />
+		</variable>
+		<variable name="ip">
+			<value objecttype="router" fieldname="management-ip" />
+			<value objecttype="switch" fieldname="management-ip" />
+        </variable>
+		<variable name="snmp_community">
+			<value objecttype="router" fieldname="snmpCommunity" />
+			<value objecttype="switch" fieldname="snmpCommunity" />
+        </variable>
+		<variable name="snmp_version">
+			<value objecttype="router" fieldname="snmpVersion" />
+			<value objecttype="switch" fieldname="snmpVersion" />
+		</variable>
+	</variables>
+</task>

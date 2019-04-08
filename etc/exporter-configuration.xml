@@ -5,4 +5,5 @@
 	<includeconfig file="exporter/openvas-example.xml" />
 	<includeconfig file="exporter/freeradius-example.xml" />
 	<includeconfig file="exporter/asterisk-example.xml" />
+	<includeconfig file="exporter/csv-example.xml" />
 </exporter-configuration>
