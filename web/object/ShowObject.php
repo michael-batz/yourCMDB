@@ -279,30 +279,45 @@
     echo "</li>";
     echo "</ul>";
     //<!-- content -->
-	echo "<table class=\"table table-hover cmdb-cleantable\">";
-	echo "<tr>";
-	echo "<th>".gettext("AssetID")."</th>";
-	echo "<th>".gettext("Type")."</th>";
-	echo "<th>".gettext("Summary")."</th>";
-	echo "<th>".gettext("Action")."</th>";
-	echo "</tr>";
-	//<!-- print object references -->
-	foreach($objectRefs as $refObject)
-	{
-		$refObjectType = $refObject->getType();
-        $refObjectId = $refObject->getId();
-        $refObjectSummary = getObjectSummary($refObject);
-		$urlLinkShow = "object.php?action=show&amp;id=$refObjectId";
-		echo "<tr>";
-		echo "<td>$refObjectId</td>";
-		echo "<td>$refObjectType</td>";
-		echo "<td>$refObjectSummary</td>";
-		echo "<td>";
-		echo "<a href=\"$urlLinkShow\"><span class=\"glyphicon glyphicon-eye-open\" title=\"".gettext("show object with reference")."\"></span></a>&nbsp;&nbsp;&nbsp;";
-		echo "</td>";
-		echo "</tr>";
-	}
-	echo "</table>";
+    foreach($objectRefTypes as $objectRefType)
+    {
+        echo "<h2>$objectRefType</h2>";
+	    echo "<table class=\"table table-hover cmdb-cleantable cmdb-reftable\">";
+	    echo "<tr>";
+        echo "<th>".gettext("AssetID")."</th>";
+        $refSummaryFields = array_keys($config->getObjectTypeConfig()->getSummaryFields($objectRefType));
+        foreach($refSummaryFields as $refSummaryField) 
+        {
+            $refSummaryFieldLabel = $config->getObjectTypeConfig()->getFieldLabel($objectRefType, $refSummaryField);
+            echo "<th>$refSummaryFieldLabel</th>";
+        }
+
+	    echo "<th>".gettext("Action")."</th>";
+	    echo "</tr>";
+	    //<!-- print object references -->
+	    foreach($objectRefs as $refObject)
+	    {
+            $refObjectType = $refObject->getType();
+            if($refObjectType != $objectRefType)
+            {
+                continue;
+            }
+            $refObjectId = $refObject->getId();
+		    $urlLinkShow = "object.php?action=show&amp;id=$refObjectId";
+		    echo "<tr>";
+            echo "<td>$refObjectId</td>";
+            foreach($refSummaryFields as $refSummaryField)
+            {
+                $fieldValue = $refObject->getFieldValue($refSummaryField);
+                echo "<td>$fieldValue</td>";
+            }
+		    echo "<td>";
+		    echo "<a href=\"$urlLinkShow\"><span class=\"glyphicon glyphicon-eye-open\" title=\"".gettext("show object with reference")."\"></span></a>&nbsp;&nbsp;&nbsp;";
+		    echo "</td>";
+		    echo "</tr>";
+	    }
+	    echo "</table>";
+    }
 	echo "</div>";
 
 	//Tab: object links

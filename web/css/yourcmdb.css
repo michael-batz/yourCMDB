@@ -300,6 +300,21 @@ div#cmdb-objecttable-head h1
 }
 
 /**
+* object view - refobject tab
+*/
+table.cmdb-reftable tr th
+{
+    padding-top:    10px;
+}
+
+table.cmdb-reftable
+{
+    margin-bottom:  75px;
+
+}
+
+
+/**
 * content panel
 */
 div.cmdb-contentpanel
