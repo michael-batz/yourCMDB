@@ -97,6 +97,7 @@
 			echo "<td><select name=\"column$i\" class=\"form-control\" id=\"column$i\">";
 			echo "<option></option>";
 			echo "<option value=\"yourCMDB_assetid\">AssetID</option>";
+			echo "<option value=\"yourCMDB_active\">Active</option>";
 			//dropdown: object fields
 			echo "<optgroup label=\"".gettext("Object Fields")."\">";
 			foreach($objectFields as $objectFieldName)

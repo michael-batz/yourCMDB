@@ -99,7 +99,8 @@ class ImportFormatCsv extends ImportFormat
 		$objectFieldConfig = $config->getObjectTypeConfig()->getFields($optionType);
 		$objectFieldMapping = Array();
 		$foreignKeyMapping = Array();
-		$assetIdMapping = -1;
+        $assetIdMapping = -1;
+        $activeMapping = -1;
 		for($i = 0; $i < $optionCols; $i++)
 		{
 			$fieldname = $this->importOptions->getOptionValue("column$i", "");
@@ -107,6 +108,11 @@ class ImportFormatCsv extends ImportFormat
 			if($fieldname == "yourCMDB_assetid")
 			{
 				$assetIdMapping = $i;
+            }
+			//active state mapping
+			if($fieldname == "yourCMDB_active")
+            {
+				$activeMapping = $i;
 			}
 			//foreign key mapping
 			elseif(preg_match('#^yourCMDB_fk_(.*)/(.*)#', $fieldname, $matches) == 1)
@@ -176,7 +182,18 @@ class ImportFormatCsv extends ImportFormat
 							}
 						}
 					}
-				}
+                }
+
+                //set active state
+                $active = "A";
+                if($activeMapping != -1 && isset($line[$activeMapping]))
+                {
+                    if($line[$activeMapping] == "A" || $line[$activeMapping] == "N")
+                    {
+                        $active = $line[$activeMapping];
+                    }
+                }
+
 
 				//only create objects, if 1 or more fields are set
 				if(count($objectFields) > 0)
@@ -184,22 +201,22 @@ class ImportFormatCsv extends ImportFormat
 					//check if assetID is set in CSV file for updating objects
 					if($assetIdMapping != -1 && isset($line[$assetIdMapping]))
 					{
-						$assetId = $line[$assetIdMapping];
+                        $assetId = $line[$assetIdMapping];
 						try
 						{
-							$objectController->updateObject($assetId, 'A', $objectFields, $this->authUser);
+							$objectController->updateObject($assetId, $active, $objectFields, $this->authUser);
 						}
 						catch(Exception $e)
 						{
 							//if object was not found, add new one
-							$objectController->addObject($optionType, 'A', $objectFields, $this->authUser);
+							$objectController->addObject($optionType, $active, $objectFields, $this->authUser);
 						}
 					}
 					//if not, create a new object
 					else
 					{
 						//generate object and save to datastore
-						$objectController->addObject($optionType, 'A', $objectFields, $this->authUser);
+						$objectController->addObject($optionType, $active, $objectFields, $this->authUser);
 					}
 				}
 			}
