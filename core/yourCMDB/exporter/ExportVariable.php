@@ -113,6 +113,10 @@ class ExportVariable
                             {
                                 //get value of referenced field
                                 $value = $refObject->getFieldvalue($refFieldnameElement);
+                                if($refFieldnameElement == "yourCMDB_object_id")
+                                {
+                                    $value = $refObject->getId();
+                                }            
                                 //if referenced field is a reference itself -> dereference
                                 if(preg_match('/objectref-.*/', $configObjecttype->getFieldType($refObject->getType(), 
                                               $refFieldnameElement)) == 1)
