@@ -23,6 +23,7 @@ namespace yourCMDB\migrator;
 
 use yourCMDB\config\CmdbConfig;
 use yourCMDB\controller\ObjectController;
+use yourCMDB\controller\ObjectLinkController;
 use \DateTime;
 
 /**
@@ -118,6 +119,8 @@ class Migrator
         $this->createTypeRefs();
         print(" - create objects...\n");
         $this->createObjects();
+        print(" - create object links...\n");
+        $this->createObjectLinks();
     }
 
     private function dgLogin()
@@ -380,6 +383,30 @@ class Migrator
             $data["public_id"] = intval($objectId);
 
             $response = $this->sendData("/object/", "POST", json_encode($data));
+        }
+    }
+
+    private function createObjectLinks()
+    {
+        $objectController = ObjectController::create();
+        $objectLinkController = ObjectLinkController::create();
+        foreach($objectController->getAllObjectIds(null, 0, "migrator") as $objectId)
+        {
+            //get links of object
+            $cmdbObject = $objectController->getObject($objectId, "migrator");
+            $cmdbObjectLinks = $objectLinkController->getObjectLinks($cmdbObject, "migrator");
+            foreach($cmdbObjectLinks as $cmdbObjectLink)
+            {
+                $objectA = intval($cmdbObjectLink->getObjectA()->getId());
+                $objectB = intval($cmdbObjectLink->getObjectB()->getId());
+                if($objectId == $objectA)
+                {
+                    $data = array();
+                    $data["primary"] = $objectA;
+                    $data["secondary"] = $objectB;
+                    $response = $this->sendData("/object/link/", "POST", json_encode($data));
+                }
+            }
         }
     }
 
