@@ -236,8 +236,11 @@ class Migrator
                 //handle field types
                 $fieldType = $fields[$field];
                 $fieldTypeOptions = null;
-                $fieldTypeParts = preg_split("/-/", $fieldType);
-                $fieldType = $fieldTypeParts[0];
+                if(preg_match('/^(.*?)-(.*)/', $fieldType, $matches) == 1)
+                {
+                    $fieldType = $matches[1];
+                    $fieldTypeDetails = $matches[2];
+                }
                 $fieldTypeMapped = "text";
                 if(isset($this->fieldTypeMap[$fieldType]))
                 {
@@ -246,9 +249,9 @@ class Migrator
                 $fieldLabel = $this->configObjectTypes->getFieldLabel($type, $field);
 
                 //handle field type dropdown/select
-                if($fieldType == "dropdown" && isset($fieldTypeParts[1]))
+                if($fieldType == "dropdown" && isset($fieldTypeDetails))
                 {
-                    $options = preg_split("/,/", $fieldTypeParts[1]);
+                    $options = preg_split("/,/", $fieldTypeDetails);
                     $fieldTypeOptions = array();
                     foreach($options as $option)
                     {
@@ -261,13 +264,13 @@ class Migrator
                 }
 
                 //handle field type objectref
-                if($fieldType == "objectref" && isset($fieldTypeParts[1]))
+                if($fieldType == "objectref" && isset($fieldTypeDetails))
                 {
                     if(!isset($this->dgTypeRefsToSet[$type]))
                     {
                         $this->dgTypeRefsToSet[$type] = array();
                     }
-                    $this->dgTypeRefsToSet[$type][$fieldName] = $fieldTypeParts[1];
+                    $this->dgTypeRefsToSet[$type][$fieldName] = $fieldTypeDetails;
                 }
 
                 //create field data
@@ -328,12 +331,17 @@ class Migrator
         {
             $cmdbObject = $objectController->getObject($objectId, "migrator");
             $cmdbObjectType = $cmdbObject->getType();
+            if(!in_array($cmdbObjectType, array_keys($this->dgTypes)))
+            {
+                continue;
+            }
             $cmdbObjectState = $cmdbObject->getStatus();
             $cmdbObjectActive = true;
             if($cmdbObjectState == "N")
             {
                 $cmdbObjectActive = false;
             }
+            $cmdbObjectFields = $this->configObjectTypes->getFields($cmdbObjectType);
             $data = array();
             $data["type_id"] = $this->dgTypes[$cmdbObjectType];
             $data["status"] = true;
@@ -341,17 +349,34 @@ class Migrator
             $data["author_id"] = 1;
             $data["active"] = $cmdbObjectActive;
             $data["fields"] = array();
-            foreach($cmdbObject->getFields()->getKeys() as $fieldname)
+            foreach(array_keys($cmdbObjectFields) as $fieldname)
             {
+                $fieldtype = $cmdbObjectFields[$fieldname];
                 $fieldvalue = $cmdbObject->getFieldvalue($fieldname);
-                //ToDo: handle datatypes in a correct way
+                $fieldvalueMapped = $fieldvalue;
+                //handle null values
+                if($fieldvalue == "")
+                {
+                    $fieldvalueMapped = null;
+                }
+                //handle boolean values
+                if($fieldtype == "boolean" and $fieldvalue != null)
+                {
+                    if($fieldvalue == "TRUE" || $fieldvalue == "true" || $fieldvalue == 1)
+                    {
+                        $fieldvalueMapped = true;
+                    }
+                    else
+                    {
+                        $fieldvalueMapped = false;
+                    }
+                }
                 $fielddata = array(
                     "name" => $fieldname,
-                    "value" => $fieldvalue
+                    "value" => $fieldvalueMapped
                 );
                 $data["fields"][] = $fielddata;
             }
-            //ToDo: public_id will not be set correctly
             $data["public_id"] = intval($objectId);
 
             $response = $this->sendData("/object/", "POST", json_encode($data));
