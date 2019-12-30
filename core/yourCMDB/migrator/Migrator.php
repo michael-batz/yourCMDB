@@ -189,6 +189,7 @@ class Migrator
             //get object type data
             $fields = $this->configObjectTypes->getFields($type);
             $fieldGroups = $this->configObjectTypes->getFieldGroups($type);
+            $links = $this->configObjectTypes->getObjectLinks($type);
 
 
             //generate json structure for DATAGERRY
@@ -228,6 +229,27 @@ class Migrator
 
             //ToDo: create external links
             $data["render_meta"]["external"] = array();
+            foreach($links as $link)
+            {
+                $linkName = $link["name"];
+                $linkHref = $link["href"];
+                $linkFields = array();
+                $linkHref = preg_replace_callback("/%(.+?)%/",
+                    function ($pregResult) use (&$linkFields)
+                    {
+                        $linkFields[] = $pregResult[1];
+                        return "{}";
+                    },
+                    $linkHref);
+                $linkData = array(
+                    "name" => $this->dgGenerateName($linkName),
+                    "label" => $linkName,
+                    "icon" => "fas fa-external-link-alt",
+                    "href" => $linkHref,
+                    "fields" => $linkFields
+                );
+                $data["render_meta"]["external"][] = $linkData;
+            }
 
 
             //get object fields
