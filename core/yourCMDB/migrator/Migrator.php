@@ -32,8 +32,11 @@ use \DateTime;
 */
 class Migrator
 {
-	//migrator config
+	//object type config
     private $configObjectTypes;
+
+    //exporter config
+    private $configExporter;
 
     //DATAGERRY URL
     private $dgUrl;
@@ -61,6 +64,7 @@ class Migrator
 
     //field type mapping (type yourCMDB -> type DATAGERRY)
     private $fieldTypeMap;
+
 
 	function __construct()
     {
@@ -90,6 +94,7 @@ class Migrator
 		//get configuration
 		$config = CmdbConfig::create();
 		$this->configObjectTypes = $config->getObjectTypeConfig();
+		$this->configExporter = $config->getExporterConfig();
 	}
 
     /**
@@ -121,6 +126,8 @@ class Migrator
         $this->createObjects();
         print(" - create object links...\n");
         $this->createObjectLinks();
+        print(" - create exportd jobs...\n");
+        $this->createExportdJobs();
     }
 
     private function dgLogin()
@@ -227,7 +234,7 @@ class Migrator
             $data["render_meta"]["summary"]["fields"] = array_keys($this->configObjectTypes->getSummaryFields($type));
 
 
-            //ToDo: create external links
+            //create external links
             $data["render_meta"]["external"] = array();
             foreach($links as $link)
             {
@@ -431,6 +438,164 @@ class Migrator
             }
         }
     }
+
+    private function createExportdJobs()
+    {
+        //get DATAGERRY external system classes
+        $dgExternalSystems = json_decode($this->getData("/externalsystem/"));
+
+        //walk over all export tasks
+        foreach($this->configExporter->getTasks() as $task)
+        {
+            $sources = $this->configExporter->getSourcesForTask($task);
+            $destinations = $this->configExporter->getDestinationsForTask($task);
+            $variables = $this->configExporter->getVariablesForTask($task);
+
+            $data = array();
+            $data["name"] = $this->dgGenerateName($task);
+            $data["label"] = $task;
+            $data["description"] = "";
+            $data["active"] = true;
+
+            //add sources to export job
+            $data["sources"] = array();
+            foreach($sources as $source)
+            {
+                $sourceType = $source->getObjectType();
+                if(!in_array($sourceType, array_keys($this->dgTypes)))
+                {
+                    continue;
+                }
+                $sourceTypeId = $this->dgTypes[$sourceType];
+                $sourceFieldname = $source->getFieldname();
+                $sourceFieldvalue = $source->getFieldvalue();
+                //map source field values
+                $sourceFieldvalueMapped = $sourceFieldvalue;
+                if($sourceFieldvalue == "true")
+                {
+                    $sourceFieldvalueMapped = "True";
+                }
+                $sourceCondition = array();
+                if($sourceFieldname != "" && $sourceFieldvalueMapped != "")
+                {
+                    $sourceCondition[] = array(
+                        "name" => $sourceFieldname,
+                        "value" => $sourceFieldvalueMapped,
+                        "condition"=> "=="
+                    );
+                }
+                $sourceData = array(
+                    "type_id" => $sourceTypeId,
+                    "condition" => $sourceCondition
+                );
+                $data["sources"][] = $sourceData;
+            }
+
+            //add destinations to export job
+            $data["destination"] = array();
+            foreach($destinations as $destination)
+            {
+                $destinationClass = $destination->getClass();
+                $destinationClassMapped = "ExternalSystemDummy";
+                $destinationParameters = $destination->getParameterKeys();
+
+                //map destinationClasses
+                foreach($dgExternalSystems as $dgExternalSystem)
+                {
+                    if(strtolower($destinationClass) == strtolower($dgExternalSystem))
+                    {
+                        $destinationClassMapped = $dgExternalSystem;
+                    }
+                }
+
+                //define destination data
+                $destinationData = array();
+                $destinationData["className"] = $destinationClassMapped;
+                $destinationData["parameter"] = array();
+
+                foreach($destinationParameters as $destinationParameter)
+                {
+                    $parmName = $destinationParameter;
+                    $parmValue = $destination->getParameterValue($destinationParameter);
+
+                    $destinationData["parameter"][] = array(
+                        "name" => $parmName,
+                        "value" => $parmValue
+                    );
+                }
+
+                $data["destination"][] = $destinationData;
+
+            }
+
+            //add export variables
+            $data["variables"] = array();
+            foreach($variables->getVariableNames() as $variableName)
+            {
+                $variable = $variables->getVariable($variableName);
+                $variableDefault = $variable->getDefaultValue();
+                $variableFieldValue = $variable->getFieldValue();
+
+                $variableTemplates = array();
+                foreach(array_keys($variableFieldValue) as $variableObjType)
+                {
+                    if(!in_array($variableObjType, array_keys($this->dgTypes)))
+                    {
+                        continue;
+                    }
+                    $variableTypeId = $this->dgTypes[$variableObjType];
+                    $variableField = $variableFieldValue[$variableObjType]["name"];
+                    $variableRefObj = $variableFieldValue[$variableObjType]["refobjectfield"];
+                    $variableTemplate = "{{fields[\"$variableField\"]}}";
+                    //handle special var yourCMDB_object_id
+                    if($variableField == "yourCMDB_object_id")
+                    {
+                        $variableTemplate = "{{id}}";
+                    }
+                    //handle references
+                    if($variableRefObj != "")
+                    {
+                        $variableTemplate = "{{fields[\"$variableField\"]";
+                        foreach(preg_split("/\./", $variableRefObj) as $variableRefObjPart)
+                        {
+                            $variableTemplate.= "[\"fields\"][\"$variableRefObjPart\"]";
+                        }
+                        $variableTemplate.= "}}";
+                    }
+
+                    $variableTemplateData = array(
+                        "type" => $variableTypeId,
+                        "template" => $variableTemplate
+                    );
+                    $variableTemplates[] = $variableTemplateData;
+
+                    if($variableDefault == "")
+                    {
+                        $variableDefault = $variableTemplate;
+                    }
+                }
+
+                $variableData = array(
+                    "name" => $variableName,
+                    "default" => $variableDefault,
+                    "templates" => $variableTemplates
+                );
+
+                $data["variables"][] = $variableData;
+
+            }
+
+            
+            //add scheduling
+            $data["scheduling"] = array();
+            $data["scheduling"]["event"] = array();
+            $data["scheduling"]["event"]["active"] = false;
+
+            $response = $this->sendData("/exportdjob/", "POST", json_encode($data));
+
+        }
+
+    } 
 
     private function dgGenerateName($label)
     {

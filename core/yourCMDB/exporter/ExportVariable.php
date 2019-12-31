@@ -57,7 +57,23 @@ class ExportVariable
 	public function getName()
 	{
 		return $this->name;
-	}
+    }
+
+	/**
+	* Returns the name of variable
+	*/
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+	/**
+	* Returns the fieldvalue of variable
+	*/
+    public function getFieldValue()
+    {
+        return $this->fieldValue;
+    }
 
 	/**
 	* Returns the value of variable for the given CmdbObject
