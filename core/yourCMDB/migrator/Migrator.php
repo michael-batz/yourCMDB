@@ -50,6 +50,9 @@ class Migrator
     //DATAGERRY authtoken
     private $dgToken;
 
+    //DATAGERRY author_id
+    private $dgAuthorId;
+
     //created categories
     private $dgCategories;
 
@@ -73,6 +76,7 @@ class Migrator
         $this->dgUser = "admin";
         $this->dgPassword = "admin";
         $this->dgToken = "";
+        $this->dgAuthorId = 0;
 
         //init temp variables for storing DG information
         $this->dgCategories = array();
@@ -111,10 +115,14 @@ class Migrator
         $result = $this->dgLogin();
         if(!$result)
         {
-            print("can not connect to DATAGERRY API");
-            return;
+            print("[ERROR] can not connect to DATAGERRY API\n");
+            exit(-1);
         }
-        $this->checkRequirements();
+        if(!$this->checkRequirements())
+        {
+            print("[ERROR] it seems, that your DATAGERRY setup is not empty. The DATAGERRY migrator works only with an empty DATAGERRY setup\n");
+            exit(-1);
+        }
         print("run migration\n");
         print(" - create object type catgories...\n");
         $this->createCategories();
@@ -141,6 +149,7 @@ class Migrator
         {
             $response_decoded = json_decode($response);
             $this->dgToken = $response_decoded->token;
+            $this->dgAuthorId = $response_decoded->public_id;
             return true;
         }
         return false;
@@ -148,7 +157,15 @@ class Migrator
 
     private function checkRequirements()
     {
-        //ToDo
+        //check, if we have an empty DATAGERRY setup
+        $objectCount = $this->getData("/object/count/");
+        $typeCount = $this->getData("/type/count/");
+        $categories = sizeof(json_decode($this->getData("/category/")));
+
+        if(($objectCount + $typeCount + $categories) > 0)
+        {
+            return false;
+        }
         return true;
     }
     
@@ -212,8 +229,7 @@ class Migrator
                 "groups" => "",
                 "users" => ""
             );
-            //ToDo: set correct author ID
-            $data["author_id"] = 1;
+            $data["author_id"] = $this->dgAuthorId;
             $data["render_meta"] = array();
             $data["render_meta"]["icon"] = "fa fa-cube";
 
@@ -378,7 +394,7 @@ class Migrator
             $data["type_id"] = $this->dgTypes[$cmdbObjectType];
             $data["status"] = true;
             $data["version"] = "1.0.0";
-            $data["author_id"] = 1;
+            $data["author_id"] = $this->dgAuthorId;
             $data["active"] = $cmdbObjectActive;
             $data["fields"] = array();
             foreach(array_keys($cmdbObjectFields) as $fieldname)
@@ -621,7 +637,7 @@ class Migrator
         );
         curl_setopt_array($curl, $curlOptions);
         $curlResult = curl_exec($curl);
-        if($curlResult == false)
+        if($curlResult === false)
         {
             $curlError = curl_error($curl);
             print("error connecting to DATAGERRY: $curlError");
@@ -655,7 +671,7 @@ class Migrator
         );
         curl_setopt_array($curl, $curlOptions);
         $curlResult = curl_exec($curl);
-        if($curlResult == false)
+        if($curlResult === false)
         {
             $curlError = curl_error($curl);
             print("error connecting to DATAGERRY: $curlError");
