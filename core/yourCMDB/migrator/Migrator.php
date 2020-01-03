@@ -25,6 +25,7 @@ use yourCMDB\config\CmdbConfig;
 use yourCMDB\controller\ObjectController;
 use yourCMDB\controller\ObjectLinkController;
 use \DateTime;
+use \Exception;
 
 /**
 * Migrator - migrates yourCMDB data to DATAGERRY
@@ -418,6 +419,19 @@ class Migrator
                     {
                         $fieldvalueMapped = false;
                     }
+                }
+                //handle date values
+                if($fieldtype == "date")
+                {
+                    try
+                    {
+                        $dateobj = new DateTime($fieldvalue);
+                    }
+                    catch(Exception $e)
+                    {
+                        $fieldvalueMapped = null;
+                    }
+                    $fieldvalueMapped = $dateobj->format("Y-m-d") . "T23:00:00.000Z";
                 }
                 $fielddata = array(
                     "name" => $fieldname,
