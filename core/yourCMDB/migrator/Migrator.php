@@ -423,15 +423,19 @@ class Migrator
                 //handle date values
                 if($fieldtype == "date")
                 {
-                    try
+                    $fieldvalueMapped = null;
+                    if(preg_match("/^[0-9]+\.[0-9]+\.[0-9]+$/", $fieldvalue)  === 1)
                     {
-                        $dateobj = new DateTime($fieldvalue);
+                        try
+                        {
+                            $dateobj = new DateTime($fieldvalue);
+                            $fieldvalueMapped = $dateobj->format("Y-m-d") . "T23:00:00.000Z";
+                        }
+                        catch(Exception $e)
+                        {
+                            ;
+                        }
                     }
-                    catch(Exception $e)
-                    {
-                        $fieldvalueMapped = null;
-                    }
-                    $fieldvalueMapped = $dateobj->format("Y-m-d") . "T23:00:00.000Z";
                 }
                 $fielddata = array(
                     "name" => $fieldname,
