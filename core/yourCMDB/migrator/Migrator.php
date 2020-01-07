@@ -429,7 +429,7 @@ class Migrator
                         try
                         {
                             $dateobj = new DateTime($fieldvalue);
-                            $fieldvalueMapped = $dateobj->format("Y-m-d") . "T23:00:00.000Z";
+                            $fieldvalueMapped = $dateobj->format("Y-m-d") . "T01:00:00.000Z";
                         }
                         catch(Exception $e)
                         {
