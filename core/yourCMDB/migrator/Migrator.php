@@ -219,7 +219,7 @@ class Migrator
 
             //generate json structure for DATAGERRY
             $data = array();
-            $data["name"] = $type;
+            $data["name"] = $this->dgGenerateName($type);
             $data["label"] = $type;
             $data["description"] = "";
             $data["version"] = "1.0.0";
@@ -356,7 +356,7 @@ class Migrator
         {
             //get type
             $typeId = $this->dgTypes[$type];
-            $data = json_decode($this->getData("/type/$type"));
+            $data = json_decode($this->getData("/type/$typeId"));
             foreach(array_keys($this->dgTypeRefsToSet[$type]) as $fieldname)
             {
                 foreach($data->fields as $fieldDef)
@@ -369,6 +369,10 @@ class Migrator
                     }
                 }
             }
+            //update type
+            $response = $this->sendData("/type/", "PUT", json_encode($data));
+            //update cleanup flag of type
+            $data->clean_db = true;
             $response = $this->sendData("/type/", "PUT", json_encode($data));
         }
     }
