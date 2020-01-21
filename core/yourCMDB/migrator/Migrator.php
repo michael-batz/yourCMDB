@@ -405,6 +405,10 @@ class Migrator
             foreach(array_keys($cmdbObjectFields) as $fieldname)
             {
                 $fieldtype = $cmdbObjectFields[$fieldname];
+                if(preg_match('/^(.*?)-(.*)/', $fieldtype, $matches) == 1)
+                {
+                    $fieldtype = $matches[1];
+                }
                 $fieldvalue = $cmdbObject->getFieldvalue($fieldname);
                 $fieldvalueMapped = $fieldvalue;
                 //handle null values
@@ -441,6 +445,12 @@ class Migrator
                         }
                     }
                 }
+                //handle object references
+                if($fieldtype == "objectref")
+                {
+                    $fieldvalueMapped = intval($fieldvalue);
+                }
+
                 $fielddata = array(
                     "name" => $fieldname,
                     "value" => $fieldvalueMapped
