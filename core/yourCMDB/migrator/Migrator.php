@@ -54,6 +54,9 @@ class Migrator
     //DATAGERRY author_id
     private $dgAuthorId;
 
+    //DATAGERRY database version
+    private $dgDbVersion;
+
     //created categories
     private $dgCategories;
 
@@ -78,6 +81,7 @@ class Migrator
         $this->dgPassword = "admin";
         $this->dgToken = "";
         $this->dgAuthorId = 0;
+        $this->dgDbVersion = 0;
 
         //init temp variables for storing DG information
         $this->dgCategories = array();
@@ -125,6 +129,8 @@ class Migrator
             exit(-1);
         }
         print("run migration\n");
+        $this->getDgDatabaseVersion();
+        print(" - get DATAGERRY database version: ". $this->dgDbVersion . "\n");
         print(" - create object type catgories...\n");
         $this->createCategories();
         print(" - create object types...\n");
@@ -168,6 +174,17 @@ class Migrator
             return false;
         }
         return true;
+    }
+
+    private function getDgDatabaseVersion()
+    {
+        $databaseVersion = 0;
+        $systemData = json_decode($this->getData("/settings/system/"));
+        if(isset($systemData->db_version))
+        {
+            $databaseVersion = $systemData->db_version;
+        }
+        $this->dgDbVersion = $databaseVersion;
     }
     
     private function createCategories()
@@ -437,7 +454,18 @@ class Migrator
                         try
                         {
                             $dateobj = new DateTime($fieldvalue);
+
+                            //database version 0: set as string
                             $fieldvalueMapped = $dateobj->format("Y-m-d") . "T01:00:00.000Z";
+
+                            //database version : set as ISO date
+                            if($this->dgDbVersion >= 20200214)
+                            {
+                                $fieldvalueMapped = array(
+                                    '$date' => $dateobj->getTimestamp() * 1000
+                                );
+                            }
+
                         }
                         catch(Exception $e)
                         {
