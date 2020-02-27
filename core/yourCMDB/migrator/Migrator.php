@@ -196,9 +196,13 @@ class Migrator
                 "name" => $this->dgGenerateName($category),
                 "label" => $category,
                 "icon" => "",
-                "parent_id" => 0,
-                "root" => false
-            );
+                "parent_id" => 0);
+
+            //database version : set as ISO date
+            if($this->dgDbVersion < 20200226)
+            {
+                $data["root"] = false;
+            }
             $response = $this->sendData("/category/", "POST", json_encode($data));
             if($response)
             {
