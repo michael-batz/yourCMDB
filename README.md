@@ -1,10 +1,14 @@
+# yourCMDB -> DATAGERRY
+With the idea of yourCMDB, we created DATAGERRY. DATAGERRY is an OpenSource CMDB & Asset Management tool, which completely leaves the definition of a data model to the user.
+Please have a look at https://datagerry.com/yourcmdb
+
+
 # yourCMDB
 a flexible asset management tool
 yourCMDB is a web based flexible CMDB and asset management tool which easily allows you to define your own object types in XML configuration files.
 
 <table>
 <tr><td>Download</td><td>https://github.com/michael-batz/yourCMDB/releases</td></tr>
-<tr><td>Create issues</td><td>https://github.com/michael-batz/yourCMDB/issues</td></tr>
 <tr><td>Documentation</td><td>http://yourcmdb.org</td></tr>
 </table>
 
