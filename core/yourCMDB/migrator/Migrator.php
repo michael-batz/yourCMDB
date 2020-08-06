@@ -123,14 +123,22 @@ class Migrator
             print("[ERROR] can not connect to DATAGERRY API\n");
             exit(-1);
         }
+        //get and check database version
+        print("check requirements\n");
+        $this->getDgDatabaseVersion();
+        print(" - get DATAGERRY database version: ". $this->dgDbVersion . "\n");
+        if($this->dgDbVersion > 20200408){
+            print("[ERROR] your DATAGERRY version (> 1.2.3) is not supported by this migrator. Please migrate to DATAGERRY 1.2.3 and upgrade your DATAGERRY setup after that\n");
+            exit(-1);
+        }
+        //check requirements
+        print(" - check if DATAGERRY setup is not empty...\n");
         if(!$this->checkRequirements())
         {
             print("[ERROR] it seems, that your DATAGERRY setup is not empty. The DATAGERRY migrator works only with an empty DATAGERRY setup\n");
             exit(-1);
         }
         print("run migration\n");
-        $this->getDgDatabaseVersion();
-        print(" - get DATAGERRY database version: ". $this->dgDbVersion . "\n");
         print(" - create object type catgories...\n");
         $this->createCategories();
         print(" - create object types...\n");
@@ -697,7 +705,8 @@ class Migrator
         $curlOptions = array(
             CURLOPT_HTTPHEADER  => $curlHeader,
             CURLOPT_URL => "{$this->dgUrl}{$resource}",
-            CURLOPT_RETURNTRANSFER  => true
+            CURLOPT_RETURNTRANSFER  => true,
+            CURLOPT_SSL_VERIFYPEER => false
         );
         curl_setopt_array($curl, $curlOptions);
         $curlResult = curl_exec($curl);
@@ -731,7 +740,8 @@ class Migrator
             CURLOPT_POSTFIELDS => "$data",
             CURLOPT_HTTPHEADER  => $curlHeader,
             CURLOPT_URL => "{$this->dgUrl}{$resource}",
-            CURLOPT_RETURNTRANSFER  => true
+            CURLOPT_RETURNTRANSFER  => true,
+            CURLOPT_SSL_VERIFYPEER => false
         );
         curl_setopt_array($curl, $curlOptions);
         $curlResult = curl_exec($curl);
