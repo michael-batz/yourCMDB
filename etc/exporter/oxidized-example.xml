@@ -1,0 +1,51 @@
+<task name="oxidized-ntrouter">
+	<sources>
+		<source objecttype="router" status="A" fieldname="configbackup-enabled" fieldvalue="true" />
+		<source objecttype="switch" status="A" fieldname="configbackup-enabled" fieldvalue="true" />
+	</sources>
+	<destination class="ExternalSystemOxidized">
+		<parameter key="output" value="stdout" />
+		<parameter key="tacacs_username" value="tacacsuser" />
+		<parameter key="tacacs_password" value="tacacspass" />
+	</destination>
+	<variables>
+		<variable name="id">
+			<value objecttype="router" fieldname="yourCMDB_object_id" />
+			<value objecttype="switch" fieldname="yourCMDB_object_id" />
+		</variable>
+		<variable name="oxidized_ip">
+			<value objecttype="router" fieldname="management-ip" />
+			<value objecttype="switch" fieldname="management-ip" />
+		</variable>
+		<variable name="ssh_proxy_enabled">
+			<value objecttype="router" fieldname="configbackup-ssh-proxy" />
+			<value objecttype="switch" fieldname="configbackup-ssh-proxy" />
+		</variable>
+		<variable name="oxidized_ssh_proxy_ip">
+			<value objecttype="router" fieldname="configbackup-ssh-proxy-ip" />
+			<value objecttype="switch" fieldname="configbackup-ssh-proxy-ip" />
+		</variable>
+		<variable name="oxidized_hostname">
+			<value objecttype="router" fieldname="management-hostname" />
+			<value objecttype="switch" fieldname="management-hostname" />
+		</variable>
+		<variable name="oxidized_os">
+			<value objecttype="router" fieldname="configbackup-operating-system" />
+			<value objecttype="switch" fieldname="configbackup-operating-system" />
+		</variable>
+		<variable name="oxidized_group">
+		</variable>
+		<variable name="tacacs_enabled">
+			<value objecttype="router" fieldname="configbackup-tacacs-enabled" />
+			<value objecttype="switch" fieldname="configbackup-tacacs-enabled" />
+		</variable>
+		<variable name="oxidized_username">
+			<value objecttype="router" fieldname="management-admin-username" />
+			<value objecttype="switch" fieldname="management-admin-username" />
+		</variable>
+		<variable name="oxidized_password">
+			<value objecttype="router" fieldname="management-admin-password" />
+			<value objecttype="switch" fieldname="management-admin-password" />
+		</variable>
+	</variables>
+</task>
